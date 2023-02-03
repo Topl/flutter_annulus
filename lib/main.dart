@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:ribn_toolkit/widgets/molecules/wave_container.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,23 +34,56 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xfff4f6f9),
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-          widget.title,
-          style: const TextStyle(color: Color(0xff161616)),
-        ),
-        backgroundColor: const Color(0xfff4f6f9),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
+        toolbarHeight: 70,
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/icons/leaves-logo.png',
+              width: 45,
+            ),
+            const SizedBox(
+              width: 18,
+            ),
             Text(
-              'Hello World',
-              style: TextStyle(fontSize: 48, color: Color(0xff161616)),
+              widget.title,
+              style: const TextStyle(color: Color(0xff165867)),
             ),
           ],
+        ),
+        backgroundColor: Colors.transparent,
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: Container(
+              color: const Color(0xfff4f6f9).withOpacity(0.3),
+            ),
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: WaveContainer(
+          containerHeight: MediaQuery.of(context).size.height * 0.4,
+          containerWidth: MediaQuery.of(context).size.width,
+          waveAmplitude: 30,
+          containerChild: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Text(
+                  'Hello World!',
+                  style: TextStyle(
+                    fontSize: 48,
+                    color: Color(0xff161616),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
