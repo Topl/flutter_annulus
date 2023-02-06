@@ -51,6 +51,7 @@ class StackedNotificationActions extends StatelessWidget {
           // showLess button
           GestureDetector(
             onTap: () {
+              // here
               controller.reverse();
             },
             child: Visibility(

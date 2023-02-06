@@ -19,8 +19,8 @@ class _TransactionStackState extends State<TransactionStack> {
         Icons.block,
         size: 48,
       ),
-      title: 'Block Number',
-      subtitle: '#31038',
+      title: 'Block #',
+      subtitle: '31038',
     ),
     NotificationCard(
       date: DateTime.parse('2022-01-19'),
@@ -28,8 +28,8 @@ class _TransactionStackState extends State<TransactionStack> {
         Icons.block,
         size: 48,
       ),
-      title: 'Block Number',
-      subtitle: '#31037',
+      title: 'Block #',
+      subtitle: '31037',
     ),
     NotificationCard(
       date: DateTime.now().subtract(
@@ -39,8 +39,8 @@ class _TransactionStackState extends State<TransactionStack> {
         Icons.block,
         size: 48,
       ),
-      title: 'Block Number',
-      subtitle: '#31036',
+      title: 'Block #',
+      subtitle: '31036',
     ),
     NotificationCard(
       date: DateTime.now().subtract(
@@ -50,8 +50,8 @@ class _TransactionStackState extends State<TransactionStack> {
         Icons.block,
         size: 48,
       ),
-      title: 'Block Number',
-      subtitle: '#31035',
+      title: 'Block #',
+      subtitle: '31035',
     ),
     NotificationCard(
       date: DateTime.now().subtract(
@@ -61,8 +61,8 @@ class _TransactionStackState extends State<TransactionStack> {
         Icons.block,
         size: 48,
       ),
-      title: 'Block Number',
-      subtitle: '#31034',
+      title: 'Block #',
+      subtitle: '31034',
     ),
     NotificationCard(
       date: DateTime.now().subtract(
@@ -72,8 +72,8 @@ class _TransactionStackState extends State<TransactionStack> {
         Icons.block,
         size: 48,
       ),
-      title: 'Block Number',
-      subtitle: '#31033',
+      title: 'Block #',
+      subtitle: '31033',
     ),
     NotificationCard(
       date: DateTime.now().subtract(
@@ -83,8 +83,8 @@ class _TransactionStackState extends State<TransactionStack> {
         Icons.block,
         size: 48,
       ),
-      title: 'Block Number',
-      subtitle: '#31032',
+      title: 'Block #',
+      subtitle: '31032',
     ),
   ];
 
@@ -95,7 +95,7 @@ class _TransactionStackState extends State<TransactionStack> {
         BoxShadow(
           color: const Color(0xffe2ecf9).withOpacity(0.4),
           spreadRadius: 0,
-          blurRadius: 54,
+          blurRadius: 40,
           offset: const Offset(0, 9),
         ),
       ],

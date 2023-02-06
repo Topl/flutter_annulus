@@ -97,9 +97,7 @@ class AnimatedOffsetList extends StatelessWidget {
   /// Gives Tween animation offset value to offset each card
   /// from initial to final.
   Offset _tileOffset(int index) {
-    return Tween(
-            begin: Offset(0, _getInitialValue(index)),
-            end: Offset(0, _finalOffsetValue(index)))
+    return Tween(begin: Offset(0, _getInitialValue(index)), end: Offset(0, _finalOffsetValue(index)))
         .animate(
           CurvedAnimation(parent: controller, curve: interval),
         )
@@ -148,6 +146,7 @@ class AnimatedOffsetList extends StatelessWidget {
           ...notificationCards.map(
             (notification) {
               final index = notificationCards.indexOf(notification);
+
               return Transform.translate(
                 offset: _tileOffset(index),
                 child: Transform.scale(
@@ -158,7 +157,9 @@ class AnimatedOffsetList extends StatelessWidget {
                     child: Visibility(
                       visible: _lastCardVisibility(index),
                       child: NotificationTile(
+                        index: index,
                         cardTitle: notificationCardTitle,
+                        controller: controller,
                         date: notification.date,
                         title: notification.title,
                         subtitle: notification.subtitle,

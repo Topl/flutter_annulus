@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           ListView(
-            padding: EdgeInsets.only(top: 20),
+            padding: EdgeInsets.only(top: 86),
             scrollDirection: Axis.horizontal,
             children: [
               SizedBox(

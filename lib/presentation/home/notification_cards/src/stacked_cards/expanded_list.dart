@@ -111,39 +111,62 @@ class ExpandedList extends StatelessWidget {
             ...reversedList.map(
               (notification) {
                 final index = reversedList.indexOf(notification);
-                return BuildWithAnimation(
-                  key: ValueKey(notification.date),
-                  // slidKey: ValueKey(notification.dateTime),
-                  onTapView: onTapViewCallback,
-                  view: view,
-                  clear: clear,
-                  containerHeight: containerHeight,
-                  cornerRadius: cornerRadius,
-                  onTapClear: onTapClearCallback,
-                  spacing: _getSpacing(index, spacing),
-                  boxShadow: boxShadow,
+                // return BuildWithAnimation(
+                //   key: ValueKey(notification.date),
+                //   // slidKey: ValueKey(notification.dateTime),
+                //   onTapView: onTapViewCallback,
+                //   view: view,
+                //   clear: clear,
+                //   containerHeight: containerHeight,
+                //   cornerRadius: cornerRadius,
+                //   onTapClear: onTapClearCallback,
+                //   spacing: _getSpacing(index, spacing),
+                //   boxShadow: boxShadow,
+                //   index: index,
+                //   tileColor: tileColor,
+                //   endPadding: _getEndPadding(index),
+                //   tilePadding: tilePadding,
+                //   child: NotificationTile(
+                //     key: ValueKey(notification.date),
+                //     cardTitle: notificationCardTitle,
+                //     date: notification.date,
+                //     title: notification.title,
+                //     subtitle: notification.subtitle,
+                //     spacing: spacing,
+                //     height: containerHeight,
+                //     color: tileColor,
+                //     cornerRadius: cornerRadius,
+                //     titleTextStyle: titleTextStyle,
+                //     subtitleTextStyle: subtitleTextStyle,
+                //     boxShadow: boxShadow,
+                //     padding: EdgeInsets.fromLTRB(
+                //       tilePadding,
+                //       _topPadding(index),
+                //       tilePadding,
+                //       _getEndPadding(index),
+                //     ),
+                //   ),
+                // );
+                return NotificationTile(
                   index: index,
-                  tileColor: tileColor,
-                  endPadding: _getEndPadding(index),
-                  tilePadding: tilePadding,
-                  child: NotificationTile(
-                    cardTitle: notificationCardTitle,
-                    date: notification.date,
-                    title: notification.title,
-                    subtitle: notification.subtitle,
-                    spacing: spacing,
-                    height: containerHeight,
-                    color: tileColor,
-                    cornerRadius: cornerRadius,
-                    titleTextStyle: titleTextStyle,
-                    subtitleTextStyle: subtitleTextStyle,
-                    boxShadow: boxShadow,
-                    padding: EdgeInsets.fromLTRB(
-                      tilePadding,
-                      _topPadding(index),
-                      tilePadding,
-                      _getEndPadding(index),
-                    ),
+                  key: ValueKey(notification.date),
+                  controller: controller,
+                  cardTitle: notificationCardTitle,
+                  date: notification.date,
+                  title: notification.title,
+                  subtitle: notification.subtitle,
+                  spacing: spacing,
+                  height: containerHeight,
+                  color: tileColor,
+                  cornerRadius: cornerRadius,
+                  titleTextStyle: titleTextStyle,
+                  subtitleTextStyle: subtitleTextStyle,
+                  boxShadow: boxShadow,
+                  padding: EdgeInsets.fromLTRB(
+                    tilePadding,
+                    _topPadding(index),
+                    tilePadding,
+                    _getEndPadding(index),
                   ),
                 );
               },
@@ -155,121 +178,121 @@ class ExpandedList extends StatelessWidget {
   }
 }
 
-/// This widget is used to animate each card when clear action is selected
+// /// This widget is used to animate each card when clear action is selected
 
-class BuildWithAnimation extends StatefulWidget {
-  final Widget child;
-  final double cornerRadius;
-  final double containerHeight;
-  final Widget clear;
-  final OnTapSlidButtonCallback onTapClear;
-  final OnTapSlidButtonCallback onTapView;
-  final int index;
-  final List<BoxShadow>? boxShadow;
-  final Color tileColor;
-  final double endPadding;
-  final double spacing;
-  final double tilePadding;
-  final Widget view;
-  // final Key slidKey;
+// class BuildWithAnimation extends StatefulWidget {
+//   final Widget child;
+//   final double cornerRadius;
+//   final double containerHeight;
+//   final Widget clear;
+//   final OnTapSlidButtonCallback onTapClear;
+//   final OnTapSlidButtonCallback onTapView;
+//   final int index;
+//   final List<BoxShadow>? boxShadow;
+//   final Color tileColor;
+//   final double endPadding;
+//   final double spacing;
+//   final double tilePadding;
+//   final Widget view;
+//   // final Key slidKey;
 
-  const BuildWithAnimation({
-    Key? key,
-    required this.child,
-    required this.cornerRadius,
-    required this.containerHeight,
-    required this.clear,
-    required this.onTapClear,
-    required this.index,
-    required this.boxShadow,
-    required this.tileColor,
-    required this.endPadding,
-    required this.spacing,
-    required this.tilePadding,
-    required this.onTapView,
-    required this.view,
-  }) : super(key: key);
+//   const BuildWithAnimation({
+//     Key? key,
+//     required this.child,
+//     required this.cornerRadius,
+//     required this.containerHeight,
+//     required this.clear,
+//     required this.onTapClear,
+//     required this.index,
+//     required this.boxShadow,
+//     required this.tileColor,
+//     required this.endPadding,
+//     required this.spacing,
+//     required this.tilePadding,
+//     required this.onTapView,
+//     required this.view,
+//   }) : super(key: key);
 
-  @override
-  _BuildWithAnimationState createState() => _BuildWithAnimationState();
-}
+//   @override
+//   _BuildWithAnimationState createState() => _BuildWithAnimationState();
+// }
 
-class _BuildWithAnimationState extends State<BuildWithAnimation> with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
+// class _BuildWithAnimationState extends State<BuildWithAnimation> with SingleTickerProviderStateMixin {
+//   late AnimationController _animationController;
 
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     _animationController = AnimationController(
+//       vsync: this,
+//       duration: const Duration(milliseconds: 400),
+//     );
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      key: ValueKey('BuildWithAnimation'),
-      animation: _animationController,
-      builder: (_, __) => Opacity(
-        opacity: Tween<double>(begin: 1.0, end: 0.0).animate(_animationController).value,
-        child: SizeTransition(
-          sizeFactor: Tween<double>(begin: 1.0, end: 0.0).animate(_animationController),
-          child: Slidable(
-            key: UniqueKey(),
-            endActionPane: ActionPane(
-              motion: BehindMotion(),
-              dismissible: DismissiblePane(onDismissed: () => widget.onTapClear(widget.index)),
-              children: [
-                SlideButton(
-                  padding: EdgeInsets.fromLTRB(
-                    0,
-                    widget.spacing,
-                    widget.tilePadding,
-                    widget.endPadding,
-                  ),
-                  color: widget.tileColor,
-                  boxShadow: widget.boxShadow,
-                  height: widget.containerHeight,
-                  child: widget.view,
-                  onTap: (context) async {
-                    Slidable.of(context)?.close();
-                    widget.onTapView(widget.index);
-                  },
-                  leftCornerRadius: widget.cornerRadius,
-                  rightCornerRadius: widget.cornerRadius,
-                ),
-                SlideButton(
-                  padding: EdgeInsets.fromLTRB(
-                    0,
-                    widget.spacing,
-                    widget.tilePadding,
-                    widget.endPadding,
-                  ),
-                  color: widget.tileColor,
-                  boxShadow: widget.boxShadow,
-                  height: widget.containerHeight,
-                  child: widget.clear,
-                  onTap: (context) {
-                    _animationController.forward().then(
-                          (value) => widget.onTapClear(widget.index),
-                        );
-                  },
-                  rightCornerRadius: widget.cornerRadius,
-                  leftCornerRadius: widget.cornerRadius,
-                ),
-              ],
-            ),
-            child: widget.child,
-          ),
-        ),
-      ),
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return AnimatedBuilder(
+//       key: ValueKey('BuildWithAnimation'),
+//       animation: _animationController,
+//       builder: (_, __) => Opacity(
+//         opacity: Tween<double>(begin: 1.0, end: 0.0).animate(_animationController).value,
+//         child: SizeTransition(
+//           sizeFactor: Tween<double>(begin: 1.0, end: 0.0).animate(_animationController),
+//           child: Slidable(
+//             key: UniqueKey(),
+//             endActionPane: ActionPane(
+//               motion: BehindMotion(),
+//               dismissible: DismissiblePane(onDismissed: () => widget.onTapClear(widget.index)),
+//               children: [
+//                 SlideButton(
+//                   padding: EdgeInsets.fromLTRB(
+//                     0,
+//                     widget.spacing,
+//                     widget.tilePadding,
+//                     widget.endPadding,
+//                   ),
+//                   color: widget.tileColor,
+//                   boxShadow: widget.boxShadow,
+//                   height: widget.containerHeight,
+//                   child: widget.view,
+//                   onTap: (context) async {
+//                     Slidable.of(context)?.close();
+//                     widget.onTapView(widget.index);
+//                   },
+//                   leftCornerRadius: widget.cornerRadius,
+//                   rightCornerRadius: widget.cornerRadius,
+//                 ),
+//                 SlideButton(
+//                   padding: EdgeInsets.fromLTRB(
+//                     0,
+//                     widget.spacing,
+//                     widget.tilePadding,
+//                     widget.endPadding,
+//                   ),
+//                   color: widget.tileColor,
+//                   boxShadow: widget.boxShadow,
+//                   height: widget.containerHeight,
+//                   child: widget.clear,
+//                   onTap: (context) {
+//                     _animationController.forward().then(
+//                           (value) => widget.onTapClear(widget.index),
+//                         );
+//                   },
+//                   rightCornerRadius: widget.cornerRadius,
+//                   leftCornerRadius: widget.cornerRadius,
+//                 ),
+//               ],
+//             ),
+//             child: widget.child,
+//           ),
+//         ),
+//       ),
+//     );
+//   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-}
+//   @override
+//   void dispose() {
+//     _animationController.dispose();
+//     super.dispose();
+//   }
+// }

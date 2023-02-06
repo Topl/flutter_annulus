@@ -48,12 +48,10 @@ class BuildStackedNotification extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _BuildStackedNotificationState createState() =>
-      _BuildStackedNotificationState();
+  _BuildStackedNotificationState createState() => _BuildStackedNotificationState();
 }
 
-class _BuildStackedNotificationState extends State<BuildStackedNotification>
-    with SingleTickerProviderStateMixin {
+class _BuildStackedNotificationState extends State<BuildStackedNotification> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
   final double _containerHeight = 140;
@@ -96,17 +94,17 @@ class _BuildStackedNotificationState extends State<BuildStackedNotification>
       builder: (_, __) => Column(
         key: ValueKey('NotificationList'),
         children: [
-          StackedNotificationActions(
-            key: ValueKey('Header'),
-            controller: _animationController,
-            spacing: spacing,
-            padding: padding,
-            title: headerTitle,
-            showLessAction: showLessAction,
-            notificationCount: notificationCards.length,
-            clearAllNotificationsAction: clearAllNotificationsAction,
-            clearAll: onTapClearAll,
-          ),
+          // StackedNotificationActions(
+          //   key: ValueKey('Header'),
+          //   controller: _animationController,
+          //   spacing: spacing,
+          //   padding: padding,
+          //   title: headerTitle,
+          //   showLessAction: showLessAction,
+          //   notificationCount: notificationCards.length,
+          //   clearAllNotificationsAction: clearAllNotificationsAction,
+          //   clearAll: onTapClearAll,
+          // ),
           StackedCards(
             onTapClearCallback: onTapClearCallback,
             onTapViewCallback: onTapViewCallback,
