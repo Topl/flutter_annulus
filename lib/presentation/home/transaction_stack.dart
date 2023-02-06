@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:stacked_notification_cards/stacked_notification_cards.dart';
+// import 'package:stacked_notification_cards/stacked_notification_cards.dart';
+import 'package:flutter_annulus/presentation/home/notification_cards/stacked_notification_cards.dart';
 
 class TransactionStack extends StatefulWidget {
   const TransactionStack({super.key});
