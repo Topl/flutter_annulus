@@ -104,75 +104,73 @@ class ExpandedList extends StatelessWidget {
     reversedList.sort((a, b) => b.date.compareTo(a.date));
     return Visibility(
       visible: _getListVisibility(reversedList.length),
-      child: SlidableNotificationListener(
-        child: Column(
-          key: ValueKey('ExpandedList'),
-          children: [
-            ...reversedList.map(
-              (notification) {
-                final index = reversedList.indexOf(notification);
-                // return BuildWithAnimation(
-                //   key: ValueKey(notification.date),
-                //   // slidKey: ValueKey(notification.dateTime),
-                //   onTapView: onTapViewCallback,
-                //   view: view,
-                //   clear: clear,
-                //   containerHeight: containerHeight,
-                //   cornerRadius: cornerRadius,
-                //   onTapClear: onTapClearCallback,
-                //   spacing: _getSpacing(index, spacing),
-                //   boxShadow: boxShadow,
-                //   index: index,
-                //   tileColor: tileColor,
-                //   endPadding: _getEndPadding(index),
-                //   tilePadding: tilePadding,
-                //   child: NotificationTile(
-                //     key: ValueKey(notification.date),
-                //     cardTitle: notificationCardTitle,
-                //     date: notification.date,
-                //     title: notification.title,
-                //     subtitle: notification.subtitle,
-                //     spacing: spacing,
-                //     height: containerHeight,
-                //     color: tileColor,
-                //     cornerRadius: cornerRadius,
-                //     titleTextStyle: titleTextStyle,
-                //     subtitleTextStyle: subtitleTextStyle,
-                //     boxShadow: boxShadow,
-                //     padding: EdgeInsets.fromLTRB(
-                //       tilePadding,
-                //       _topPadding(index),
-                //       tilePadding,
-                //       _getEndPadding(index),
-                //     ),
-                //   ),
-                // );
-                return NotificationTile(
-                  index: index,
-                  key: ValueKey(notification.date),
-                  controller: controller,
-                  cardTitle: notificationCardTitle,
-                  date: notification.date,
-                  title: notification.title,
-                  subtitle: notification.subtitle,
-                  spacing: spacing,
-                  height: containerHeight,
-                  color: tileColor,
-                  cornerRadius: cornerRadius,
-                  titleTextStyle: titleTextStyle,
-                  subtitleTextStyle: subtitleTextStyle,
-                  boxShadow: boxShadow,
-                  padding: EdgeInsets.fromLTRB(
-                    tilePadding,
-                    _topPadding(index),
-                    tilePadding,
-                    _getEndPadding(index),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+      child: Column(
+        key: ValueKey('ExpandedList'),
+        children: [
+          ...reversedList.map(
+            (notification) {
+              final index = reversedList.indexOf(notification);
+              // return BuildWithAnimation(
+              //   key: ValueKey(notification.date),
+              //   // slidKey: ValueKey(notification.dateTime),
+              //   onTapView: onTapViewCallback,
+              //   view: view,
+              //   clear: clear,
+              //   containerHeight: containerHeight,
+              //   cornerRadius: cornerRadius,
+              //   onTapClear: onTapClearCallback,
+              //   spacing: _getSpacing(index, spacing),
+              //   boxShadow: boxShadow,
+              //   index: index,
+              //   tileColor: tileColor,
+              //   endPadding: _getEndPadding(index),
+              //   tilePadding: tilePadding,
+              //   child: NotificationTile(
+              //     key: ValueKey(notification.date),
+              //     cardTitle: notificationCardTitle,
+              //     date: notification.date,
+              //     title: notification.title,
+              //     subtitle: notification.subtitle,
+              //     spacing: spacing,
+              //     height: containerHeight,
+              //     color: tileColor,
+              //     cornerRadius: cornerRadius,
+              //     titleTextStyle: titleTextStyle,
+              //     subtitleTextStyle: subtitleTextStyle,
+              //     boxShadow: boxShadow,
+              //     padding: EdgeInsets.fromLTRB(
+              //       tilePadding,
+              //       _topPadding(index),
+              //       tilePadding,
+              //       _getEndPadding(index),
+              //     ),
+              //   ),
+              // );
+              return NotificationTile(
+                index: index,
+                key: ValueKey(notification.date),
+                controller: controller,
+                cardTitle: notificationCardTitle,
+                date: notification.date,
+                title: notification.title,
+                subtitle: notification.subtitle,
+                spacing: spacing,
+                height: containerHeight,
+                color: tileColor,
+                cornerRadius: cornerRadius,
+                titleTextStyle: titleTextStyle,
+                subtitleTextStyle: subtitleTextStyle,
+                boxShadow: boxShadow,
+                padding: EdgeInsets.fromLTRB(
+                  tilePadding,
+                  _topPadding(index),
+                  tilePadding,
+                  _getEndPadding(index),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
