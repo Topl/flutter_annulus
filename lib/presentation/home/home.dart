@@ -48,12 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: Stack(
-        // shrinkWrap: true,
-        // fit: StackFit.expand,
         children: [
           Column(
-            // mainAxisSize: MainAxisSize.max,
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               WaveContainer(
                 containerHeight: MediaQuery.of(context).size.height * .5,
@@ -72,12 +68,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           ListView(
-            padding: EdgeInsets.only(top: 86),
+            padding: const EdgeInsets.only(top: 86),
             scrollDirection: Axis.horizontal,
-            children: [
+            children: const [
               SizedBox(
                 width: 550,
-                child: const Center(
+                child: Center(
                   child: SingleChildScrollView(
                     child: TransactionStack(),
                   ),
@@ -85,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SizedBox(
                 width: 550,
-                child: const Center(
+                child: Center(
                   child: SingleChildScrollView(
                     child: TransactionStack(),
                   ),
@@ -93,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SizedBox(
                 width: 550,
-                child: const Center(
+                child: Center(
                   child: SingleChildScrollView(
                     child: TransactionStack(),
                   ),
@@ -101,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SizedBox(
                 width: 550,
-                child: const Center(
+                child: Center(
                   child: SingleChildScrollView(
                     child: TransactionStack(),
                   ),
