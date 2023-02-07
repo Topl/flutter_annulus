@@ -102,33 +102,37 @@ class LastNotificationCard extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(
-              width: 109,
-              height: 41,
-              child: ElevatedButton(
-                onPressed: () {
-                  Slidable.of(context)?.close();
-                  controller.forward();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff48918a),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    side: const BorderSide(color: Color(0xff197D7A), width: 0.5),
+            AnimatedOpacity(
+              opacity: controller.value < 0.3 ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 150),
+              child: SizedBox(
+                width: 109,
+                height: 41,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Slidable.of(context)?.close();
+                    controller.forward();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff48918a),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      side: const BorderSide(color: Color(0xff197D7A), width: 0.5),
+                    ),
                   ),
-                ),
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.open_in_full,
-                      color: Colors.white,
-                      size: 16.0,
-                    ),
-                    SizedBox(
-                      width: 6,
-                    ),
-                    Text('Expand')
-                  ],
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.open_in_full,
+                        color: Colors.white,
+                        size: 16.0,
+                      ),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Text('Expand')
+                    ],
+                  ),
                 ),
               ),
             )
