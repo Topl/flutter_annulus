@@ -74,6 +74,7 @@ class LastNotificationCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Color(0xff161616),
                   ),
+<<<<<<< Updated upstream
                 )
               ],
             ),
@@ -126,10 +127,57 @@ class LastNotificationCard extends StatelessWidget {
                         Icons.open_in_full,
                         color: Colors.white,
                         size: 16.0,
+=======
+                  Text(
+                    '6',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xff161616),
+                    ),
+                  )
+                ],
+              ),
+              Opacity(
+                opacity: Tween(begin: 1.0, end: 0.0)
+                    .animate(
+                      CurvedAnimation(
+                        parent: controller,
+                        curve: Interval(0.2, 0.5),
+>>>>>>> Stashed changes
                       ),
-                      SizedBox(
-                        width: 6,
+                    )
+                    .value,
+                child: Container(
+                  width: 109,
+                  height: 41,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Slidable.of(context)?.close();
+                      controller.forward();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.open_in_full,
+                          color: Colors.white,
+                          size: 16.0,
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Text('Expand')
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff48918a),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        side: BorderSide(color: Color(0xff197D7A), width: 0.5),
                       ),
+<<<<<<< Updated upstream
                       Text('Expand')
                     ],
                   ),
@@ -137,6 +185,14 @@ class LastNotificationCard extends StatelessWidget {
               ),
             )
           ],
+=======
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+>>>>>>> Stashed changes
         ),
       ),
     );

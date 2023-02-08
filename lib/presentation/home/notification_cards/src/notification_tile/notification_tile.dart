@@ -102,6 +102,7 @@ class NotificationTile extends StatelessWidget {
             ],
           ),
           index == 0
+<<<<<<< Updated upstream
               ? AnimatedOpacity(
                   opacity: controller.value >= 1 ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 150),
@@ -121,6 +122,28 @@ class NotificationTile extends StatelessWidget {
                       ),
                       child: Row(
                         children: const [
+=======
+              ? Opacity(
+                  opacity: Tween(begin: 0.0, end: 1.0)
+                      .animate(
+                        CurvedAnimation(
+                          parent: controller,
+                          curve: Interval(0.2, 0.3),
+                        ),
+                      )
+                      .value,
+                  child: Container(
+                    width: 113,
+                    height: 41,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Slidable.of(context)?.close();
+                        // controller.forward();
+                        controller.reverse();
+                      },
+                      child: Row(
+                        children: [
+>>>>>>> Stashed changes
                           Icon(
                             Icons.close_fullscreen,
                             color: Colors.white,
@@ -131,6 +154,16 @@ class NotificationTile extends StatelessWidget {
                           ),
                           Text('Minimise')
                         ],
+<<<<<<< Updated upstream
+=======
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff48918a),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          side: BorderSide(color: Color(0xff197D7A), width: 0.5),
+                        ),
+>>>>>>> Stashed changes
                       ),
                     ),
                   ),
