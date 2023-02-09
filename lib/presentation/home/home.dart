@@ -415,7 +415,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           ListView(
-            padding: const EdgeInsets.only(top: 86),
+            padding: const EdgeInsets.only(top: 86, left: 20),
             scrollDirection: Axis.horizontal,
             children: [
               ...mockBlockData.map(

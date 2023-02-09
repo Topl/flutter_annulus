@@ -24,10 +24,6 @@ class _TransactionStackState extends State<TransactionStack> {
     final List<NotificationCard> listOfTransactions = widget.card.transactions as List<NotificationCard>
       ..add(widget.card);
 
-    // final List listOfTransactions = widget.card.transactions + [widget.card];
-
-    // print(listOfTransactions);
-
     return SizedBox(
       width: 550,
       child: Center(
@@ -46,7 +42,7 @@ class _TransactionStackState extends State<TransactionStack> {
             notificationCards: listOfTransactions,
             cardCornerRadius: 50,
             cardColor: const Color(0xffffffff),
-            padding: 40,
+            padding: 20,
             cardsSpacing: 15,
             actionTitle: SizedBox(),
             showLessAction: Text(
