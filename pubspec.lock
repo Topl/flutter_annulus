@@ -200,6 +200,13 @@ packages:
       url: "https://github.com/Topl/ribn-toolkit"
     source: git
     version: "1.0.0+1"
+  searchbar_animation:
+    dependency: "direct main"
+    description:
+      name: searchbar_animation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   shimmer_animation:
     dependency: transitive
     description:

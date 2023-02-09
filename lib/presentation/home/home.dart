@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/home/metrics_pill.dart';
 import 'package:flutter_annulus/presentation/home/transaction_stack.dart';
 import 'package:ribn_toolkit/widgets/molecules/wave_container.dart';
+import 'package:searchbar_animation/searchbar_animation.dart';
 
 import 'notification_cards/src/model/notification_card.dart';
 
@@ -18,6 +19,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    TextEditingController textController = TextEditingController();
+
     final List<NotificationCard> mockBlockData = [
       NotificationCard(
         date: DateTime.parse('2023-02-08T13:19:01.228Z'),
@@ -286,17 +289,68 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 0,
         toolbarHeight: 70,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/icons/leaves-logo.png',
-              width: 45,
+            Row(
+              children: [
+                Image.asset(
+                  'assets/icons/leaves-logo.png',
+                  width: 45,
+                ),
+                const SizedBox(
+                  width: 18,
+                ),
+                Text(
+                  widget.title,
+                  style: const TextStyle(color: Color(0xff165867)),
+                ),
+              ],
             ),
-            const SizedBox(
-              width: 18,
-            ),
-            Text(
-              widget.title,
-              style: const TextStyle(color: Color(0xff165867)),
+            SizedBox(
+              width: 500,
+              // height: 70,
+              child: SearchBarAnimation(
+                hintText: 'Search by Block ID / Block Number / Txn ID',
+                isSearchBoxOnRightSide: true,
+                textEditingController: TextEditingController(),
+                isOriginalAnimation: false,
+                enableKeyboardFocus: true,
+                onExpansionComplete: () {
+                  debugPrint('do something just after searchbox is opened.');
+                },
+                onCollapseComplete: () {
+                  debugPrint('do something just after searchbox is closed.');
+                },
+                onPressButton: (isSearchBarOpens) {
+                  debugPrint(
+                      'do something before animation started. It\'s the ${isSearchBarOpens ? 'opening' : 'closing'} animation');
+                },
+                trailingWidget: const Icon(
+                  Icons.search,
+                  size: 20,
+                  color: Color(0xff161616),
+                ),
+                secondaryButtonWidget: const Icon(
+                  Icons.close,
+                  size: 20,
+                  color: Color(0xff161616),
+                ),
+                buttonWidget: const Icon(
+                  Icons.search,
+                  size: 20,
+                  color: Color(0xff161616),
+                ),
+                hintTextColour: Color(0xff9197B3),
+                durationInMilliSeconds: 550,
+                enableBoxShadow: false,
+                enableBoxBorder: true,
+                enableButtonBorder: true,
+                enableButtonShadow: true,
+                buttonBorderColour: Color(0xffd2d6db).withOpacity(0.3),
+                buttonShadowColour: Color(0xffd2d6db).withOpacity(0.3),
+                searchBoxBorderColour: Color(0xffd2d6db).withOpacity(0.3),
+              ),
             ),
           ],
         ),
@@ -328,6 +382,36 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .5,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 100.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.open_in_full,
+                          color: Color(0xff161616),
+                          size: 16.0,
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Text(
+                          'Expand a block to see transactions',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            color: Color(0xff161616),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
           ListView(
@@ -342,7 +426,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               )
             ],
-          )
+          ),
         ],
       ),
     );
