@@ -31,9 +31,9 @@ class _TransactionStackState extends State<TransactionStack> {
           child: StackedNotificationCards(
             boxShadow: [
               BoxShadow(
-                color: const Color(0xffe2ecf9).withOpacity(0.4),
-                spreadRadius: 0,
-                blurRadius: 40,
+                color: const Color(0xffe2ecf9).withOpacity(0.3),
+                spreadRadius: 5,
+                blurRadius: 20,
                 offset: const Offset(0, 9),
               ),
             ],
