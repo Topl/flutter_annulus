@@ -19,7 +19,6 @@ class ExpandedList extends StatelessWidget {
   final double containerHeight;
   final Color tileColor;
   final double cornerRadius;
-  final String notificationCardTitle;
   final TextStyle titleTextStyle;
   final TextStyle? subtitleTextStyle;
   final List<BoxShadow>? boxShadow;
@@ -38,7 +37,6 @@ class ExpandedList extends StatelessWidget {
     required this.cornerRadius,
     required this.tileColor,
     required this.tilePadding,
-    required this.notificationCardTitle,
     required this.titleTextStyle,
     required this.subtitleTextStyle,
     required this.boxShadow,
@@ -108,52 +106,16 @@ class ExpandedList extends StatelessWidget {
         key: ValueKey('ExpandedList'),
         children: [
           ...reversedList.map(
-            (notification) {
-              final index = reversedList.indexOf(notification);
-              // return BuildWithAnimation(
-              //   key: ValueKey(notification.date),
-              //   // slidKey: ValueKey(notification.dateTime),
-              //   onTapView: onTapViewCallback,
-              //   view: view,
-              //   clear: clear,
-              //   containerHeight: containerHeight,
-              //   cornerRadius: cornerRadius,
-              //   onTapClear: onTapClearCallback,
-              //   spacing: _getSpacing(index, spacing),
-              //   boxShadow: boxShadow,
-              //   index: index,
-              //   tileColor: tileColor,
-              //   endPadding: _getEndPadding(index),
-              //   tilePadding: tilePadding,
-              //   child: NotificationTile(
-              //     key: ValueKey(notification.date),
-              //     cardTitle: notificationCardTitle,
-              //     date: notification.date,
-              //     title: notification.title,
-              //     subtitle: notification.subtitle,
-              //     spacing: spacing,
-              //     height: containerHeight,
-              //     color: tileColor,
-              //     cornerRadius: cornerRadius,
-              //     titleTextStyle: titleTextStyle,
-              //     subtitleTextStyle: subtitleTextStyle,
-              //     boxShadow: boxShadow,
-              //     padding: EdgeInsets.fromLTRB(
-              //       tilePadding,
-              //       _topPadding(index),
-              //       tilePadding,
-              //       _getEndPadding(index),
-              //     ),
-              //   ),
-              // );
+            (card) {
+              final index = reversedList.indexOf(card);
+
               return NotificationTile(
                 index: index,
-                key: ValueKey(notification.date),
+                key: ValueKey(card.date),
                 controller: controller,
-                cardTitle: notificationCardTitle,
-                date: notification.date,
-                title: notification.title,
-                subtitle: notification.subtitle,
+                date: card.date,
+                cardBody: card.cardData,
+                cardType: card.cardType,
                 spacing: spacing,
                 height: containerHeight,
                 color: tileColor,

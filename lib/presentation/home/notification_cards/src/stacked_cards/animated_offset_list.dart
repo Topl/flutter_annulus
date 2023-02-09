@@ -14,7 +14,6 @@ class AnimatedOffsetList extends StatelessWidget {
   final double spacing;
   final Color tileColor;
   final double cornerRadius;
-  final String notificationCardTitle;
   final TextStyle titleTextStyle;
   final TextStyle? subtitleTextStyle;
   final List<BoxShadow>? boxShadow;
@@ -31,7 +30,6 @@ class AnimatedOffsetList extends StatelessWidget {
     required this.spacing,
     required this.cornerRadius,
     required this.tileColor,
-    required this.notificationCardTitle,
     required this.titleTextStyle,
     required this.subtitleTextStyle,
     required this.boxShadow,
@@ -144,8 +142,8 @@ class AnimatedOffsetList extends StatelessWidget {
         key: ValueKey('AnimatedOffsetList'),
         children: [
           ...notificationCards.map(
-            (notification) {
-              final index = notificationCards.indexOf(notification);
+            (card) {
+              final index = notificationCards.indexOf(card);
 
               return Transform.translate(
                 offset: _tileOffset(index),
@@ -158,11 +156,10 @@ class AnimatedOffsetList extends StatelessWidget {
                       visible: _lastCardVisibility(index),
                       child: NotificationTile(
                         index: index,
-                        cardTitle: notificationCardTitle,
                         controller: controller,
-                        date: notification.date,
-                        title: notification.title,
-                        subtitle: notification.subtitle,
+                        date: card.date,
+                        cardBody: card.cardData,
+                        cardType: card.cardType,
                         height: height,
                         color: tileColor,
                         cornerRadius: cornerRadius,

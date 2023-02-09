@@ -1,15 +1,13 @@
-import 'package:flutter/material.dart';
-
 class NotificationCard {
   final DateTime date;
-  final Widget leading;
-  final String title;
-  final String subtitle;
+  final String cardType;
+  final Map cardData;
+  final List transactions;
 
   const NotificationCard({
     required this.date,
-    required this.leading,
-    required this.title,
-    required this.subtitle,
+    required this.cardType,
+    required this.cardData,
+    this.transactions = const [],
   });
 }

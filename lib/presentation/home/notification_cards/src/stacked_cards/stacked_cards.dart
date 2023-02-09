@@ -82,7 +82,6 @@ class StackedCards extends StatelessWidget {
           padding: padding,
         ),
         AnimatedOffsetList(
-          notificationCardTitle: notificationCardTitle,
           padding: padding,
           controller: controller,
           interval: Interval(0.4, 0.8),
@@ -97,9 +96,8 @@ class StackedCards extends StatelessWidget {
           opacityInterval: Interval(0.4, 0.6),
         ),
         LastNotificationCard(
-          notificationCardTitle: notificationCardTitle,
           controller: controller,
-          notification: lastNotification,
+          cardBody: lastNotification,
           totalCount: notificationCards.length,
           height: containerHeight,
           color: containerColor,
@@ -110,7 +108,6 @@ class StackedCards extends StatelessWidget {
           padding: padding,
         ),
         ExpandedList(
-          notificationCardTitle: notificationCardTitle,
           controller: controller,
           containerHeight: containerHeight,
           spacing: spacing,
