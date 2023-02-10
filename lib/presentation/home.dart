@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/presentation/home/metrics_pill.dart';
-import 'package:flutter_annulus/presentation/home/transaction_stack.dart';
+import 'package:flutter_annulus/presentation/metrics_pill.dart';
+import 'package:flutter_annulus/presentation/transaction_stack.dart';
 import 'package:ribn_toolkit/widgets/molecules/wave_container.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
