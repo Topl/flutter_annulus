@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/presentation/transaction_overlay.dart';
 
 import '../../stacked_notification_cards.dart';
 import '../notification_tile/notification_tile.dart';
@@ -155,16 +156,15 @@ class AnimatedOffsetList extends StatelessWidget {
                     child: Visibility(
                       visible: _lastCardVisibility(index),
                       child: NotificationTile(
-                        index: index,
-                        controller: controller,
+                        leadingCardOnClickButtonAction: () => controller.reverse(),
+                        onCardClick: () => displayDialog(context),
+                        onCardIconClick: () => displayDialog(context),
                         date: card.date,
                         cardBody: card.cardData,
                         cardType: card.cardType,
                         height: height,
                         color: tileColor,
                         cornerRadius: cornerRadius,
-                        titleTextStyle: titleTextStyle,
-                        subtitleTextStyle: subtitleTextStyle,
                         boxShadow: boxShadow,
                         padding: EdgeInsets.symmetric(
                           horizontal: padding,

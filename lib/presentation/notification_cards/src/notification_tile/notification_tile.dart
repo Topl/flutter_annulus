@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/presentation/transaction_overlay.dart';
 import 'package:flutter_annulus/utils.dart';
 import 'package:intl/intl.dart';
 
@@ -7,33 +8,33 @@ import '../model/notification_card.dart';
 
 /// This widget is responsible for structuring the [NotificationCard].
 class NotificationTile extends StatelessWidget {
-  final int index;
   final Map<dynamic, dynamic> cardBody;
   final String cardType;
-  final AnimationController controller;
+  final Function leadingCardOnClickButtonAction;
+  final Function onCardClick;
+  final Function onCardIconClick;
   final DateTime date;
   final EdgeInsets? padding;
   final double height;
   final double spacing;
   final double cornerRadius;
   final Color color;
-  final TextStyle titleTextStyle;
-  final TextStyle? subtitleTextStyle;
   final List<BoxShadow>? boxShadow;
+  final IconData trailingIcon;
 
   const NotificationTile({
     Key? key,
-    required this.index,
     required this.cardBody,
     required this.cardType,
-    required this.controller,
+    required this.leadingCardOnClickButtonAction,
+    required this.onCardClick,
+    required this.onCardIconClick,
     required this.date,
     required this.height,
     required this.cornerRadius,
     required this.color,
-    required this.titleTextStyle,
-    required this.subtitleTextStyle,
     required this.boxShadow,
+    this.trailingIcon = Icons.chevron_right_rounded,
     this.spacing = 0,
     this.padding,
   }) : super(key: key);
@@ -116,7 +117,7 @@ class NotificationTile extends StatelessWidget {
             height: 41,
             child: ElevatedButton(
               onPressed: () {
-                controller.reverse();
+                leadingCardOnClickButtonAction();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xff48918a),
@@ -142,69 +143,185 @@ class NotificationTile extends StatelessWidget {
           )
         ],
       );
-    } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Transaction ID',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xff9197B3),
+    } else if (cardType == 'utxo') {
+      return Container(
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              width: 76,
+              height: 76,
+              decoration: BoxDecoration(
+                color: const Color(0xffffffff),
+                borderRadius: BorderRadius.circular(50),
+                border: Border.all(color: const Color(0xffd2d6db), width: 0.5),
+              ),
+              child: Center(
+                child: const Text(
+                  'UTXO',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xff161616),
+                  ),
                 ),
               ),
-              Text(
-                formatAddrString(cardBody['id']),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xff161616),
-                ),
-              )
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Timestamp',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xff9197B3),
-                ),
-              ),
-              Text(
-                formattedDateTime,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xff161616),
-                ),
-              )
-            ],
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.chevron_right_rounded,
-              color: Color(0xff161616),
-              size: 40,
             ),
-          )
-        ],
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Amount',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xff9197B3),
+                  ),
+                ),
+                Text(
+                  '${cardBody['amount']}',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xff161616),
+                  ),
+                )
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Sender ID',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xff9197B3),
+                  ),
+                ),
+                Text(
+                  formatAddrString(cardBody['id']),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xff161616),
+                  ),
+                )
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Timestamp',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xff9197B3),
+                  ),
+                ),
+                Text(
+                  formattedDateTime,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xff161616),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      );
+    } else {
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            onCardClick();
+          },
+          child: Container(
+            color: Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Transaction ID',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xff9197B3),
+                      ),
+                    ),
+                    Text(
+                      formatAddrString(cardBody['id']),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xff161616),
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Timestamp',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xff9197B3),
+                      ),
+                    ),
+                    Text(
+                      formattedDateTime,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xff161616),
+                      ),
+                    )
+                  ],
+                ),
+                IconButton(
+                  onPressed: () {
+                    onCardIconClick();
+                  },
+                  icon: Icon(
+                    trailingIcon,
+                    color: const Color(0xff161616),
+                    size: 40,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       );
     }
   }

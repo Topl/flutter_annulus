@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/presentation/transaction_overlay.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../model/notification_card.dart';
@@ -110,9 +111,10 @@ class ExpandedList extends StatelessWidget {
               final index = reversedList.indexOf(card);
 
               return NotificationTile(
-                index: index,
                 key: ValueKey(card.date),
-                controller: controller,
+                leadingCardOnClickButtonAction: () => controller.reverse(),
+                onCardClick: () => displayDialog(context),
+                onCardIconClick: () => displayDialog(context),
                 date: card.date,
                 cardBody: card.cardData,
                 cardType: card.cardType,
@@ -120,8 +122,6 @@ class ExpandedList extends StatelessWidget {
                 height: containerHeight,
                 color: tileColor,
                 cornerRadius: cornerRadius,
-                titleTextStyle: titleTextStyle,
-                subtitleTextStyle: subtitleTextStyle,
                 boxShadow: boxShadow,
                 padding: EdgeInsets.fromLTRB(
                   tilePadding,

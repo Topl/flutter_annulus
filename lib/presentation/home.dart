@@ -6,6 +6,7 @@ import 'package:ribn_toolkit/widgets/molecules/wave_container.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
 import 'notification_cards/src/model/notification_card.dart';
+import 'notification_cards/src/notification_tile/notification_tile.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -20,6 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     TextEditingController textController = TextEditingController();
+    late AnimationController animationController;
 
     final List<NotificationCard> mockBlockData = [
       NotificationCard(
@@ -309,7 +311,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(
               width: 500,
-              // height: 70,
               child: SearchBarAnimation(
                 hintText: 'Search by Block ID / Block Number / Txn ID',
                 isSearchBoxOnRightSide: true,
@@ -354,7 +355,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-        backgroundColor: Colors.transparent,
         flexibleSpace: ClipRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
