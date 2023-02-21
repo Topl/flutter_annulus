@@ -8,16 +8,16 @@ import 'package:searchbar_animation/searchbar_animation.dart';
 import 'notification_cards/src/model/notification_card.dart';
 import 'notification_cards/src/notification_tile/notification_tile.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class BlocksView extends StatefulWidget {
+  const BlocksView({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<BlocksView> createState() => _BlocksViewState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _BlocksViewState extends State<BlocksView> {
   @override
   Widget build(BuildContext context) {
     TextEditingController textController = TextEditingController();
@@ -388,25 +388,37 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 100.0),
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.open_in_full,
-                          color: Color(0xff161616),
-                          size: 16.0,
+                      children: [
+                        Image.asset(
+                          'assets/icons/assets_graphic.png',
+                          width: 174,
                         ),
                         SizedBox(
-                          width: 6,
+                          height: 50,
                         ),
-                        Text(
-                          'Expand a block to see transactions',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: Color(0xff161616),
-                          ),
-                        )
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.open_in_full,
+                              color: Color(0xff161616),
+                              size: 16.0,
+                            ),
+                            SizedBox(
+                              width: 6,
+                            ),
+                            Text(
+                              'Expand a block to see transactions',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20,
+                                color: Color(0xff161616),
+                              ),
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -415,7 +427,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           ListView(
-            padding: const EdgeInsets.only(top: 86, left: 20),
+            padding: const EdgeInsets.only(top: 88, left: 20),
             scrollDirection: Axis.horizontal,
             children: [
               ...mockBlockData.map(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/presentation/blocks_view.dart';
+import 'package:flutter_annulus/presentation/epochs_view.dart';
 import 'package:flutter_annulus/presentation/transaction_overlay.dart';
-
-import 'presentation/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Annulus Event Explorer',
-      home: MyHomePage(title: 'Annulus Event Explorer'),
+      home: EpochsView(),
     );
   }
 }
