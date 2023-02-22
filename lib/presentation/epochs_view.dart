@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/metrics_pill.dart';
+import 'package:flutter_annulus/presentation/metrics_tile.dart';
 import 'package:flutter_annulus/presentation/transaction_stack.dart';
 import 'package:ribn_toolkit/widgets/molecules/wave_container.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
@@ -609,11 +610,12 @@ class _EpochsViewState extends State<EpochsView> {
         containerWidth: MediaQuery.of(context).size.width,
         waveAmplitude: 30,
         containerChild: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const MetricsTile(),
             Padding(
-              padding: const EdgeInsets.only(left: 100),
+              padding: const EdgeInsets.only(left: 100, top: 100),
               child: Row(
                 children: [
                   SizedBox(
