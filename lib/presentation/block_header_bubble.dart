@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:bs_flutter_modal/bs_flutter_modal.dart';
 
-class Bubble extends StatelessWidget {
-  const Bubble({super.key});
+class BlockHeaderBubble extends StatelessWidget {
+  const BlockHeaderBubble({super.key});
 
   @override
   Widget build(BuildContext context) {

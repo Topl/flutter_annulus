@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/presentation/bubble.dart';
+import 'package:flutter_annulus/presentation/block_header_bubble.dart';
+import 'package:flutter_annulus/presentation/block_hover_bubble.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/metrics_pill.dart';
 import 'package:flutter_annulus/presentation/metrics_tile.dart';
@@ -18,6 +19,7 @@ class EpochsView extends StatefulWidget {
 
 class _EpochsViewState extends State<EpochsView> {
   dynamic showZoomIndex;
+  String activeBlockNumber = '';
 
   @override
   Widget build(BuildContext context) {
@@ -817,27 +819,38 @@ class _EpochsViewState extends State<EpochsView> {
                   const SizedBox(
                     width: 100,
                   ),
-                  const Bubble(),
+                  const BlockHeaderBubble(),
                   const SizedBox(
                     width: 100,
                   ),
                   SizedBox(
                     width: 260,
-                    height: 130,
-                    child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(context).copyWith(
-                        scrollbars: false,
-                      ),
-                      child: GridView.extent(
-                        clipBehavior: Clip.none,
-                        physics: const NeverScrollableScrollPhysics(),
-                        maxCrossAxisExtent: 60,
-                        padding: const EdgeInsets.all(0),
-                        childAspectRatio: 2.5,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        children: _buildList(blockData: mockBlockData, offsetValue: 0),
-                      ),
+                    height: 200,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        ScrollConfiguration(
+                          behavior: ScrollConfiguration.of(context).copyWith(
+                            scrollbars: false,
+                          ),
+                          child: GridView.extent(
+                            clipBehavior: Clip.none,
+                            physics: const NeverScrollableScrollPhysics(),
+                            maxCrossAxisExtent: 60,
+                            padding: const EdgeInsets.all(0),
+                            childAspectRatio: 2.5,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            children: _buildList(blockData: mockBlockData, offsetValue: 0),
+                          ),
+                        ),
+                        showZoomIndex != null && showZoomIndex <= 15
+                            ? Positioned(
+                                top: -44,
+                                child: BlockHoverBubble(blockNumber: activeBlockNumber),
+                              )
+                            : const SizedBox(),
+                      ],
                     ),
                   ),
                   const SizedBox(
@@ -845,21 +858,32 @@ class _EpochsViewState extends State<EpochsView> {
                   ),
                   SizedBox(
                     width: 260,
-                    height: 130,
-                    child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(context).copyWith(
-                        scrollbars: false,
-                      ),
-                      child: GridView.extent(
-                        clipBehavior: Clip.none,
-                        physics: const NeverScrollableScrollPhysics(),
-                        maxCrossAxisExtent: 60,
-                        padding: const EdgeInsets.all(0),
-                        childAspectRatio: 2.5,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        children: _buildList(blockData: mockBlockData, offsetValue: 16),
-                      ),
+                    height: 200,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        ScrollConfiguration(
+                          behavior: ScrollConfiguration.of(context).copyWith(
+                            scrollbars: false,
+                          ),
+                          child: GridView.extent(
+                            clipBehavior: Clip.none,
+                            physics: const NeverScrollableScrollPhysics(),
+                            maxCrossAxisExtent: 60,
+                            padding: const EdgeInsets.all(0),
+                            childAspectRatio: 2.5,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            children: _buildList(blockData: mockBlockData, offsetValue: 16),
+                          ),
+                        ),
+                        showZoomIndex != null && showZoomIndex > 15 && showZoomIndex <= 31
+                            ? Positioned(
+                                top: -44,
+                                child: BlockHoverBubble(blockNumber: activeBlockNumber),
+                              )
+                            : const SizedBox(),
+                      ],
                     ),
                   ),
                   const SizedBox(
@@ -867,21 +891,32 @@ class _EpochsViewState extends State<EpochsView> {
                   ),
                   SizedBox(
                     width: 260,
-                    height: 130,
-                    child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(context).copyWith(
-                        scrollbars: false,
-                      ),
-                      child: GridView.extent(
-                        clipBehavior: Clip.none,
-                        physics: const NeverScrollableScrollPhysics(),
-                        maxCrossAxisExtent: 60,
-                        padding: const EdgeInsets.all(0),
-                        childAspectRatio: 2.5,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        children: _buildList(blockData: mockBlockData, offsetValue: 32),
-                      ),
+                    height: 200,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        ScrollConfiguration(
+                          behavior: ScrollConfiguration.of(context).copyWith(
+                            scrollbars: false,
+                          ),
+                          child: GridView.extent(
+                            clipBehavior: Clip.none,
+                            physics: const NeverScrollableScrollPhysics(),
+                            maxCrossAxisExtent: 60,
+                            padding: const EdgeInsets.all(0),
+                            childAspectRatio: 2.5,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            children: _buildList(blockData: mockBlockData, offsetValue: 32),
+                          ),
+                        ),
+                        showZoomIndex != null && showZoomIndex > 31 && showZoomIndex <= 47
+                            ? Positioned(
+                                top: -44,
+                                child: BlockHoverBubble(blockNumber: activeBlockNumber),
+                              )
+                            : const SizedBox(),
+                      ],
                     ),
                   ),
                   const SizedBox(
@@ -889,21 +924,32 @@ class _EpochsViewState extends State<EpochsView> {
                   ),
                   SizedBox(
                     width: 260,
-                    height: 130,
-                    child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(context).copyWith(
-                        scrollbars: false,
-                      ),
-                      child: GridView.extent(
-                        clipBehavior: Clip.none,
-                        physics: const NeverScrollableScrollPhysics(),
-                        maxCrossAxisExtent: 60,
-                        padding: const EdgeInsets.all(0),
-                        childAspectRatio: 2.5,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        children: _buildList(blockData: mockBlockData, offsetValue: 48),
-                      ),
+                    height: 200,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        ScrollConfiguration(
+                          behavior: ScrollConfiguration.of(context).copyWith(
+                            scrollbars: false,
+                          ),
+                          child: GridView.extent(
+                            clipBehavior: Clip.none,
+                            physics: const NeverScrollableScrollPhysics(),
+                            maxCrossAxisExtent: 60,
+                            padding: const EdgeInsets.all(0),
+                            childAspectRatio: 2.5,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            children: _buildList(blockData: mockBlockData, offsetValue: 48),
+                          ),
+                        ),
+                        showZoomIndex != null && showZoomIndex > 47 && showZoomIndex <= 63
+                            ? Positioned(
+                                top: -44,
+                                child: BlockHoverBubble(blockNumber: activeBlockNumber),
+                              )
+                            : const SizedBox(),
+                      ],
                     ),
                   ),
                   const SizedBox(
@@ -929,11 +975,13 @@ class _EpochsViewState extends State<EpochsView> {
           child: MouseRegion(
             cursor: isConfirmedBlock ? SystemMouseCursors.click : SystemMouseCursors.basic,
             onEnter: (event) {
+              activeBlockNumber = blockData[index + offsetValue].cardData['blockNumber'];
               setState(() {
                 showZoomIndex = index + offsetValue;
               });
             },
             onExit: (event) {
+              activeBlockNumber = '';
               setState(() {
                 showZoomIndex = null;
               });
