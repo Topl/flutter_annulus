@@ -600,6 +600,199 @@ class _EpochsViewState extends State<EpochsView> {
         },
         transactions: <NotificationCard>[],
       ),
+      // Next Group
+      NotificationCard(
+        date: DateTime.parse('2023-03-10T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'dPl0x8WwUth12oqRzvbq4yt7',
+          'timestamp': '2023-03-10T13:19:01.228Z',
+          'blockStatus': 'confirmed',
+          'blockNumber': '30989',
+          'numberOfTransactions': 2,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-11T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-11T19:22:02.228Z',
+          'blockNumber': '30988',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 5,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-12T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-12T19:22:02.228Z',
+          'blockNumber': '30987',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-12T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-26T12:22:02.228Z',
+          'blockNumber': '30986',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-12T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-12T19:22:02.228Z',
+          'blockNumber': '30985',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-12T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-12T19:22:02.228Z',
+          'blockNumber': '30984',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-13T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-13T19:22:02.228Z',
+          'blockNumber': '30983',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-14T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-14T19:22:02.228Z',
+          'blockNumber': '30982',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-15T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-15T19:22:02.228Z',
+          'blockNumber': '30981',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-16T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-16T19:22:02.228Z',
+          'blockNumber': '30980',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-17T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-17T19:22:02.228Z',
+          'blockNumber': '30979',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-18T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-18T19:22:02.228Z',
+          'blockNumber': '30978',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-19T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-19T19:22:02.228Z',
+          'blockNumber': '30977',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-20T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-20T19:22:02.228Z',
+          'blockNumber': '30976',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-21T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-21T19:22:02.228Z',
+          'blockNumber': '30975',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
+      NotificationCard(
+        date: DateTime.parse('2023-03-22T19:22:02.228Z'),
+        cardType: 'block',
+        cardData: {
+          'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
+          'timestamp': '2023-03-22T19:22:02.228Z',
+          'blockNumber': '30974',
+          'blockStatus': 'confirmed',
+          'numberOfTransactions': 3,
+        },
+        transactions: <NotificationCard>[],
+      ),
     ];
 
     return Scaffold(
@@ -615,12 +808,16 @@ class _EpochsViewState extends State<EpochsView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const MetricsTile(),
-            Padding(
-              padding: const EdgeInsets.only(left: 100, top: 100),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+            SizedBox(
+              height: 130,
+              child: ListView(
+                clipBehavior: Clip.none,
+                scrollDirection: Axis.horizontal,
                 children: [
-                  Bubble(),
+                  const SizedBox(
+                    width: 100,
+                  ),
+                  const Bubble(),
                   const SizedBox(
                     width: 100,
                   ),
@@ -633,7 +830,7 @@ class _EpochsViewState extends State<EpochsView> {
                       ),
                       child: GridView.extent(
                         clipBehavior: Clip.none,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         maxCrossAxisExtent: 60,
                         padding: const EdgeInsets.all(0),
                         childAspectRatio: 2.5,
@@ -655,7 +852,7 @@ class _EpochsViewState extends State<EpochsView> {
                       ),
                       child: GridView.extent(
                         clipBehavior: Clip.none,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         maxCrossAxisExtent: 60,
                         padding: const EdgeInsets.all(0),
                         childAspectRatio: 2.5,
@@ -677,7 +874,7 @@ class _EpochsViewState extends State<EpochsView> {
                       ),
                       child: GridView.extent(
                         clipBehavior: Clip.none,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         maxCrossAxisExtent: 60,
                         padding: const EdgeInsets.all(0),
                         childAspectRatio: 2.5,
@@ -686,6 +883,31 @@ class _EpochsViewState extends State<EpochsView> {
                         children: _buildList(blockData: mockBlockData, offsetValue: 32),
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    width: 100,
+                  ),
+                  SizedBox(
+                    width: 260,
+                    height: 130,
+                    child: ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(context).copyWith(
+                        scrollbars: false,
+                      ),
+                      child: GridView.extent(
+                        clipBehavior: Clip.none,
+                        physics: const NeverScrollableScrollPhysics(),
+                        maxCrossAxisExtent: 60,
+                        padding: const EdgeInsets.all(0),
+                        childAspectRatio: 2.5,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        children: _buildList(blockData: mockBlockData, offsetValue: 48),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 100,
                   ),
                 ],
               ),
