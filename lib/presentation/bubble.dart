@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
+import 'package:bs_flutter_modal/bs_flutter_modal.dart';
 
 class Bubble extends StatelessWidget {
   const Bubble({super.key});
@@ -48,7 +49,96 @@ class Bubble extends StatelessWidget {
                   constraints: const BoxConstraints(),
                   iconSize: 16,
                   color: const Color(0xff161616),
-                  onPressed: () {},
+                  onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => BsModal(
+                            context: context,
+                            dialog: BsModalDialog(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              child: Container(
+                                width: 400,
+                                height: 94,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: const Color(0xffdee2e6),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 24.0),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 50,
+                                            height: 50,
+                                            padding: const EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(8),
+                                              border: Border.all(
+                                                color: const Color(0xffe3e3e3),
+                                                width: 1,
+                                              ),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Color(0xffc8c8c8),
+                                                  spreadRadius: 0,
+                                                  blurRadius: 30,
+                                                  offset: Offset(0, 0),
+                                                ),
+                                              ],
+                                            ),
+                                            child: Image.asset('assets/icons/tick-clock.png'),
+                                          ),
+                                        ],
+                                      ),
+                                      const Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 20.0),
+                                          child: Center(
+                                            child: Text(
+                                              'The Tick chain is a sequence of block headers that are created every x slots (aka ticks).',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xff9197b3),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(top: 10.0, right: 10.0),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 16,
+                                                backgroundColor: const Color(0xffE5E5E5),
+                                                child: IconButton(
+                                                  iconSize: 17,
+                                                  icon: const Icon(Icons.close_rounded, color: Color(0xff4F4F4F)),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )),
                   icon: const Icon(Icons.info),
                 ),
               ],
