@@ -41,6 +41,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   stacked_notification_cards: ^0.1.0-dev.2
   searchbar_animation: ^0.0.4
+  flutter_polygon: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:

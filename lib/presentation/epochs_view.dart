@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/presentation/bubble.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/metrics_pill.dart';
 import 'package:flutter_annulus/presentation/metrics_tile.dart';
@@ -617,7 +618,12 @@ class _EpochsViewState extends State<EpochsView> {
             Padding(
               padding: const EdgeInsets.only(left: 100, top: 100),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Bubble(),
+                  const SizedBox(
+                    width: 100,
+                  ),
                   SizedBox(
                     width: 260,
                     height: 130,
