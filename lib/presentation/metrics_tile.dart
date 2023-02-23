@@ -6,8 +6,8 @@ class MetricsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 363,
-      height: 101,
+      width: 453,
+      height: 130,
       decoration: BoxDecoration(
         color: const Color(0xffF4f6f9),
         borderRadius: const BorderRadius.all(
@@ -28,10 +28,10 @@ class MetricsTile extends StatelessWidget {
         children: [
           const Text(
             'The Topl Blockchain',
-            style: TextStyle(color: Color(0xff161616), fontSize: 14, fontWeight: FontWeight.w600),
+            style: TextStyle(color: Color(0xff161616), fontSize: 16, fontWeight: FontWeight.w600),
           ),
           const SizedBox(
-            height: 14,
+            height: 16,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -42,19 +42,19 @@ class MetricsTile extends StatelessWidget {
                 children: const [
                   Text(
                     'Active Chains',
-                    style: TextStyle(color: Color(0xff9197b3), fontSize: 10),
+                    style: TextStyle(color: Color(0xff9197b3), fontSize: 12),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 12,
                   ),
                   Text(
-                    '2',
+                    '1',
                     style: TextStyle(color: Color(0xff161616), fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Container(
                   height: 35,
                   child: const VerticalDivider(width: 1, color: Color.fromARGB(255, 215, 215, 215)),
@@ -65,16 +65,16 @@ class MetricsTile extends StatelessWidget {
                 children: [
                   const Text(
                     'Block Status',
-                    style: TextStyle(color: Color(0xff9197b3), fontSize: 10),
+                    style: TextStyle(color: Color(0xff9197b3), fontSize: 12),
                   ),
                   const SizedBox(
-                    height: 12,
+                    height: 8,
                   ),
                   renderPill(const Color(0xff218e8a), const Color(0xff1d6562), 'Pending', const Color(0xffffffff))
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Container(
                   height: 35,
                   child: const VerticalDivider(
@@ -88,10 +88,10 @@ class MetricsTile extends StatelessWidget {
                 children: [
                   const Text(
                     'Block Status',
-                    style: TextStyle(color: Color(0xff9197b3), fontSize: 10),
+                    style: TextStyle(color: Color(0xff9197b3), fontSize: 12),
                   ),
                   const SizedBox(
-                    height: 12,
+                    height: 8,
                   ),
                   renderPill(const Color(0xffffffff), const Color(0xffeeeeee), 'Confirmed', const Color(0xff161616))
                 ],
@@ -105,8 +105,8 @@ class MetricsTile extends StatelessWidget {
 
   Container renderPill(backgroundColor, borderColor, text, textColor) {
     return Container(
-      width: 60,
-      height: 20,
+      width: 80,
+      height: 30,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -128,7 +128,7 @@ class MetricsTile extends StatelessWidget {
         text,
         style: TextStyle(
           color: textColor,
-          fontSize: 8,
+          fontSize: 12,
           fontWeight: FontWeight.bold,
         ),
       ),

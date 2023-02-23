@@ -699,6 +699,7 @@ class _EpochsViewState extends State<EpochsView> {
         return Transform.scale(
           scale: showZoomIndex == index + offsetValue && isConfirmedBlock ? 1.3 : 1,
           child: MouseRegion(
+            cursor: isConfirmedBlock ? SystemMouseCursors.click : SystemMouseCursors.basic,
             onEnter: (event) {
               setState(() {
                 showZoomIndex = index + offsetValue;
