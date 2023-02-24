@@ -51,7 +51,7 @@ class MetricsPill extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  '31038',
+                  '31034',
                   style: const TextStyle(color: Color(0xff161616), fontSize: 20, fontWeight: FontWeight.w600),
                 ),
               ],

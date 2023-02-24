@@ -15,6 +15,7 @@ class Header extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       toolbarHeight: 70,
+      automaticallyImplyLeading: false,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

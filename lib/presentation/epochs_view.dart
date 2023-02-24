@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/block_header_bubble.dart';
 import 'package:flutter_annulus/presentation/block_hover_bubble.dart';
+import 'package:flutter_annulus/presentation/blocks_view.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/metrics_pill.dart';
 import 'package:flutter_annulus/presentation/metrics_tile.dart';
@@ -20,6 +21,7 @@ class EpochsView extends StatefulWidget {
 class _EpochsViewState extends State<EpochsView> {
   dynamic showZoomIndex;
   String activeBlockNumber = '';
+  bool isConfirmedActiveBlock = false;
 
   @override
   Widget build(BuildContext context) {
@@ -844,7 +846,7 @@ class _EpochsViewState extends State<EpochsView> {
                             children: _buildList(blockData: mockBlockData, offsetValue: 0),
                           ),
                         ),
-                        showZoomIndex != null && showZoomIndex <= 15
+                        showZoomIndex != null && showZoomIndex <= 15 && isConfirmedActiveBlock
                             ? Positioned(
                                 top: -44,
                                 child: BlockHoverBubble(blockNumber: activeBlockNumber),
@@ -972,48 +974,74 @@ class _EpochsViewState extends State<EpochsView> {
 
         return Transform.scale(
           scale: showZoomIndex == index + offsetValue && isConfirmedBlock ? 1.3 : 1,
-          child: MouseRegion(
-            cursor: isConfirmedBlock ? SystemMouseCursors.click : SystemMouseCursors.basic,
-            onEnter: (event) {
-              activeBlockNumber = blockData[index + offsetValue].cardData['blockNumber'];
-              setState(() {
-                showZoomIndex = index + offsetValue;
-              });
-            },
-            onExit: (event) {
-              activeBlockNumber = '';
-              setState(() {
-                showZoomIndex = null;
-              });
-            },
-            child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: isConfirmedBlock ? const Color(0xffffffff) : const Color(0xff218e8a),
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(
-                  color: isConfirmedBlock ? const Color(0xffeeeeee) : const Color(0xff1d6562),
-                  width: 2,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xffe2ecf9).withOpacity(.4),
-                    spreadRadius: 1,
-                    blurRadius: 2,
-                    offset: const Offset(0, 0),
+          child: InkWell(
+            onTap: () {
+              if (!isConfirmedActiveBlock) return;
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BlocksView(
+                    title: 'Event Explorer',
                   ),
-                ],
+                ),
+              );
+
+              // No animation push:
+              //  Navigator.push(
+              //   context,
+              //   PageRouteBuilder(
+              //     pageBuilder: (context, animation1, animation2) => const BlocksView(title: 'Event Explorer'),
+              //     transitionDuration: Duration.zero,
+              //     reverseTransitionDuration: Duration.zero,
+              //   ),
+              // );
+            },
+            child: MouseRegion(
+              cursor: isConfirmedBlock ? SystemMouseCursors.click : SystemMouseCursors.basic,
+              onEnter: (event) {
+                activeBlockNumber = blockData[index + offsetValue].cardData['blockNumber'];
+                setState(() {
+                  showZoomIndex = index + offsetValue;
+                  isConfirmedActiveBlock = isConfirmedBlock;
+                });
+              },
+              onExit: (event) {
+                activeBlockNumber = '';
+                setState(() {
+                  showZoomIndex = null;
+                  isConfirmedActiveBlock = false;
+                });
+              },
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: isConfirmedBlock ? const Color(0xffffffff) : const Color(0xff218e8a),
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(
+                    color: isConfirmedBlock ? const Color(0xffeeeeee) : const Color(0xff1d6562),
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xffe2ecf9).withOpacity(.4),
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                ),
+                child: isConfirmedBlock
+                    ? Text(
+                        '#${blockData[index + offsetValue].cardData['blockNumber']}',
+                        style: const TextStyle(
+                          color: Color(0xff9197B3),
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    : const SizedBox(),
               ),
-              child: isConfirmedBlock
-                  ? Text(
-                      '#${blockData[index + offsetValue].cardData['blockNumber']}',
-                      style: const TextStyle(
-                        color: Color(0xff9197B3),
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  : const SizedBox(),
             ),
           ),
         );

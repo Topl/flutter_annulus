@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/metrics_pill.dart';
 import 'package:flutter_annulus/presentation/transaction_stack.dart';
 import 'package:ribn_toolkit/widgets/molecules/wave_container.dart';
@@ -30,7 +31,7 @@ class _BlocksViewState extends State<BlocksView> {
         cardData: {
           'id': 'dPl0x8WwUth12oqRzvbq4yt7',
           'timestamp': '2023-02-08T13:19:01.228Z',
-          'blockNumber': '31038',
+          'blockNumber': '31034',
           'numberOfTransactions': 2,
         },
         transactions: <NotificationCard>[
@@ -70,7 +71,7 @@ class _BlocksViewState extends State<BlocksView> {
         cardData: {
           'id': 'g3ZuUohwyiO6B8yWfF2LPHIK',
           'timestamp': '2023-02-09T19:22:02.228Z',
-          'blockNumber': '31037',
+          'blockNumber': '31033',
           'numberOfTransactions': 5,
         },
         transactions: <NotificationCard>[
@@ -152,7 +153,7 @@ class _BlocksViewState extends State<BlocksView> {
         cardData: {
           'id': 'XF9zw14YZDGgzb9cPwlc3OKT',
           'timestamp': '2023-02-08T22:00:01.228Z',
-          'blockNumber': '31036',
+          'blockNumber': '31032',
           'numberOfTransactions': 6,
         },
         transactions: <NotificationCard>[
@@ -248,7 +249,7 @@ class _BlocksViewState extends State<BlocksView> {
         cardData: {
           'id': 'dPl0x8WwUth12oqRzvbq4yt7',
           'timestamp': '2023-02-08T23:19:01.228Z',
-          'blockNumber': '31035',
+          'blockNumber': '31031',
           'numberOfTransactions': 2,
         },
         transactions: <NotificationCard>[
@@ -287,83 +288,7 @@ class _BlocksViewState extends State<BlocksView> {
     return Scaffold(
       backgroundColor: const Color(0xfff4f6f9),
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 70,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Image.asset(
-                  'assets/icons/leaves-logo.png',
-                  width: 45,
-                ),
-                const SizedBox(
-                  width: 18,
-                ),
-                Text(
-                  widget.title,
-                  style: const TextStyle(color: Color(0xff165867)),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: 500,
-              child: SearchBarAnimation(
-                hintText: 'Search by Block ID / Block Number / Txn ID',
-                isSearchBoxOnRightSide: true,
-                textEditingController: TextEditingController(),
-                isOriginalAnimation: false,
-                enableKeyboardFocus: true,
-                onExpansionComplete: () {
-                  debugPrint('do something just after searchbox is opened.');
-                },
-                onCollapseComplete: () {
-                  debugPrint('do something just after searchbox is closed.');
-                },
-                onPressButton: (isSearchBarOpens) {
-                  debugPrint(
-                      'do something before animation started. It\'s the ${isSearchBarOpens ? 'opening' : 'closing'} animation');
-                },
-                trailingWidget: const Icon(
-                  Icons.search,
-                  size: 20,
-                  color: Color(0xff161616),
-                ),
-                secondaryButtonWidget: const Icon(
-                  Icons.close,
-                  size: 20,
-                  color: Color(0xff161616),
-                ),
-                buttonWidget: const Icon(
-                  Icons.search,
-                  size: 20,
-                  color: Color(0xff161616),
-                ),
-                hintTextColour: Color(0xff9197B3),
-                durationInMilliSeconds: 550,
-                enableBoxShadow: false,
-                enableBoxBorder: true,
-                enableButtonBorder: true,
-                enableButtonShadow: true,
-                buttonBorderColour: Color(0xffd2d6db).withOpacity(0.3),
-                buttonShadowColour: Color(0xffd2d6db).withOpacity(0.3),
-                searchBoxBorderColour: Color(0xffd2d6db).withOpacity(0.3),
-              ),
-            ),
-          ],
-        ),
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              color: const Color(0xfff4f6f9).withOpacity(1),
-            ),
-          ),
-        ),
-      ),
+      appBar: const Header(title: 'Event Explorer'),
       body: Stack(
         children: [
           Column(
@@ -438,6 +363,34 @@ class _BlocksViewState extends State<BlocksView> {
                 },
               )
             ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 100.0, left: 60.0),
+            child: Container(
+              width: 49,
+              height: 49,
+              decoration: BoxDecoration(
+                color: const Color(0xffffffff),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(50),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xffffffff).withOpacity(0.5),
+                    spreadRadius: 10,
+                    blurRadius: 54,
+                    offset: const Offset(0, 9),
+                  ),
+                ],
+              ),
+              child: IconButton(
+                iconSize: 30,
+                icon: Icon(Icons.chevron_left),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
           ),
         ],
       ),
