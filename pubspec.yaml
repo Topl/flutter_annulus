@@ -43,6 +43,7 @@ dependencies:
   searchbar_animation: ^0.0.4
   flutter_polygon: ^0.3.0+2
   bs_flutter_modal: ^1.0.6
+  flutter_svg: ^1.0.3
 
 dev_dependencies:
   flutter_test:

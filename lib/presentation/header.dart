@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
 class Header extends StatelessWidget with PreferredSizeWidget {
@@ -22,8 +23,11 @@ class Header extends StatelessWidget with PreferredSizeWidget {
         children: [
           Row(
             children: [
-              Image.asset(
-                'assets/icons/leaves-logo.png',
+              const SizedBox(
+                width: 80,
+              ),
+              SvgPicture.asset(
+                'assets/icons/topl-logo-main.svg',
                 width: 45,
               ),
               const SizedBox(
@@ -68,17 +72,21 @@ class Header extends StatelessWidget with PreferredSizeWidget {
                 size: 20,
                 color: Color(0xff161616),
               ),
-              hintTextColour: Color(0xff9197B3),
+              hintTextColour: const Color(0xff9197B3),
               durationInMilliSeconds: 550,
               enableBoxShadow: false,
               enableBoxBorder: true,
               enableButtonBorder: true,
               enableButtonShadow: true,
-              buttonBorderColour: Color(0xffd2d6db).withOpacity(0.3),
-              buttonShadowColour: Color(0xffd2d6db).withOpacity(0.3),
-              searchBoxBorderColour: Color(0xffd2d6db).withOpacity(0.3),
+              buttonBorderColour: const Color(0xffd2d6db).withOpacity(0.3),
+              buttonShadowColour: const Color(0xffd2d6db).withOpacity(0.3),
+              searchBoxBorderColour: const Color(0xffd2d6db).withOpacity(0.3),
             ),
           ),
+          const SizedBox(
+            width: 50,
+            height: 50,
+          )
         ],
       ),
       flexibleSpace: ClipRect(
