@@ -1,97 +1,51 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:searchbar_animation/searchbar_animation.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class Header extends StatelessWidget with PreferredSizeWidget {
-  const Header({super.key, required this.title});
+class Header extends StatelessWidget {
+  final String logoAsset;
+  final VoidCallback onSearch;
+  final List<DropdownMenuItem<String>> dropdownItems;
+  final ValueChanged<String> onDropdownChanged;
 
-  final String title;
+  const Header({
+    super.key,
+    required this.logoAsset,
+    required this.onSearch,
+    required this.dropdownItems,
+    required this.onDropdownChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0,
-      toolbarHeight: 70,
-      automaticallyImplyLeading: false,
-      title: Row(
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Image.asset(
-                'assets/icons/leaves-logo.png',
-                width: 45,
-              ),
-              const SizedBox(
-                width: 18,
-              ),
-              Text(
-                title,
-                style: const TextStyle(color: Color(0xff165867), fontWeight: FontWeight.w700),
-              ),
-            ],
+          SvgPicture.asset(
+            logoAsset,
+            width: 48.0,
+            height: 48.0,
           ),
           SizedBox(
             width: 500,
-            child: SearchBarAnimation(
-              hintText: 'Search by Block ID / Block Number / Txn ID',
-              isSearchBoxOnRightSide: true,
-              textEditingController: TextEditingController(),
-              isOriginalAnimation: false,
-              enableKeyboardFocus: true,
-              onExpansionComplete: () {
-                debugPrint('do something just after searchbox is opened.');
-              },
-              onCollapseComplete: () {
-                debugPrint('do something just after searchbox is closed.');
-              },
-              onPressButton: (isSearchBarOpens) {
-                debugPrint(
-                    'do something before animation started. It\'s the ${isSearchBarOpens ? 'opening' : 'closing'} animation');
-              },
-              trailingWidget: const Icon(
-                Icons.search,
-                size: 20,
-                color: Color(0xff161616),
+            child: TextField(
+              onSubmitted: (query) => onSearch(),
+              decoration: const InputDecoration(
+                hintText: 'Search by blocks, transactions, or UTxOs',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
               ),
-              secondaryButtonWidget: const Icon(
-                Icons.close,
-                size: 20,
-                color: Color(0xff161616),
-              ),
-              buttonWidget: const Icon(
-                Icons.search,
-                size: 20,
-                color: Color(0xff161616),
-              ),
-              hintTextColour: Color(0xff9197B3),
-              durationInMilliSeconds: 550,
-              enableBoxShadow: false,
-              enableBoxBorder: true,
-              enableButtonBorder: true,
-              enableButtonShadow: true,
-              buttonBorderColour: Color(0xffd2d6db).withOpacity(0.3),
-              buttonShadowColour: Color(0xffd2d6db).withOpacity(0.3),
-              searchBoxBorderColour: Color(0xffd2d6db).withOpacity(0.3),
             ),
+          ),
+          DropdownButton<String>(
+            items: dropdownItems,
+            onChanged: null,
+            underline: Container(),
           ),
         ],
       ),
-      flexibleSpace: ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-          child: Container(
-            color: const Color(0xfff4f6f9).withOpacity(1),
-          ),
-        ),
-      ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

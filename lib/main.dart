@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/presentation/blocks_view.dart';
-import 'package:flutter_annulus/presentation/epochs_view.dart';
-import 'package:flutter_annulus/presentation/transaction_overlay.dart';
+import 'package:flutter_annulus/presentation/header.dart';
+import 'package:flutter_annulus/presentation/layout.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const AnnulusApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class AnnulusApp extends StatelessWidget {
+  const AnnulusApp({super.key});
 
   // This widget is the root of the application.
   @override
@@ -16,7 +15,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Annulus Event Explorer',
-      home: EpochsView(),
+      home: CustomLayout(
+        header: Header(
+          logoAsset: 'images/logo.svg',
+          onSearch: () {},
+          dropdownItems: [],
+          onDropdownChanged: (String value) {},
+        ),
+        content: Container(
+          child: Text("content"),
+        ),
+        footer: Container(
+          child: Text("footer"),
+        ),
+      ),
     );
   }
 }
