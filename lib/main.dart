@@ -23,9 +23,12 @@ class AnnulusApp extends StatelessWidget {
           onDropdownChanged: (String value) {},
         ),
         content: Container(
+          alignment: Alignment.center,
           child: Text("content"),
         ),
         footer: Container(
+          height: 100,
+          alignment: Alignment.center,
           child: Text("footer"),
         ),
       ),

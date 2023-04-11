@@ -18,7 +18,7 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,14 +36,35 @@ class Header extends StatelessWidget {
                 hintText: 'Search by blocks, transactions, or UTxOs',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
+                focusColor: Colors.grey,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
               ),
             ),
           ),
-          DropdownButton<String>(
-            items: dropdownItems,
-            onChanged: null,
-            underline: Container(),
-          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey.withOpacity(0.5), // Set border color here
+                width: 1, // Set border width here
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Row(
+              children: [
+                const Text('Chain Name'),
+                const SizedBox(width: 10,),
+                DropdownButton<String>(
+                  items: dropdownItems,
+                  icon: const Icon(Icons.expand_more),
+                  onChanged: null,
+                  underline: Container(),
+                ),
+              ],
+            )
+          )
         ],
       ),
     );
