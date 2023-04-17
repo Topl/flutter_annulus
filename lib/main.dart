@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/layout.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'models/block_slider.dart';
+import 'widgets/block_slider.dart';
 import 'widgets/block_view.dart';
 
 void main() {
@@ -11,7 +11,6 @@ void main() {
 
 class AnnulusApp extends StatelessWidget {
   const AnnulusApp({super.key});
-
 
   // This widget is the root of the application.
   @override

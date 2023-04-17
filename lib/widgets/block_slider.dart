@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/block_view.dart';
+import 'block_view.dart';
 
 class BlockViewSlider extends StatefulWidget {
   const BlockViewSlider({super.key});
