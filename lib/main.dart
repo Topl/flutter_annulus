@@ -2,42 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/layout.dart';
 
+import 'package:flutter_annulus/providers/app_theme_provider.dart';
+
 import 'widgets/block_view.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
-  runApp(const AnnulusApp());
+  runApp(const ProviderScope(child: AnnulusApp()));
 }
 
-class AnnulusApp extends StatelessWidget {
+class AnnulusApp extends ConsumerWidget {
   const AnnulusApp({super.key});
 
   // This widget is the root of the application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Annulus Event Explorer',
       home: CustomLayout(
         header: Header(
-          logoAsset: 'images/logo.svg',
+          logoAsset: colorTheme == ColorMode.dark
+              ? 'images/logo.svg'
+              : 'images/logo_dark.svg',
           onSearch: () {},
           dropdownItems: [],
           onDropdownChanged: (String value) {},
         ),
         content: Container(
           alignment: Alignment.center,
-          child: const BlockView(cardChild: [ // TODO: edit here to alter main view
+          child: const BlockView(cardChild: [
+            // TODO: edit here to alter main view
             SizedBox(
               height: 16,
             ),
-            Text("242218", style: TextStyle(
-                color: Color(0xFF282A2C),
-                fontWeight: FontWeight.w600,
-                fontSize: 24,
-                fontFamily: 'Rational Display',
-                fontStyle: FontStyle.normal,
-                letterSpacing: -0.002
-            )),
+            Text("242218",
+                style: TextStyle(
+                    color: Color(0xFF282A2C),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                    fontFamily: 'Rational Display',
+                    fontStyle: FontStyle.normal,
+                    letterSpacing: -0.002)),
             BlockSmallText(text: '12 sec ago'),
             SizedBox(
               height: 16,
@@ -54,8 +61,7 @@ class AnnulusApp extends StatelessWidget {
             ),
             BlockHeaderText(text: '16:32:02'),
             BlockSmallText(text: 'UTC'),
-          ]
-          ),
+          ]),
         ),
         footer: Container(
           height: 100,
@@ -68,40 +74,41 @@ class AnnulusApp extends StatelessWidget {
 }
 
 class BlockHeaderText extends StatelessWidget {
-  const BlockHeaderText({
-    super.key,
-    required this.text
-  });
+  const BlockHeaderText({super.key, required this.text});
+
   final String text;
+
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: const TextStyle(
-      color: Color(0xFF282A2C),
-      fontWeight: FontWeight.w500,
-      fontSize: 16,
-      fontFamily: 'Rational Display',
-      fontStyle: FontStyle.normal,
-    )
-    );
+    return Text(text,
+        style: const TextStyle(
+          color: Color(0xFF282A2C),
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+          fontFamily: 'Rational Display',
+          fontStyle: FontStyle.normal,
+        ));
   }
 }
+
 //
 class BlockSmallText extends StatelessWidget {
-
   const BlockSmallText({
     super.key,
     required this.text,
   });
+
   final String text;
+
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: const TextStyle(
-      color: Color(0xFF858E8E),
-      fontWeight: FontWeight.w400,
-      fontSize:  12,
-      fontFamily: 'Rational Display',
-      fontStyle: FontStyle.normal,
-    )
-    );
+    return Text(text,
+        style: const TextStyle(
+          color: Color(0xFF858E8E),
+          fontWeight: FontWeight.w400,
+          fontSize: 12,
+          fontFamily: 'Rational Display',
+          fontStyle: FontStyle.normal,
+        ));
   }
 }
