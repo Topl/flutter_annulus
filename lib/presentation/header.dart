@@ -18,7 +18,7 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,14 +35,29 @@ class Header extends StatelessWidget {
               decoration: const InputDecoration(
                 hintText: 'Search by blocks, transactions, or UTxOs',
                 prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                ),
                 focusColor: Colors.grey,
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
                 ),
               ),
             ),
           ),
+          IconButton(
+            icon: const Icon(Icons.brightness_4),
+            style: ButtonStyle(
+            
+              backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+              shape: MaterialStateProperty.all(
+                const CircleBorder(),
+              ),
+            ),
+            onPressed: () {
+              null;
+            }),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
             decoration: BoxDecoration(
