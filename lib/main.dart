@@ -23,7 +23,7 @@ class AnnulusApp extends ConsumerWidget {
       title: 'Annulus Event Explorer',
       home: CustomLayout(
         header: Header(
-          logoAsset: colorTheme == ColorMode.dark
+          logoAsset: colorTheme == ColorMode.light
               ? 'images/logo.svg'
               : 'images/logo_dark.svg',
           onSearch: () {},

@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final appThemeColorProvider = StateNotifierProvider(
+final appThemeColorProvider =
+    StateNotifierProvider<ThemeColorNotifier, ColorMode>(
   (ref) {
     return ThemeColorNotifier();
   },
