@@ -5,7 +5,11 @@ class CustomLayout extends StatelessWidget {
   final Widget content;
   final Widget footer;
 
-  const CustomLayout({super.key, required this.header, required this.content, required this.footer});
+  const CustomLayout(
+      {super.key,
+      required this.header,
+      required this.content,
+      required this.footer});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class CustomLayout extends StatelessWidget {
           // Content widget
           Expanded(
             child: Container(
-              color: Colors.grey[200],
+              color: Colors.white,
               child: SingleChildScrollView(
                 child: content,
               ),
