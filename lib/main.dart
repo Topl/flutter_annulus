@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/layout.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_annulus/widgets/transactions/transactions.dart';
 import 'widgets/block_slider.dart';
 
 import 'package:flutter_annulus/providers/app_theme_provider.dart';
@@ -29,7 +31,12 @@ class AnnulusApp extends ConsumerWidget {
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
-        content: const BlockViewSlider(),
+        content: Column(
+          children: const [
+            BlockViewSlider(),
+            Transactions(),
+          ],
+        ),
         footer: Container(
           height: 100,
           alignment: Alignment.center,

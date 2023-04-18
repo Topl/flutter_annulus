@@ -86,8 +86,8 @@ class _BlockViewSliderState extends State<BlockViewSlider> {
         margin: const EdgeInsets.only(
             top: 20.0, bottom: 20.0, left: 80.0, right: 80.0),
         padding: const EdgeInsets.only(
-            top: 20.0, bottom: 20.0, left: 0.0, right: 0.0),
-        height: MediaQuery.of(context).size.height * 0.5,
+            top: 20.0, bottom: 30.0, left: 0.0, right: 0.0),
+        //height: MediaQuery.of(context).size.height * 0.5,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10.0),
@@ -193,46 +193,49 @@ class BlockPlaceHolder extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Flexible(
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    fixedSize: const Size(56, 56),
-                    textStyle: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    backgroundColor: const Color(0xFFE2E3E3),
-                  ),
-                  onPressed: () => _controller.previousPage(),
-                  child: const Text('←',
-                      style: TextStyle(
-                        color: Color(0xFF535757),
-                      )),
-                ),
+                child: CustomTextButton(controller: _controller, text: '←'),
               ),
               const SizedBox(
                 width: 10,
               ),
               Flexible(
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    fixedSize: const Size(56, 56),
-                    textStyle: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    backgroundColor: const Color(0xFFE2E3E3),
-                  ),
-                  onPressed: () => _controller.previousPage(),
-                  child: const Text('→',
-                      style: TextStyle(
-                        color: Color(0xFF535757),
-                      )),
-                ),
+                child: CustomTextButton(controller: _controller, text: '→'),
               ),
             ],
           ),
         ],
       ),
+    );
+  }
+}
+
+// Custom Text Button widget
+class CustomTextButton extends StatelessWidget {
+  const CustomTextButton({
+    super.key,
+    required CarouselController controller,
+    required this.text,
+  }) : _controller = controller;
+
+  final String text;
+  final CarouselController _controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        fixedSize: const Size(56, 56),
+        textStyle: const TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.w600,
+        ),
+        backgroundColor: const Color(0xFFE2E3E3),
+      ),
+      onPressed: () => _controller.previousPage(),
+      child: Text(text,
+          style: const TextStyle(
+            color: Color(0xFF535757),
+          )),
     );
   }
 }

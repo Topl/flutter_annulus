@@ -26,7 +26,7 @@ class BlockView extends StatelessWidget {
               left: 20.0, right: 0.0, bottom: 0.0, top: 20.0),
           padding: const EdgeInsets.all(40.0),
           decoration: BoxDecoration(
-              color: const Color(0xFFE7E8E8),
+              color: const Color(0xFFFEFEFE),
               borderRadius: BorderRadius.circular(16.0),
               border: Border.all(
                   color: const Color(0xFFE7E8E8),
@@ -36,9 +36,20 @@ class BlockView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  'assets/icons/block-icon.png',
+                Container(
                   width: 45,
+                  height: 45,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      border: Border.all(
+                          color: const Color(0xFFE7E8E8),
+                          style: BorderStyle.solid,
+                          width: 1.0)),
+                  child: Image.asset(
+                    'assets/icons/block-icon.png',
+                    width: 20,
+                    height: 20,
+                  ),
                 ),
                 const SizedBox(
                   height: 16,
@@ -53,17 +64,17 @@ class BlockView extends StatelessWidget {
                         letterSpacing: -0.002)),
                 const BlockSmallText(text: '12 sec ago'),
                 const SizedBox(
-                  height: 16,
+                  height: 20,
                 ),
                 BlockHeaderText(text: blockEpoch),
                 const BlockSmallText(text: 'Epoch'),
                 const SizedBox(
-                  height: 16,
+                  height: 8,
                 ),
                 BlockHeaderText(text: blockHeader),
                 const BlockSmallText(text: 'Header'),
                 const SizedBox(
-                  height: 16,
+                  height: 8,
                 ),
                 BlockHeaderText(text: blockTime),
                 const BlockSmallText(text: 'UTC'),
@@ -104,7 +115,7 @@ class BlockSmallText extends StatelessWidget {
           color: Color(0xFF858E8E),
           fontWeight: FontWeight.w400,
           fontSize: 12,
-          fontFamily: 'Rational Display',
+          fontFamily: 'Rational Display Light',
           fontStyle: FontStyle.normal,
         ));
   }
