@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/layout.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'widgets/block_slider.dart';
-import 'widgets/block_view.dart';
+
+import 'package:flutter_annulus/providers/app_theme_provider.dart';
+
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
-  runApp(const AnnulusApp());
+  runApp(const ProviderScope(child: AnnulusApp()));
 }
 
-class AnnulusApp extends StatelessWidget {
+class AnnulusApp extends ConsumerWidget {
   const AnnulusApp({super.key});
 
   // This widget is the root of the application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Annulus Event Explorer',
       home: CustomLayout(
         header: Header(
-          logoAsset: 'images/logo.svg',
+          logoAsset: colorTheme == ColorMode.light
+              ? 'images/logo.svg'
+              : 'images/logo_dark.svg',
           onSearch: () {},
-          dropdownItems: [],
           onDropdownChanged: (String value) {},
         ),
         content: const BlockViewSlider(),
