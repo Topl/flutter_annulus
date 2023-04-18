@@ -45,6 +45,7 @@ dependencies:
   flutter_polygon: ^0.3.0+2
   bs_flutter_modal: ^1.0.6
   hooks_riverpod: ^2.3.4
+  dropdown_button2: ^2.1.0
 
 dev_dependencies:
   flutter_test:

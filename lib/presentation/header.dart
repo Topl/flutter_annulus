@@ -112,8 +112,7 @@ class Header extends ConsumerWidget {
               const SizedBox(
                 width: 10,
               ),
-              ChainNameDropdown(
-                dropdownItems: dropdownItems,
+              ChainNameDropDown(
                 colorTheme: colorTheme,
               )
             ],
