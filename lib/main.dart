@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/layout.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'widgets/block_slider.dart';
 
 import 'package:flutter_annulus/providers/app_theme_provider.dart';
 
-import 'widgets/block_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
@@ -29,7 +27,6 @@ class AnnulusApp extends ConsumerWidget {
               ? 'images/logo.svg'
               : 'images/logo_dark.svg',
           onSearch: () {},
-          dropdownItems: [],
           onDropdownChanged: (String value) {},
         ),
         content: const BlockViewSlider(),

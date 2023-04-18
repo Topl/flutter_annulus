@@ -78,6 +78,10 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
               color: widget.colorTheme == ColorMode.light
                   ? const Color(0xFFFEFEFE)
                   : const Color(0xFF282A2C),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(8.0),
+                bottomRight: Radius.circular(8.0),
+              ),
             ),
           ),
           menuItemStyleData: const MenuItemStyleData(

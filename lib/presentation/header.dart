@@ -8,14 +8,12 @@ import 'package:flutter_annulus/widgets/Dropdowns/chainname_dropdown.dart';
 class Header extends ConsumerWidget {
   final String logoAsset;
   final VoidCallback onSearch;
-  final List<DropdownMenuItem<String>> dropdownItems;
   final ValueChanged<String> onDropdownChanged;
 
   const Header({
     super.key,
     required this.logoAsset,
     required this.onSearch,
-    required this.dropdownItems,
     required this.onDropdownChanged,
   });
 
