@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/layout.dart';
 import 'package:flutter_annulus/widgets/hero_metrics/main.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_annulus/widgets/transactions/transactions.dart';
 import 'widgets/block_slider.dart';
 
 import 'package:flutter_annulus/providers/app_theme_provider.dart';
