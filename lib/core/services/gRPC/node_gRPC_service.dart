@@ -23,6 +23,7 @@ final nodeGRPCProvider = Provider<NodeGRPCService>((ref) {
 class NodeGRPCService {
   final Ref ref;
   NodeGRPCService(this.ref);
+
   Future<FetchTransactionRes> fetchTransaction() async {
     final FetchTransactionReq request = FetchTransactionReq();
     final FetchTransactionRes response = await ref.read(nodeStubProvider).fetchTransaction(request);
@@ -32,6 +33,30 @@ class NodeGRPCService {
   Future<FetchBlockIdAtDepthRes> fetchBlockIdAtDepth() async {
     final FetchBlockIdAtDepthReq request = FetchBlockIdAtDepthReq();
     final FetchBlockIdAtDepthRes response = await ref.read(nodeStubProvider).fetchBlockIdAtDepth(request);
+    return response;
+  }
+
+  Future<FetchBlockIdAtHeightRes> fetchBlockIdAtHeight() async {
+    final FetchBlockIdAtHeightReq request = FetchBlockIdAtHeightReq();
+    final FetchBlockIdAtHeightRes response = await ref.read(nodeStubProvider).fetchBlockIdAtHeight(request);
+    return response;
+  }
+
+  Future<FetchBlockBodyRes> fetchBlockBody() async {
+    final FetchBlockBodyReq request = FetchBlockBodyReq();
+    final FetchBlockBodyRes response = await ref.read(nodeStubProvider).fetchBlockBody(request);
+    return response;
+  }
+
+  Future<FetchBlockHeaderRes> fetchBlockHeader() async {
+    final FetchBlockHeaderReq request = FetchBlockHeaderReq();
+    final FetchBlockHeaderRes response = await ref.read(nodeStubProvider).fetchBlockHeader(request);
+    return response;
+  }
+
+  Future<CurrentMempoolRes> currentMempool() async {
+    final CurrentMempoolReq request = CurrentMempoolReq();
+    final CurrentMempoolRes response = await ref.read(nodeStubProvider).currentMempool(request);
     return response;
   }
 }
