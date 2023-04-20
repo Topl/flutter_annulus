@@ -1,63 +1,37 @@
-import 'package:flutter_annulus/core/services/gRPC/proto/brambl/models/transaction/io_transaction.pb.dart';
 import 'package:flutter_annulus/core/services/gRPC/proto/node/services/bifrost_rpc.pbgrpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final nodeGRPCProvider = Provider<NodeGRPCService>((ref) {
-  return NodeGRPCService();
+final nodeChannelProvider = Provider<ClientChannel>((ref) {
+  return ClientChannel(
+    'host',
+    port: 9000,
+    options: const ChannelOptions(
+      credentials: ChannelCredentials.insecure(),
+    ),
+  );
 });
 
-class NodeGRPCService extends NodeRpcServiceBase {
-  @override
-  Future<CurrentMempoolRes> currentMempool(ServiceCall call, CurrentMempoolReq request) {
-    // TODO: implement currentMempool
-    throw UnimplementedError();
+final nodeStubProvider = Provider<NodeRpcClient>((ref) {
+  return NodeRpcClient(ref.read(nodeChannelProvider));
+});
+
+final nodeGRPCProvider = Provider<NodeGRPCService>((ref) {
+  return NodeGRPCService(ref);
+});
+
+class NodeGRPCService {
+  final Ref ref;
+  NodeGRPCService(this.ref);
+  Future<FetchTransactionRes> fetchTransaction() async {
+    final FetchTransactionReq request = FetchTransactionReq();
+    final FetchTransactionRes response = await ref.read(nodeStubProvider).fetchTransaction(request);
+    return response;
   }
 
-  @override
-  Future<FetchBlockBodyRes> fetchBlockBody(ServiceCall call, FetchBlockBodyReq request) {
-    // TODO: implement fetchBlockBody
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<FetchBlockIdAtDepthRes> fetchBlockIdAtDepth(ServiceCall call, FetchBlockIdAtDepthReq request) {
-    // TODO: implement fetchBlockIdAtDepth
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<FetchBlockIdAtHeightRes> fetchBlockIdAtHeight(ServiceCall call, FetchBlockIdAtHeightReq request) {
-    // TODO: implement fetchBlockIdAtHeight
-    throw UnimplementedError();
-  }
-
-  /// Fetches
-  @override
-  Future<FetchTransactionRes> fetchTransaction(ServiceCall call, FetchTransactionReq request) async {
-    final IoTransaction _transaction;
-
-    return FetchTransactionRes(transaction: q);
-  }
-
-  /////////////////////////////
-  /// Unused Query's
-
-  @override
-  Stream<SynchronizationTraversalRes> synchronizationTraversal(ServiceCall call, SynchronizationTraversalReq request) {
-    // TODO: implement synchronizationTraversal
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<FetchBlockHeaderRes> fetchBlockHeader(ServiceCall call, FetchBlockHeaderReq request) {
-    // TODO: implement fetchBlockHeader
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<BroadcastTransactionRes> broadcastTransaction(ServiceCall call, BroadcastTransactionReq request) {
-    // TODO: implement broadcastTransaction
-    throw UnimplementedError();
+  Future<FetchBlockIdAtDepthRes> fetchBlockIdAtDepth() async {
+    final FetchBlockIdAtDepthReq request = FetchBlockIdAtDepthReq();
+    final FetchBlockIdAtDepthRes response = await ref.read(nodeStubProvider).fetchBlockIdAtDepth(request);
+    return response;
   }
 }
