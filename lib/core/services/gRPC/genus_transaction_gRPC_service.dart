@@ -1,4 +1,5 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter_annulus/core/services/gRPC/proto/brambl/models/address.pb.dart';
 import 'package:flutter_annulus/core/services/gRPC/proto/brambl/models/evidence.pb.dart';
 import 'package:flutter_annulus/core/services/gRPC/proto/brambl/models/identifier.pb.dart';
 import 'package:flutter_annulus/core/services/gRPC/proto/brambl/models/transaction/io_transaction.pb.dart';
@@ -126,16 +127,23 @@ class GenusGRPCService {
   /////////////////////////////
   /// Transactions
 
+  /// Returns a [TransactionResponse] object for the transaction at the given [transactionId] and [confidence].
+  ///
+  /// [transactionId] is a [List<int>] representing the transaction id to retrieve
+  ///
+  /// [confidence] is a [double] representing the confidence factor of the transaction to retrieve.
+  ///
+  /// Throws an [Exception] if an error occurs during the RPC request.
   Future<TransactionResponse> getTransactionById({
     List<int>? transactionId,
     double? confidence,
   }) async {
     final digest = Digest_Digest32(value: transactionId);
-    final Evidence_Sized32 q = Evidence_Sized32(digest: digest);
+    final Evidence_Sized32 evidence = Evidence_Sized32(digest: digest);
     final Identifier_IoTransaction32? _transactionId = transactionId == null
         ? null
         : Identifier_IoTransaction32(
-            evidence: q,
+            evidence: evidence,
           );
     final GetTransactionByIdRequest request = GetTransactionByIdRequest(
       confidenceFactor: _getConfidenceFactor(confidence),
@@ -157,13 +165,21 @@ class GenusGRPCService {
   /////////////////////////////
   /// Transaction Ouputs
 
-  Future<TxoAddressResponse> getTransactionOutputById() async {
+  /// QQQQ finish this up
+  Future<TxoAddressResponse> getTxOById({
+    List<Address>? txOId,
+    double? confidence,
+  }) async {
+    final Identifier id = Identifier();
+    final Address address = Address(
+        // id:
+        );
     final QueryByAddressRequest request = QueryByAddressRequest();
     final TxoAddressResponse response = await ref.read(genusTransactionStubProvider).getTxosByAddress(request);
     return response;
   }
 
-  Stream<TxoAddressResponse> getTransactionOutputByAddressStream() async* {
+  Stream<TxoAddressResponse> getTxOByAddressStream() async* {
     final QueryByAddressRequest request = QueryByAddressRequest();
     final Stream<TxoAddressResponse> stream = ref.read(genusTransactionStubProvider).getTxosByAddressStream(request);
 
@@ -172,7 +188,7 @@ class GenusGRPCService {
     }
   }
 
-  Stream<TxoResponse> getTransactionOutputByAddress() async* {
+  Stream<TxoResponse> getTxOByAddress() async* {
     final QueryByAssetLabelRequest request = QueryByAssetLabelRequest();
     final Stream<TxoResponse> stream = ref.read(genusTransactionStubProvider).getTxosByAssetLabel(request);
 
