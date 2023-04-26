@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/layout.dart';
 import 'package:flutter_annulus/widgets/hero_metrics/main.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_annulus/presentation/transaction_table.dart';
+
 import 'package:flutter_annulus/widgets/transactions/transactions.dart';
 import 'widgets/block_slider.dart';
 
 import 'package:flutter_annulus/providers/app_theme_provider.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
@@ -24,44 +24,49 @@ class AnnulusApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Annulus Event Explorer',
-      home: CustomLayout(
-        header: Header(
-          logoAsset: colorTheme == ColorMode.light
-              ? 'images/logo.svg'
-              : 'images/logo_dark.svg',
-          onSearch: () {},
-          onDropdownChanged: (String value) {},
-        ),
-        content: Column(
-          children: [
-            const SizedBox(height: 20),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              child: Row(
-                children: [
-                  const Expanded(
-                    flex: 3,
-                    child: HeroMetrics(),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      color: Colors.red,
-                      child: const Text("right"),
-                    ),
-                  )
+      initialRoute: '/',
+      routes: {
+        '/': (context) => CustomLayout(
+              header: Header(
+                logoAsset: colorTheme == ColorMode.light
+                    ? 'images/logo.svg'
+                    : 'images/logo_dark.svg',
+                onSearch: () {},
+                onDropdownChanged: (String value) {},
+              ),
+              content: Column(
+                children: const [
+                  HeroMetrics(),
+                  BlockViewSlider(),
+                  Transactions(),
                 ],
               ),
+              footer: Container(
+                height: 100,
+                alignment: Alignment.center,
+                child: const Text("footer"),
+              ),
             ),
-            const BlockViewSlider()
-          ],
-        ),
-        footer: Container(
-          height: 100,
-          alignment: Alignment.center,
-          child: const Text("footer"),
-        ),
-      ),
+        '/transactions': (context) => CustomLayout(
+              header: Header(
+                logoAsset: colorTheme == ColorMode.light
+                    ? 'images/logo.svg'
+                    : 'images/logo_dark.svg',
+                onSearch: () {},
+                onDropdownChanged: (String value) {},
+              ),
+              content: Column(
+                children: [
+                  TransactionTable(),
+                ],
+              ),
+              footer: Container(
+                height: 100,
+                alignment: Alignment.center,
+                child: const Text("footer"),
+              ),
+            ),
+      },
     );
   }
 }

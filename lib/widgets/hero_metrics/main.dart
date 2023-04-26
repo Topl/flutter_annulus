@@ -11,7 +11,7 @@ class HeroMetrics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(right: 40),
+      margin: const EdgeInsets.only(right: 80.0, left: 80.0, top: 40.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.0),
