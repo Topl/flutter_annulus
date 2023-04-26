@@ -47,6 +47,7 @@ dependencies:
   hooks_riverpod: ^2.3.4
   dropdown_button2: ^2.1.0
   carousel_slider: ^4.2.1
+  vrouter: ^1.2.1
 
 dev_dependencies:
   flutter_test:

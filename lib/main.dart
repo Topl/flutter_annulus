@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/presentation/header.dart';
 import 'package:flutter_annulus/presentation/layout.dart';
 import 'package:flutter_annulus/widgets/hero_metrics/main.dart';
+import 'package:vrouter/vrouter.dart';
 import 'widgets/block_slider.dart';
 
 import 'package:flutter_annulus/providers/app_theme_provider.dart';
@@ -24,9 +25,7 @@ class AnnulusApp extends ConsumerWidget {
       title: 'Annulus Event Explorer',
       home: CustomLayout(
         header: Header(
-          logoAsset: colorTheme == ColorMode.light
-              ? 'images/logo.svg'
-              : 'images/logo_dark.svg',
+          logoAsset: colorTheme == ColorMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
@@ -60,6 +59,17 @@ class AnnulusApp extends ConsumerWidget {
           child: const Text("footer"),
         ),
       ),
+    );
+  }
+}
+
+class AnnulusRouter extends StatelessWidget {
+  const AnnulusRouter({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return VRouter(
+      routes: [],
     );
   }
 }

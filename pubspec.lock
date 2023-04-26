@@ -216,6 +216,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
+  move_to_background:
+    dependency: transitive
+    description:
+      name: move_to_background
+      sha256: "00caad17a6ce149910777131503f43f8ed80025681f94684e3a6a87d979b914c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   path:
     dependency: transitive
     description:
@@ -422,6 +430,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  url_strategy:
+    dependency: transitive
+    description:
+      name: url_strategy
+      sha256: "42b68b42a9864c4d710401add17ad06e28f1c1d5500c93b98c431f6b0ea4ab87"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   vector_math:
     dependency: transitive
     description:
@@ -430,6 +446,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  vrouter:
+    dependency: "direct main"
+    description:
+      name: vrouter
+      sha256: "5eff3c2f1371c9e11c50334522b35a31e6d42290273d022e944544d4e177cea0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.1"
   wave:
     dependency: transitive
     description:
