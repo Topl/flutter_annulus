@@ -167,3 +167,56 @@ SlideTransition slideLeftTransition(Animation<double> animation, Widget child) =
       ).animate(animation),
       child: child,
     );
+
+final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<List<Block>>>((ref) {
+  return BlockNotifier();
+});
+
+class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
+  BlockNotifier()
+      : super(
+          const AsyncValue.loading(), // Set initial state to loading
+        ) {
+    {
+      getBlock().then((value) => state = AsyncValue.data(value)); // Set state to data
+    }
+  }
+
+  Future<List<Block>> getBlock() {
+    // gRPC call
+  }
+}
+
+class BlockSection extends HookConsumerScreenWidget {
+  const BlockSection({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final blocks = ref.watch(blockProvider);
+    return Container(
+      child: blocks.when(
+        data: (data) => ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index) => BlockWidget(block: data[index]),
+        ),
+        error: (error, stackTrace) => Text('Error: $error'),
+        loading: () => const CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
+class BlockWidget extends StatelessWidget {
+  final Block block;
+  const BlockWidget({
+    required this.block,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        // Block Widget
+        );
+  }
+}
