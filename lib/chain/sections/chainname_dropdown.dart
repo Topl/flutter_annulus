@@ -1,10 +1,9 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:dropdown_button2/src/dropdown_button2.dart';
-import 'package:flutter_annulus/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 
 class ChainNameDropDown extends StatefulWidget {
-  const ChainNameDropDown({Key? key, this.colorTheme = ColorMode.light})
-      : super(key: key);
+  const ChainNameDropDown({Key? key, this.colorTheme = ColorMode.light}) : super(key: key);
 
   final ColorMode colorTheme;
 
@@ -31,9 +30,7 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
             'Chain Name',
             style: TextStyle(
               fontSize: 14,
-              color: widget.colorTheme == ColorMode.light
-                  ? const Color(0xFF4B4B4B)
-                  : const Color(0xFF858E8E),
+              color: widget.colorTheme == ColorMode.light ? const Color(0xFF4B4B4B) : const Color(0xFF858E8E),
             ),
           ),
           items: items
@@ -43,9 +40,7 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
                       item,
                       style: TextStyle(
                         fontSize: 14,
-                        color: widget.colorTheme == ColorMode.light
-                            ? const Color(0xFF4B4B4B)
-                            : const Color(0xFF858E8E),
+                        color: widget.colorTheme == ColorMode.light ? const Color(0xFF4B4B4B) : const Color(0xFF858E8E),
                       ),
                     ),
                   ))
@@ -63,21 +58,15 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
               border: Border.all(
-                color: widget.colorTheme == ColorMode.light
-                    ? const Color(0xFFC0C4C4)
-                    : const Color(0xFF4B4B4B),
+                color: widget.colorTheme == ColorMode.light ? const Color(0xFFC0C4C4) : const Color(0xFF4B4B4B),
               ),
-              color: widget.colorTheme == ColorMode.light
-                  ? const Color(0xFFFEFEFE)
-                  : const Color(0xFF282A2C),
+              color: widget.colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
             ),
           ),
           dropdownStyleData: DropdownStyleData(
             maxHeight: 200,
             decoration: BoxDecoration(
-              color: widget.colorTheme == ColorMode.light
-                  ? const Color(0xFFFEFEFE)
-                  : const Color(0xFF282A2C),
+              color: widget.colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(8.0),
                 bottomRight: Radius.circular(8.0),
@@ -100,9 +89,7 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
             searchInnerWidget: Container(
               height: 50,
               decoration: BoxDecoration(
-                color: widget.colorTheme == ColorMode.light
-                    ? const Color(0xFFFEFEFE)
-                    : const Color(0xFF282A2C),
+                color: widget.colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
               ),
               padding: const EdgeInsets.only(
                 top: 8,
@@ -122,15 +109,11 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
                   ),
                   hintText: 'Search ...',
                   hintStyle: TextStyle(
-                    color: widget.colorTheme == ColorMode.light
-                        ? const Color(0xFF4B4B4B)
-                        : const Color(0xFF858E8E),
+                    color: widget.colorTheme == ColorMode.light ? const Color(0xFF4B4B4B) : const Color(0xFF858E8E),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: widget.colorTheme == ColorMode.light
-                          ? const Color(0xFFC0C4C4)
-                          : const Color(0xFF4B4B4B),
+                      color: widget.colorTheme == ColorMode.light ? const Color(0xFFC0C4C4) : const Color(0xFF4B4B4B),
                       width: 1.0,
                     ),
                   ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/presentation/header.dart';
-import 'package:flutter_annulus/presentation/layout.dart';
-import 'package:flutter_annulus/widgets/hero_metrics/main.dart';
-import 'widgets/block_slider.dart';
+import 'package:flutter_annulus/chain/sections/chain_info.dart';
+import 'package:flutter_annulus/shared/widgets/header.dart';
+import 'package:flutter_annulus/shared/widgets/layout.dart';
+import 'blocks/sections/block_slider.dart';
 
-import 'package:flutter_annulus/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,9 +24,7 @@ class AnnulusApp extends ConsumerWidget {
       title: 'Annulus Event Explorer',
       home: CustomLayout(
         header: Header(
-          logoAsset: colorTheme == ColorMode.light
-              ? 'images/logo.svg'
-              : 'images/logo_dark.svg',
+          logoAsset: colorTheme == ColorMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
@@ -39,7 +37,7 @@ class AnnulusApp extends ConsumerWidget {
                 children: [
                   const Expanded(
                     flex: 3,
-                    child: HeroMetrics(),
+                    child: ChainInfo(),
                   ),
                   Expanded(
                     flex: 2,
