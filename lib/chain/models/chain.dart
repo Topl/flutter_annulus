@@ -40,7 +40,7 @@ class Chain with _$Chain {
     required int averageBlockTime,
 
     /// The percentage of staked cypto
-    required int totalStake,
+    required double totalStake,
 
     /// Stakes that have been officially recorded on the blockchain
     required int registeredStakes,
