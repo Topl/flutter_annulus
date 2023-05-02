@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/widgets/chain_info/lower_stats_without_icon.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../widgets/chain_info/top_stat_with_icon.dart';
 import '../widgets/chain_info/lower_stat_with_icon.dart';
 
-class ChainInfo extends StatelessWidget {
+class ChainInfo extends HookConsumerWidget {
   const ChainInfo({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       margin: const EdgeInsets.only(right: 40),
       decoration: BoxDecoration(
