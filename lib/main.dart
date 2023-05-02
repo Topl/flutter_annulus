@@ -1,63 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/chain/sections/chain_info.dart';
-import 'package:flutter_annulus/shared/widgets/header.dart';
-import 'package:flutter_annulus/shared/widgets/layout.dart';
-import 'blocks/sections/block_slider.dart';
-
-import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/home/screen/home_screen.dart';
+import 'package:flutter_annulus/shared/utils/transitions.dart';
+import 'package:flutter_annulus/shared/widgets/slide_left_builder.dart';
+import 'package:vrouter/vrouter.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
-  runApp(const ProviderScope(child: AnnulusApp()));
+  runApp(
+    const ProviderScope(
+      child: AnnulusRouter(),
+    ),
+  );
 }
 
-class AnnulusApp extends ConsumerWidget {
-  const AnnulusApp({super.key});
+class AnnulusRouter extends StatelessWidget {
+  const AnnulusRouter({Key? key}) : super(key: key);
 
-  // This widget is the root of the application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final colorTheme = ref.watch(appThemeColorProvider);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Annulus Event Explorer',
-      home: CustomLayout(
-        header: Header(
-          logoAsset: colorTheme == ColorMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
-          onSearch: () {},
-          onDropdownChanged: (String value) {},
+  Widget build(BuildContext context) {
+    return VRouter(
+      initialUrl: HomeScreen.route,
+      routes: [
+        VWidget(
+          path: HomeScreen.route,
+          widget: const HomeScreen(),
         ),
-        content: Column(
-          children: [
-            const SizedBox(height: 20),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              child: Row(
-                children: [
-                  const Expanded(
-                    flex: 3,
-                    child: ChainInfo(),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      color: Colors.red,
-                      child: const Text("right"),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            const BlockViewSlider()
+        VNester(
+          path: '',
+          widgetBuilder: (Widget child) => SlideLeftBuilder(child: child),
+          buildTransition: (animation, _, child) => slideLeftTransition(animation, child),
+          nestedRoutes: const [
+            /// TODO: Add Tansaction Details Screen
+            /// TODO: Add Block Details Screen
+            /// TODO: Add New Chain Screen
           ],
         ),
-        footer: Container(
-          height: 100,
-          alignment: Alignment.center,
-          child: const Text("footer"),
-        ),
-      ),
+      ],
     );
   }
 }
