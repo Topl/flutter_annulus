@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/widgets/transactions/custom_transaction_widgets.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
-import '../../constants/strings.dart';
+import 'package:vrouter/vrouter.dart';
+import '../../../constants/strings.dart';
+import 'custom_transaction_widgets.dart';
 
 class Transactions extends StatefulWidget {
   const Transactions({Key? key}) : super(key: key);
@@ -276,7 +277,7 @@ class _TransactionsState extends State<Transactions> {
         const SizedBox(height: 20.0),
         TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/transactions');
+              context.vRouter.to('/transactions');
             },
             style: TextButton.styleFrom(
               padding: const EdgeInsets.all(0.0),

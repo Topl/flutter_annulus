@@ -22,27 +22,79 @@ class _BlockViewSliderState extends State<BlockViewSlider> {
 
 // read dummy json data for blocks
   static const List<dynamic> blocks = [
-    {"hash": "h1000", "height": "1000", "time": "16:32:00", "size": "1000", "epoch": "E100", "header": "h1000"},
-    {"hash": "h1001", "height": "1001", "time": "16:32:05", "size": "1001", "epoch": "E100", "header": "h1001"},
-    {"hash": "h1002", "height": "1002", "time": "16:32:50", "size": "1002", "epoch": "E100", "header": "h1002"},
-    {"hash": "h1008", "height": "1008", "time": "16:32:56", "size": "1008", "epoch": "E100", "header": "h1008"},
-    {"hash": "h1009", "height": "1009", "time": "16:35:45", "size": "1009", "epoch": "E100", "header": "h1009"},
-    {"hash": "h10010", "height": "10010", "time": "16:34:45", "size": "10010", "epoch": "E100", "header": "h10010"},
-    {"hash": "h10011", "height": "10011", "time": "16:37:00", "size": "10011", "epoch": "E100", "header": "h10011"}
+    {
+      "hash": "h1000",
+      "height": "1000",
+      "time": "16:32:00",
+      "size": "1000",
+      "epoch": "E100",
+      "header": "h1000"
+    },
+    {
+      "hash": "h1001",
+      "height": "1001",
+      "time": "16:32:05",
+      "size": "1001",
+      "epoch": "E100",
+      "header": "h1001"
+    },
+    {
+      "hash": "h1002",
+      "height": "1002",
+      "time": "16:32:50",
+      "size": "1002",
+      "epoch": "E100",
+      "header": "h1002"
+    },
+    {
+      "hash": "h1008",
+      "height": "1008",
+      "time": "16:32:56",
+      "size": "1008",
+      "epoch": "E100",
+      "header": "h1008"
+    },
+    {
+      "hash": "h1009",
+      "height": "1009",
+      "time": "16:35:45",
+      "size": "1009",
+      "epoch": "E100",
+      "header": "h1009"
+    },
+    {
+      "hash": "h10010",
+      "height": "10010",
+      "time": "16:34:45",
+      "size": "10010",
+      "epoch": "E100",
+      "header": "h10010"
+    },
+    {
+      "hash": "h10011",
+      "height": "10011",
+      "time": "16:37:00",
+      "size": "10011",
+      "epoch": "E100",
+      "header": "h10011"
+    }
   ];
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
         margin: const EdgeInsets.only(
-            top: 20.0, bottom: 20.0, left: 80.0, right: 80.0),
+            top: 20.0, bottom: 20.0, left: 40.0, right: 40.0),
         padding: const EdgeInsets.only(
             top: 20.0, bottom: 30.0, left: 0.0, right: 0.0),
         //height: MediaQuery.of(context).size.height * 0.5,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(color: const Color(0xFFE7E8E8), style: BorderStyle.solid, width: 1.0),
+          border: Border.all(
+              color: const Color(0xFFE7E8E8),
+              style: BorderStyle.solid,
+              width: 1.0),
         ),
         child: Wrap(
           // direction: Axis.vertical,
@@ -120,14 +172,20 @@ class BlockPlaceHolder extends StatelessWidget {
           const Text(
             "Latest Blocks",
             style: TextStyle(
-                fontSize: 30, fontWeight: FontWeight.w600, color: Color(0xFF282A2C), fontFamily: "Rational Display"),
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF282A2C),
+                fontFamily: "Rational Display"),
           ),
           const SizedBox(
             height: 10,
           ),
           const Text("Multiple-chain Embedding",
               style: TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xFF858E8E), fontFamily: "Rational Display")),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF858E8E),
+                  fontFamily: "Rational Display")),
           const SizedBox(
             height: 168,
           ),
