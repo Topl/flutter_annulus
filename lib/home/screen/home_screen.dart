@@ -5,7 +5,8 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../shared/widgets/transactions/transactions.dart';
+
+import '../../transactions/sections/transactions.dart';
 
 class HomeScreen extends HookConsumerWidget {
   static const String route = '/';

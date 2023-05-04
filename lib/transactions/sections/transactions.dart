@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:vrouter/vrouter.dart';
 import '../../../constants/strings.dart';
-import 'custom_transaction_widgets.dart';
+import '../../../transactions/widgets/custom_transaction_widgets.dart';
 
 class Transactions extends StatefulWidget {
   const Transactions({Key? key}) : super(key: key);
