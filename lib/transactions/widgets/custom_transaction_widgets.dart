@@ -92,16 +92,13 @@ class TableHeaderText extends StatelessWidget {
   final String name;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 40.0, top: 40, bottom: 32),
-      child: Text(
-        name,
-        style: const TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.w600,
-            fontFamily: "Rational Display",
-            color: Color(0xFF858E8E)),
-      ),
+    return Text(
+      name,
+      style: const TextStyle(
+          fontSize: 14.0,
+          fontWeight: FontWeight.w600,
+          fontFamily: "Rational Display",
+          color: Color(0xFF858E8E)),
     );
   }
 }
