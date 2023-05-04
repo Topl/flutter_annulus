@@ -31,35 +31,44 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   ) : super(
           const AsyncLoading(),
         ) {
-    getSelectedChain();
+    getSelectedChain(setState: true);
   }
 
   /// TODO: Implements with dart gRPC client
-  Future<void> getSelectedChain() async {
-    state = const AsyncLoading();
-    // Adding delay here to simulate API call
-    Future.delayed(
-      Duration(seconds: 1),
-      () {
-        // Do API call here
-        state = const AsyncData(
-          Chain(
-            dataThroughput: 39.887,
-            averageTransactionFee: 3.71,
-            uniqueActiveAddresses: 2076,
-            eon: 2,
-            era: 5,
-            epoch: 72109,
-            totalTransactionsInEpoch: 266,
-            height: 22100762,
-            averageBlockTime: 127,
-            totalStake: .77,
-            registeredStakes: 519,
-            activeStakes: 453,
-            inactiveStakes: 66,
-          ),
-        );
-      },
+  ///
+  /// It takes a bool [setState]
+  ///
+  /// If [setState] is true, it will update the state of the provider
+  /// If [setState] is false, it will not update the state of the provider
+  Future<Chain> getSelectedChain({bool setState = false}) async {
+    if (setState) state = const AsyncLoading();
+
+    const Chain chain = Chain(
+      dataThroughput: 39.887,
+      averageTransactionFee: 3.71,
+      uniqueActiveAddresses: 2076,
+      eon: 2,
+      era: 5,
+      epoch: 72109,
+      totalTransactionsInEpoch: 266,
+      height: 22100762,
+      averageBlockTime: 127,
+      totalStake: .77,
+      registeredStakes: 519,
+      activeStakes: 453,
+      inactiveStakes: 66,
     );
+    // Adding delay here to simulate API call
+    if (setState) {
+      Future.delayed(
+        Duration(seconds: 1),
+        () {
+          // Do API call here
+          state = const AsyncData(chain);
+        },
+      );
+    }
+
+    return chain;
   }
 }

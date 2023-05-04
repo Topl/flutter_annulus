@@ -11,13 +11,20 @@ final transactionsProvider = StateNotifierProvider<TransactionsNotifier, AsyncVa
 
 class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> {
   TransactionsNotifier() : super(const AsyncLoading()) {
-    getTransactions();
+    getTransactions(setState: true);
   }
 
   /// This method is used to get the list of transactions
   /// and update the state of the provider
-  Future<void> getTransactions() async {
-    state = const AsyncLoading();
+  ///
+  /// It takes a bool [setState]
+  ///
+  /// If [setState] is true, it will update the state of the provider
+  /// If [setState] is false, it will not update the state of the provider
+  Future<List<Transaction>> getTransactions({
+    bool setState = false,
+  }) async {
+    if (setState) state = const AsyncLoading();
     final List<Transaction> transactions = [];
     const int totalTransactions = 10;
 
@@ -43,10 +50,12 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
         ),
       );
     }
-
-    Future.delayed(const Duration(seconds: 1), () {
-      state = AsyncData(transactions);
-    });
+    if (setState) {
+      Future.delayed(const Duration(seconds: 1), () {
+        state = AsyncData(transactions);
+      });
+    }
+    return transactions;
   }
 
   /// This method is used to get a single transaction
