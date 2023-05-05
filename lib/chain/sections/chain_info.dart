@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/widgets/chain_info/lower_stats_without_icon.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../providers/chain_provider.dart';
 import '../widgets/chain_info/top_stat_with_icon.dart';
 import '../widgets/chain_info/lower_stat_with_icon.dart';
 
@@ -11,6 +13,8 @@ class ChainInfo extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final chainInfo = ref.watch(chainProvider).value;
+    print(chainInfo);
     return Container(
       margin: const EdgeInsets.only(right: 40),
       decoration: BoxDecoration(
@@ -34,7 +38,7 @@ class ChainInfo extends HookConsumerWidget {
                   TopStatWithIcon(
                       iconString: 'images/speedometer.svg',
                       titleString: "Data Throughput",
-                      statAmount: "39.887",
+                      statAmount: chainInfo?.dataThroughput.toString() ?? "0",
                       statSymbol: " kbps",
                       firstItem: true),
                   const VerticalDivider(
@@ -46,7 +50,8 @@ class ChainInfo extends HookConsumerWidget {
                   TopStatWithIcon(
                     iconString: 'images/coin.svg',
                     titleString: "Average Transaction Fee",
-                    statAmount: "3.71",
+                    statAmount:
+                        chainInfo?.averageTransactionFee.toString() ?? "0",
                     statSymbol: " LVL",
                   ),
                   const VerticalDivider(
@@ -58,7 +63,8 @@ class ChainInfo extends HookConsumerWidget {
                   TopStatWithIcon(
                     iconString: 'images/wallet.svg',
                     titleString: "Unique Active Addresses",
-                    statAmount: "2,076",
+                    statAmount:
+                        chainInfo?.uniqueActiveAddresses.toString() ?? "0",
                     statSymbol: " /3,135",
                   ),
                 ],
@@ -83,8 +89,8 @@ class ChainInfo extends HookConsumerWidget {
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               "Eon",
                               style: TextStyle(
                                 color: Color(0xFF858E8E),
@@ -92,12 +98,12 @@ class ChainInfo extends HookConsumerWidget {
                                 fontFamily: 'Rational Display',
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
                             Text(
-                              "2",
-                              style: TextStyle(
+                              chainInfo?.eon.toString() ?? "0",
+                              style: const TextStyle(
                                 color: Color(0xFF282A2C),
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
@@ -111,8 +117,8 @@ class ChainInfo extends HookConsumerWidget {
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               "Era",
                               style: TextStyle(
                                 color: Color(0xFF858E8E),
@@ -120,12 +126,12 @@ class ChainInfo extends HookConsumerWidget {
                                 fontFamily: 'Rational Display',
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
                             Text(
-                              "5",
-                              style: TextStyle(
+                              chainInfo?.era.toString() ?? "0",
+                              style: const TextStyle(
                                 color: Color(0xFF282A2C),
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
@@ -151,7 +157,7 @@ class ChainInfo extends HookConsumerWidget {
                           child: Row(
                             children: [
                               LowerStatWithoutIcon(
-                                statValue: "72,109",
+                                statValue: chainInfo?.epoch.toString() ?? "0",
                                 statSymbol: "Epoch",
                                 firstItem: true,
                               ),
@@ -163,7 +169,9 @@ class ChainInfo extends HookConsumerWidget {
                                 width: 1,
                               ),
                               LowerStatWithoutIcon(
-                                statValue: "266",
+                                statValue: chainInfo?.totalTransactionsInEpoch
+                                        .toString() ??
+                                    "0",
                                 statSymbol: "Txs",
                               ),
                               const VerticalDivider(
@@ -173,7 +181,7 @@ class ChainInfo extends HookConsumerWidget {
                                 color: Color(0xFFE7E8E8),
                               ),
                               LowerStatWithoutIcon(
-                                statValue: "22,100,762",
+                                statValue: chainInfo?.height.toString() ?? "0",
                                 statSymbol: "Height",
                               ),
                               const VerticalDivider(
@@ -184,7 +192,9 @@ class ChainInfo extends HookConsumerWidget {
                                 color: Color(0xFFE7E8E8),
                               ),
                               LowerStatWithoutIcon(
-                                statValue: "127 sec",
+                                statValue:
+                                    chainInfo?.averageBlockTime.toString() ??
+                                        "0",
                                 statSymbol: "Avg Block Time",
                               ),
                             ],
@@ -203,7 +213,8 @@ class ChainInfo extends HookConsumerWidget {
                             children: [
                               LowerStatWithIcon(
                                   icon: Icons.info_outline,
-                                  statString: "77%",
+                                  statString:
+                                      '${chainInfo?.totalStake.toString()}%',
                                   statSymbol: "Total Stake"),
                               const VerticalDivider(
                                 indent: 5,
@@ -213,7 +224,8 @@ class ChainInfo extends HookConsumerWidget {
                               ),
                               LowerStatWithIcon(
                                   icon: Icons.info_outline,
-                                  statString: "519",
+                                  statString:
+                                      '${chainInfo?.registeredStakes.toString()}%',
                                   statSymbol: "Registered Stakes"),
                               const VerticalDivider(
                                 indent: 5,
@@ -223,7 +235,8 @@ class ChainInfo extends HookConsumerWidget {
                               ),
                               LowerStatWithIcon(
                                   icon: Icons.info_outline,
-                                  statString: "453",
+                                  statString:
+                                      '${chainInfo?.activeStakes.toString()} %',
                                   statSymbol: "Active Stakes"),
                               const VerticalDivider(
                                 indent: 10,
@@ -233,7 +246,8 @@ class ChainInfo extends HookConsumerWidget {
                               ),
                               LowerStatWithIcon(
                                   icon: Icons.info_outline,
-                                  statString: "66",
+                                  statString:
+                                      '${chainInfo?.inactiveStakes.toString()}%',
                                   statSymbol: "Inactive Stakes"),
                             ],
                           ),
