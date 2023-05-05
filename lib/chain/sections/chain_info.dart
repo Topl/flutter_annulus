@@ -13,8 +13,7 @@ class ChainInfo extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chainInfo = ref.watch(chainProvider).value;
-    print(chainInfo);
+    final Chain? chainInfo = ref.watch(chainProvider).value;
     return Container(
       margin: const EdgeInsets.only(right: 40),
       decoration: BoxDecoration(
