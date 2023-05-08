@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/utils/transitions.dart';
 import 'package:flutter_annulus/shared/widgets/slide_left_builder.dart';
-import 'package:flutter_annulus/transactions/widgets/transaction_table_screen.dart';
+import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
 import 'package:vrouter/vrouter.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
