@@ -114,19 +114,37 @@ class _BlockViewSliderState extends State<BlockViewSlider> {
                       final int third = second + 1;
                       final int fourth = third + 1;
                       final int firth = fourth + 1;
-                      return Wrap(
-                        direction: Axis.vertical, // main axis (rows or columns)
-                        children: <Widget>[
-                          VisibleBlockView(
-                            n1: first,
-                            n2: second,
-                            n3: third,
-                            n4: fourth,
-                            n5: firth,
-                            blocks: blocks,
-                          ),
-                        ],
-                      );
+                      return blocks.isNotEmpty
+                          ? Wrap(
+                              direction:
+                                  Axis.vertical, // main axis (rows or columns)
+                              children: <Widget>[
+                                VisibleBlockView(
+                                  n1: first,
+                                  n2: second,
+                                  n3: third,
+                                  n4: fourth,
+                                  n5: firth,
+                                  blocks: blocks,
+                                ),
+                              ],
+                            )
+                          : const SizedBox(
+                              height: 0,
+                              child: Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Text(
+                                    "No blocks loaded",
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xFF282A2C),
+                                        fontFamily: "Rational Display"),
+                                  ),
+                                ),
+                              ),
+                            );
                     },
                     itemCount: (blocks.length / 3).round(),
                     options: CarouselOptions(
