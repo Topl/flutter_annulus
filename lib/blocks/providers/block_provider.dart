@@ -3,7 +3,7 @@ import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final chainProvider =
+final blockProvider =
     StateNotifierProvider<BlockNotifier, AsyncValue<Block>>((ref) {
   /// Notes:
   /// We'll need to watch for the selectedChain here since we will need to know which
@@ -25,7 +25,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Block>> {
   ) : super(
           const AsyncLoading(),
         ) {
-    getLatestBlock(setState: true);
+    getLatestBlocks(setState: true);
   }
 
   /// TODO: Implements with dart gRPC client (target genus instance in selectedChain)
@@ -35,7 +35,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Block>> {
   ///
   /// If [setState] is true, it will update the state of the provider
   /// If [setState] is false, it will not update the state of the provider
-  Future<Block> getLatestBlock({bool setState = false}) async {
+  Future<Block> getLatestBlocks({bool setState = false}) async {
     if (setState) state = const AsyncLoading();
 
     const Block block = Block(
@@ -54,7 +54,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Block>> {
         Duration(seconds: 1),
         () {
           // Do API call here
-          state = const AsyncData(block);
+          state = AsyncData(block);
         },
       );
     }
@@ -88,7 +88,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Block>> {
         Duration(seconds: 1),
         () {
           // Do API call here
-          state = const AsyncData(block);
+          state = AsyncData(block);
         },
       );
     }
