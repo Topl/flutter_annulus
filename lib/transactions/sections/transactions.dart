@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_table_header.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_row_item.dart';
-import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:vrouter/vrouter.dart';
-import '../../../constants/strings.dart';
-import '../../../transactions/widgets/custom_transaction_widgets.dart';
 
 class Transactions extends StatefulWidget {
   const Transactions({Key? key}) : super(key: key);
@@ -167,6 +164,7 @@ class _TransactionsState extends State<Transactions> {
                       color: Color(0xFF535757),
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
+                      fontFamily: 'Rational Display',
                     )),
                 SizedBox(width: 10.0),
                 Icon(

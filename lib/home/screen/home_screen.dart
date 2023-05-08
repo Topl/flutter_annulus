@@ -40,8 +40,7 @@ class HomeScreen extends HookConsumerWidget {
                   Expanded(
                     flex: 2,
                     child: Container(
-                      color: Colors.red,
-                      child: const Text("right"),
+                      child: const Text("Chart here"),
                     ),
                   )
                 ],

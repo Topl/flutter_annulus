@@ -16,7 +16,10 @@ class ChainInfo extends HookConsumerWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.0),
-        border: Border.all(color: const Color(0xFFE7E8E8), style: BorderStyle.solid, width: 1.0),
+        border: Border.all(
+            color: const Color(0xFFE7E8E8),
+            style: BorderStyle.solid,
+            width: 1.0),
       ),
       height: 408,
       child: Column(
@@ -74,7 +77,8 @@ class ChainInfo extends HookConsumerWidget {
                 Expanded(
                   flex: 1,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 40.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 32.0, horizontal: 40.0),
                     child: Column(
                       children: [
                         Column(
@@ -85,6 +89,7 @@ class ChainInfo extends HookConsumerWidget {
                               style: TextStyle(
                                 color: Color(0xFF858E8E),
                                 fontSize: 16,
+                                fontFamily: 'Rational Display',
                               ),
                             ),
                             SizedBox(
@@ -96,6 +101,7 @@ class ChainInfo extends HookConsumerWidget {
                                 color: Color(0xFF282A2C),
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
+                                fontFamily: 'Rational Display',
                               ),
                             )
                           ],
@@ -111,6 +117,7 @@ class ChainInfo extends HookConsumerWidget {
                               style: TextStyle(
                                 color: Color(0xFF858E8E),
                                 fontSize: 16,
+                                fontFamily: 'Rational Display',
                               ),
                             ),
                             SizedBox(
@@ -122,6 +129,7 @@ class ChainInfo extends HookConsumerWidget {
                                 color: Color(0xFF282A2C),
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
+                                fontFamily: 'Rational Display',
                               ),
                             )
                           ],
@@ -130,14 +138,16 @@ class ChainInfo extends HookConsumerWidget {
                     ),
                   ),
                 ),
-                const VerticalDivider(indent: 0, color: Color(0xFFE7E8E8), width: 1),
+                const VerticalDivider(
+                    indent: 0, color: Color(0xFFE7E8E8), width: 1),
                 Expanded(
                   flex: 5,
                   child: Column(
                     children: [
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20.0, horizontal: 40.0),
                           child: Row(
                             children: [
                               LowerStatWithoutIcon(
@@ -187,10 +197,14 @@ class ChainInfo extends HookConsumerWidget {
                       ),
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20.0, horizontal: 40.0),
                           child: Row(
                             children: [
-                              LowerStatWithIcon(icon: Icons.info_outline, statString: "77%", statSymbol: "Total Stake"),
+                              LowerStatWithIcon(
+                                  icon: Icons.info_outline,
+                                  statString: "77%",
+                                  statSymbol: "Total Stake"),
                               const VerticalDivider(
                                 indent: 5,
                                 endIndent: 10,
@@ -198,7 +212,9 @@ class ChainInfo extends HookConsumerWidget {
                                 color: Color(0xFFE7E8E8),
                               ),
                               LowerStatWithIcon(
-                                  icon: Icons.info_outline, statString: "519", statSymbol: "Registered Stakes"),
+                                  icon: Icons.info_outline,
+                                  statString: "519",
+                                  statSymbol: "Registered Stakes"),
                               const VerticalDivider(
                                 indent: 5,
                                 endIndent: 10,
@@ -206,7 +222,9 @@ class ChainInfo extends HookConsumerWidget {
                                 color: Color(0xFFE7E8E8),
                               ),
                               LowerStatWithIcon(
-                                  icon: Icons.info_outline, statString: "453", statSymbol: "Active Stakes"),
+                                  icon: Icons.info_outline,
+                                  statString: "453",
+                                  statSymbol: "Active Stakes"),
                               const VerticalDivider(
                                 indent: 10,
                                 endIndent: 10,
@@ -214,7 +232,9 @@ class ChainInfo extends HookConsumerWidget {
                                 color: Color(0xFFE7E8E8),
                               ),
                               LowerStatWithIcon(
-                                  icon: Icons.info_outline, statString: "66", statSymbol: "Inactive Stakes"),
+                                  icon: Icons.info_outline,
+                                  statString: "66",
+                                  statSymbol: "Inactive Stakes"),
                             ],
                           ),
                         ),

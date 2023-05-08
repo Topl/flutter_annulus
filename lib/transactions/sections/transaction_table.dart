@@ -80,7 +80,6 @@ class _TransactionTableScreenState
 
   @override
   Widget build(BuildContext context) {
-    //final colorTheme = ref.watch(appThemeColorProvider);
     final source = RowDataSource(_data, context);
     return CustomLayout(
       header: Header(
