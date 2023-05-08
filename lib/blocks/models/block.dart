@@ -29,6 +29,9 @@ class Block with _$Block {
     /// The slot in which the block was forged.
     required int slot,
 
+    /// Timestamp of block forging
+    required int timestamp,
+
     /// The number of transactions
     required int transactionNumber,
 
