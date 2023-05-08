@@ -6,6 +6,8 @@ import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../transactions/sections/transactions.dart';
+
 class HomeScreen extends HookConsumerWidget {
   static const String route = '/';
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,7 +20,9 @@ class HomeScreen extends HookConsumerWidget {
       title: 'Annulus Event Explorer',
       home: CustomLayout(
         header: Header(
-          logoAsset: colorTheme == ColorMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+          logoAsset: colorTheme == ColorMode.light
+              ? 'images/logo.svg'
+              : 'images/logo_dark.svg',
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
@@ -36,14 +40,14 @@ class HomeScreen extends HookConsumerWidget {
                   Expanded(
                     flex: 2,
                     child: Container(
-                      color: Colors.red,
-                      child: const Text("right"),
+                      child: const Text("Chart here"),
                     ),
                   )
                 ],
               ),
             ),
-            const BlockViewSlider()
+            const BlockViewSlider(),
+            const Transactions(),
           ],
         ),
         footer: Container(

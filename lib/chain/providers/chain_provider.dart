@@ -3,7 +3,8 @@ import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final chainProvider = StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
+final chainProvider =
+    StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
   /// Adding some dev notes here
   ///
   /// THIS STILL NEEDS TO BE TESTED!
@@ -25,6 +26,7 @@ final chainProvider = StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((r
 class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   final Chains selectedChain;
   final Ref ref;
+
   ChainNotifier(
     this.ref,
     this.selectedChain,

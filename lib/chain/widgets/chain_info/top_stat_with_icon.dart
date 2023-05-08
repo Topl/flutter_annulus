@@ -36,6 +36,7 @@ class TopStatWithIcon extends StatelessWidget {
                 style: const TextStyle(
                   color: Color(0xFF858E8E),
                   fontSize: 16,
+                  fontFamily: 'Rational Display',
                 ),
               ),
             ),
@@ -48,6 +49,7 @@ class TopStatWithIcon extends StatelessWidget {
                     style: const TextStyle(
                       color: Color(0xFF000000),
                       fontWeight: FontWeight.w600,
+                      fontFamily: 'Rational Display',
                       fontSize: 24,
                     ),
                   ),
@@ -56,6 +58,7 @@ class TopStatWithIcon extends StatelessWidget {
                     style: const TextStyle(
                       color: Color(0xFF535757),
                       fontSize: 16,
+                      fontFamily: 'Rational Display',
                     ),
                   ),
                 ],

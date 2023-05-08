@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 
 class ChainNameDropDown extends StatefulWidget {
-  const ChainNameDropDown({Key? key, this.colorTheme = ColorMode.light}) : super(key: key);
+  const ChainNameDropDown({Key? key, this.colorTheme = ColorMode.light})
+      : super(key: key);
 
   final ColorMode colorTheme;
 
@@ -18,8 +19,8 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
     'Private',
   ];
   String? selectedValue;
+  bool isDropDownOpen = false;
   final TextEditingController textEditingController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -30,22 +31,76 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
             'Chain Name',
             style: TextStyle(
               fontSize: 14,
-              color: widget.colorTheme == ColorMode.light ? const Color(0xFF4B4B4B) : const Color(0xFF858E8E),
+              fontFamily: 'Rational Display',
+              color: widget.colorTheme == ColorMode.light
+                  ? const Color(0xFF4B4B4B)
+                  : const Color(0xFF858E8E),
             ),
           ),
-          items: items
-              .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: widget.colorTheme == ColorMode.light ? const Color(0xFF4B4B4B) : const Color(0xFF858E8E),
+          items: [
+            ...items
+                .map((item) => DropdownMenuItem(
+                      value: item,
+                      child: Row(
+                        children: [
+                          Text(
+                            item,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Rational Display',
+                              color: widget.colorTheme == ColorMode.light
+                                  ? const Color(0xFF535757)
+                                  : const Color(0xFF858E8E),
+                            ),
+                          ),
+                          const SizedBox(width: 32),
+                          Icon(
+                            Icons.check,
+                            color: const Color(0xFF7040EC),
+                            size: selectedValue == item ? 24 : 0,
+                          ),
+                        ],
                       ),
+                    ))
+                .toList(),
+            DropdownMenuItem(
+              value: 'Add new',
+              child: Row(
+                children: [
+                  const Icon(Icons.add, color: Color(0xFF535757), size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Add new',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Rational Display',
+                      color: widget.colorTheme == ColorMode.light
+                          ? const Color(0xFF535757)
+                          : const Color(0xFF858E8E),
                     ),
+                  ),
+                ],
+              ),
+            )
+          ],
+          value: selectedValue,
+          selectedItemBuilder: (context) => items
+              .map((item) => Row(
+                    children: [
+                      Text(
+                        item,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Rational Display Normal',
+                          color: widget.colorTheme == ColorMode.light
+                              ? const Color(0xFF535757)
+                              : const Color(0xFF858E8E),
+                        ),
+                      ),
+                    ],
                   ))
               .toList(),
-          value: selectedValue,
           onChanged: (value) {
             setState(() {
               selectedValue = value as String;
@@ -58,15 +113,21 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
               border: Border.all(
-                color: widget.colorTheme == ColorMode.light ? const Color(0xFFC0C4C4) : const Color(0xFF4B4B4B),
+                color: widget.colorTheme == ColorMode.light
+                    ? const Color(0xFFC0C4C4)
+                    : const Color(0xFF4B4B4B),
               ),
-              color: widget.colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
+              color: widget.colorTheme == ColorMode.light
+                  ? const Color(0xFFFEFEFE)
+                  : const Color(0xFF282A2C),
             ),
           ),
           dropdownStyleData: DropdownStyleData(
             maxHeight: 200,
             decoration: BoxDecoration(
-              color: widget.colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
+              color: widget.colorTheme == ColorMode.light
+                  ? const Color(0xFFFEFEFE)
+                  : const Color(0xFF282A2C),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(8.0),
                 bottomRight: Radius.circular(8.0),
@@ -76,59 +137,22 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
           menuItemStyleData: const MenuItemStyleData(
             height: 40,
           ),
-          iconStyleData: const IconStyleData(
-            icon: Icon(
-              Icons.keyboard_arrow_down,
-              color: Color(0xFF858E8E),
-            ),
+          iconStyleData: IconStyleData(
+            icon: isDropDownOpen
+                ? const Icon(
+                    Icons.keyboard_arrow_up,
+                    color: Color(0xFF858E8E),
+                  )
+                : const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Color(0xFF858E8E),
+                  ),
             iconSize: 20,
           ),
-          dropdownSearchData: DropdownSearchData(
-            searchController: textEditingController,
-            searchInnerWidgetHeight: 50,
-            searchInnerWidget: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                color: widget.colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
-              ),
-              padding: const EdgeInsets.only(
-                top: 8,
-                bottom: 4,
-                right: 8,
-                left: 8,
-              ),
-              child: TextFormField(
-                expands: true,
-                maxLines: null,
-                controller: textEditingController,
-                decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 8,
-                  ),
-                  hintText: 'Search ...',
-                  hintStyle: TextStyle(
-                    color: widget.colorTheme == ColorMode.light ? const Color(0xFF4B4B4B) : const Color(0xFF858E8E),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: widget.colorTheme == ColorMode.light ? const Color(0xFFC0C4C4) : const Color(0xFF4B4B4B),
-                      width: 1.0,
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-            ),
-            searchMatchFn: (item, searchValue) {
-              return (item.value.toString().contains(searchValue));
-            },
-          ),
-          //This to clear the search value when you close the menu
           onMenuStateChange: (isOpen) {
+            setState(() {
+              isDropDownOpen = !isDropDownOpen;
+            });
             if (!isOpen) {
               textEditingController.clear();
             }
