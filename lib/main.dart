@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/utils/transitions.dart';
 import 'package:flutter_annulus/shared/widgets/slide_left_builder.dart';
+import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
 import 'package:vrouter/vrouter.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -29,9 +30,14 @@ class AnnulusRouter extends StatelessWidget {
         VNester(
           path: '',
           widgetBuilder: (Widget child) => SlideLeftBuilder(child: child),
-          buildTransition: (animation, _, child) => slideLeftTransition(animation, child),
-          nestedRoutes: const [
-            /// TODO: Add Tansaction Details Screen
+          buildTransition: (animation, _, child) =>
+              slideLeftTransition(animation, child),
+          nestedRoutes: [
+            VWidget(
+              path: TransactionTableScreen.route, // Transaction table screen
+              widget: TransactionTableScreen(),
+            ),
+
             /// TODO: Add Block Details Screen
             /// TODO: Add New Chain Screen
           ],
