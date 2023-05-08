@@ -3,8 +3,7 @@ import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final chainProvider =
-    StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
+final chainProvider = StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
   /// Adding some dev notes here
   ///
   /// THIS STILL NEEDS TO BE TESTED!
@@ -26,42 +25,50 @@ final chainProvider =
 class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   final Chains selectedChain;
   final Ref ref;
-
   ChainNotifier(
     this.ref,
     this.selectedChain,
   ) : super(
           const AsyncLoading(),
         ) {
-    getSelectedChain();
+    getSelectedChain(setState: true);
   }
 
   /// TODO: Implements with dart gRPC client
-  Future<void> getSelectedChain() async {
-    state = const AsyncLoading();
-    // Adding delay here to simulate API call
-    Future.delayed(
-      const Duration(seconds: 1),
-      () {
-        // Do API call here
-        state = const AsyncData(
-          Chain(
-            dataThroughput: 39.887,
-            averageTransactionFee: 3.71,
-            uniqueActiveAddresses: 2076,
-            eon: 2,
-            era: 5,
-            epoch: 72109,
-            totalTransactionsInEpoch: 266,
-            height: 22100762,
-            averageBlockTime: 127,
-            totalStake: 77,
-            registeredStakes: 519,
-            activeStakes: 453,
-            inactiveStakes: 66,
-          ),
-        );
-      },
+  ///
+  /// It takes a bool [setState]
+  ///
+  /// If [setState] is true, it will update the state of the provider
+  /// If [setState] is false, it will not update the state of the provider
+  Future<Chain> getSelectedChain({bool setState = false}) async {
+    if (setState) state = const AsyncLoading();
+
+    const Chain chain = Chain(
+      dataThroughput: 39.887,
+      averageTransactionFee: 3.71,
+      uniqueActiveAddresses: 2076,
+      eon: 2,
+      era: 5,
+      epoch: 72109,
+      totalTransactionsInEpoch: 266,
+      height: 22100762,
+      averageBlockTime: 127,
+      totalStake: .77,
+      registeredStakes: 519,
+      activeStakes: 453,
+      inactiveStakes: 66,
     );
+    // Adding delay here to simulate API call
+    if (setState) {
+      Future.delayed(
+        Duration(seconds: 1),
+        () {
+          // Do API call here
+          state = const AsyncData(chain);
+        },
+      );
+    }
+
+    return chain;
   }
 }
