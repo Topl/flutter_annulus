@@ -10,6 +10,7 @@ import '../../transactions/sections/transactions.dart';
 
 class HomeScreen extends HookConsumerWidget {
   static const String route = '/';
+
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -46,7 +47,7 @@ class HomeScreen extends HookConsumerWidget {
                 ],
               ),
             ),
-            const BlockViewSlider(),
+            BlockViewSlider(),
             const Transactions(),
           ],
         ),
