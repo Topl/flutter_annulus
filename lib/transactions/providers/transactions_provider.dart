@@ -3,13 +3,18 @@ import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../blocks/models/block.dart';
+
 /// TODO: This provider is just mock data currently
 /// It is also untested, so it may not work in practice
-final transactionsProvider = StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>((ref) {
+final transactionsProvider =
+    StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>(
+        (ref) {
   return TransactionsNotifier();
 });
 
-class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> {
+class TransactionsNotifier
+    extends StateNotifier<AsyncValue<List<Transaction>>> {
   TransactionsNotifier() : super(const AsyncLoading()) {
     getTransactions(setState: true);
   }
@@ -33,9 +38,19 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       final iDouble = i.toDouble();
       transactions.add(
         Transaction(
-          transactionId: iString,
+          transactionId: "8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q",
           status: TransactionStatus.confirmed,
-          block: i,
+          block: Block(
+            blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w$iString",
+            header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
+            epoch: 243827 - i,
+            size: 5432.2,
+            height: 1000 + 1,
+            slot: 10,
+            timestamp: 1683494060 + i,
+            transactionNumber: 200,
+            withdrawalNumber: 127,
+          ),
           broadcastTimestamp: DateTime.now().millisecondsSinceEpoch,
           confirmedTimestamp: DateTime.now().millisecondsSinceEpoch,
           transactionType: TransactionType.transfer,
@@ -66,7 +81,8 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
     required String transactionId,
   }) {
     return state.when(
-      data: (data) => AsyncData(data.firstWhere((element) => element.transactionId == transactionId)),
+      data: (data) => AsyncData(
+          data.firstWhere((element) => element.transactionId == transactionId)),
       error: (error, stakeTrace) => AsyncError(error, stakeTrace),
       loading: () => const AsyncLoading(),
     );
