@@ -1,0 +1,29 @@
+name: Publish Docker Images (Private)
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [web] #TODO: Add android, ios, linux, macos, windows.
+    steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@3
+        with:
+          java-version: 11
+          distribution: temurin
+      # Set up Flutter.
+      - name: Clone Flutter repository with master channel
+        uses: subosito/flutter-action@2
+        with:
+          # flutter-version: '' TODO: Pin this to a version.
+          channel: stable
+      - run: flutter doctor -v
+      - run: actions/checkout@3
+      - run: flutter pub get
+      - run: flutter build ${{ matrix.target }}

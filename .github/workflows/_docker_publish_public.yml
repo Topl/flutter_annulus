@@ -1,0 +1,61 @@
+name: Publish Docker Images (Private)
+
+on:
+  workflow_call:
+    inputs:
+      remote-repository:
+        description: 'Name of the GCP managed Artifact Registry.'
+        default: "us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/"
+        required: false
+        type: string
+      registry-auth-location:
+        description: 'Name of the GCP managed Artifact Registry.'
+        default: "us-central1-docker.pkg.dev"
+        required: false
+        type: string
+      remote-docker-image:
+        description: 'Remote Docker image. ex: toplprotocol/annulus'
+        default: "toplprotocol/annulus"
+        required: false
+        type: string
+
+jobs:
+  publish_docker_images:
+    name: Publish Docker Images
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - id: 'auth'
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.GCP_OIDC_PROVIDER_NAME }}
+          service_account: ${{ secrets.GCP_OIDC_SERVICE_ACCOUNT_EMAIL }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Auth Artifact Registry
+        run: gcloud auth configure-docker ${{ inputs.registry-auth-location }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4.4.0
+        with:
+          images: ${{ inputs.remote-docker-image }}
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
