@@ -15,11 +15,11 @@ on:
       - BN-1013-prerequisite-annulus-ci-cd-docker
 
 jobs:
-  build:
-    uses: ./.github/workflows/_build.yml
+#   build:
+#     uses: ./.github/workflows/_build.yml
 
   publish_private:
     uses: ./.github/workflows/_docker_publish_private.yml
-    needs: [build]
+    # needs: [build]
     with:
       remote-docker-image: "us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/annulus"
