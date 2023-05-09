@@ -25,7 +25,7 @@ class LowerStatWithoutIcon extends StatelessWidget {
                 color: Color(0xFF282A2C),
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                fontFamily: 'Rational Display',
+                fontFamily: 'Rational Display Medium',
               ),
             ),
             Text(

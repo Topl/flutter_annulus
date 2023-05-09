@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// Block view widget
 class BlockView extends StatelessWidget {
   final String blockEpoch;
-  final String blockTime;
+  final int blockTime;
   final String blockHeight;
   final String blockHeader;
 
@@ -71,12 +71,18 @@ class BlockView extends StatelessWidget {
                 const SizedBox(
                   height: 8,
                 ),
-                BlockHeaderText(text: blockHeader),
+                BlockHeaderText(
+                    text:
+                        blockHeader.replaceRange(7, blockHeader.length, '...')),
                 const BlockSmallText(text: 'Header'),
                 const SizedBox(
                   height: 8,
                 ),
-                BlockHeaderText(text: blockTime),
+                BlockHeaderText(
+                  text: DateTime.fromMicrosecondsSinceEpoch(blockTime)
+                      .toString()
+                      .substring(11, 19),
+                ),
                 const BlockSmallText(text: 'UTC'),
               ])
           //cardChild,
@@ -87,7 +93,9 @@ class BlockView extends StatelessWidget {
 
 class BlockHeaderText extends StatelessWidget {
   const BlockHeaderText({super.key, required this.text});
+
   final String text;
+
   @override
   Widget build(BuildContext context) {
     return Text(text,
@@ -95,7 +103,7 @@ class BlockHeaderText extends StatelessWidget {
           color: Color(0xFF282A2C),
           fontWeight: FontWeight.w500,
           fontSize: 16,
-          fontFamily: 'Rational Display',
+          fontFamily: 'Rational Display Medium',
           fontStyle: FontStyle.normal,
         ));
   }
@@ -107,7 +115,9 @@ class BlockSmallText extends StatelessWidget {
     super.key,
     required this.text,
   });
+
   final String text;
+
   @override
   Widget build(BuildContext context) {
     return Text(text,
