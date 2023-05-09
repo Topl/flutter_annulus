@@ -15,8 +15,10 @@ class TransactionTableRow extends StatelessWidget {
   final int count;
   final List<Transaction> transactions;
 
+
   @override
   Widget build(BuildContext context) {
+    final Transaction transaction = transactions[count];
     return GestureDetector(
         onTap: () {
           showModalSideSheet(
@@ -34,31 +36,31 @@ class TransactionTableRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TransactionColumnText(
-                textTop: transactions[count].transactionId.replaceRange(
-                    16, transactions[count].transactionId.length, "..."),
+                textTop: transaction.transactionId.replaceRange(
+                    16, transaction.transactionId.length, "..."),
                 textBottom: "49 ${Strings.secAgo}",
               ),
               TransactionColumnText(
                 textTop:
-                    '${Strings.height}: ${transactions[count].block.height}',
+                '${Strings.height}: ${transaction.block.height}',
                 textBottom:
-                    '${Strings.slot}: ${transactions[count].block.slot}',
+                '${Strings.slot}: ${transaction.block.slot}',
               ),
               TransactionColumnText(
-                textTop: transactions[count].transactionType.string,
+                textTop: transaction.transactionType.string,
                 textBottom: "",
                 isBottomTextRequired: false,
               ),
               TransactionColumnText(
-                  textTop: '${transactions[count].quantity} ${Strings.topl}',
-                  textBottom: '${transactions[count].amount} ${Strings.bobs}'),
+                  textTop: '${transaction.quantity} ${Strings.topl}',
+                  textBottom: '${transaction.amount} ${Strings.bobs}'),
               TransactionColumnText(
                 textTop:
-                    '${transactions[count].transactionFee} ${Strings.feeAcronym}',
+                '${transaction.transactionFee} ${Strings.feeAcronym}',
                 textBottom: "",
                 isBottomTextRequired: false,
               ),
-              StatusButton(status: transactions[count].status.string),
+              StatusButton(status: transaction.status.string),
             ]));
   }
 }
