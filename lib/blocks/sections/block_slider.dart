@@ -11,66 +11,6 @@ class BlockViewSlider extends HookConsumerWidget {
 
   final CarouselController _controller = CarouselController();
 
-// // read dummy json data for blocks
-//   static const List<dynamic> blocks = [
-//     {
-//       "hash": "h1000",
-//       "height": "1000",
-//       "time": "16:32:00",
-//       "size": "1000",
-//       "epoch": "E100",
-//       "header": "h1000"
-//     },
-//     {
-//       "hash": "h1001",
-//       "height": "1001",
-//       "time": "16:32:05",
-//       "size": "1001",
-//       "epoch": "E100",
-//       "header": "h1001"
-//     },
-//     {
-//       "hash": "h1002",
-//       "height": "1002",
-//       "time": "16:32:50",
-//       "size": "1002",
-//       "epoch": "E100",
-//       "header": "h1002"
-//     },
-//     {
-//       "hash": "h1008",
-//       "height": "1008",
-//       "time": "16:32:56",
-//       "size": "1008",
-//       "epoch": "E100",
-//       "header": "h1008"
-//     },
-//     {
-//       "hash": "h1009",
-//       "height": "1009",
-//       "time": "16:35:45",
-//       "size": "1009",
-//       "epoch": "E100",
-//       "header": "h1009"
-//     },
-//     {
-//       "hash": "h10010",
-//       "height": "10010",
-//       "time": "16:34:45",
-//       "size": "10010",
-//       "epoch": "E100",
-//       "header": "h10010"
-//     },
-//     {
-//       "hash": "h10011",
-//       "height": "10011",
-//       "time": "16:37:00",
-//       "size": "10011",
-//       "epoch": "E100",
-//       "header": "h10011"
-//     }
-//   ];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue blocksInfo = ref.watch(blockProvider);
