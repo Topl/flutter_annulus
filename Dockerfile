@@ -12,7 +12,7 @@ RUN flutter pub get && \
     flutter build web --release
 
 # Stage 2: Create a minimal image to run the built app
-FROM nginx:alpine
+FROM nginx:stable-alpine3.17
 
 # Copy the built app from the previous stage to the nginx html directory
 COPY --from=build /app/build/web /usr/share/nginx/html
