@@ -158,53 +158,64 @@ class TransactionTabBarView extends StatelessWidget {
             ],
           ),
         ),
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const SizedBox(
-            height: 20,
+        Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
           ),
-          Row(
-            children: const [
-              Spacing(),
-              SizedBox(width: 172, child: CustomTextLeft(desc: 'Quantity')),
-              SizedBox(
-                width: 24,
-              ),
-              CustomTextRight(desc: '413113 / 64.31'),
-            ],
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: const [
+                Spacing(),
+                SizedBox(width: 172, child: CustomTextLeft(desc: 'Quantity')),
+                SizedBox(
+                  width: 24,
+                ),
+                CustomTextRight(desc: '413113 / 64.31'),
+              ],
+            ),
+            Row(
+              children: const [
+                Spacing(),
+                SizedBox(width: 172, child: CustomTextLeft(desc: 'Name')),
+                SizedBox(
+                  width: 24,
+                ),
+                CustomTextRight(desc: 'Topl / Allie'),
+              ],
+            ),
+            Row(
+              children: const [
+                Spacing(),
+                SizedBox(width: 172, child: CustomTextLeft(desc: 'From')),
+                SizedBox(
+                  width: 24,
+                ),
+                CustomTextRight(desc: '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'),
+              ],
+            ),
+            Row(
+              children: const [
+                Spacing(),
+                SizedBox(width: 172, child: CustomTextLeft(desc: 'To')),
+                SizedBox(
+                  width: 24,
+                ),
+                CustomTextRight(desc: '7bY6Dne54qMU12cz3oPF4yVx5aG6a'),
+              ],
+            )
+          ]),
+        ),
+        Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
           ),
-          Row(
-            children: const [
-              Spacing(),
-              SizedBox(width: 172, child: CustomTextLeft(desc: 'Name')),
-              SizedBox(
-                width: 24,
-              ),
-              CustomTextRight(desc: 'Topl / Allie'),
-            ],
+          child: const Center(
+            child: CustomTextLeft(desc: 'IO Txn Details'),
           ),
-          Row(
-            children: const [
-              Spacing(),
-              SizedBox(width: 172, child: CustomTextLeft(desc: 'From')),
-              SizedBox(
-                width: 24,
-              ),
-              CustomTextRight(desc: '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'),
-            ],
-          ),
-          Row(
-            children: const [
-              Spacing(),
-              SizedBox(width: 172, child: CustomTextLeft(desc: 'To')),
-              SizedBox(
-                width: 24,
-              ),
-              CustomTextRight(desc: '7bY6Dne54qMU12cz3oPF4yVx5aG6a'),
-            ],
-          )
-        ]),
-        const Center(
-          child: CustomTextLeft(desc: 'IO Txn Details'),
         )
       ],
     );

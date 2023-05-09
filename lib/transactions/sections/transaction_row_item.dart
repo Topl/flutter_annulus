@@ -28,50 +28,69 @@ class TransactionTableRow extends StatelessWidget {
         },
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              TransactionColumnText(
-                textTop: transaction[count]["txnHashId"],
-                textBottom: "49 ${Strings.secAgo}",
+              SizedBox(
+                width: 340,
+                child: TransactionColumnText(
+                  textTop: transaction[count]["txnHashId"],
+                  textBottom: "49 ${Strings.secAgo}",
+                ),
               ),
-              TransactionColumnText(
-                textTop:
-                    '${Strings.height}: ${transaction[count]['block']['height']}',
-                textBottom:
-                    '${Strings.slot}: ${transaction[count]["block"]["slot"]}',
-              ),
-              TransactionColumnText(
-                textTop: transaction[count]["type"],
-                textBottom: "",
-                isBottomTextRequired: false,
-              ),
-              TransactionColumnText(
+              SizedBox(
+                width: 200,
+                child: TransactionColumnText(
                   textTop:
-                      '${transaction[count]["summary"]["toplValue"]} ${Strings.topl}',
+                      '${Strings.height}: ${transaction[count]['block']['height']}',
                   textBottom:
-                      '${transaction[count]["summary"]["bobsValue"]} ${Strings.bobs}'),
-              TransactionColumnText(
-                textTop: '${transaction[count]["fee"]} ${Strings.feeAcronym}',
-                textBottom: "",
-                isBottomTextRequired: false,
+                      '${Strings.slot}: ${transaction[count]["block"]["slot"]}',
+                ),
               ),
-              StatusButton(status: transaction[count]["status"]),
+              SizedBox(
+                width: 200,
+                child: TransactionColumnText(
+                  textTop: transaction[count]["type"],
+                  textBottom: "",
+                  isBottomTextRequired: false,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: TransactionColumnText(
+                    textTop:
+                        '${transaction[count]["summary"]["toplValue"]} ${Strings.topl}',
+                    textBottom:
+                        '${transaction[count]["summary"]["bobsValue"]} ${Strings.bobs}'),
+              ),
+              SizedBox(
+                width: 150,
+                child: TransactionColumnText(
+                  textTop: '${transaction[count]["fee"]} ${Strings.feeAcronym}',
+                  textBottom: "",
+                  isBottomTextRequired: false,
+                ),
+              ),
+              SizedBox(
+                  width: 300,
+                  child: StatusButton(status: transaction[count]["status"])),
             ]));
   }
 }
 
 /// Data source class for obtaining row data for PaginatedDataTable.
 class RowDataSource extends DataTableSource {
-  RowDataSource(this.data, this.context);
+  RowDataSource(this.data, this.context, this.clr);
 
   BuildContext context;
   List<Map> data;
+  Color clr;
 
   @override
   DataRow? getRow(int index) {
     final row = data[index];
     if (index < data.length) {
       return DataRow(
+          color: MaterialStateProperty.all(clr),
           onLongPress: () {
             showModalSideSheet(
                 context: context,

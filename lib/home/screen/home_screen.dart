@@ -26,31 +26,55 @@ class HomeScreen extends HookConsumerWidget {
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
-        content: Column(
-          children: [
-            const SizedBox(height: 20),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              child: Row(
-                children: [
-                  const Expanded(
-                    flex: 3,
-                    child: ChainInfo(),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      child: const Text("Chart here"),
+        content: Container(
+          decoration: colorTheme == ColorMode.light
+              ? const BoxDecoration(
+                  color: Color(0xFFFEFEFE),
+                )
+              : const BoxDecoration(
+                  color: Color(0xFF282A2C),
+                ),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                child: Row(
+                  children: [
+                    const Expanded(
+                      flex: 3,
+                      child: ChainInfo(),
                     ),
-                  )
-                ],
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        height: 408,
+                        decoration: BoxDecoration(
+                          color: colorTheme == ColorMode.light
+                              ? const Color(0xFFFEFEFE)
+                              : const Color(0xFF282A2C),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                              color: const Color(0xFFE7E8E8),
+                              style: BorderStyle.solid,
+                              width: 1.0),
+                        ),
+                        child: Center(child: const Text("Chart here")),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            const BlockViewSlider(),
-            const Transactions(),
-          ],
+              const BlockViewSlider(),
+              const Transactions(),
+            ],
+          ),
         ),
         footer: Container(
+          color: colorTheme == ColorMode.light
+              ? const Color(0xFFFEFEFE)
+              : const Color(0xFF282A2C),
           height: 100,
           alignment: Alignment.center,
           child: const Text("footer"),
