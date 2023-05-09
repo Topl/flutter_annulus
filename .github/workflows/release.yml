@@ -20,3 +20,4 @@ jobs:
   publish_private:
     uses: ./.github/workflows/_docker_publish_public.yml
     needs: [build]
+    secrets: inherit

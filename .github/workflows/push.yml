@@ -21,5 +21,6 @@ jobs:
   publish_private:
     uses: ./.github/workflows/_docker_publish_private.yml
     # needs: [build]
+    secrets: inherit
     with:
       remote-docker-image: "us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/annulus"
