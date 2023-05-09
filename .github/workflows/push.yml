@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/_build.yml
 
   publish_private:
-    uses: ./.github/workflows/_publish_private.yml
+    uses: ./.github/workflows/_docker_publish_private.yml
     needs: [build]
     with:
       remote-docker-image: "us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/annulus"

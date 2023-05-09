@@ -18,5 +18,5 @@ jobs:
     uses: ./.github/workflows/_build.yml
 
   publish_private:
-    uses: ./.github/workflows/_publish_public.yml
+    uses: ./.github/workflows/_docker_publish_public.yml
     needs: [build]
