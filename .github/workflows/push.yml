@@ -14,6 +14,7 @@ on:
     branches:
       - main
       - dev
+      - BN-1013-prerequisite-annulus-ci-cd-docker
 
 jobs:
   build:
