@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/foundation.dart';
+import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 
@@ -7,6 +8,7 @@ import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'transaction.freezed.dart';
+
 part 'transaction.g.dart';
 
 @freezed
@@ -19,7 +21,7 @@ class Transaction with _$Transaction {
     required TransactionStatus status,
 
     /// The block number of the transaction
-    required int block,
+    required Block block,
 
     /// The time the transaction was broadcasted
     required int broadcastTimestamp,
@@ -54,5 +56,7 @@ class Transaction with _$Transaction {
     /// The name of the asset
     required String name,
   }) = _Transaction;
-  factory Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);
+
+  factory Transaction.fromJson(Map<String, dynamic> json) =>
+      _$TransactionFromJson(json);
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../models/transaction_status.dart';
+
 /// Custom Status Button Widget
 class StatusButton extends StatelessWidget {
-  const StatusButton({super.key, this.status = "Pending"});
+  const StatusButton({super.key, this.status = "pending"});
+
   final String status;
 
   /// Function to return color based on status
@@ -89,7 +92,9 @@ class TableHeaderText extends StatelessWidget {
     super.key,
     required this.name,
   });
+
   final String name;
+
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -111,6 +116,7 @@ class TransactionColumnText extends StatelessWidget {
     required this.textBottom,
     this.isBottomTextRequired = true,
   });
+
   final String textTop;
   final String textBottom;
   final bool isBottomTextRequired;

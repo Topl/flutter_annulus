@@ -48,7 +48,7 @@ class HomeScreen extends HookConsumerWidget {
               ),
             ),
             BlockViewSlider(),
-            const Transactions(),
+            Transactions(),
           ],
         ),
         footer: Container(

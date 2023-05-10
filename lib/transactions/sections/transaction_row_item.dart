@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_details_drawer.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 
@@ -9,19 +10,23 @@ import '../widgets/custom_transaction_widgets.dart';
 /// A widget to display the list of transactions.
 class TransactionTableRow extends StatelessWidget {
   const TransactionTableRow(
-      {Key? key, required this.transaction, this.count = 0})
+      {Key? key, required this.transactions, this.count = 0})
       : super(key: key);
   final int count;
-  final List<Map> transaction;
+  final List<Transaction> transactions;
+
+
   @override
   Widget build(BuildContext context) {
+    final Transaction transaction = transactions[count];
     return GestureDetector(
         onTap: () {
           showModalSideSheet(
               context: context,
               ignoreAppBar: false,
               width: 640,
-              barrierColor: Colors.white.withOpacity(0.64), // with blur,
+              barrierColor: Colors.white.withOpacity(0.64),
+              // with blur,
               barrierDismissible: true,
               body: const TransactionDetailsDrawer());
           // Add what you want to do on tap
@@ -31,31 +36,31 @@ class TransactionTableRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TransactionColumnText(
-                textTop: transaction[count]["txnHashId"],
+                textTop: transaction.transactionId.replaceRange(
+                    16, transaction.transactionId.length, "..."),
                 textBottom: "49 ${Strings.secAgo}",
               ),
               TransactionColumnText(
                 textTop:
-                    '${Strings.height}: ${transaction[count]['block']['height']}',
+                '${Strings.height}: ${transaction.block.height}',
                 textBottom:
-                    '${Strings.slot}: ${transaction[count]["block"]["slot"]}',
+                '${Strings.slot}: ${transaction.block.slot}',
               ),
               TransactionColumnText(
-                textTop: transaction[count]["type"],
+                textTop: transaction.transactionType.string,
                 textBottom: "",
                 isBottomTextRequired: false,
               ),
               TransactionColumnText(
-                  textTop:
-                      '${transaction[count]["summary"]["toplValue"]} ${Strings.topl}',
-                  textBottom:
-                      '${transaction[count]["summary"]["bobsValue"]} ${Strings.bobs}'),
+                  textTop: '${transaction.quantity} ${Strings.topl}',
+                  textBottom: '${transaction.amount} ${Strings.bobs}'),
               TransactionColumnText(
-                textTop: '${transaction[count]["fee"]} ${Strings.feeAcronym}',
+                textTop:
+                '${transaction.transactionFee} ${Strings.feeAcronym}',
                 textBottom: "",
                 isBottomTextRequired: false,
               ),
-              StatusButton(status: transaction[count]["status"]),
+              StatusButton(status: transaction.status.string),
             ]));
   }
 }
@@ -77,7 +82,8 @@ class RowDataSource extends DataTableSource {
                 context: context,
                 ignoreAppBar: false,
                 width: 640,
-                barrierColor: Colors.white.withOpacity(0.64), // with blur,
+                barrierColor: Colors.white.withOpacity(0.64),
+                // with blur,
                 barrierDismissible: true,
                 body: const TransactionDetailsDrawer());
             // Add what you want to do on tap
