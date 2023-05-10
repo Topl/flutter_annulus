@@ -9,6 +9,7 @@ COPY . .
 
 # Run the necessary Flutter commands to build the app
 RUN flutter pub get && \
+    flutter packages pub run build_runner build --delete-conflicting-outputs && \
     flutter build web --release
 
 # Stage 2: Create a minimal image to run the built app
