@@ -18,7 +18,7 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/_build.yml
+    uses: ./.github/workflows/_build.yml 
 
   publish_private:
     uses: ./.github/workflows/_docker_publish_private.yml
