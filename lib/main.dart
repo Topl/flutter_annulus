@@ -20,6 +20,9 @@ void main() {
 class AnnulusRouter extends StatelessWidget {
   const AnnulusRouter({Key? key}) : super(key: key);
 
+  static const double mobileBreak = 550;
+  static const double tabletBreak = 800;
+
   @override
   Widget build(BuildContext context) {
     return VRouter(
@@ -28,9 +31,9 @@ class AnnulusRouter extends StatelessWidget {
         return ResponsiveBreakpoints.builder(
           child: child,
           breakpoints: const [
-            Breakpoint(start: 0, end: 550, name: MOBILE),
-            Breakpoint(start: 551, end: 800, name: TABLET),
-            Breakpoint(start: 801, end: double.infinity, name: DESKTOP),
+            Breakpoint(start: 0, end: mobileBreak, name: MOBILE),
+            Breakpoint(start: mobileBreak + 1, end: tabletBreak, name: TABLET),
+            Breakpoint(start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
           ],
         );
       },
