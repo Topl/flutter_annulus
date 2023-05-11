@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_table_header.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_row_item.dart';
@@ -15,25 +16,33 @@ class Transactions extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<Transaction>> transactionsInfo =
         ref.watch(transactionsProvider);
+    final colorTheme = ref.watch(appThemeColorProvider);
+
     return transactionsInfo.when(
       data: (transactions) => Container(
         margin: const EdgeInsets.only(
-            top: 20.0, bottom: 20.0, left: 40.0, right: 80.0),
+            top: 20.0, bottom: 20.0, left: 40.0, right: 40.0),
         padding: const EdgeInsets.only(
             top: 20.0, bottom: 20.0, left: 0.0, right: 0.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorTheme == ColorMode.light
+              ? Colors.white
+              : const Color(0xFF282A2C),
           borderRadius: BorderRadius.circular(10.0),
           border: Border.all(
-              color: const Color(0xFFE7E8E8),
+              color: colorTheme == ColorMode.light
+                  ? const Color(0xFFE7E8E8)
+                  : const Color(0xFF4B4B4B),
               style: BorderStyle.solid,
               width: 1.0),
         ),
         child: Column(children: <Widget>[
           Table(
             border: TableBorder.symmetric(
-              inside: const BorderSide(
-                color: Color(0xFFE7E8E8),
+              inside: BorderSide(
+                color: colorTheme == ColorMode.light
+                    ? const Color(0xFFE7E8E8)
+                    : const Color(0xFF4B4B4B),
                 width: 1,
                 style: BorderStyle.none,
               ),
@@ -55,12 +64,14 @@ class Transactions extends HookConsumerWidget {
               for (var i = 0; i < transactions.length; i++)
                 if (i < 3)
                   TableRow(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
                             style: BorderStyle.solid,
                             width: 1.0,
-                            color: Color(0xFFE7E8E8)),
+                            color: colorTheme == ColorMode.light
+                                ? const Color(0xFFE7E8E8)
+                                : const Color(0xFF4B4B4B)),
                       ),
                     ),
                     children: [
@@ -79,19 +90,23 @@ class Transactions extends HookConsumerWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Text("See All Transactions",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xFF535757),
+                        color: colorTheme == ColorMode.light
+                            ? const Color(0xFF535757)
+                            : const Color(0xFFC0C4C4),
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'Rational Display',
                       )),
-                  SizedBox(width: 10.0),
+                  const SizedBox(width: 10.0),
                   Icon(
                     Icons.arrow_forward_ios,
-                    color: Color(0xFF535757),
+                    color: colorTheme == ColorMode.light
+                        ? const Color(0xFF535757)
+                        : const Color(0xFFC0C4C4),
                     size: 14,
                   ),
                 ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class LowerStatWithIcon extends StatelessWidget {
+class LowerStatWithIcon extends ConsumerWidget {
   IconData icon;
   String statString;
   String statSymbol;
@@ -13,7 +15,8 @@ class LowerStatWithIcon extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return Expanded(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -24,8 +27,10 @@ class LowerStatWithIcon extends StatelessWidget {
               children: [
                 Text(
                   statString,
-                  style: const TextStyle(
-                    color: Color(0xFF282A2C),
+                  style: TextStyle(
+                    color: colorTheme == ColorMode.light
+                        ? const Color(0xFF282A2C)
+                        : const Color(0xFFFEFEFE),
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     fontFamily: 'Rational Display Medium',

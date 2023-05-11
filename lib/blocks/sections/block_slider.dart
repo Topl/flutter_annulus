@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../shared/providers/app_theme_provider.dart';
 import '../providers/block_provider.dart';
 import '../widgets/block_slider/block_view.dart';
 
@@ -14,7 +15,7 @@ class BlockViewSlider extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue blocksInfo = ref.watch(blockProvider);
-
+    final colorTheme = ref.watch(appThemeColorProvider);
     return blocksInfo.when(
       data: (blocks) => SingleChildScrollView(
         child: Container(
@@ -22,17 +23,19 @@ class BlockViewSlider extends HookConsumerWidget {
               top: 20.0, bottom: 20.0, left: 40.0, right: 40.0),
           padding: const EdgeInsets.only(
               top: 20.0, bottom: 30.0, left: 0.0, right: 0.0),
-          //height: MediaQuery.of(context).size.height * 0.5,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: colorTheme == ColorMode.light
+                ? const Color(0xFFFEFEFE)
+                : const Color(0xFF282A2C),
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(
-                color: const Color(0xFFE7E8E8),
+                color: colorTheme == ColorMode.light
+                    ? const Color(0xFFE7E8E8)
+                    : const Color(0xFF4B4B4B),
                 style: BorderStyle.solid,
                 width: 1.0),
           ),
           child: Wrap(
-            // direction: Axis.vertical,
             children: <Widget>[
               Row(
                 children: [
@@ -109,7 +112,7 @@ class BlockViewSlider extends HookConsumerWidget {
 }
 
 // Widget for the visible block view
-class BlockPlaceHolder extends StatelessWidget {
+class BlockPlaceHolder extends ConsumerWidget {
   const BlockPlaceHolder({
     super.key,
     required CarouselController controller,
@@ -118,7 +121,8 @@ class BlockPlaceHolder extends StatelessWidget {
   final CarouselController _controller;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return SizedBox(
       width: 240,
       child: Column(
@@ -128,12 +132,14 @@ class BlockPlaceHolder extends StatelessWidget {
           const SizedBox(
             height: 40,
           ),
-          const Text(
+          Text(
             "Latest Blocks",
             style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF282A2C),
+                color: colorTheme == ColorMode.light
+                    ? const Color(0xFF282A2C)
+                    : const Color(0xFFFEFEFE),
                 fontFamily: "Rational Display"),
           ),
           const SizedBox(
@@ -169,7 +175,7 @@ class BlockPlaceHolder extends StatelessWidget {
 }
 
 // Custom Text Button widget
-class CustomTextButton extends StatelessWidget {
+class CustomTextButton extends ConsumerWidget {
   const CustomTextButton({
     super.key,
     required CarouselController controller,
@@ -180,7 +186,8 @@ class CustomTextButton extends StatelessWidget {
   final CarouselController _controller;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return TextButton(
       style: TextButton.styleFrom(
         fixedSize: const Size(56, 56),
@@ -188,12 +195,16 @@ class CustomTextButton extends StatelessWidget {
           fontSize: 28,
           fontWeight: FontWeight.w600,
         ),
-        backgroundColor: const Color(0xFFE2E3E3),
+        backgroundColor: colorTheme == ColorMode.light
+            ? const Color(0xFFE2E3E3)
+            : const Color(0xFF434648),
       ),
       onPressed: () => _controller.previousPage(),
       child: Text(text,
-          style: const TextStyle(
-            color: Color(0xFF535757),
+          style: TextStyle(
+            color: colorTheme == ColorMode.light
+                ? const Color(0xFF535757)
+                : const Color(0xFFAFB6B6),
           )),
     );
   }
