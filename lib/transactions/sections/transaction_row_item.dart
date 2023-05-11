@@ -33,7 +33,6 @@ class TransactionTableRow extends StatelessWidget {
         },
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TransactionColumnText(
                 textTop: transaction.transactionId.replaceRange(
