@@ -33,7 +33,7 @@ class TransactionTableRow extends StatelessWidget {
         },
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TransactionColumnText(
                 textTop: transaction.transactionId.replaceRange(
@@ -67,16 +67,18 @@ class TransactionTableRow extends StatelessWidget {
 
 /// Data source class for obtaining row data for PaginatedDataTable.
 class RowDataSource extends DataTableSource {
-  RowDataSource(this.data, this.context);
+  RowDataSource(this.data, this.context, this.clr);
 
   BuildContext context;
   List<Map> data;
+  Color clr;
 
   @override
   DataRow? getRow(int index) {
     final row = data[index];
     if (index < data.length) {
       return DataRow(
+          color: MaterialStateProperty.all(clr),
           onLongPress: () {
             showModalSideSheet(
                 context: context,
