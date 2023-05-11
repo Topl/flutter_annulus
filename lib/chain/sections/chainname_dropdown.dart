@@ -21,15 +21,7 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
     'Valhalla',
     'Private',
   ];
-  // List of items in our dropdown menu
-  final List<String> currencies = [
-    'LVL',
-    'USD',
-    'EUR',
-    'GBP',
-    'ZAR',
-    'AUD',
-  ];
+
   String? selectedValue;
   bool isDropDownOpen = false;
   bool isCDropDownOpen = false;

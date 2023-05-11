@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import '../../shared/providers/app_theme_provider.dart';
+import '../models/currency.dart';
 
 /// A widget that displays a dropdown button for selecting a chain name.
 class AddNewNetworkContainer extends StatefulWidget {
@@ -20,16 +21,6 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
 
   /// selectedCurrencyValue is used to store the selected value from the dropdown
   String? selectedCurrencyValue = 'LVL';
-
-  /// List of items in our dropdown menu
-  final List<String> currencies = [
-    'LVL',
-    'USD',
-    'EUR',
-    'GBP',
-    'ZAR',
-    'AUD',
-  ];
 
   final TextEditingController textEditingController = TextEditingController();
 

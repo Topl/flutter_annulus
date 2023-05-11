@@ -15,7 +15,6 @@ class TransactionTableRow extends StatelessWidget {
   final int count;
   final List<Transaction> transactions;
 
-
   @override
   Widget build(BuildContext context) {
     final Transaction transaction = transactions[count];
@@ -31,36 +30,48 @@ class TransactionTableRow extends StatelessWidget {
               body: const TransactionDetailsDrawer());
           // Add what you want to do on tap
         },
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TransactionColumnText(
-                textTop: transaction.transactionId.replaceRange(
-                    16, transaction.transactionId.length, "..."),
-                textBottom: "49 ${Strings.secAgo}",
-              ),
-              TransactionColumnText(
-                textTop:
-                '${Strings.height}: ${transaction.block.height}',
-                textBottom:
-                '${Strings.slot}: ${transaction.block.slot}',
-              ),
-              TransactionColumnText(
-                textTop: transaction.transactionType.string,
-                textBottom: "",
-                isBottomTextRequired: false,
-              ),
-              TransactionColumnText(
-                  textTop: '${transaction.quantity} ${Strings.topl}',
-                  textBottom: '${transaction.amount} ${Strings.bobs}'),
-              TransactionColumnText(
-                textTop:
-                '${transaction.transactionFee} ${Strings.feeAcronym}',
-                textBottom: "",
-                isBottomTextRequired: false,
-              ),
-              StatusButton(status: transaction.status.string),
-            ]));
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SizedBox(
+            width: 340,
+            child: TransactionColumnText(
+              textTop: transaction.transactionId
+                  .replaceRange(16, transaction.transactionId.length, "..."),
+              textBottom: "49 ${Strings.secAgo}",
+            ),
+          ),
+          SizedBox(
+            width: 200,
+            child: TransactionColumnText(
+              textTop: '${Strings.height}: ${transaction.block.height}',
+              textBottom: '${Strings.slot}: ${transaction.block.slot}',
+            ),
+          ),
+          SizedBox(
+            width: 200,
+            child: TransactionColumnText(
+              textTop: transaction.transactionType.string,
+              textBottom: "",
+              isBottomTextRequired: false,
+            ),
+          ),
+          SizedBox(
+            width: 200,
+            child: TransactionColumnText(
+                textTop: '${transaction.quantity} ${Strings.topl}',
+                textBottom: '${transaction.amount} ${Strings.bobs}'),
+          ),
+          SizedBox(
+            width: 150,
+            child: TransactionColumnText(
+              textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
+              textBottom: "",
+              isBottomTextRequired: false,
+            ),
+          ),
+          SizedBox(
+              width: 300,
+              child: StatusButton(status: transaction.status.string)),
+        ]));
   }
 }
 

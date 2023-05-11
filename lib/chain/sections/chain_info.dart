@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/widgets/chain_info/lower_stats_without_icon.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../shared/providers/app_theme_provider.dart';
 import '../providers/chain_provider.dart';
 import '../widgets/chain_info/top_stat_with_icon.dart';
 import '../widgets/chain_info/lower_stat_with_icon.dart';
@@ -15,7 +14,6 @@ class ChainInfo extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<Chain> chainInfo = ref.watch(chainProvider);
-    final colorTheme = ref.watch(appThemeColorProvider);
     return chainInfo.when(
       data: (chain) => Container(
         margin: const EdgeInsets.only(right: 40),
