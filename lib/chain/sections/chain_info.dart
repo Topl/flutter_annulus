@@ -14,7 +14,6 @@ class ChainInfo extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<Chain> chainInfo = ref.watch(chainProvider);
-
     return chainInfo.when(
       data: (chain) => Container(
         margin: const EdgeInsets.only(right: 40),
