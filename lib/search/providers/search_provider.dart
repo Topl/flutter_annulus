@@ -21,15 +21,42 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
   Future<List<SearchResult>> search(String query) async {
     state = const AsyncLoading();
 
-    final List<SearchResult> results = [];
-    const int resultAmount = 3;
-    for (int i = 0; i < resultAmount; i++) {
-      final iString = i.toString();
-      final iDouble = i.toDouble();
+    final List<BlockResult> blocks = await _searchBlocks(query);
+    final List<TransactionResult> transactions = await _searchTransactions(query);
+    final List<UTxOResult> utxos = await _searchUTxOs(query);
+    final result = [...blocks, ...transactions, ...utxos];
+    state = AsyncData(result);
+    return result;
+    // Add Transaction
+  }
 
-      // Add Transaction
-      results.add(
-        SearchResult.transaction(
+  Future<List<BlockResult>> _searchBlocks(String query) {
+    return Future.delayed(const Duration(milliseconds: 250), () {
+      return List.generate(3, (i) {
+        final iString = i.toString();
+        return BlockResult(
+          Block(
+            blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w$iString",
+            header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
+            epoch: 243827 - i,
+            size: 5432.2,
+            height: 1000 + 1,
+            slot: 10,
+            timestamp: 1683494060 + i,
+            transactionNumber: 200,
+            withdrawalNumber: 127,
+          ),
+        );
+      });
+    });
+  }
+
+  Future<List<TransactionResult>> _searchTransactions(String query) {
+    return Future.delayed(const Duration(milliseconds: 250), () {
+      return List.generate(3, (i) {
+        final iString = i.toString();
+        final iDouble = i.toDouble();
+        return TransactionResult(
           Transaction(
             transactionId: "8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q",
             status: TransactionStatus.confirmed,
@@ -56,35 +83,15 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
             quantity: i,
             name: iString,
           ),
-        ),
-      );
+        );
+      });
+    });
+  }
 
-      // Add Block
-      results.add(
-        SearchResult.block(
-          Block(
-            blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w$iString",
-            header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
-            epoch: 243827 - i,
-            size: 5432.2,
-            height: 1000 + 1,
-            slot: 10,
-            timestamp: 1683494060 + i,
-            transactionNumber: 200,
-            withdrawalNumber: 127,
-          ),
-        ),
-      );
-
-      // Add UTxO
-      results.add(
-        const SearchResult.uTxO(
-          UTxO(),
-        ),
-      );
-    }
-
-    return results;
+  Future<List<UTxOResult>> _searchUTxOs(String query) async {
+    return List.generate(3, (i) {
+      return UTxOResult(UTxO());
+    });
   }
 
   void clearSearch() {
