@@ -28,13 +28,11 @@ class HomeScreen extends HookConsumerWidget {
           onDropdownChanged: (String value) {},
         ),
         content: Container(
-          decoration: colorTheme == ColorMode.light
-              ? const BoxDecoration(
-                  color: Color(0xFFFEFEFE),
-                )
-              : const BoxDecoration(
-                  color: Color(0xFF282A2C),
-                ),
+          decoration: BoxDecoration(
+            color: colorTheme == ColorMode.light
+                ? const Color(0xFFFEFEFE)
+                : const Color(0xFF282A2C),
+          ),
           child: Column(
             children: [
               const SizedBox(height: 20),
@@ -57,11 +55,18 @@ class HomeScreen extends HookConsumerWidget {
                               : const Color(0xFF282A2C),
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                              color: const Color(0xFFE7E8E8),
+                              color: colorTheme == ColorMode.light
+                                  ? const Color(0xFFE7E8E8)
+                                  : const Color(0xFF4B4B4B),
                               style: BorderStyle.solid,
                               width: 1.0),
                         ),
-                        child: Center(child: const Text("Chart here")),
+                        child: Center(
+                            child: Text("Chart here",
+                                style: TextStyle(
+                                    color: colorTheme == ColorMode.light
+                                        ? const Color(0xFF000000)
+                                        : const Color(0xFFFEFEFE)))),
                       ),
                     )
                   ],
@@ -78,7 +83,11 @@ class HomeScreen extends HookConsumerWidget {
               : const Color(0xFF282A2C),
           height: 100,
           alignment: Alignment.center,
-          child: const Text("footer"),
+          child: Text("Footer",
+              style: TextStyle(
+                  color: colorTheme == ColorMode.light
+                      ? const Color(0xFF000000)
+                      : const Color(0xFFFEFEFE))),
         ),
       ),
     );

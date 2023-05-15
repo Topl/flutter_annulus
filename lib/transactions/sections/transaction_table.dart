@@ -86,8 +86,8 @@ class _TransactionTableScreenState
         _data,
         context,
         (colorTheme == ColorMode.light
-            ? Color(0xFFFEFEFE)
-            : Color(0xFF282A2C)));
+            ? const Color(0xFFFEFEFE)
+            : const Color(0xFF282A2C)));
 
     return CustomLayout(
       header: Header(
@@ -116,18 +116,22 @@ class _TransactionTableScreenState
                             context.vRouter.to('/');
                           },
                           child: Row(
-                            children: const [
+                            children: [
                               Icon(
                                 Icons.arrow_back,
-                                color: Color(0xFF535757),
+                                color: colorTheme == ColorMode.light
+                                    ? const Color(0xFF535757)
+                                    : const Color(0xFFAFB6B6),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 8,
                               ),
                               Text(
                                 "Back",
                                 style: TextStyle(
-                                  color: Color(0xFF535757),
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color(0xFF535757)
+                                      : const Color(0xFFAFB6B6),
                                   fontFamily: 'Rational Display',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -138,12 +142,7 @@ class _TransactionTableScreenState
                     )),
                 Container(
                     margin: const EdgeInsets.only(
-                        left: 40.0, right: 40.0, top: 8.0, bottom: 40.0),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
+                        left: 40.0, right: 40.0, top: 8.0, bottom: 80.0),
                     child: SingleChildScrollView(
                       child: PaginatedDataTable(
                         source: source,
@@ -228,7 +227,15 @@ class _TransactionTableScreenState
             : const Color(0xFF282A2C),
         height: 100,
         alignment: Alignment.center,
-        child: const Text("footer"),
+        child: Text("Footer",
+            style: TextStyle(
+              color: colorTheme == ColorMode.light
+                  ? const Color(0xFF535757)
+                  : const Color(0xFFFEFEFE),
+              fontFamily: 'Rational Display',
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            )),
       ),
     );
   }

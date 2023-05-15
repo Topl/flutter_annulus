@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/widgets/chain_info/lower_stats_without_icon.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../shared/providers/app_theme_provider.dart';
 import '../providers/chain_provider.dart';
 import '../widgets/chain_info/top_stat_with_icon.dart';
 import '../widgets/chain_info/lower_stat_with_icon.dart';
@@ -14,14 +15,19 @@ class ChainInfo extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<Chain> chainInfo = ref.watch(chainProvider);
+    final colorTheme = ref.watch(appThemeColorProvider);
     return chainInfo.when(
       data: (chain) => Container(
         margin: const EdgeInsets.only(right: 40),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorTheme == ColorMode.light
+              ? Colors.white
+              : const Color(0xFF282A2C),
           borderRadius: BorderRadius.circular(10.0),
           border: Border.all(
-              color: const Color(0xFFE7E8E8),
+              color: colorTheme == ColorMode.light
+                  ? const Color(0xFFE7E8E8)
+                  : const Color(0xFF4B4B4B),
               style: BorderStyle.solid,
               width: 1.0),
         ),
@@ -41,11 +47,13 @@ class ChainInfo extends HookConsumerWidget {
                         statAmount: chain.dataThroughput.toString(),
                         statSymbol: " kbps",
                         firstItem: true),
-                    const VerticalDivider(
+                    VerticalDivider(
                       indent: 20,
                       endIndent: 20,
                       thickness: 1,
-                      color: Color(0xFFE7E8E8),
+                      color: colorTheme == ColorMode.light
+                          ? const Color(0xFFE7E8E8)
+                          : const Color(0xFF4B4B4B),
                     ),
                     TopStatWithIcon(
                       iconString: 'images/coin.svg',
@@ -53,11 +61,13 @@ class ChainInfo extends HookConsumerWidget {
                       statAmount: chain.averageTransactionFee.toString(),
                       statSymbol: " LVL",
                     ),
-                    const VerticalDivider(
+                    VerticalDivider(
                       indent: 20,
                       endIndent: 20,
                       thickness: 1,
-                      color: Color(0xFFE7E8E8),
+                      color: colorTheme == ColorMode.light
+                          ? const Color(0xFFE7E8E8)
+                          : const Color(0xFF4B4B4B),
                     ),
                     TopStatWithIcon(
                       iconString: 'images/wallet.svg',
@@ -69,8 +79,10 @@ class ChainInfo extends HookConsumerWidget {
                 ),
               ),
             ),
-            const Divider(
-              color: Color(0xFFE7E8E8),
+            Divider(
+              color: colorTheme == ColorMode.light
+                  ? const Color(0xFFE7E8E8)
+                  : const Color(0xFF4B4B4B),
               indent: 0,
               height: 1,
             ),
@@ -93,6 +105,7 @@ class ChainInfo extends HookConsumerWidget {
                                 style: TextStyle(
                                   color: Color(0xFF858E8E),
                                   fontSize: 16,
+                                  fontFamily: 'Rational Display Medium',
                                 ),
                               ),
                               const SizedBox(
@@ -100,10 +113,13 @@ class ChainInfo extends HookConsumerWidget {
                               ),
                               Text(
                                 chain.eon.toString(),
-                                style: const TextStyle(
-                                  color: Color(0xFF282A2C),
+                                style: TextStyle(
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color(0xFF282A2C)
+                                      : const Color(0xFFFEFEFE),
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600,
+                                  fontFamily: 'Rational Display Medium',
                                 ),
                               )
                             ],
@@ -119,6 +135,7 @@ class ChainInfo extends HookConsumerWidget {
                                 style: TextStyle(
                                   color: Color(0xFF858E8E),
                                   fontSize: 16,
+                                  fontFamily: 'Rational Display Medium',
                                 ),
                               ),
                               const SizedBox(
@@ -126,10 +143,13 @@ class ChainInfo extends HookConsumerWidget {
                               ),
                               Text(
                                 chain.era.toString(),
-                                style: const TextStyle(
-                                  color: Color(0xFF282A2C),
+                                style: TextStyle(
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color(0xFF282A2C)
+                                      : const Color(0xFFFEFEFE),
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600,
+                                  fontFamily: 'Rational Display Medium',
                                 ),
                               )
                             ],
@@ -138,8 +158,12 @@ class ChainInfo extends HookConsumerWidget {
                       ),
                     ),
                   ),
-                  const VerticalDivider(
-                      indent: 0, color: Color(0xFFE7E8E8), width: 1),
+                  VerticalDivider(
+                      indent: 0,
+                      color: colorTheme == ColorMode.light
+                          ? const Color(0xFFE7E8E8)
+                          : const Color(0xFF4B4B4B),
+                      width: 1),
                   Expanded(
                     flex: 5,
                     child: Column(
@@ -155,11 +179,13 @@ class ChainInfo extends HookConsumerWidget {
                                   statSymbol: "Epoch",
                                   firstItem: true,
                                 ),
-                                const VerticalDivider(
+                                VerticalDivider(
                                   indent: 5,
                                   endIndent: 10,
                                   thickness: 1,
-                                  color: Color(0xFFE7E8E8),
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color(0xFFE7E8E8)
+                                      : const Color(0xFF4B4B4B),
                                   width: 1,
                                 ),
                                 LowerStatWithoutIcon(
@@ -167,22 +193,26 @@ class ChainInfo extends HookConsumerWidget {
                                       chain.totalTransactionsInEpoch.toString(),
                                   statSymbol: "Txs",
                                 ),
-                                const VerticalDivider(
+                                VerticalDivider(
                                   indent: 5,
                                   endIndent: 10,
                                   thickness: 1,
-                                  color: Color(0xFFE7E8E8),
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color(0xFFE7E8E8)
+                                      : const Color(0xFF4B4B4B),
                                 ),
                                 LowerStatWithoutIcon(
                                   statValue: chain.height.toString(),
                                   statSymbol: "Height",
                                 ),
-                                const VerticalDivider(
+                                VerticalDivider(
                                   indent: 10,
                                   endIndent: 10,
                                   thickness: 1,
                                   width: 1,
-                                  color: Color(0xFFE7E8E8),
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color(0xFFE7E8E8)
+                                      : const Color(0xFF4B4B4B),
                                 ),
                                 LowerStatWithoutIcon(
                                   statValue: chain.averageBlockTime.toString(),
@@ -192,8 +222,10 @@ class ChainInfo extends HookConsumerWidget {
                             ),
                           ),
                         ),
-                        const Divider(
-                          color: Color(0xFFE7E8E8),
+                        Divider(
+                          color: colorTheme == ColorMode.light
+                              ? const Color(0xFFE7E8E8)
+                              : const Color(0xFF4B4B4B),
                           indent: 0,
                         ),
                         Expanded(
@@ -207,33 +239,39 @@ class ChainInfo extends HookConsumerWidget {
                                     statString:
                                         '${chain.totalStake.toString()}%',
                                     statSymbol: "Total Stake"),
-                                const VerticalDivider(
+                                VerticalDivider(
                                   indent: 5,
                                   endIndent: 10,
                                   thickness: 1,
-                                  color: Color(0xFFE7E8E8),
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color(0xFFE7E8E8)
+                                      : const Color(0xFF4B4B4B),
                                 ),
                                 LowerStatWithIcon(
                                     icon: Icons.info_outline,
                                     statString:
                                         chain.registeredStakes.toString(),
                                     statSymbol: "Registered Stakes"),
-                                const VerticalDivider(
+                                VerticalDivider(
                                   indent: 5,
                                   endIndent: 10,
                                   thickness: 1,
-                                  color: Color(0xFFE7E8E8),
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color(0xFFE7E8E8)
+                                      : const Color(0xFF4B4B4B),
                                 ),
                                 LowerStatWithIcon(
                                     icon: Icons.info_outline,
                                     statString:
                                         '${chain.activeStakes.toString()}%',
                                     statSymbol: "Active Stakes"),
-                                const VerticalDivider(
+                                VerticalDivider(
                                   indent: 10,
                                   endIndent: 10,
                                   thickness: 1,
-                                  color: Color(0xFFE7E8E8),
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color(0xFFE7E8E8)
+                                      : const Color(0xFF4B4B4B),
                                 ),
                                 LowerStatWithIcon(
                                     icon: Icons.info_outline,

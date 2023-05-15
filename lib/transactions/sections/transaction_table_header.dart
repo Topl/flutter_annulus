@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-
 import '../../constants/strings.dart';
 import '../widgets/custom_transaction_widgets.dart';
 
@@ -12,10 +11,10 @@ class TransactionTableHeader extends StatelessWidget {
         onTap: () {
           // Add what you want to do on tap
         },
-        child: Row(
+        child: const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
+            children: [
               SizedBox(
                   width: 340,
                   height: 60,

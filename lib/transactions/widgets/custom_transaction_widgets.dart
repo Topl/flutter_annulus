@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../models/transaction_status.dart';
 
 /// Custom Status Button Widget
-class StatusButton extends StatelessWidget {
+class StatusButton extends ConsumerWidget {
   const StatusButton({super.key, this.status = "pending"});
 
   final String status;
@@ -31,7 +33,8 @@ class StatusButton extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return Padding(
       padding:
           const EdgeInsets.only(left: 40.0, bottom: 16, right: 40, top: 16),
@@ -75,9 +78,11 @@ class StatusButton extends StatelessWidget {
           const SizedBox(
             width: 42.0,
           ),
-          const Icon(
+          Icon(
             Icons.arrow_forward_ios,
-            color: Color(0xFF858E8E),
+            color: colorTheme == ColorMode.light
+                ? const Color(0xFF858E8E)
+                : const Color(0xFFC0C4C4),
             size: 14,
           ),
         ],
@@ -87,7 +92,7 @@ class StatusButton extends StatelessWidget {
 }
 
 /// Custom Widgets - Table Header Text Widget
-class TableHeaderText extends StatelessWidget {
+class TableHeaderText extends ConsumerWidget {
   const TableHeaderText({
     super.key,
     required this.name,
@@ -96,20 +101,23 @@ class TableHeaderText extends StatelessWidget {
   final String name;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return Text(
       name,
-      style: const TextStyle(
+      style: TextStyle(
           fontSize: 14.0,
           fontWeight: FontWeight.w600,
           fontFamily: "Rational Display",
-          color: Color(0xFF858E8E)),
+          color: colorTheme == ColorMode.light
+              ? const Color(0xFF858E8E)
+              : const Color(0xFFC0C4C4)),
     );
   }
 }
 
 /// Custom Transaction Column Text Widget
-class TransactionColumnText extends StatelessWidget {
+class TransactionColumnText extends ConsumerWidget {
   const TransactionColumnText({
     super.key,
     required this.textTop,
@@ -122,7 +130,8 @@ class TransactionColumnText extends StatelessWidget {
   final bool isBottomTextRequired;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return Padding(
       padding: const EdgeInsets.only(left: 40.0, bottom: 16, top: 16),
       child: Column(
@@ -130,10 +139,12 @@ class TransactionColumnText extends StatelessWidget {
         children: [
           Text(
             textTop,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16.0,
               fontFamily: "Rational Display",
-              color: Color(0xFF535757),
+              color: colorTheme == ColorMode.light
+                  ? const Color(0xFF535757)
+                  : const Color(0xFFC0C4C4),
               fontWeight: FontWeight.w300,
             ),
           ),
