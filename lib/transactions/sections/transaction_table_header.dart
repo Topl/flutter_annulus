@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../../constants/strings.dart';
+import '../../shared/constants/strings.dart';
 import '../widgets/custom_transaction_widgets.dart';
 
 class TransactionTableHeader extends StatelessWidget {
