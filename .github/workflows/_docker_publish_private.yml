@@ -51,6 +51,11 @@ jobs:
         uses: docker/metadata-action@v4.4.0
         with:
           images: ${{ inputs.remote-docker-image }}
+          tags: |
+            # set latest tag for default branch
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,enable=true,event=push
+            type=sha,enable=true
 
       - name: Echo metadata
         run: |
@@ -61,6 +66,6 @@ jobs:
         uses: docker/build-push-action@v4.0.0
         with:
           context: .
-          push: false
+          push: true # ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
