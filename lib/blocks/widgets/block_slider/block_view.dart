@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../../shared/providers/app_theme_provider.dart';
 
 /// Block view widget
-class BlockView extends StatelessWidget {
+class BlockView extends ConsumerWidget {
   final String blockEpoch;
   final int blockTime;
   final String blockHeight;
@@ -17,7 +20,8 @@ class BlockView extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return SizedBox(
       child: Container(
           width: 240,
@@ -26,10 +30,14 @@ class BlockView extends StatelessWidget {
               left: 20.0, right: 0.0, bottom: 0.0, top: 20.0),
           padding: const EdgeInsets.all(40.0),
           decoration: BoxDecoration(
-              color: const Color(0xFFFEFEFE),
+              color: colorTheme == ColorMode.light
+                  ? const Color(0xFFFEFEFE)
+                  : const Color(0xFF282A2C),
               borderRadius: BorderRadius.circular(16.0),
               border: Border.all(
-                  color: const Color(0xFFE7E8E8),
+                  color: colorTheme == ColorMode.light
+                      ? const Color(0xFFE7E8E8)
+                      : const Color(0xFF4B4B4B),
                   style: BorderStyle.solid,
                   width: 1.0)),
           child: Column(
@@ -42,11 +50,15 @@ class BlockView extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16.0),
                       border: Border.all(
-                          color: const Color(0xFFE7E8E8),
+                          color: colorTheme == ColorMode.light
+                              ? const Color(0xFFE7E8E8)
+                              : const Color(0xFF4B4B4B),
                           style: BorderStyle.solid,
                           width: 1.0)),
                   child: Image.asset(
-                    'assets/icons/block-icon.png',
+                    colorTheme == ColorMode.light
+                        ? 'assets/icons/block-icon.png'
+                        : 'assets/icons/dark-block-icon.png',
                     width: 20,
                     height: 20,
                   ),
@@ -55,8 +67,10 @@ class BlockView extends StatelessWidget {
                   height: 16,
                 ),
                 Text(blockHeight,
-                    style: const TextStyle(
-                        color: Color(0xFF282A2C),
+                    style: TextStyle(
+                        color: colorTheme == ColorMode.light
+                            ? const Color(0xFF282A2C)
+                            : const Color(0xFFFEFEFE),
                         fontWeight: FontWeight.w600,
                         fontSize: 24,
                         fontFamily: 'Rational Display',
@@ -91,16 +105,19 @@ class BlockView extends StatelessWidget {
   }
 }
 
-class BlockHeaderText extends StatelessWidget {
+class BlockHeaderText extends ConsumerWidget {
   const BlockHeaderText({super.key, required this.text});
 
   final String text;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return Text(text,
-        style: const TextStyle(
-          color: Color(0xFF282A2C),
+        style: TextStyle(
+          color: colorTheme == ColorMode.light
+              ? const Color(0xFF282A2C)
+              : const Color(0xFFFEFEFE),
           fontWeight: FontWeight.w500,
           fontSize: 16,
           fontFamily: 'Rational Display Medium',
@@ -110,7 +127,7 @@ class BlockHeaderText extends StatelessWidget {
 }
 
 //
-class BlockSmallText extends StatelessWidget {
+class BlockSmallText extends ConsumerWidget {
   const BlockSmallText({
     super.key,
     required this.text,
@@ -119,10 +136,13 @@ class BlockSmallText extends StatelessWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return Text(text,
-        style: const TextStyle(
-          color: Color(0xFF858E8E),
+        style: TextStyle(
+          color: colorTheme == ColorMode.light
+              ? const Color(0xFF858E8E)
+              : const Color(0xFFC0C4C4),
           fontWeight: FontWeight.w400,
           fontSize: 12,
           fontFamily: 'Rational Display Light',

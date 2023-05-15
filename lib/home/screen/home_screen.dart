@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_slider.dart';
-import 'package:flutter_annulus/chain/sections/chain_info.dart';
 import 'package:flutter_annulus/chain/sections/chain_section.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
@@ -31,13 +30,16 @@ class HomeScreen extends HookConsumerWidget {
             const SizedBox(height: 20),
             const ChainSection(),
             BlockViewSlider(),
-            const Transactions(),
+            Transactions(),
           ],
         ),
         footer: Container(
+          color: colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
           height: 100,
           alignment: Alignment.center,
-          child: const Text("footer"),
+          child: Text("Footer",
+              style:
+                  TextStyle(color: colorTheme == ColorMode.light ? const Color(0xFF000000) : const Color(0xFFFEFEFE))),
         ),
       ),
     );

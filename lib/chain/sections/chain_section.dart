@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/sections/chain_info.dart';
+import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-class ChainSection extends StatelessWidget {
+class ChainSection extends HookConsumerWidget {
   const ChainSection({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
+
     return ResponsiveRowColumn(
       layout: ResponsiveBreakpoints.of(context).smallerThan(DESKTOP)
           ? ResponsiveRowColumnType.COLUMN
@@ -25,10 +29,22 @@ class ChainSection extends StatelessWidget {
         ResponsiveRowColumnItem(
           rowFlex: 2,
           child: Container(
-            color: Colors.red,
-            height: 300,
-            child: const Center(
-              child: Text("Chart here"),
+            height: 408,
+            decoration: BoxDecoration(
+              color: colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                  color: colorTheme == ColorMode.light ? const Color(0xFFE7E8E8) : const Color(0xFF4B4B4B),
+                  style: BorderStyle.solid,
+                  width: 1.0),
+            ),
+            child: Center(
+              child: Text(
+                "Chart here",
+                style: TextStyle(
+                  color: colorTheme == ColorMode.light ? const Color(0xFF000000) : const Color(0xFFFEFEFE),
+                ),
+              ),
             ),
           ),
         ),
