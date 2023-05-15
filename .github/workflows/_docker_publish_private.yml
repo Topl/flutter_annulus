@@ -51,11 +51,6 @@ jobs:
         uses: docker/metadata-action@v4.4.0
         with:
           images: ${{ inputs.remote-docker-image }}
-          tags: |
-            # set latest tag for default branch
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=ref,enable=true,event=push
-            type=sha,enable=true
 
       - name: Echo metadata
         run: |
