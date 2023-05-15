@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
+import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/utils/transitions.dart';
 import 'package:flutter_annulus/shared/widgets/slide_left_builder.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
@@ -19,9 +20,6 @@ void main() {
 
 class AnnulusRouter extends StatelessWidget {
   const AnnulusRouter({Key? key}) : super(key: key);
-
-  static const double mobileBreak = 550;
-  static const double tabletBreak = 800;
 
   @override
   Widget build(BuildContext context) {
