@@ -5,6 +5,7 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../chain/sections/chain_info.dart';
 import '../../shared/widgets/footer.dart';
 import '../../transactions/sections/transactions.dart';
 
@@ -21,7 +22,9 @@ class HomeScreen extends HookConsumerWidget {
       title: 'Annulus Event Explorer',
       home: CustomLayout(
         header: Header(
-          logoAsset: colorTheme == ColorMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+          logoAsset: colorTheme == ColorMode.light
+              ? 'images/logo.svg'
+              : 'images/logo_dark.svg',
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
@@ -79,7 +82,7 @@ class HomeScreen extends HookConsumerWidget {
           color: colorTheme == ColorMode.light
               ? const Color(0xFFFEFEFE)
               : const Color(0xFF282A2C),
-          child: Footer(colorTheme: colorTheme),
+          child: const Footer(),
         ),
       ),
     );
