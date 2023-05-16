@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vrouter/vrouter.dart';
 import '../../shared/constants/strings.dart';
 import '../../shared/providers/app_theme_provider.dart';
+import '../../shared/widgets/footer.dart';
 import '../../shared/widgets/header.dart';
 import '../../shared/widgets/layout.dart';
 
@@ -202,17 +203,10 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
         ),
       ),
       footer: Container(
-        color: colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
-        height: 100,
-        alignment: Alignment.center,
-        child: Text("Footer",
-            style: TextStyle(
-              color: colorTheme == ColorMode.light ? const Color(0xFF535757) : const Color(0xFFFEFEFE),
-              fontFamily: 'Rational Display',
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            )),
-      ),
+          color: colorTheme == ColorMode.light
+              ? const Color(0xFFFEFEFE)
+              : const Color(0xFF282A2C),
+          child: Footer(colorTheme: colorTheme)),
     );
   }
 }
