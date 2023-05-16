@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../constants/strings.dart';
 import '../providers/app_theme_provider.dart';
 import '../utils/theme_color.dart';
 
@@ -23,14 +24,14 @@ class Footer extends HookConsumerWidget {
             const SizedBox(
               width: 200,
               child: FooterColumn(
-                footerTitle: 'Protocol',
+                footerTitle: Strings.footerColumn1Header,
                 footerLinks: [
-                  'Energy Efficient Regularized PoS',
-                  'UTxO Ledger and Achieving Scalability',
-                  'User Ecosystem, Standards and Development',
-                  'Tokenomics',
-                  'Governance',
-                  'Ribn',
+                  Strings.footerColumn1Item1,
+                  Strings.footerColumn1Item2,
+                  Strings.footerColumn1Item3,
+                  Strings.footerColumn1Item4,
+                  Strings.footerColumn1Item5,
+                  Strings.footerColumn1Item6
                 ],
               ),
             ),
@@ -40,13 +41,13 @@ class Footer extends HookConsumerWidget {
             const SizedBox(
               width: 200,
               child: FooterColumn(
-                footerTitle: 'Solutions',
+                footerTitle: Strings.footerColumn2Header,
                 footerLinks: [
-                  'ToplTrax',
-                  'Traceable Journey',
-                  'Smart Labels',
-                  'Impact NFTs',
-                  'Blockchain-As-A-Service',
+                  Strings.footerColumn2Item1,
+                  Strings.footerColumn2Item2,
+                  Strings.footerColumn2Item3,
+                  Strings.footerColumn2Item4,
+                  Strings.footerColumn2Item5
                 ],
               ),
             ),
@@ -56,13 +57,13 @@ class Footer extends HookConsumerWidget {
             const SizedBox(
               width: 200,
               child: FooterColumn(
-                footerTitle: 'Blockchain',
+                footerTitle: Strings.footerColumn3Header,
                 footerLinks: [
-                  'Buid',
-                  'Brambl',
-                  'Grant Programs',
-                  'Node Setup',
-                  'Knowledge Base',
+                  Strings.footerColumn3Item1,
+                  Strings.footerColumn3Item2,
+                  Strings.footerColumn3Item3,
+                  Strings.footerColumn3Item4,
+                  Strings.footerColumn3Item5
                 ],
               ),
             ),
@@ -72,13 +73,13 @@ class Footer extends HookConsumerWidget {
             const SizedBox(
               width: 200,
               child: FooterColumn(
-                footerTitle: 'About',
+                footerTitle: Strings.footerColumn4Header,
                 footerLinks: [
-                  'Team',
-                  'Community',
-                  'Careers',
-                  'Press and Media',
-                  'Contact Us',
+                  Strings.footerColumn4Item1,
+                  Strings.footerColumn4Item2,
+                  Strings.footerColumn4Item3,
+                  Strings.footerColumn4Item4,
+                  Strings.footerColumn4Item5
                 ],
               ),
             ),
@@ -93,7 +94,7 @@ class Footer extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Subscribe to Our Newsletter",
+                      Strings.footerColumn5Header,
                       style: TextStyle(
                           color: getSelectedColor(
                               colorTheme, 0xFF282A2C, 0xFFC0C4C4),
@@ -118,7 +119,7 @@ class Footer extends HookConsumerWidget {
                                           BorderRadius.all(Radius.circular(8)),
                                       borderSide: BorderSide(
                                           color: Color(0xFFE2E3E3), width: 1)),
-                                  hintText: 'Email'),
+                                  hintText: Strings.email),
                             ),
                           ),
                         ),
@@ -134,7 +135,7 @@ class Footer extends HookConsumerWidget {
                                       getSelectedColor(
                                           colorTheme, 0xFFE2E3E3, 0xFF434648))),
                               onPressed: null,
-                              child: Text("Subscribe",
+                              child: Text(Strings.subscribe,
                                   style: TextStyle(
                                       color: getSelectedColor(
                                           colorTheme, 0xFF000000, 0xFFFEFEFE),
@@ -178,24 +179,24 @@ class Footer extends HookConsumerWidget {
                 SizedBox(
                   width: 80,
                 ),
-                FooterBottomLinks(text: "Topl Privacy Policy"),
+                FooterBottomLinks(text: Strings.footerPrivacyPolicy),
                 SizedBox(
                   width: 24,
                 ),
-                FooterBottomLinks(text: "Terms of Use"),
+                FooterBottomLinks(text: Strings.footerTermsOfUse),
                 SizedBox(
                   width: 24,
                 ),
-                FooterBottomLinks(text: "Use of Cookies"),
+                FooterBottomLinks(text: Strings.footerCookiePolicy),
                 SizedBox(
                   width: 24,
                 ),
-                FooterBottomLinks(text: "Cookie Preferences"),
+                FooterBottomLinks(text: Strings.footerCookiePreferences),
               ],
             ),
             Row(
               children: [
-                const FooterBottomLinks(text: "2023 © All rights reserved"),
+                const FooterBottomLinks(text: Strings.footerRightsReserved),
                 const SizedBox(
                   width: 24,
                 ),
