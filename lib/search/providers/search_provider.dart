@@ -18,13 +18,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// searchResult.when(
 ///  data: (SearchResult result) {
 ///     return result.map(
-///       block: (Block block) {
+///       block: (BlockResult result) {
+///        final Block block = result.block;
 ///         // Show block
 ///       },
-///       transaction: (Transaction transaction) {
+///       transaction: (TransactionResult result) {
+///       final Transaction transaction = result.transaction;
 ///         // Show transaction
 ///       },
-///       utxo: (UTxO utxo) {
+///       utxo: (UTxOResult result) {
+///      final UTxO utxo = result.utxo;
 ///         // Show utxo
 ///       },
 ///   },
