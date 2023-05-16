@@ -1,4 +1,4 @@
-name: Publish Docker Images (Private)
+name: Build
 
 on:
   workflow_call:
