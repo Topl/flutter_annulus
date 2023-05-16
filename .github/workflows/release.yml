@@ -17,7 +17,16 @@ jobs:
   build:
     uses: ./.github/workflows/_build.yml
 
-  publish_private:
+  publish_dockerhub:
     uses: ./.github/workflows/_docker_publish_public.yml
     needs: [build]
     secrets: inherit
+    with:
+      remote-docker-image: "toplprotocol/annulus"
+
+  publish_ghcr:
+    uses: ./.github/workflows/_docker_publish_public.yml
+    needs: [build]
+    secrets: inherit
+    with:
+      remote-docker-image: "ghcr.io/topl/annulus"
