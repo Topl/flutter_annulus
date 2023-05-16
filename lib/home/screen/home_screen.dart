@@ -5,7 +5,7 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
+import '../../shared/widgets/footer.dart';
 import '../../transactions/sections/transactions.dart';
 
 class HomeScreen extends HookConsumerWidget {
@@ -38,7 +38,7 @@ class HomeScreen extends HookConsumerWidget {
               const SizedBox(height: 20),
               Container(
                 margin:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 80, vertical: 20),
                 child: Row(
                   children: [
                     const Expanded(
@@ -81,13 +81,7 @@ class HomeScreen extends HookConsumerWidget {
           color: colorTheme == ColorMode.light
               ? const Color(0xFFFEFEFE)
               : const Color(0xFF282A2C),
-          height: 100,
-          alignment: Alignment.center,
-          child: Text("Footer",
-              style: TextStyle(
-                  color: colorTheme == ColorMode.light
-                      ? const Color(0xFF000000)
-                      : const Color(0xFFFEFEFE))),
+          child: Footer(colorTheme: colorTheme),
         ),
       ),
     );

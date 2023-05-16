@@ -33,7 +33,7 @@ class CustomLayout extends StatelessWidget {
           // Footer widget
           Container(
             color: Colors.white,
-            child: footer,
+            child: SingleChildScrollView(child: footer),
           ),
         ],
       ),
