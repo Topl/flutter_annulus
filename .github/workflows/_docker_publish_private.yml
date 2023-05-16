@@ -3,11 +3,6 @@ name: Publish Docker Images (Private)
 on:
   workflow_call:
     inputs:
-      remote-repository:
-        description: 'Name of the GCP managed Artifact Registry.'
-        default: "us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/"
-        required: false
-        type: string
       registry-auth-location:
         description: 'Name of the GCP managed Artifact Registry.'
         default: "us-central1-docker.pkg.dev"
@@ -15,7 +10,7 @@ on:
         type: string
       remote-docker-image:
         description: 'Remote Docker image. ex: toplprotocol/annulus'
-        default: "toplprotocol/annulus"
+        default: "us-central1-docker.pkg.dev/topl-shared-project-dev/topl-artifacts-dev/annulus"
         required: false
         type: string
 
