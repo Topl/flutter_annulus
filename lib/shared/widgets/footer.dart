@@ -1,20 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../providers/app_theme_provider.dart';
 
 /// Footer Widget
-class Footer extends StatelessWidget {
+class Footer extends HookConsumerWidget {
   const Footer({
     super.key,
-    required this.colorTheme,
   });
 
-  final ColorMode colorTheme;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return Column(
       children: [
         Row(
@@ -22,12 +21,11 @@ class Footer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(width: 80),
-            SizedBox(
+            const SizedBox(
               width: 200,
               child: FooterColumn(
-                colorTheme: colorTheme,
                 footerTitle: 'Protocol',
-                footerLinks: const [
+                footerLinks: [
                   'Energy Efficient Regularized PoS',
                   'UTxO Ledger and Achieving Scalability',
                   'User Ecosystem, Standards and Development',
@@ -40,12 +38,11 @@ class Footer extends StatelessWidget {
             const SizedBox(
               width: 80,
             ),
-            SizedBox(
+            const SizedBox(
               width: 200,
               child: FooterColumn(
-                colorTheme: colorTheme,
                 footerTitle: 'Solutions',
-                footerLinks: const [
+                footerLinks: [
                   'ToplTrax',
                   'Traceable Journey',
                   'Smart Labels',
@@ -57,12 +54,11 @@ class Footer extends StatelessWidget {
             const SizedBox(
               width: 80,
             ),
-            SizedBox(
+            const SizedBox(
               width: 200,
               child: FooterColumn(
-                colorTheme: colorTheme,
                 footerTitle: 'Blockchain',
-                footerLinks: const [
+                footerLinks: [
                   'Buid',
                   'Brambl',
                   'Grant Programs',
@@ -74,12 +70,11 @@ class Footer extends StatelessWidget {
             const SizedBox(
               width: 40,
             ),
-            SizedBox(
+            const SizedBox(
               width: 200,
               child: FooterColumn(
-                colorTheme: colorTheme,
                 footerTitle: 'About',
-                footerLinks: const [
+                footerLinks: [
                   'Team',
                   'Community',
                   'Careers',
@@ -183,38 +178,36 @@ class Footer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 80,
                 ),
-                FooterBottomLinks(
-                    colorTheme: colorTheme, text: "Topl Privacy Policy"),
-                const SizedBox(
+                FooterBottomLinks(text: "Topl Privacy Policy"),
+                SizedBox(
                   width: 24,
                 ),
-                FooterBottomLinks(colorTheme: colorTheme, text: "Terms of Use"),
-                const SizedBox(
+                FooterBottomLinks(text: "Terms of Use"),
+                SizedBox(
                   width: 24,
                 ),
-                FooterBottomLinks(
-                    colorTheme: colorTheme, text: "Use of Cookies"),
-                const SizedBox(
+                FooterBottomLinks(text: "Use of Cookies"),
+                SizedBox(
                   width: 24,
                 ),
-                FooterBottomLinks(
-                    colorTheme: colorTheme, text: "Cookie Preferences"),
+                FooterBottomLinks(text: "Cookie Preferences"),
               ],
             ),
             Row(
               children: [
-                FooterBottomLinks(
-                    colorTheme: colorTheme, text: "2023 © All rights reserved"),
+                const FooterBottomLinks(text: "2023 © All rights reserved"),
                 const SizedBox(
                   width: 24,
                 ),
                 SvgPicture.asset(
-                  'assets/icons/topl-logo-main.svg',
+                  colorTheme == ColorMode.light
+                      ? 'images/logo.svg'
+                      : 'images/logo_dark.svg',
                   width: 32,
                   height: 20,
                 ),
@@ -233,18 +226,17 @@ class Footer extends StatelessWidget {
   }
 }
 
-class FooterBottomLinks extends StatelessWidget {
+class FooterBottomLinks extends HookConsumerWidget {
   const FooterBottomLinks({
     super.key,
-    required this.colorTheme,
     required this.text,
   });
 
-  final ColorMode colorTheme;
   final String text;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return Text(
       text,
       style: TextStyle(
@@ -309,27 +301,26 @@ class RowIconsFooter extends StatelessWidget {
 }
 
 /// Footer Column Widget
-class FooterColumn extends StatelessWidget {
+class FooterColumn extends HookConsumerWidget {
   const FooterColumn({
     super.key,
-    required this.colorTheme,
     required this.footerLinks,
     required this.footerTitle,
   });
   final List<String> footerLinks;
   final String footerTitle;
-  final ColorMode colorTheme;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           footerTitle,
-          style: TextStyle(
-              color: const Color(0xFF858E8E),
+          style: const TextStyle(
+              color: Color(0xFF858E8E),
               fontSize: 16,
               fontFamily: 'Rational Display',
               fontWeight: FontWeight.w600),
