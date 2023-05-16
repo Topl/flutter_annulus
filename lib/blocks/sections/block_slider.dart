@@ -20,7 +20,7 @@ class BlockViewSlider extends HookConsumerWidget {
       data: (blocks) => SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.only(
-              top: 20.0, bottom: 20.0, left: 40.0, right: 40.0),
+              top: 20.0, bottom: 20.0, left: 80.0, right: 80.0),
           padding: const EdgeInsets.only(
               top: 20.0, bottom: 30.0, left: 0.0, right: 0.0),
           decoration: BoxDecoration(
