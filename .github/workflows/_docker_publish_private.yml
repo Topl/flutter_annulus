@@ -44,7 +44,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
 
       - name: Auth Artifact Registry
-        run: gcloud auth configure-docker ${{ inputs.registry-auth-location }}
+        run: gcloud auth configure-docker ${{ inputs.registry-auth-location }} --quiet
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
