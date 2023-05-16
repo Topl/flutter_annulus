@@ -51,6 +51,8 @@ jobs:
         uses: docker/metadata-action@v4.4.0
         with:
           images: ${{ inputs.remote-docker-image }}
+          tags: |
+            type=sha,enable=true
 
       - name: Echo metadata
         run: |
