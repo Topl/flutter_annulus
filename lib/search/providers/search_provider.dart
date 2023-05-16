@@ -10,7 +10,32 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 ///
 /// Usage Example:
 ///
+/// ```dart
+/// final searchNotifier = ref.watch(searchProvider.notifier);
+/// searchNotifier.search(query);
 ///
+/// final searchResult = ref.watch(searchProvider);
+/// searchResult.when(
+///  data: (SearchResult result) {
+///     return result.map(
+///       block: (block) {
+///         // Show block
+///       },
+///       transaction: (transaction) {
+///         // Show transaction
+///       },
+///       utxo: (utxo) {
+///         // Show utxo
+///       },
+///   },
+///   loading: () {
+///    // Show loading indicator
+///   },
+///   error: (error, stackTrace) {
+///   // Show error message
+///   },
+///  );
+/// ```
 final searchProvider = StateNotifierProvider<SearchNotifier, AsyncValue<List<SearchResult>>>((ref) {
   return SearchNotifier();
 });
@@ -19,8 +44,6 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
   SearchNotifier() : super(const AsyncLoading());
 
   Future<List<SearchResult>> search(String query) async {
-    state = const AsyncLoading();
-
     final List<BlockResult> blocks = await _searchBlocks(query);
     final List<TransactionResult> transactions = await _searchTransactions(query);
     final List<UTxOResult> utxos = await _searchUTxOs(query);
