@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 
+import '../../shared/utils/theme_color.dart';
 import 'add_new_network.dart';
 
 class ChainNameDropDown extends StatefulWidget {
@@ -46,9 +47,8 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
             style: TextStyle(
               fontSize: 14,
               fontFamily: 'Rational Display',
-              color: widget.colorTheme == ColorMode.light
-                  ? const Color(0xFF4B4B4B)
-                  : const Color(0xFF858E8E),
+              color:
+                  getSelectedColor(widget.colorTheme, 0xFF4B4B4B, 0xFF858E8E),
             ),
           ),
           items: [
@@ -62,9 +62,8 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
                             style: TextStyle(
                               fontSize: 16,
                               fontFamily: 'Rational Display',
-                              color: widget.colorTheme == ColorMode.light
-                                  ? const Color(0xFF535757)
-                                  : const Color(0xFF858E8E),
+                              color: getSelectedColor(
+                                  widget.colorTheme, 0xFF535757, 0xFF858E8E),
                             ),
                           ),
                           const SizedBox(width: 32),
@@ -102,9 +101,8 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'Rational Display',
-                        color: widget.colorTheme == ColorMode.light
-                            ? const Color(0xFF535757)
-                            : const Color(0xFF858E8E),
+                        color: getSelectedColor(
+                            widget.colorTheme, 0xFF535757, 0xFF858E8E),
                       ),
                     ),
                   ],
@@ -121,9 +119,8 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
                         style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'Rational Display Normal',
-                          color: widget.colorTheme == ColorMode.light
-                              ? const Color(0xFF535757)
-                              : const Color(0xFF858E8E),
+                          color: getSelectedColor(
+                              widget.colorTheme, 0xFF535757, 0xFF858E8E),
                         ),
                       ),
                     ],
@@ -141,21 +138,18 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
               border: Border.all(
-                color: widget.colorTheme == ColorMode.light
-                    ? const Color(0xFFC0C4C4)
-                    : const Color(0xFF4B4B4B),
+                color:
+                    getSelectedColor(widget.colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
               ),
-              color: widget.colorTheme == ColorMode.light
-                  ? const Color(0xFFFEFEFE)
-                  : const Color(0xFF282A2C),
+              color:
+                  getSelectedColor(widget.colorTheme, 0xFFFEFEFE, 0xFF282A2C),
             ),
           ),
           dropdownStyleData: DropdownStyleData(
             maxHeight: 200,
             decoration: BoxDecoration(
-              color: widget.colorTheme == ColorMode.light
-                  ? const Color(0xFFFEFEFE)
-                  : const Color(0xFF282A2C),
+              color:
+                  getSelectedColor(widget.colorTheme, 0xFFFEFEFE, 0xFF282A2C),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(8.0),
                 bottomRight: Radius.circular(8.0),

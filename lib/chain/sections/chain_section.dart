@@ -4,6 +4,8 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../shared/utils/theme_color.dart';
+
 class ChainSection extends HookConsumerWidget {
   const ChainSection({Key? key}) : super(key: key);
 
@@ -31,10 +33,10 @@ class ChainSection extends HookConsumerWidget {
           child: Container(
             height: 408,
             decoration: BoxDecoration(
-              color: colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
+              color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                  color: colorTheme == ColorMode.light ? const Color(0xFFE7E8E8) : const Color(0xFF4B4B4B),
+                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                   style: BorderStyle.solid,
                   width: 1.0),
             ),
@@ -42,7 +44,7 @@ class ChainSection extends HookConsumerWidget {
               child: Text(
                 "Chart here",
                 style: TextStyle(
-                  color: colorTheme == ColorMode.light ? const Color(0xFF000000) : const Color(0xFFFEFEFE),
+                  color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
                 ),
               ),
             ),

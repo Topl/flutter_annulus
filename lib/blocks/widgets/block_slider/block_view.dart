@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../shared/providers/app_theme_provider.dart';
+import '../../../shared/utils/theme_color.dart';
 
 /// Block view widget
 class BlockView extends ConsumerWidget {
@@ -30,14 +31,10 @@ class BlockView extends ConsumerWidget {
               left: 20.0, right: 0.0, bottom: 0.0, top: 20.0),
           padding: const EdgeInsets.all(40.0),
           decoration: BoxDecoration(
-              color: colorTheme == ColorMode.light
-                  ? const Color(0xFFFEFEFE)
-                  : const Color(0xFF282A2C),
+              color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
               borderRadius: BorderRadius.circular(16.0),
               border: Border.all(
-                  color: colorTheme == ColorMode.light
-                      ? const Color(0xFFE7E8E8)
-                      : const Color(0xFF4B4B4B),
+                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                   style: BorderStyle.solid,
                   width: 1.0)),
           child: Column(
@@ -50,9 +47,8 @@ class BlockView extends ConsumerWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16.0),
                       border: Border.all(
-                          color: colorTheme == ColorMode.light
-                              ? const Color(0xFFE7E8E8)
-                              : const Color(0xFF4B4B4B),
+                          color: getSelectedColor(
+                              colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                           style: BorderStyle.solid,
                           width: 1.0)),
                   child: Image.asset(
@@ -68,9 +64,8 @@ class BlockView extends ConsumerWidget {
                 ),
                 Text(blockHeight,
                     style: TextStyle(
-                        color: colorTheme == ColorMode.light
-                            ? const Color(0xFF282A2C)
-                            : const Color(0xFFFEFEFE),
+                        color: getSelectedColor(
+                            colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                         fontWeight: FontWeight.w600,
                         fontSize: 24,
                         fontFamily: 'Rational Display',
@@ -115,9 +110,7 @@ class BlockHeaderText extends ConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     return Text(text,
         style: TextStyle(
-          color: colorTheme == ColorMode.light
-              ? const Color(0xFF282A2C)
-              : const Color(0xFFFEFEFE),
+          color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
           fontWeight: FontWeight.w500,
           fontSize: 16,
           fontFamily: 'Rational Display Medium',
@@ -140,9 +133,7 @@ class BlockSmallText extends ConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     return Text(text,
         style: TextStyle(
-          color: colorTheme == ColorMode.light
-              ? const Color(0xFF858E8E)
-              : const Color(0xFFC0C4C4),
+          color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
           fontWeight: FontWeight.w400,
           fontSize: 12,
           fontFamily: 'Rational Display Light',

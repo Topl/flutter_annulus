@@ -15,14 +15,14 @@ class TransactionTabBarView extends StatelessWidget {
           decoration: const BoxDecoration(
             color: Colors.white,
           ),
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
               Row(
-                children: const [
+                children: [
                   Spacing(),
                   SizedBox(
                       width: 172, child: CustomTextLeft(desc: 'Txn Hash/ID')),
@@ -33,7 +33,7 @@ class TransactionTabBarView extends StatelessWidget {
                 ],
               ),
               Row(
-                children: const [
+                children: [
                   Spacing(),
                   SizedBox(
                       width: 172, child: CustomTextLeft(desc: 'Proposition')),
@@ -44,7 +44,7 @@ class TransactionTabBarView extends StatelessWidget {
                 ],
               ),
               Row(
-                children: const [
+                children: [
                   Spacing(),
                   SizedBox(width: 172, child: CustomTextLeft(desc: 'Status')),
                   SizedBox(
@@ -53,7 +53,7 @@ class TransactionTabBarView extends StatelessWidget {
                   CustomTextRight(desc: 'Confirmed')
                 ],
               ),
-              const SizedBox(
+              SizedBox(
                 // maximum width and draw line
                 width: double.infinity,
                 child: Divider(
@@ -61,11 +61,11 @@ class TransactionTabBarView extends StatelessWidget {
                   thickness: 2,
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
               Row(
-                children: const [
+                children: [
                   SizedBox(
                     width: 60,
                   ),
@@ -80,7 +80,7 @@ class TransactionTabBarView extends StatelessWidget {
                 ],
               ),
               Row(
-                children: const [
+                children: [
                   Spacing(),
                   SizedBox(width: 172, child: CustomTextLeft(desc: 'Height')),
                   SizedBox(
@@ -90,7 +90,7 @@ class TransactionTabBarView extends StatelessWidget {
                 ],
               ),
               Row(
-                children: const [
+                children: [
                   Spacing(),
                   SizedBox(width: 172, child: CustomTextLeft(desc: 'Slot')),
                   SizedBox(
@@ -99,7 +99,7 @@ class TransactionTabBarView extends StatelessWidget {
                   CustomTextRight(desc: '1,091')
                 ],
               ),
-              const SizedBox(
+              SizedBox(
                 // maximum width and draw line
                 width: double.infinity,
                 child: Divider(
@@ -107,11 +107,11 @@ class TransactionTabBarView extends StatelessWidget {
                   thickness: 2,
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
               Row(
-                children: const [
+                children: [
                   Spacing(),
                   SizedBox(width: 172, child: CustomTextLeft(desc: 'Type')),
                   SizedBox(
@@ -121,7 +121,7 @@ class TransactionTabBarView extends StatelessWidget {
                 ],
               ),
               Row(
-                children: const [
+                children: [
                   Spacing(),
                   SizedBox(
                       width: 172, child: CustomTextLeft(desc: 'Payment Fee')),
@@ -132,7 +132,7 @@ class TransactionTabBarView extends StatelessWidget {
                 ],
               ),
               Row(
-                children: const [
+                children: [
                   Spacing(),
                   SizedBox(
                       width: 172,
@@ -144,7 +144,7 @@ class TransactionTabBarView extends StatelessWidget {
                 ],
               ),
               Row(
-                children: const [
+                children: [
                   Spacing(),
                   SizedBox(
                       width: 172,
@@ -162,52 +162,54 @@ class TransactionTabBarView extends StatelessWidget {
           decoration: const BoxDecoration(
             color: Colors.white,
           ),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: const [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'Quantity')),
+          child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 SizedBox(
-                  width: 24,
+                  height: 20,
                 ),
-                CustomTextRight(desc: '413113 / 64.31'),
-              ],
-            ),
-            Row(
-              children: const [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'Name')),
-                SizedBox(
-                  width: 24,
+                Row(
+                  children: [
+                    Spacing(),
+                    SizedBox(
+                        width: 172, child: CustomTextLeft(desc: 'Quantity')),
+                    SizedBox(
+                      width: 24,
+                    ),
+                    CustomTextRight(desc: '413113 / 64.31'),
+                  ],
                 ),
-                CustomTextRight(desc: 'Topl / Allie'),
-              ],
-            ),
-            Row(
-              children: const [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'From')),
-                SizedBox(
-                  width: 24,
+                Row(
+                  children: [
+                    Spacing(),
+                    SizedBox(width: 172, child: CustomTextLeft(desc: 'Name')),
+                    SizedBox(
+                      width: 24,
+                    ),
+                    CustomTextRight(desc: 'Topl / Allie'),
+                  ],
                 ),
-                CustomTextRight(desc: '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'),
-              ],
-            ),
-            Row(
-              children: const [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'To')),
-                SizedBox(
-                  width: 24,
+                Row(
+                  children: [
+                    Spacing(),
+                    SizedBox(width: 172, child: CustomTextLeft(desc: 'From')),
+                    SizedBox(
+                      width: 24,
+                    ),
+                    CustomTextRight(desc: '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'),
+                  ],
                 ),
-                CustomTextRight(desc: '7bY6Dne54qMU12cz3oPF4yVx5aG6a'),
-              ],
-            )
-          ]),
+                Row(
+                  children: [
+                    Spacing(),
+                    SizedBox(width: 172, child: CustomTextLeft(desc: 'To')),
+                    SizedBox(
+                      width: 24,
+                    ),
+                    CustomTextRight(desc: '7bY6Dne54qMU12cz3oPF4yVx5aG6a'),
+                  ],
+                )
+              ]),
         ),
         Container(
           decoration: const BoxDecoration(

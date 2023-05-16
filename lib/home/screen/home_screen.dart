@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_slider.dart';
-import 'package:flutter_annulus/chain/sections/chain_section.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../chain/sections/chain_info.dart';
+import '../../shared/utils/theme_color.dart';
 import '../../shared/widgets/footer.dart';
 import '../../transactions/sections/transactions.dart';
 
@@ -30,9 +30,7 @@ class HomeScreen extends HookConsumerWidget {
         ),
         content: Container(
           decoration: BoxDecoration(
-            color: colorTheme == ColorMode.light
-                ? const Color(0xFFFEFEFE)
-                : const Color(0xFF282A2C),
+            color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
           ),
           child: Column(
             children: [
@@ -51,23 +49,20 @@ class HomeScreen extends HookConsumerWidget {
                       child: Container(
                         height: 408,
                         decoration: BoxDecoration(
-                          color: colorTheme == ColorMode.light
-                              ? const Color(0xFFFEFEFE)
-                              : const Color(0xFF282A2C),
+                          color: getSelectedColor(
+                              colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                              color: colorTheme == ColorMode.light
-                                  ? const Color(0xFFE7E8E8)
-                                  : const Color(0xFF4B4B4B),
+                              color: getSelectedColor(
+                                  colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                               style: BorderStyle.solid,
                               width: 1.0),
                         ),
                         child: Center(
                             child: Text("Chart here",
                                 style: TextStyle(
-                                    color: colorTheme == ColorMode.light
-                                        ? const Color(0xFF000000)
-                                        : const Color(0xFFFEFEFE)))),
+                                    color: getSelectedColor(
+                                        colorTheme, 0xFF000000, 0xFFFEFEFE)))),
                       ),
                     )
                   ],
@@ -79,9 +74,7 @@ class HomeScreen extends HookConsumerWidget {
           ),
         ),
         footer: Container(
-          color: colorTheme == ColorMode.light
-              ? const Color(0xFFFEFEFE)
-              : const Color(0xFF282A2C),
+          color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
           child: const Footer(),
         ),
       ),

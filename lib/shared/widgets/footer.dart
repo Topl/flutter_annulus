@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import '../providers/app_theme_provider.dart';
+import '../utils/theme_color.dart';
 
 /// Footer Widget
 class Footer extends HookConsumerWidget {
@@ -96,9 +95,8 @@ class Footer extends HookConsumerWidget {
                     Text(
                       "Subscribe to Our Newsletter",
                       style: TextStyle(
-                          color: colorTheme == ColorMode.light
-                              ? const Color(0xFF282A2C)
-                              : const Color(0xFFC0C4C4),
+                          color: getSelectedColor(
+                              colorTheme, 0xFF282A2C, 0xFFC0C4C4),
                           fontSize: 16,
                           fontFamily: 'Rational Display',
                           fontWeight: FontWeight.w600),
@@ -133,15 +131,13 @@ class Footer extends HookConsumerWidget {
                           child: TextButton(
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
-                                      colorTheme == ColorMode.light
-                                          ? const Color(0xFFE2E3E3)
-                                          : const Color(0xFF434648))),
+                                      getSelectedColor(
+                                          colorTheme, 0xFFE2E3E3, 0xFF434648))),
                               onPressed: null,
                               child: Text("Subscribe",
                                   style: TextStyle(
-                                      color: colorTheme == ColorMode.light
-                                          ? const Color(0xFF000000)
-                                          : const Color(0xFFFEFEFE),
+                                      color: getSelectedColor(
+                                          colorTheme, 0xFF000000, 0xFFFEFEFE),
                                       fontSize: 14,
                                       fontFamily: 'Rational Display'))),
                         )
@@ -150,9 +146,8 @@ class Footer extends HookConsumerWidget {
                     const SizedBox(
                       height: 80,
                     ),
-                    RowIconsFooter(
-                      colorTheme: colorTheme,
-                      svgIcons: const [
+                    const RowIconsFooter(
+                      svgIcons: [
                         'assets/icons/linkedin.svg',
                         'assets/icons/github.svg',
                         'assets/icons/instagram.svg',
@@ -240,9 +235,7 @@ class FooterBottomLinks extends HookConsumerWidget {
     return Text(
       text,
       style: TextStyle(
-          color: colorTheme == ColorMode.light
-              ? const Color(0xFF858E8E)
-              : const Color(0xFFC0C4C4),
+          color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
           fontSize: 12,
           fontFamily: 'Rational Display',
           fontWeight: FontWeight.w400),
@@ -251,18 +244,17 @@ class FooterBottomLinks extends HookConsumerWidget {
 }
 
 /// Icon Footer Column
-class RowIconsFooter extends StatelessWidget {
+class RowIconsFooter extends HookConsumerWidget {
   const RowIconsFooter({
     super.key,
-    required this.colorTheme,
     required this.svgIcons,
   });
 
   final List<String> svgIcons;
-  final ColorMode colorTheme;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return Row(
       children: [
         ...svgIcons
@@ -273,18 +265,16 @@ class RowIconsFooter extends StatelessWidget {
                     width: 42,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: colorTheme == ColorMode.light
-                          ? const Color(0xFFE2E3E3)
-                          : const Color(0xFF434648),
+                      color:
+                          getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: IconButton(
                       onPressed: null,
                       icon: SvgPicture.asset(
                         svgIcon,
-                        color: colorTheme == ColorMode.light
-                            ? const Color(0xFF535757)
-                            : const Color(0xFFC0C4C4),
+                        color: getSelectedColor(
+                            colorTheme, 0xFF535757, 0xFFC0C4C4),
                       ),
                     ),
                   ),
@@ -334,9 +324,8 @@ class FooterColumn extends HookConsumerWidget {
                     Text(
                       text,
                       style: TextStyle(
-                          color: colorTheme == ColorMode.light
-                              ? const Color(0xFF535757)
-                              : const Color(0xFFC0C4C4),
+                          color: getSelectedColor(
+                              colorTheme, 0xFF535757, 0xFFC0C4C4),
                           fontSize: 14,
                           fontFamily: 'Rational Display'),
                     ),

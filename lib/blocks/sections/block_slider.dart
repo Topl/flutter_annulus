@@ -4,6 +4,7 @@ import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../shared/providers/app_theme_provider.dart';
+import '../../shared/utils/theme_color.dart';
 import '../providers/block_provider.dart';
 import '../widgets/block_slider/block_view.dart';
 
@@ -24,14 +25,10 @@ class BlockViewSlider extends HookConsumerWidget {
           padding: const EdgeInsets.only(
               top: 20.0, bottom: 30.0, left: 0.0, right: 0.0),
           decoration: BoxDecoration(
-            color: colorTheme == ColorMode.light
-                ? const Color(0xFFFEFEFE)
-                : const Color(0xFF282A2C),
+            color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(
-                color: colorTheme == ColorMode.light
-                    ? const Color(0xFFE7E8E8)
-                    : const Color(0xFF4B4B4B),
+                color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                 style: BorderStyle.solid,
                 width: 1.0),
           ),
@@ -137,9 +134,7 @@ class BlockPlaceHolder extends ConsumerWidget {
             style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.w600,
-                color: colorTheme == ColorMode.light
-                    ? const Color(0xFF282A2C)
-                    : const Color(0xFFFEFEFE),
+                color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                 fontFamily: "Rational Display"),
           ),
           const SizedBox(
@@ -195,16 +190,12 @@ class CustomTextButton extends ConsumerWidget {
           fontSize: 28,
           fontWeight: FontWeight.w600,
         ),
-        backgroundColor: colorTheme == ColorMode.light
-            ? const Color(0xFFE2E3E3)
-            : const Color(0xFF434648),
+        backgroundColor: getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
       ),
       onPressed: () => _controller.previousPage(),
       child: Text(text,
           style: TextStyle(
-            color: colorTheme == ColorMode.light
-                ? const Color(0xFF535757)
-                : const Color(0xFFAFB6B6),
+            color: getSelectedColor(colorTheme, 0xFF535757, 0xFFAFB6B6),
           )),
     );
   }
