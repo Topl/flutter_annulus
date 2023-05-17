@@ -1,6 +1,7 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
+import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final blockProvider =
@@ -36,6 +37,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   /// If [setState] is true, it will update the state of the provider
   /// If [setState] is false, it will not update the state of the provider
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
+    final genusClient = ref.read(genusProvider(selectedChain));
     if (setState) state = const AsyncLoading();
     final List<Block> blocks = [];
     const chainHeight = 5932;
