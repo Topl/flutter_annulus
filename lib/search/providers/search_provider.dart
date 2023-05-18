@@ -1,12 +1,17 @@
-import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/utils/extensions.dart';
+import 'package:flutter_annulus/blocks/utils/utils.dart';
+import 'package:flutter_annulus/chain/models/chains.dart';
+import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
+import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:flutter_annulus/search/models/search_result.dart';
 import 'package:flutter_annulus/search/models/utxo.dart';
 import 'package:flutter_annulus/shared/models/logger.dart';
 import 'package:flutter_annulus/shared/providers/logger_provider.dart';
-import 'package:flutter_annulus/transactions/models/transaction.dart';
-import 'package:flutter_annulus/transactions/models/transaction_status.dart';
-import 'package:flutter_annulus/transactions/models/transaction_type.dart';
+import 'package:flutter_annulus/shared/providers/mock_state_provider.dart';
+import 'package:flutter_annulus/transactions/utils/extension.dart';
+import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:topl_common/proto/genus/genus_rpc.pbgrpc.dart';
 
 /// This provider returns a [AsyncValue<List<SearchResult>>]
 ///
@@ -52,7 +57,11 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
   /// Search for blocks, transactions and utxos
   ///
   /// Returns a list of [SearchResult]
-  Future<List<SearchResult>> searchById(String id) async {
+  ///
+  /// Typically the return value is a list of one item,
+  /// but it can be more than one item if multiple results are found
+  /// IE. An ID returns both a block and a transaction
+  Future<List<SearchResult>> searchById(int id) async {
     final BlockResult? block = await _searchForBlockById(id);
     final TransactionResult? transaction = await _searchForTransactionById(id);
     final UTxOResult? utxo = await _searchForUTxOById(id);
@@ -67,23 +76,19 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     return result;
   }
 
-  Future<BlockResult?> _searchForBlockById(String id) async {
+  Future<BlockResult?> _searchForBlockById(int id) async {
     try {
-      return Future.delayed(const Duration(milliseconds: 250), () {
-        return const BlockResult(
-          Block(
-            blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-            header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
-            epoch: 243827,
-            size: 5432.2,
-            height: 1000 + 1,
-            slot: 10,
-            timestamp: 1683494060,
-            transactionNumber: 200,
-            withdrawalNumber: 127,
-          ),
-        );
-      });
+      if (!ref.read(mockStateProvider)) {
+        final Chains selectedChain = ref.read(selectedChainProvider);
+        final BlockResponse blockResponse = await ref.read(genusProvider(selectedChain)).getBlockById(blockId: id);
+        return BlockResult(blockResponse.toBlock());
+      } else {
+        return Future.delayed(const Duration(milliseconds: 250), () {
+          return BlockResult(
+            getMockBlock(),
+          );
+        });
+      }
     } catch (e) {
       ref.read(loggerProvider).log(
             logLevel: LogLevel.Warning,
@@ -95,38 +100,21 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     }
   }
 
-  Future<TransactionResult?> _searchForTransactionById(String id) async {
+  Future<TransactionResult?> _searchForTransactionById(int id) async {
     try {
-      return Future.delayed(const Duration(milliseconds: 250), () {
-        return TransactionResult(
-          Transaction(
-            transactionId: "8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q",
-            status: TransactionStatus.confirmed,
-            block: const Block(
-              blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-              header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
-              epoch: 243827,
-              size: 5432.2,
-              height: 1000 + 1,
-              slot: 10,
-              timestamp: 1683494060,
-              transactionNumber: 200,
-              withdrawalNumber: 127,
-            ),
-            broadcastTimestamp: DateTime.now().millisecondsSinceEpoch,
-            confirmedTimestamp: DateTime.now().millisecondsSinceEpoch,
-            transactionType: TransactionType.transfer,
-            amount: 1,
-            transactionFee: 1,
-            senderAddress: '1',
-            receiverAddress: '1',
-            transactionSize: 1,
-            proposition: '1',
-            quantity: 1,
-            name: '1',
-          ),
-        );
-      });
+      if (!ref.read(mockStateProvider)) {
+        final Chains selectedChain = ref.read(selectedChainProvider);
+        final TransactionResponse response =
+            await ref.read(genusProvider(selectedChain)).getTransactionById(transactionId: id);
+
+        return TransactionResult(response.toTransaction());
+      } else {
+        return Future.delayed(const Duration(milliseconds: 250), () {
+          return TransactionResult(
+            getMockTransaction(),
+          );
+        });
+      }
     } catch (e) {
       ref.read(loggerProvider).log(
             logLevel: LogLevel.Warning,
@@ -138,7 +126,7 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     }
   }
 
-  Future<UTxOResult?> _searchForUTxOById(String id) async {
+  Future<UTxOResult?> _searchForUTxOById(int id) async {
     try {
       return UTxOResult(UTxO());
     } catch (e) {
