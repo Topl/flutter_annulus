@@ -1,6 +1,8 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/search/models/search_result.dart';
 import 'package:flutter_annulus/search/models/utxo.dart';
+import 'package:flutter_annulus/shared/models/logger.dart';
+import 'package:flutter_annulus/shared/providers/logger_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
@@ -40,84 +42,114 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 ///  );
 /// ```
 final searchProvider = StateNotifierProvider<SearchNotifier, AsyncValue<List<SearchResult>>>((ref) {
-  return SearchNotifier();
+  return SearchNotifier(ref);
 });
 
 class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
-  SearchNotifier() : super(const AsyncLoading());
+  final Ref ref;
+  SearchNotifier(this.ref) : super(const AsyncLoading());
 
-  Future<List<SearchResult>> search(String query) async {
-    final List<BlockResult> blocks = await _searchBlocks(query);
-    final List<TransactionResult> transactions = await _searchTransactions(query);
-    final List<UTxOResult> utxos = await _searchUTxOs(query);
-    final result = [...blocks, ...transactions, ...utxos];
+  /// Search for blocks, transactions and utxos
+  ///
+  /// Returns a list of [SearchResult]
+  Future<List<SearchResult>> searchById(String id) async {
+    final BlockResult? block = await _searchForBlockById(id);
+    final TransactionResult? transaction = await _searchForTransactionById(id);
+    final UTxOResult? utxo = await _searchForUTxOById(id);
+
+    if (block == null && transaction == null && utxo == null) {
+      state = AsyncError('No results found', StackTrace.current);
+      return [];
+    }
+
+    final result = [if (block != null) block, if (transaction != null) transaction, if (utxo != null) utxo];
     state = AsyncData(result);
     return result;
-    // Add Transaction
   }
 
-  Future<List<BlockResult>> _searchBlocks(String query) {
-    return Future.delayed(const Duration(milliseconds: 250), () {
-      return List.generate(3, (i) {
-        final iString = i.toString();
-        return BlockResult(
+  Future<BlockResult?> _searchForBlockById(String id) async {
+    try {
+      return Future.delayed(const Duration(milliseconds: 250), () {
+        return const BlockResult(
           Block(
-            blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w$iString",
-            header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
-            epoch: 243827 - i,
+            blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+            header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
+            epoch: 243827,
             size: 5432.2,
             height: 1000 + 1,
             slot: 10,
-            timestamp: 1683494060 + i,
+            timestamp: 1683494060,
             transactionNumber: 200,
             withdrawalNumber: 127,
           ),
         );
       });
-    });
+    } catch (e) {
+      ref.read(loggerProvider).log(
+            logLevel: LogLevel.Warning,
+            loggerClass: LoggerClass.ApiError,
+            message: 'Block not found for id: $id',
+          );
+
+      return null;
+    }
   }
 
-  Future<List<TransactionResult>> _searchTransactions(String query) {
-    return Future.delayed(const Duration(milliseconds: 250), () {
-      return List.generate(3, (i) {
-        final iString = i.toString();
-        final iDouble = i.toDouble();
+  Future<TransactionResult?> _searchForTransactionById(String id) async {
+    try {
+      return Future.delayed(const Duration(milliseconds: 250), () {
         return TransactionResult(
           Transaction(
             transactionId: "8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q",
             status: TransactionStatus.confirmed,
-            block: Block(
-              blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w$iString",
-              header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
-              epoch: 243827 - i,
+            block: const Block(
+              blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+              header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
+              epoch: 243827,
               size: 5432.2,
               height: 1000 + 1,
               slot: 10,
-              timestamp: 1683494060 + i,
+              timestamp: 1683494060,
               transactionNumber: 200,
               withdrawalNumber: 127,
             ),
             broadcastTimestamp: DateTime.now().millisecondsSinceEpoch,
             confirmedTimestamp: DateTime.now().millisecondsSinceEpoch,
             transactionType: TransactionType.transfer,
-            amount: iDouble,
-            transactionFee: iDouble,
-            senderAddress: iString,
-            receiverAddress: iString,
-            transactionSize: i,
-            proposition: iString,
-            quantity: i,
-            name: iString,
+            amount: 1,
+            transactionFee: 1,
+            senderAddress: '1',
+            receiverAddress: '1',
+            transactionSize: 1,
+            proposition: '1',
+            quantity: 1,
+            name: '1',
           ),
         );
       });
-    });
+    } catch (e) {
+      ref.read(loggerProvider).log(
+            logLevel: LogLevel.Warning,
+            loggerClass: LoggerClass.ApiError,
+            message: 'Transaction not found for id: $id',
+          );
+
+      return null;
+    }
   }
 
-  Future<List<UTxOResult>> _searchUTxOs(String query) async {
-    return List.generate(3, (i) {
+  Future<UTxOResult?> _searchForUTxOById(String id) async {
+    try {
       return UTxOResult(UTxO());
-    });
+    } catch (e) {
+      ref.read(loggerProvider).log(
+            logLevel: LogLevel.Warning,
+            loggerClass: LoggerClass.ApiError,
+            message: 'UTxO not found for id: $id',
+          );
+
+      return null;
+    }
   }
 
   void clearSearch() {
