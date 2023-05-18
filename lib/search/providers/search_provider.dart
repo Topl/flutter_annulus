@@ -128,6 +128,7 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
 
   Future<UTxOResult?> _searchForUTxOById(int id) async {
     try {
+      // TODO: Have to implement find UTxO by id
       return UTxOResult(UTxO());
     } catch (e) {
       ref.read(loggerProvider).log(
