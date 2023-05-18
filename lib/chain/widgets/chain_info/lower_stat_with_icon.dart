@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../shared/utils/theme_color.dart';
+
 class LowerStatWithIcon extends ConsumerWidget {
   IconData icon;
   String statString;
@@ -28,9 +30,7 @@ class LowerStatWithIcon extends ConsumerWidget {
                 Text(
                   statString,
                   style: TextStyle(
-                    color: colorTheme == ColorMode.light
-                        ? const Color(0xFF282A2C)
-                        : const Color(0xFFFEFEFE),
+                    color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     fontFamily: 'Rational Display Medium',

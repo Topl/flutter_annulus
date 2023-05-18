@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../shared/utils/theme_color.dart';
+import '../models/transaction_status.dart';
+
 /// Custom Status Button Widget
 class StatusButton extends ConsumerWidget {
   const StatusButton({super.key, this.status = "pending"});
@@ -77,7 +80,7 @@ class StatusButton extends ConsumerWidget {
           ),
           Icon(
             Icons.arrow_forward_ios,
-            color: colorTheme == ColorMode.light ? const Color(0xFF858E8E) : const Color(0xFFC0C4C4),
+            color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
             size: 14,
           ),
         ],
@@ -104,7 +107,7 @@ class TableHeaderText extends ConsumerWidget {
           fontSize: 14.0,
           fontWeight: FontWeight.w600,
           fontFamily: "Rational Display",
-          color: colorTheme == ColorMode.light ? const Color(0xFF858E8E) : const Color(0xFFC0C4C4)),
+          color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4)),
     );
   }
 }
@@ -135,7 +138,7 @@ class TransactionColumnText extends ConsumerWidget {
             style: TextStyle(
               fontSize: 16.0,
               fontFamily: "Rational Display",
-              color: colorTheme == ColorMode.light ? const Color(0xFF535757) : const Color(0xFFC0C4C4),
+              color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
               fontWeight: FontWeight.w300,
             ),
           ),

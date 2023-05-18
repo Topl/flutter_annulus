@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../shared/providers/app_theme_provider.dart';
+import '../../../shared/utils/theme_color.dart';
 
 class LowerStatWithoutIcon extends ConsumerWidget {
   String statValue;
@@ -25,9 +26,7 @@ class LowerStatWithoutIcon extends ConsumerWidget {
             Text(
               statValue,
               style: TextStyle(
-                color: colorTheme == ColorMode.light
-                    ? const Color(0xFF282A2C)
-                    : const Color(0xFFFEFEFE),
+                color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 fontFamily: 'Rational Display Medium',
@@ -36,9 +35,7 @@ class LowerStatWithoutIcon extends ConsumerWidget {
             Text(
               statSymbol,
               style: TextStyle(
-                color: colorTheme == ColorMode.light
-                    ? const Color(0xFF858E8E)
-                    : const Color(0xFFC0C4C4),
+                color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
                 fontFamily: 'Rational Display',
