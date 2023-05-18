@@ -37,8 +37,7 @@ class StatusButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
     return Padding(
-      padding:
-          const EdgeInsets.only(left: 40.0, bottom: 16, right: 40, top: 16),
+      padding: const EdgeInsets.only(left: 40.0, bottom: 16, right: 40, top: 16),
       child: Row(
         children: [
           SizedBox(
