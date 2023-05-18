@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vrouter/vrouter.dart';
 import '../../shared/constants/strings.dart';
 import '../../shared/providers/app_theme_provider.dart';
+import '../../shared/utils/theme_color.dart';
 import '../../shared/widgets/footer.dart';
 import '../../shared/widgets/header.dart';
 import '../../shared/widgets/layout.dart';
@@ -223,9 +224,7 @@ class _TransactionTableScreenState
         ),
       ),
       footer: Container(
-          color: colorTheme == ColorMode.light
-              ? const Color(0xFFFEFEFE)
-              : const Color(0xFF282A2C),
+          color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
           child: const Footer()),
     );
   }
