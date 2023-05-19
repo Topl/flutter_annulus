@@ -54,9 +54,19 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
   final Ref ref;
   SearchNotifier(this.ref) : super(const AsyncLoading());
 
-  /// Search for blocks, transactions and utxos
+  /// Searches for a list of [SearchResult] objects by the given [id].
+  /// Returns a [Future] that completes with the search results.
   ///
-  /// Returns a list of [SearchResult]
+  /// If no results are found, an empty list is returned.
+  ///
+  /// The search results are collected from three different methods:
+  /// - [_searchForBlockById]
+  /// - [_searchForTransactionById]
+  /// - [_searchForUTxOById]
+  ///
+  /// If any of the results are null, it means no corresponding result was found.
+  /// In such cases, the [state] is set to an [AsyncError] with a message and [StackTrace].
+  /// Otherwise, the search results are stored in the [state] as an [AsyncData] object.
   ///
   /// Typically the return value is a list of one item,
   /// but it can be more than one item if multiple results are found
@@ -141,6 +151,7 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     }
   }
 
+  /// Clears the search results by setting the [state] to an empty list.
   void clearSearch() {
     state = const AsyncValue.data([]);
   }
