@@ -17,6 +17,9 @@ class _LineGraphState extends State<LineGraph> {
     FlSpot(8, 4),
     FlSpot(9.5, 3),
     FlSpot(11, 4),
+    FlSpot(13, 6),
+    FlSpot(14, 3),
+    FlSpot(15, 4),
   ];
   List<Color> gradientColors = [
     Colors.cyan,
@@ -53,7 +56,7 @@ class _LineGraphState extends State<LineGraph> {
           show: false,
         ),
         minX: 0,
-        maxX: 11,
+        maxX: 15,
         minY: 0,
         maxY: 6,
         titlesData: FlTitlesData(
@@ -71,6 +74,14 @@ class _LineGraphState extends State<LineGraph> {
               reservedSize: 42,
             ),
           ),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 30,
+              getTitlesWidget: bottomTitleWidgets,
+              interval: 1,
+            ),
+          ),
         ),
       ),
       swapAnimationDuration: const Duration(milliseconds: 150), // Optional
@@ -81,23 +92,75 @@ class _LineGraphState extends State<LineGraph> {
 
 Widget leftTitleWidgets(double value, TitleMeta meta) {
   const style = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 15,
+    fontFamily: 'Rational Display',
+    fontSize: 14,
+    color: Colors.white,
+    letterSpacing: -0.2,
   );
   String text;
   switch (value.toInt()) {
+    case 0:
+      text = '0';
+      break;
     case 1:
-      text = '10K';
+      text = '100K';
+      break;
+    case 2:
+      text = '200k';
       break;
     case 3:
-      text = '30k';
+      text = '300k';
+      break;
+    case 4:
+      text = '400k';
       break;
     case 5:
-      text = '50k';
+      text = '500k';
       break;
     default:
       return Container();
   }
 
   return Text(text, style: style, textAlign: TextAlign.left);
+}
+
+Widget bottomTitleWidgets(double value, TitleMeta meta) {
+  const style = TextStyle(
+    fontFamily: 'Rational Display',
+    fontSize: 14,
+    color: Colors.white,
+    letterSpacing: -0.2,
+  );
+  Widget text;
+  switch (value.toInt()) {
+    case 2:
+      text = const Text('03/26', style: style);
+      break;
+    case 4:
+      text = const Text('03/27', style: style);
+      break;
+    case 6:
+      text = const Text('03/28', style: style);
+      break;
+    case 8:
+      text = const Text('03/29', style: style);
+      break;
+    case 10:
+      text = const Text('03/30', style: style);
+      break;
+    case 12:
+      text = const Text('03/31', style: style);
+      break;
+    case 14:
+      text = const Text('04/01', style: style);
+      break;
+    default:
+      text = const Text('', style: style);
+      break;
+  }
+
+  return SideTitleWidget(
+    axisSide: meta.axisSide,
+    child: text,
+  );
 }
