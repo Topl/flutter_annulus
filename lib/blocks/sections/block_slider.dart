@@ -109,7 +109,7 @@ class BlockViewSlider extends HookConsumerWidget {
 }
 
 // Widget for the visible block view
-class BlockPlaceHolder extends ConsumerWidget {
+class BlockPlaceHolder extends HookConsumerWidget {
   const BlockPlaceHolder({
     super.key,
     required CarouselController controller,
@@ -224,12 +224,7 @@ class VisibleBlockView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
         children: [n1, n2, n3, n4, n5].map((idx) {
-      return BlockView(
-        blockEpoch: blocks[idx].epoch.toString(),
-        blockHeight: blocks[idx].height.toString(),
-        blockTime: blocks[idx].timestamp,
-        blockHeader: blocks[idx].header.toString(),
-      );
+      return BlockView(block: blocks[idx]);
     }).toList());
   }
 }

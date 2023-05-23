@@ -3,13 +3,14 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../shared/utils/theme_color.dart';
-import '../models/transaction_status.dart';
 
 /// Custom Status Button Widget
 class StatusButton extends ConsumerWidget {
-  const StatusButton({super.key, this.status = "pending"});
+  const StatusButton(
+      {super.key, this.status = "pending", this.hideArrowIcon = true});
 
   final String status;
+  final bool hideArrowIcon;
 
   /// Function to return color based on status
   int _color(String statusSelected) {
@@ -37,7 +38,8 @@ class StatusButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
     return Padding(
-      padding: const EdgeInsets.only(left: 40.0, bottom: 16, right: 40, top: 16),
+      padding: EdgeInsets.only(
+          left: hideArrowIcon ? 40.0 : 0, bottom: 16, right: 40, top: 16),
       child: Row(
         children: [
           SizedBox(
@@ -78,11 +80,13 @@ class StatusButton extends ConsumerWidget {
           const SizedBox(
             width: 42.0,
           ),
-          Icon(
-            Icons.arrow_forward_ios,
-            color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
-            size: 14,
-          ),
+          hideArrowIcon
+              ? Icon(
+                  Icons.arrow_forward_ios,
+                  color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
+                  size: 14,
+                )
+              : const SizedBox(),
         ],
       ),
     );

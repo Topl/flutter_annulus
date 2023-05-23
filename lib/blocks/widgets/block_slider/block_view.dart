@@ -3,22 +3,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../shared/providers/app_theme_provider.dart';
 import '../../../shared/utils/theme_color.dart';
+import '../../models/block.dart';
 
 /// Block view widget
 class BlockView extends ConsumerWidget {
-  final String blockEpoch;
-  final int blockTime;
-  final String blockHeight;
-  final String blockHeader;
+  final Block block;
 
   // Constructor for BlockView widget
-  const BlockView(
-      {Key? key,
-      required this.blockEpoch,
-      required this.blockTime,
-      required this.blockHeader,
-      required this.blockHeight})
-      : super(key: key);
+  const BlockView({
+    Key? key,
+    required this.block,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -62,7 +57,7 @@ class BlockView extends ConsumerWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                Text(blockHeight,
+                Text(block.height.toString(),
                     style: TextStyle(
                         color: getSelectedColor(
                             colorTheme, 0xFF282A2C, 0xFFFEFEFE),
@@ -75,20 +70,20 @@ class BlockView extends ConsumerWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                BlockHeaderText(text: blockEpoch),
+                BlockHeaderText(text: block.epoch.toString()),
                 const BlockSmallText(text: 'Epoch'),
                 const SizedBox(
                   height: 8,
                 ),
                 BlockHeaderText(
-                    text:
-                        blockHeader.replaceRange(7, blockHeader.length, '...')),
+                    text: block.header
+                        .replaceRange(7, block.header.length, '...')),
                 const BlockSmallText(text: 'Header'),
                 const SizedBox(
                   height: 8,
                 ),
                 BlockHeaderText(
-                  text: DateTime.fromMicrosecondsSinceEpoch(blockTime)
+                  text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp)
                       .toString()
                       .substring(11, 19),
                 ),
@@ -100,7 +95,7 @@ class BlockView extends ConsumerWidget {
   }
 }
 
-class BlockHeaderText extends ConsumerWidget {
+class BlockHeaderText extends HookConsumerWidget {
   const BlockHeaderText({super.key, required this.text});
 
   final String text;
@@ -120,7 +115,7 @@ class BlockHeaderText extends ConsumerWidget {
 }
 
 //
-class BlockSmallText extends ConsumerWidget {
+class BlockSmallText extends HookConsumerWidget {
   const BlockSmallText({
     super.key,
     required this.text,
