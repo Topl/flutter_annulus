@@ -121,7 +121,7 @@ class Spacing extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SizedBox(
       width: 60,
-      height: 50,
+      height: 44,
     );
   }
 }
@@ -142,7 +142,7 @@ class CustomTextRight extends HookConsumerWidget {
           fontWeight: FontWeight.w500,
           color: getSelectedColor(colorMode, 0xFF282A2C, 0xFFFEFEFE),
           fontSize: 16,
-          fontFamily: 'Rational Display Light',
+          fontFamily: 'Rational Display',
           fontStyle: FontStyle.normal,
         ));
   }

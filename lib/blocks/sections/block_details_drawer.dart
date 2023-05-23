@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_tabbar_view.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
-import 'package:flutter_annulus/transactions/sections/transaction_tabbar_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import '../../shared/providers/app_theme_provider.dart';
+import '../models/block.dart';
 
 class BlockDetailsDrawer extends HookConsumerWidget {
   const BlockDetailsDrawer({
     super.key,
+    required this.block,
   });
+  final Block block;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,7 +43,7 @@ class BlockDetailsDrawer extends HookConsumerWidget {
             child: Align(
               alignment: Alignment.topLeft,
               child: SizedBox(
-                width: MediaQuery.of(context).size.width / 4,
+                width: MediaQuery.of(context).size.width / 4.5,
                 child: TabBar(
                   unselectedLabelColor:
                       getSelectedColor(colorMode, 0xFF282A2C, 0xFF858E8E),
@@ -62,16 +63,16 @@ class BlockDetailsDrawer extends HookConsumerWidget {
                     Container(
                       width: 100.0,
                       height: 40.0,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
                           Radius.circular(16.0),
                         ),
                       ),
-                      child: Tab(
+                      child: const Tab(
                         child: Text('Summary'),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 200.0,
                       height: 40.0,
                       child: Tab(text: 'Transactions'),
