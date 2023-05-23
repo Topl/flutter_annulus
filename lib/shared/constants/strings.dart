@@ -62,4 +62,5 @@ class Strings {
   static const String footerCookiePolicy = 'Use of Cookies';
   static const String footerCookiePreferences = 'Cookie Preferences';
   static const String footerRightsReserved = '2023 © All rights reserved';
+  static const String latestBlocksHeader = 'Latest Blocks';
 }
