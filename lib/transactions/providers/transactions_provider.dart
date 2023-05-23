@@ -1,6 +1,8 @@
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
+import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
+import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../blocks/models/block.dart';
@@ -10,12 +12,13 @@ import '../../blocks/models/block.dart';
 final transactionsProvider =
     StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>(
         (ref) {
-  return TransactionsNotifier();
+  return TransactionsNotifier(ref);
 });
 
 class TransactionsNotifier
     extends StateNotifier<AsyncValue<List<Transaction>>> {
-  TransactionsNotifier() : super(const AsyncLoading()) {
+  final Ref ref;
+  TransactionsNotifier(this.ref) : super(const AsyncLoading()) {
     getTransactions(setState: true);
   }
 
@@ -78,8 +81,14 @@ class TransactionsNotifier
   /// It takes a [transactionId] as a parameter
   /// and returns a [AsyncValue<Transaction>]
   AsyncValue<Transaction> getSingleTransaction({
-    required String transactionId,
-  }) {
+    required int transactionId,
+  }) async {
+    const tempChain = Chains.private_network;
+    final genusClient = ref.read(genusProvider(tempChain));
+
+    var transactionRes =
+        await genusClient.getTransactionById(transactionId: transactionId);
+
     return state.when(
       data: (data) => AsyncData(
           data.firstWhere((element) => element.transactionId == transactionId)),
