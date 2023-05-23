@@ -87,9 +87,6 @@ class BlockView extends ConsumerWidget {
                     const SizedBox(
                       height: 16,
                     ),
-                    const SizedBox(
-                      height: 16,
-                    ),
                     Text(block.height.toString(),
                         style: TextStyle(
                             color: getSelectedColor(

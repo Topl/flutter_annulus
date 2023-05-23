@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
 import 'package:flutter_annulus/transactions/sections/transactions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -9,14 +8,18 @@ import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/utils/theme_color.dart';
 import '../../transactions/models/transaction.dart';
 import '../../transactions/providers/transactions_provider.dart';
-import '../../transactions/sections/transaction_row_item.dart';
 import '../../transactions/widgets/custom_transaction_widgets.dart';
 
 class BlockTabBarView extends HookConsumerWidget {
   const BlockTabBarView({
     super.key,
+    // required this.block,
   });
   final _rowsPerPage = 5;
+  //final Block block;
+
+  // create a custom tab bar view
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
