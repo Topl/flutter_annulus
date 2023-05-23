@@ -98,7 +98,7 @@ class BlockView extends ConsumerWidget {
                             letterSpacing: -0.002)),
                     const BlockSmallText(text: '12 sec ago'),
                     const SizedBox(
-                      height: 20,
+                      height: 8,
                     ),
                     BlockHeaderText(text: block.epoch.toString()),
                     const BlockSmallText(text: 'Epoch'),
