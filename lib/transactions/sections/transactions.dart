@@ -43,7 +43,7 @@ class Transactions extends HookConsumerWidget {
               ),
             ),
             columnWidths: const {
-              0: FlexColumnWidth(1.7),
+              0: FlexColumnWidth(1.5),
               1: FlexColumnWidth(1),
               2: FlexColumnWidth(1),
               3: FlexColumnWidth(1),
@@ -126,7 +126,7 @@ class Spacing extends StatelessWidget {
   }
 }
 
-class CustomTextRight extends StatelessWidget {
+class CustomTextRight extends HookConsumerWidget {
   const CustomTextRight({
     super.key,
     required this.desc,
@@ -135,11 +135,12 @@ class CustomTextRight extends StatelessWidget {
   final String desc;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorMode = ref.watch(appThemeColorProvider);
     return Text(desc,
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.w500,
-          color: Color(0xFF282A2C),
+          color: getSelectedColor(colorMode, 0xFF282A2C, 0xFFFEFEFE),
           fontSize: 16,
           fontFamily: 'Rational Display',
           fontStyle: FontStyle.normal,

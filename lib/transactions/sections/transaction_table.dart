@@ -85,11 +85,7 @@ class _TransactionTableScreenState
   Widget build(BuildContext context) {
     final colorTheme = ref.watch(appThemeColorProvider);
     final source = RowDataSource(
-        _data,
-        context,
-        (colorTheme == ColorMode.light
-            ? const Color(0xFFFEFEFE)
-            : const Color(0xFF282A2C)));
+        _data, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
 
     return CustomLayout(
       header: Header(

@@ -16,7 +16,7 @@ class TransactionTableHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                  width: 340,
+                  width: 300,
                   height: 60,
                   child: Padding(
                     padding: EdgeInsets.only(left: 40.0, top: 16),
