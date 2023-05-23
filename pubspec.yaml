@@ -55,6 +55,7 @@ dependencies:
   modal_side_sheet: ^0.0.1
   advanced_datatable: ^0.0.8
   responsive_framework: ^1.0.0
+  fl_chart: ^0.62.0
 
 dev_dependencies:
   flutter_test:
