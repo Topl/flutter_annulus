@@ -5,6 +5,7 @@ import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../chain/sections/chain_info.dart';
+import '../../chain/sections/chart_section.dart';
 import '../../shared/utils/theme_color.dart';
 import '../../shared/widgets/footer.dart';
 import '../../transactions/sections/transactions.dart';
@@ -58,11 +59,7 @@ class HomeScreen extends HookConsumerWidget {
                               style: BorderStyle.solid,
                               width: 1.0),
                         ),
-                        child: Center(
-                            child: Text("Chart here",
-                                style: TextStyle(
-                                    color: getSelectedColor(
-                                        colorTheme, 0xFF000000, 0xFFFEFEFE)))),
+                        child: const ChartSection(),
                       ),
                     )
                   ],
