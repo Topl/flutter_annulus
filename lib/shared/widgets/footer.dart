@@ -20,7 +20,7 @@ class Footer extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(width: 80),
+            const SizedBox(width: 40),
             const SizedBox(
               width: 200,
               child: FooterColumn(
