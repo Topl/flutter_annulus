@@ -1,3 +1,4 @@
+import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
@@ -80,7 +81,7 @@ class TransactionsNotifier
   ///
   /// It takes a [transactionId] as a parameter
   /// and returns a [AsyncValue<Transaction>]
-  AsyncValue<Transaction> getSingleTransaction({
+  Future<Transaction> getSingleTransaction({
     required int transactionId,
   }) async {
     const tempChain = Chains.private_network;
@@ -89,11 +90,32 @@ class TransactionsNotifier
     var transactionRes =
         await genusClient.getTransactionById(transactionId: transactionId);
 
-    return state.when(
-      data: (data) => AsyncData(
-          data.firstWhere((element) => element.transactionId == transactionId)),
-      error: (error, stakeTrace) => AsyncError(error, stakeTrace),
-      loading: () => const AsyncLoading(),
+    var block = const Block(
+      blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
+      epoch: 243827,
+      size: 5432.2,
+      height: 10,
+      slot: 5,
+      timestamp: 243827,
+      transactionNumber: 127,
+      withdrawalNumber: 127,
     );
+
+    return Transaction(
+        transactionId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+        status: TransactionStatus.confirmed,
+        block: block,
+        broadcastTimestamp: 243827,
+        confirmedTimestamp: 243827,
+        transactionType: TransactionType.transfer,
+        amount: 10,
+        transactionFee: 10,
+        senderAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+        receiverAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+        transactionSize: 10,
+        proposition: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+        quantity: 10,
+        name: transactionRes.transactionReceipt.transaction.outputs[0].);
   }
 }
