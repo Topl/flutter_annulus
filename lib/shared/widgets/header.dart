@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
@@ -48,7 +49,46 @@ class Header extends ConsumerWidget {
                   child: IconButton(
                     onPressed: () {
                       // toggle between light and dark theme
-                      ref.read(appThemeColorProvider.notifier).toggleTheme();
+                      showGeneralDialog(
+                        context: context,
+                        pageBuilder: (context, _, __) =>
+                            MobileMenu(colorTheme: colorTheme),
+                        barrierDismissible: true,
+                        transitionDuration: const Duration(milliseconds: 250),
+                        barrierLabel:
+                            MaterialLocalizations.of(context).dialogLabel,
+                        barrierColor: Colors.black.withOpacity(0.5),
+                        transitionBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return SlideTransition(
+                            position: CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.easeOutCubic)
+                                .drive(
+                              Tween<Offset>(
+                                  begin: const Offset(0, -1.0),
+                                  end: Offset.zero),
+                            ),
+                            child: Column(
+                              children: [
+                                Material(
+                                  color:
+                                      const Color.fromRGBO(254, 254, 254, 0.96),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: child,
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      );
                     },
                     icon: const Icon(
                       Icons.menu,
@@ -94,9 +134,106 @@ class Header extends ConsumerWidget {
                       colorTheme: colorTheme,
                     )
                   ],
-                )
+                ),
         ],
       ),
+    );
+  }
+}
+
+class MobileMenu extends StatelessWidget {
+  MobileMenu({super.key, required this.colorTheme});
+
+  ColorMode colorTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        height: 440,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                child: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(
+                    Icons.close,
+                    size: 24.0,
+                    color: Color(0xFF858E8E),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Network',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Rational Display',
+                  ),
+                ),
+                ChainNameDropDown(
+                  colorTheme: colorTheme,
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Dark Mode',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Rational Display',
+                  ),
+                ),
+                ColorModeSwitch(onPressed: () {
+                  print("hello");
+                })
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ColorModeSwitch extends StatefulWidget {
+  const ColorModeSwitch({Key? key, required this.onPressed}) : super(key: key);
+
+  final Function onPressed;
+
+  @override
+  State<ColorModeSwitch> createState() => _ColorModeSwitchState();
+}
+
+class _ColorModeSwitchState extends State<ColorModeSwitch> {
+  bool darkMode = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Switch(
+      value: darkMode,
+      onChanged: (bool value) {
+        // This is called when the user toggles the switch.
+        setState(() {
+          darkMode = value;
+        });
+        widget.onPressed();
+      },
     );
   }
 }
