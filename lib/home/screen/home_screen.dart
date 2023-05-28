@@ -38,7 +38,7 @@ class HomeScreen extends HookConsumerWidget {
               const SizedBox(height: 20),
               Container(
                 margin:
-                    const EdgeInsets.symmetric(horizontal: 80, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                 child: Row(
                   children: [
                     const Expanded(
