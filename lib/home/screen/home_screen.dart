@@ -72,6 +72,7 @@ class HomeScreen extends HookConsumerWidget {
         ),
         footer: Container(
           color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+          // Terminal bug originating here
           child: const Footer(),
         ),
       ),

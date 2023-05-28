@@ -9,7 +9,7 @@ import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
 
 import '../utils/theme_color.dart';
 
-class Header extends ConsumerWidget {
+class Header extends HookConsumerWidget {
   final String logoAsset;
   final VoidCallback onSearch;
   final ValueChanged<String> onDropdownChanged;
@@ -24,7 +24,6 @@ class Header extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ColorMode colorTheme = ref.watch(appThemeColorProvider);
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       decoration: BoxDecoration(
@@ -51,8 +50,14 @@ class Header extends ConsumerWidget {
                       // toggle between light and dark theme
                       showGeneralDialog(
                         context: context,
-                        pageBuilder: (context, _, __) =>
-                            MobileMenu(colorTheme: colorTheme),
+                        pageBuilder: (context, _, __) => MobileMenu(
+                          colorTheme: colorTheme,
+                          onSwitchChange: () {
+                            ref
+                                .read(appThemeColorProvider.notifier)
+                                .toggleTheme();
+                          },
+                        ),
                         barrierDismissible: true,
                         transitionDuration: const Duration(milliseconds: 250),
                         barrierLabel:
@@ -72,8 +77,10 @@ class Header extends ConsumerWidget {
                             child: Column(
                               children: [
                                 Material(
-                                  color:
-                                      const Color.fromRGBO(254, 254, 254, 0.96),
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color.fromRGBO(
+                                          254, 254, 254, 0.96)
+                                      : const Color.fromRGBO(53, 55, 57, 0.96),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -142,70 +149,117 @@ class Header extends ConsumerWidget {
 }
 
 class MobileMenu extends StatelessWidget {
-  MobileMenu({super.key, required this.colorTheme});
+  MobileMenu(
+      {super.key, required this.colorTheme, required this.onSwitchChange});
 
   ColorMode colorTheme;
+  VoidCallback onSwitchChange;
+
+  List<String> footerLinks = [
+    'Topl Privacy Policy',
+    'Terms of Use',
+    'Use of Cookies',
+    'Cookie Preferences',
+  ];
 
   @override
   Widget build(BuildContext context) {
+    print(colorTheme);
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        height: 440,
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                child: IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: const Icon(
-                    Icons.close,
-                    size: 24.0,
-                    color: Color(0xFF858E8E),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  'Network',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: 'Rational Display',
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(
+                        Icons.close,
+                        size: 24.0,
+                        color: Color(0xFF858E8E),
+                      ),
+                    ),
                   ),
                 ),
-                ChainNameDropDown(
-                  colorTheme: colorTheme,
-                )
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Network',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Rational Display',
+                      ),
+                    ),
+                    ChainNameDropDown(
+                      colorTheme: colorTheme,
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Dark Mode',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Rational Display',
+                      ),
+                    ),
+                    ColorModeSwitch(
+                      onPressed: () {
+                        // toggle between light and dark theme
+                        onSwitchChange();
+                      },
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+          const Divider(
+            color: Color(0xFFC0C4C4),
+            thickness: 1,
+          ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  'Dark Mode',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: 'Rational Display',
-                  ),
-                ),
-                ColorModeSwitch(onPressed: () {
-                  print("hello");
-                })
+                ...footerLinks
+                    .map(
+                      (text) => Container(
+                        margin: const EdgeInsets.only(bottom: 32),
+                        child: Text(
+                          text,
+                          style: TextStyle(
+                              color: getSelectedColor(
+                                  colorTheme, 0xFF535757, 0xFFC0C4C4),
+                              fontSize: 14,
+                              fontFamily: 'Rational Display'),
+                        ),
+                      ),
+                    )
+                    .toList()
               ],
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -227,6 +281,7 @@ class _ColorModeSwitchState extends State<ColorModeSwitch> {
   Widget build(BuildContext context) {
     return Switch(
       value: darkMode,
+      activeColor: const Color(0xFF7040EC),
       onChanged: (bool value) {
         // This is called when the user toggles the switch.
         setState(() {
