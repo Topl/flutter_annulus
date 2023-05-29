@@ -57,14 +57,14 @@ class ChartSection extends StatelessWidget {
 }
 
 class ChartTabItem extends StatelessWidget {
-  ChartTabItem({
+  const ChartTabItem({
     super.key,
     this.clicked = false,
     this.text,
   });
 
-  bool clicked;
-  String? text;
+  final bool clicked;
+  final String? text;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,7 @@ class ChartTabItem extends StatelessWidget {
         ),
         onPressed: null,
         child: Text(
-          "${text}",
+          text.toString(),
           style: const TextStyle(color: Colors.white, fontSize: 12),
         ),
       ),

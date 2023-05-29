@@ -11,7 +11,7 @@ import '../../shared/widgets/header.dart';
 import '../../shared/widgets/layout.dart';
 
 class TransactionTableScreen extends StatefulHookConsumerWidget {
-  TransactionTableScreen({Key? key}) : super(key: key);
+  const TransactionTableScreen({Key? key}) : super(key: key);
   static const String route = '/transactions';
   @override
   _TransactionTableScreenState createState() => _TransactionTableScreenState();
