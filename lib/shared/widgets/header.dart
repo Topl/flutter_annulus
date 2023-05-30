@@ -25,7 +25,7 @@ class Header extends HookConsumerWidget {
     final ColorMode colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
     final isSmallerThanTablet =
-        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
+        ResponsiveBreakpoints.of(context).smallerThan(TABLET);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -56,6 +56,7 @@ class Header extends HookConsumerWidget {
                           showGeneralDialog(
                             context: context,
                             pageBuilder: (context, _, __) => MobileMenu(
+                              //  colorTheme: colorTheme,
                               onSwitchChange: () {
                                 ref
                                     .read(appThemeColorProvider.notifier)
@@ -71,17 +72,35 @@ class Header extends HookConsumerWidget {
                             transitionBuilder: (context, animation,
                                 secondaryAnimation, child) {
                               return SlideTransition(
-                                  position: CurvedAnimation(
-                                          parent: animation,
-                                          curve: Curves.easeOutCubic)
-                                      .drive(
-                                    Tween<Offset>(
-                                        begin: const Offset(0, -1.0),
-                                        end: Offset.zero),
-                                  ),
-                                  child: MaterialConsumer(
-                                    child: child,
-                                  ));
+                                position: CurvedAnimation(
+                                        parent: animation,
+                                        curve: Curves.easeOutCubic)
+                                    .drive(
+                                  Tween<Offset>(
+                                      begin: const Offset(0, -1.0),
+                                      end: Offset.zero),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Material(
+                                      color: colorTheme == ColorMode.light
+                                          ? const Color.fromRGBO(
+                                              254, 254, 254, 0.96)
+                                          : const Color.fromRGBO(
+                                              53, 55, 57, 0.96),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: child,
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
                             },
                           );
                         },
