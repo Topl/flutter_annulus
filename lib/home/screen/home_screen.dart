@@ -4,6 +4,8 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
 import '../../chain/sections/chain_info.dart';
 import '../../chain/sections/chart_section.dart';
 import '../../shared/utils/theme_color.dart';
@@ -39,14 +41,18 @@ class HomeScreen extends HookConsumerWidget {
               Container(
                 margin:
                     const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                child: Row(
+                child: ResponsiveRowColumn(
+                  layout: ResponsiveBreakpoints.of(context).smallerThan(DESKTOP)
+                      ? ResponsiveRowColumnType.COLUMN
+                      : ResponsiveRowColumnType.ROW,
+                  columnSpacing: 40.0,
                   children: [
-                    const Expanded(
-                      flex: 3,
+                    const ResponsiveRowColumnItem(
+                      rowFlex: 3,
                       child: ChainInfo(),
                     ),
-                    Expanded(
-                      flex: 2,
+                    ResponsiveRowColumnItem(
+                      rowFlex: 2,
                       child: Container(
                         height: 408,
                         decoration: BoxDecoration(

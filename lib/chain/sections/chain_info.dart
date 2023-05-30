@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/widgets/chain_info/lower_stats_without_icon.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
 import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/utils/theme_color.dart';
 import '../providers/chain_provider.dart';
@@ -17,20 +19,26 @@ class ChainInfo extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<Chain> chainInfo = ref.watch(chainProvider);
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isTabletOrMobile =
+        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
+    final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
+
     return chainInfo.when(
       data: (chain) => Container(
-        margin: const EdgeInsets.only(right: 40),
+        margin: isTabletOrMobile ? null : const EdgeInsets.only(right: 40),
         decoration: BoxDecoration(
           color: colorTheme == ColorMode.light
               ? Colors.white
               : const Color(0xFF282A2C),
           borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(
-              color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-              style: BorderStyle.solid,
-              width: 1.0),
+          border: isTabletOrMobile
+              ? null
+              : Border.all(
+                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                  style: BorderStyle.solid,
+                  width: 1.0),
         ),
-        height: 408,
+        height: isTabletOrMobile ? 500 : 408,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -46,18 +54,6 @@ class ChainInfo extends HookConsumerWidget {
                         statAmount: chain.dataThroughput.toString(),
                         statSymbol: " kbps",
                         firstItem: true),
-                    VerticalDivider(
-                        indent: 20,
-                        endIndent: 20,
-                        thickness: 1,
-                        color: getSelectedColor(
-                            colorTheme, 0xFFE7E8E8, 0xFF4B4B4B)),
-                    TopStatWithIcon(
-                      iconString: 'images/coin.svg',
-                      titleString: "Average Transaction Fee",
-                      statAmount: chain.averageTransactionFee.toString(),
-                      statSymbol: " LVL",
-                    ),
                     VerticalDivider(
                       indent: 20,
                       endIndent: 20,

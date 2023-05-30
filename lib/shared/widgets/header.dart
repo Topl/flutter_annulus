@@ -24,124 +24,146 @@ class Header extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ColorMode colorTheme = ref.watch(appThemeColorProvider);
+    final isMobile = ResponsiveBreakpoints.of(context).isMobile;
+    final isSmallerThanTablet =
+        ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       decoration: BoxDecoration(
         color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
         children: [
-          //logo
-          SvgPicture.asset(
-            logoAsset,
-            width: 48.0,
-            height: 48.0,
-          ),
-          //Search bar
-          ResponsiveBreakpoints.of(context).isMobile
-              ? const SizedBox()
-              : SearchBar(onSearch: onSearch, colorTheme: colorTheme),
-          ResponsiveBreakpoints.of(context).isMobile
-              ? SizedBox(
-                  child: IconButton(
-                    onPressed: () {
-                      // toggle between light and dark theme
-                      showGeneralDialog(
-                        context: context,
-                        pageBuilder: (context, _, __) => MobileMenu(
-                          colorTheme: colorTheme,
-                          onSwitchChange: () {
-                            ref
-                                .read(appThemeColorProvider.notifier)
-                                .toggleTheme();
-                          },
-                        ),
-                        barrierDismissible: true,
-                        transitionDuration: const Duration(milliseconds: 250),
-                        barrierLabel:
-                            MaterialLocalizations.of(context).dialogLabel,
-                        barrierColor: Colors.black.withOpacity(0.5),
-                        transitionBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          return SlideTransition(
-                            position: CurvedAnimation(
-                                    parent: animation,
-                                    curve: Curves.easeOutCubic)
-                                .drive(
-                              Tween<Offset>(
-                                  begin: const Offset(0, -1.0),
-                                  end: Offset.zero),
-                            ),
-                            child: Column(
-                              children: [
-                                Material(
-                                  color: colorTheme == ColorMode.light
-                                      ? const Color.fromRGBO(
-                                          254, 254, 254, 0.96)
-                                      : const Color.fromRGBO(53, 55, 57, 0.96),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SizedBox(
-                                        width: double.infinity,
-                                        child: child,
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.menu,
-                      size: 24.0,
-                    ),
-                  ),
-                )
-              : Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: getSelectedColor(colorTheme, 0xFFC0C4C4,
-                              0xFF4B4B4B), // Set border color here
-                          width: 1, // Set border width here
-                        ),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              //logo
+              SvgPicture.asset(
+                logoAsset,
+                width: 48.0,
+                height: 48.0,
+              ),
+              //Search bar
+              isMobile
+                  ? const SizedBox()
+                  : SearchBar(onSearch: onSearch, colorTheme: colorTheme),
+              isSmallerThanTablet
+                  ? SizedBox(
                       child: IconButton(
                         onPressed: () {
                           // toggle between light and dark theme
-                          ref
-                              .read(appThemeColorProvider.notifier)
-                              .toggleTheme();
+                          showGeneralDialog(
+                            context: context,
+                            pageBuilder: (context, _, __) => MobileMenu(
+                              colorTheme: colorTheme,
+                              onSwitchChange: () {
+                                ref
+                                    .read(appThemeColorProvider.notifier)
+                                    .toggleTheme();
+                              },
+                            ),
+                            barrierDismissible: true,
+                            transitionDuration:
+                                const Duration(milliseconds: 250),
+                            barrierLabel:
+                                MaterialLocalizations.of(context).dialogLabel,
+                            barrierColor: Colors.black.withOpacity(0.5),
+                            transitionBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return SlideTransition(
+                                position: CurvedAnimation(
+                                        parent: animation,
+                                        curve: Curves.easeOutCubic)
+                                    .drive(
+                                  Tween<Offset>(
+                                      begin: const Offset(0, -1.0),
+                                      end: Offset.zero),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Material(
+                                      color: colorTheme == ColorMode.light
+                                          ? const Color.fromRGBO(
+                                              254, 254, 254, 0.96)
+                                          : const Color.fromRGBO(
+                                              53, 55, 57, 0.96),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: child,
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         },
-                        icon: colorTheme == ColorMode.light
-                            ? const Icon(
-                                Icons.light_mode,
-                                color: Color(0xFF858E8E),
-                                size: 20.0,
-                              )
-                            : const Icon(
-                                Icons.dark_mode,
-                                color: Color(0xFF858E8E),
-                                size: 20.0,
-                              ),
+                        icon: const Icon(
+                          Icons.menu,
+                          size: 24.0,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    ChainNameDropDown(
-                      colorTheme: colorTheme,
                     )
-                  ],
-                ),
+                  : Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: getSelectedColor(colorTheme, 0xFFC0C4C4,
+                                  0xFF4B4B4B), // Set border color here
+                              width: 1, // Set border width here
+                            ),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              // toggle between light and dark theme
+                              ref
+                                  .read(appThemeColorProvider.notifier)
+                                  .toggleTheme();
+                            },
+                            icon: colorTheme == ColorMode.light
+                                ? const Icon(
+                                    Icons.light_mode,
+                                    color: Color(0xFF858E8E),
+                                    size: 20.0,
+                                  )
+                                : const Icon(
+                                    Icons.dark_mode,
+                                    color: Color(0xFF858E8E),
+                                    size: 20.0,
+                                  ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        ChainNameDropDown(
+                          colorTheme: colorTheme,
+                        )
+                      ],
+                    ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          isMobile
+              ? SearchBar(
+                  onSearch: () {
+                    // TODO: implement search
+                    print("search");
+                  },
+                  colorTheme: colorTheme,
+                )
+              : const SizedBox(),
         ],
       ),
     );
@@ -164,7 +186,6 @@ class MobileMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(colorTheme);
     return Expanded(
       child: Column(
         children: [
@@ -306,7 +327,7 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 500,
+      width: 400,
       child: TextField(
         onSubmitted: (query) => onSearch(),
         decoration: InputDecoration(
