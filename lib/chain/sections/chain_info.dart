@@ -3,6 +3,7 @@ import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/widgets/chain_info/lower_stats_without_icon.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../shared/providers/app_theme_provider.dart';
+import '../../shared/utils/theme_color.dart';
 import '../providers/chain_provider.dart';
 import '../widgets/chain_info/top_stat_with_icon.dart';
 import '../widgets/chain_info/lower_stat_with_icon.dart';
@@ -25,9 +26,7 @@ class ChainInfo extends HookConsumerWidget {
               : const Color(0xFF282A2C),
           borderRadius: BorderRadius.circular(10.0),
           border: Border.all(
-              color: colorTheme == ColorMode.light
-                  ? const Color(0xFFE7E8E8)
-                  : const Color(0xFF4B4B4B),
+              color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
               style: BorderStyle.solid,
               width: 1.0),
         ),
@@ -48,13 +47,11 @@ class ChainInfo extends HookConsumerWidget {
                         statSymbol: " kbps",
                         firstItem: true),
                     VerticalDivider(
-                      indent: 20,
-                      endIndent: 20,
-                      thickness: 1,
-                      color: colorTheme == ColorMode.light
-                          ? const Color(0xFFE7E8E8)
-                          : const Color(0xFF4B4B4B),
-                    ),
+                        indent: 20,
+                        endIndent: 20,
+                        thickness: 1,
+                        color: getSelectedColor(
+                            colorTheme, 0xFFE7E8E8, 0xFF4B4B4B)),
                     TopStatWithIcon(
                       iconString: 'images/coin.svg',
                       titleString: "Average Transaction Fee",
@@ -65,9 +62,8 @@ class ChainInfo extends HookConsumerWidget {
                       indent: 20,
                       endIndent: 20,
                       thickness: 1,
-                      color: colorTheme == ColorMode.light
-                          ? const Color(0xFFE7E8E8)
-                          : const Color(0xFF4B4B4B),
+                      color:
+                          getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                     ),
                     TopStatWithIcon(
                       iconString: 'images/wallet.svg',
@@ -80,9 +76,7 @@ class ChainInfo extends HookConsumerWidget {
               ),
             ),
             Divider(
-              color: colorTheme == ColorMode.light
-                  ? const Color(0xFFE7E8E8)
-                  : const Color(0xFF4B4B4B),
+              color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
               indent: 0,
               height: 1,
             ),
@@ -114,9 +108,8 @@ class ChainInfo extends HookConsumerWidget {
                               Text(
                                 chain.eon.toString(),
                                 style: TextStyle(
-                                  color: colorTheme == ColorMode.light
-                                      ? const Color(0xFF282A2C)
-                                      : const Color(0xFFFEFEFE),
+                                  color: getSelectedColor(
+                                      colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600,
                                   fontFamily: 'Rational Display Medium',
@@ -144,9 +137,8 @@ class ChainInfo extends HookConsumerWidget {
                               Text(
                                 chain.era.toString(),
                                 style: TextStyle(
-                                  color: colorTheme == ColorMode.light
-                                      ? const Color(0xFF282A2C)
-                                      : const Color(0xFFFEFEFE),
+                                  color: getSelectedColor(
+                                      colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600,
                                   fontFamily: 'Rational Display Medium',
@@ -160,9 +152,8 @@ class ChainInfo extends HookConsumerWidget {
                   ),
                   VerticalDivider(
                       indent: 0,
-                      color: colorTheme == ColorMode.light
-                          ? const Color(0xFFE7E8E8)
-                          : const Color(0xFF4B4B4B),
+                      color:
+                          getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                       width: 1),
                   Expanded(
                     flex: 5,
@@ -183,9 +174,8 @@ class ChainInfo extends HookConsumerWidget {
                                   indent: 5,
                                   endIndent: 10,
                                   thickness: 1,
-                                  color: colorTheme == ColorMode.light
-                                      ? const Color(0xFFE7E8E8)
-                                      : const Color(0xFF4B4B4B),
+                                  color: getSelectedColor(
+                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                                   width: 1,
                                 ),
                                 LowerStatWithoutIcon(
@@ -197,9 +187,8 @@ class ChainInfo extends HookConsumerWidget {
                                   indent: 5,
                                   endIndent: 10,
                                   thickness: 1,
-                                  color: colorTheme == ColorMode.light
-                                      ? const Color(0xFFE7E8E8)
-                                      : const Color(0xFF4B4B4B),
+                                  color: getSelectedColor(
+                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                                 ),
                                 LowerStatWithoutIcon(
                                   statValue: chain.height.toString(),
@@ -210,9 +199,8 @@ class ChainInfo extends HookConsumerWidget {
                                   endIndent: 10,
                                   thickness: 1,
                                   width: 1,
-                                  color: colorTheme == ColorMode.light
-                                      ? const Color(0xFFE7E8E8)
-                                      : const Color(0xFF4B4B4B),
+                                  color: getSelectedColor(
+                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                                 ),
                                 LowerStatWithoutIcon(
                                   statValue: chain.averageBlockTime.toString(),
@@ -223,9 +211,8 @@ class ChainInfo extends HookConsumerWidget {
                           ),
                         ),
                         Divider(
-                          color: colorTheme == ColorMode.light
-                              ? const Color(0xFFE7E8E8)
-                              : const Color(0xFF4B4B4B),
+                          color: getSelectedColor(
+                              colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                           indent: 0,
                         ),
                         Expanded(
@@ -243,9 +230,8 @@ class ChainInfo extends HookConsumerWidget {
                                   indent: 5,
                                   endIndent: 10,
                                   thickness: 1,
-                                  color: colorTheme == ColorMode.light
-                                      ? const Color(0xFFE7E8E8)
-                                      : const Color(0xFF4B4B4B),
+                                  color: getSelectedColor(
+                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                                 ),
                                 LowerStatWithIcon(
                                     icon: Icons.info_outline,
@@ -256,9 +242,8 @@ class ChainInfo extends HookConsumerWidget {
                                   indent: 5,
                                   endIndent: 10,
                                   thickness: 1,
-                                  color: colorTheme == ColorMode.light
-                                      ? const Color(0xFFE7E8E8)
-                                      : const Color(0xFF4B4B4B),
+                                  color: getSelectedColor(
+                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                                 ),
                                 LowerStatWithIcon(
                                     icon: Icons.info_outline,
@@ -269,9 +254,8 @@ class ChainInfo extends HookConsumerWidget {
                                   indent: 10,
                                   endIndent: 10,
                                   thickness: 1,
-                                  color: colorTheme == ColorMode.light
-                                      ? const Color(0xFFE7E8E8)
-                                      : const Color(0xFF4B4B4B),
+                                  color: getSelectedColor(
+                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                                 ),
                                 LowerStatWithIcon(
                                     icon: Icons.info_outline,

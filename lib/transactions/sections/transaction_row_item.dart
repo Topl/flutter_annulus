@@ -9,7 +9,9 @@ import '../widgets/custom_transaction_widgets.dart';
 
 /// A widget to display the list of transactions.
 class TransactionTableRow extends StatelessWidget {
-  const TransactionTableRow({Key? key, required this.transactions, this.count = 0}) : super(key: key);
+  const TransactionTableRow(
+      {Key? key, required this.transactions, this.count = 0})
+      : super(key: key);
   final int count;
   final List<Transaction> transactions;
 
@@ -23,16 +25,16 @@ class TransactionTableRow extends StatelessWidget {
               ignoreAppBar: false,
               width: 640,
               barrierColor: Colors.white.withOpacity(0.64),
-              // with blur,
               barrierDismissible: true,
               body: const TransactionDetailsDrawer());
           // Add what you want to do on tap
         },
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           SizedBox(
-            width: 340,
+            width: 300,
             child: TransactionColumnText(
-              textTop: transaction.transactionId.replaceRange(16, transaction.transactionId.length, "..."),
+              textTop: transaction.transactionId
+                  .replaceRange(16, transaction.transactionId.length, "..."),
               textBottom: "49 ${Strings.secAgo}",
             ),
           ),
@@ -65,7 +67,9 @@ class TransactionTableRow extends StatelessWidget {
               isBottomTextRequired: false,
             ),
           ),
-          SizedBox(width: 300, child: StatusButton(status: transaction.status.string)),
+          SizedBox(
+              width: 300,
+              child: StatusButton(status: transaction.status.string)),
         ]));
   }
 }

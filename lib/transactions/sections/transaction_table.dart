@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vrouter/vrouter.dart';
 import '../../shared/constants/strings.dart';
 import '../../shared/providers/app_theme_provider.dart';
+import '../../shared/utils/theme_color.dart';
+import '../../shared/widgets/footer.dart';
 import '../../shared/widgets/header.dart';
 import '../../shared/widgets/layout.dart';
 
@@ -74,7 +76,8 @@ List<Map> _data = [
   },
 ];
 
-class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen> {
+class _TransactionTableScreenState
+    extends ConsumerState<TransactionTableScreen> {
   bool viewAll = false;
   var _rowsPerPage = 5; //PaginatedDataTable.defaultRowsPerPage;
 
@@ -82,22 +85,27 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
   Widget build(BuildContext context) {
     final colorTheme = ref.watch(appThemeColorProvider);
     final source = RowDataSource(
-        _data, context, (colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C)));
+        _data, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
 
     return CustomLayout(
       header: Header(
-        logoAsset: colorTheme == ColorMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+        logoAsset: colorTheme == ColorMode.light
+            ? 'images/logo.svg'
+            : 'images/logo_dark.svg',
         onSearch: () {},
         onDropdownChanged: (String value) {},
       ),
       content: Container(
-        color: colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
+        color: colorTheme == ColorMode.light
+            ? const Color(0xFFFEFEFE)
+            : const Color(0xFF282A2C),
         child: Column(
           children: [
             Wrap(
               children: [
                 Padding(
-                    padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 40.0, bottom: 8.0),
+                    padding: const EdgeInsets.only(
+                        left: 40.0, right: 40.0, top: 40.0, bottom: 8.0),
                     child: SizedBox(
                       width: 100.0,
                       height: 50.0,
@@ -109,8 +117,9 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                             children: [
                               Icon(
                                 Icons.arrow_back,
-                                color:
-                                    colorTheme == ColorMode.light ? const Color(0xFF535757) : const Color(0xFFAFB6B6),
+                                color: colorTheme == ColorMode.light
+                                    ? const Color(0xFF535757)
+                                    : const Color(0xFFAFB6B6),
                               ),
                               const SizedBox(
                                 width: 8,
@@ -118,8 +127,9 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                               Text(
                                 "Back",
                                 style: TextStyle(
-                                  color:
-                                      colorTheme == ColorMode.light ? const Color(0xFF535757) : const Color(0xFFAFB6B6),
+                                  color: colorTheme == ColorMode.light
+                                      ? const Color(0xFF535757)
+                                      : const Color(0xFFAFB6B6),
                                   fontFamily: 'Rational Display',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -129,7 +139,8 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                           )),
                     )),
                 Container(
-                    margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 8.0, bottom: 80.0),
+                    margin: const EdgeInsets.only(
+                        left: 40.0, right: 40.0, top: 8.0, bottom: 80.0),
                     child: SingleChildScrollView(
                       child: PaginatedDataTable(
                         source: source,
@@ -152,7 +163,8 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                               if (source.rowCount - n < _rowsPerPage) {
                                 _rowsPerPage = source.rowCount - n;
                               } else {
-                                _rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
+                                _rowsPerPage =
+                                    PaginatedDataTable.defaultRowsPerPage;
                               }
                             } else {
                               _rowsPerPage = 0;
@@ -164,34 +176,40 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                             label: Padding(
                               padding: EdgeInsets.only(left: 40.0),
                               child: SizedBox(
-                                child: TableHeaderText(name: Strings.tableHeaderTxnHashId),
+                                child: TableHeaderText(
+                                    name: Strings.tableHeaderTxnHashId),
                               ),
                             ),
                           ),
                           DataColumn(
                               label: Padding(
                             padding: EdgeInsets.only(left: 40.0),
-                            child: TableHeaderText(name: Strings.tableHeaderBlock),
+                            child:
+                                TableHeaderText(name: Strings.tableHeaderBlock),
                           )),
                           DataColumn(
                               label: Padding(
                             padding: EdgeInsets.only(left: 40.0),
-                            child: TableHeaderText(name: Strings.tableHeaderType),
+                            child:
+                                TableHeaderText(name: Strings.tableHeaderType),
                           )),
                           DataColumn(
                               label: Padding(
                             padding: EdgeInsets.only(left: 40.0),
-                            child: TableHeaderText(name: Strings.tableHeaderSummary),
+                            child: TableHeaderText(
+                                name: Strings.tableHeaderSummary),
                           )),
                           DataColumn(
                               label: Padding(
                             padding: EdgeInsets.only(left: 40.0),
-                            child: TableHeaderText(name: Strings.tableHeaderFee),
+                            child:
+                                TableHeaderText(name: Strings.tableHeaderFee),
                           )),
                           DataColumn(
                               label: Padding(
                             padding: EdgeInsets.only(left: 40.0),
-                            child: TableHeaderText(name: Strings.tableHeaderStatus),
+                            child: TableHeaderText(
+                                name: Strings.tableHeaderStatus),
                           )),
                         ],
                       ),
@@ -202,17 +220,8 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
         ),
       ),
       footer: Container(
-        color: colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
-        height: 100,
-        alignment: Alignment.center,
-        child: Text("Footer",
-            style: TextStyle(
-              color: colorTheme == ColorMode.light ? const Color(0xFF535757) : const Color(0xFFFEFEFE),
-              fontFamily: 'Rational Display',
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            )),
-      ),
+          color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+          child: const Footer()),
     );
   }
 }

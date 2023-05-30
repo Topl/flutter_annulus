@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import '../../shared/providers/app_theme_provider.dart';
+import '../../shared/utils/theme_color.dart';
 import '../models/currency.dart';
 
 /// A widget that displays a dropdown button for selecting a chain name.
@@ -28,9 +29,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: widget.colorTheme == ColorMode.light
-              ? const Color(0xFFFFFFFF)
-              : const Color(0xFF282A2C)),
+          color: getSelectedColor(widget.colorTheme, 0xFFFFFFFF, 0xFF282A2C)),
       child: Padding(
         padding: const EdgeInsets.all(40.0),
         child: Column(
@@ -41,9 +40,8 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
                   fontFamily: 'Rational Display',
-                  color: widget.colorTheme == ColorMode.light
-                      ? const Color(0xFF282A2C)
-                      : const Color(0xFF858E8E),
+                  color: getSelectedColor(
+                      widget.colorTheme, 0xFF282A2C, 0xFF858E8E),
                 )),
             const SizedBox(
               height: 48,
@@ -55,9 +53,8 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                 borderRadius: BorderRadius.circular(8),
                 color: const Color.fromRGBO(112, 64, 236, 0.04),
                 border: Border.all(
-                  color: widget.colorTheme == ColorMode.light
-                      ? const Color(0xFFE0E0E0)
-                      : const Color(0xFF858E8E),
+                  color: getSelectedColor(
+                      widget.colorTheme, 0xFFE0E0E0, 0xFF858E8E),
                 ),
               ),
               child: Row(
@@ -65,9 +62,8 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                   const SizedBox(width: 16),
                   Icon(
                     Icons.warning_amber,
-                    color: widget.colorTheme == ColorMode.light
-                        ? const Color(0xFF7040EC)
-                        : const Color(0xFF858E8E),
+                    color: getSelectedColor(
+                        widget.colorTheme, 0xFF7040EC, 0xFF858E8E),
                     size: 24,
                   ),
                   const SizedBox(width: 16),
@@ -79,9 +75,8 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                           fontSize: 14,
                           fontFamily: 'Rational Display',
                           fontWeight: FontWeight.w300,
-                          color: widget.colorTheme == ColorMode.light
-                              ? const Color(0xFF7040EC)
-                              : const Color(0xFF858E8E),
+                          color: getSelectedColor(
+                              widget.colorTheme, 0xFF7040EC, 0xFF858E8E),
                         )),
                   ),
                 ],
@@ -186,21 +181,18 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
                   border: Border.all(
-                    color: widget.colorTheme == ColorMode.light
-                        ? const Color(0xFFC0C4C4)
-                        : const Color(0xFF4B4B4B),
+                    color: getSelectedColor(
+                        widget.colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
                   ),
-                  color: widget.colorTheme == ColorMode.light
-                      ? const Color(0xFFFEFEFE)
-                      : const Color(0xFF282A2C),
+                  color: getSelectedColor(
+                      widget.colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                 ),
               ),
               dropdownStyleData: DropdownStyleData(
                 maxHeight: 200,
                 decoration: BoxDecoration(
-                  color: widget.colorTheme == ColorMode.light
-                      ? const Color(0xFFFEFEFE)
-                      : const Color(0xFF282A2C),
+                  color: getSelectedColor(
+                      widget.colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(8.0),
                     bottomRight: Radius.circular(8.0),
@@ -322,16 +314,9 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
 
   TextStyle customTextFieldStyle() {
     return TextStyle(
-      fontSize: 16,
-      fontFamily: 'Rational Display',
-      color: customColor(),
-    );
-  }
-
-  Color customColor() {
-    return widget.colorTheme == ColorMode.light
-        ? const Color(0xFF535757)
-        : const Color(0xFF858E8E);
+        fontSize: 16,
+        fontFamily: 'Rational Display',
+        color: getSelectedColor(widget.colorTheme, 0xFF535757, 0xFF858E8E));
   }
 
   TextStyle customTextStyle() {
@@ -351,9 +336,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
 
   BorderSide outlineBorder() {
     return BorderSide(
-      color: widget.colorTheme == ColorMode.light
-          ? const Color(0xFFC0C4C4)
-          : const Color(0xFF858E8E),
+      color: getSelectedColor(widget.colorTheme, 0xFFC0C4C4, 0xFF858E8E),
     );
   }
 }

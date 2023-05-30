@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_slider.dart';
-import 'package:flutter_annulus/chain/sections/chain_section.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
+import '../../chain/sections/chain_info.dart';
+import '../../chain/sections/chart_section.dart';
+import '../../shared/utils/theme_color.dart';
+import '../../shared/widgets/footer.dart';
 import '../../transactions/sections/transactions.dart';
 
 class HomeScreen extends HookConsumerWidget {
@@ -21,25 +23,56 @@ class HomeScreen extends HookConsumerWidget {
       title: 'Annulus Event Explorer',
       home: CustomLayout(
         header: Header(
-          logoAsset: colorTheme == ColorMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+          logoAsset: colorTheme == ColorMode.light
+              ? 'images/logo.svg'
+              : 'images/logo_dark.svg',
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
-        content: Column(
-          children: [
-            const SizedBox(height: 20),
-            const ChainSection(),
-            BlockViewSlider(),
-            Transactions(),
-          ],
+        content: Container(
+          decoration: BoxDecoration(
+            color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                child: Row(
+                  children: [
+                    const Expanded(
+                      flex: 3,
+                      child: ChainInfo(),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        height: 408,
+                        decoration: BoxDecoration(
+                          color: getSelectedColor(
+                              colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                              color: getSelectedColor(
+                                  colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                              style: BorderStyle.solid,
+                              width: 1.0),
+                        ),
+                        child: const ChartSection(),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              BlockViewSlider(),
+              Transactions(),
+            ],
+          ),
         ),
         footer: Container(
-          color: colorTheme == ColorMode.light ? const Color(0xFFFEFEFE) : const Color(0xFF282A2C),
-          height: 100,
-          alignment: Alignment.center,
-          child: Text("Footer",
-              style:
-                  TextStyle(color: colorTheme == ColorMode.light ? const Color(0xFF000000) : const Color(0xFFFEFEFE))),
+          color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+          child: const Footer(),
         ),
       ),
     );

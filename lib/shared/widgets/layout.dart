@@ -26,14 +26,17 @@ class CustomLayout extends StatelessWidget {
             child: Container(
               color: Colors.white,
               child: SingleChildScrollView(
-                child: content,
+                child: Column(
+                  children: [
+                    content,
+                    Container(
+                      color: Colors.white,
+                      child: SingleChildScrollView(child: footer),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          // Footer widget
-          Container(
-            color: Colors.white,
-            child: footer,
           ),
         ],
       ),

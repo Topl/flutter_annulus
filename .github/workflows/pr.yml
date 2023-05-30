@@ -1,0 +1,7 @@
+name: PR
+on:
+  pull_request:
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml
