@@ -11,7 +11,7 @@ import '../../shared/widgets/header.dart';
 import '../../shared/widgets/layout.dart';
 
 class TransactionTableScreen extends StatefulHookConsumerWidget {
-  const TransactionTableScreen({Key? key}) : super(key: key);
+  TransactionTableScreen({Key? key}) : super(key: key);
   static const String route = '/transactions';
   @override
   _TransactionTableScreenState createState() => _TransactionTableScreenState();
@@ -80,13 +80,11 @@ class _TransactionTableScreenState
     extends ConsumerState<TransactionTableScreen> {
   bool viewAll = false;
   var _rowsPerPage = 5; //PaginatedDataTable.defaultRowsPerPage;
-
   @override
   Widget build(BuildContext context) {
     final colorTheme = ref.watch(appThemeColorProvider);
     final source = RowDataSource(
         _data, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
-
     return CustomLayout(
       header: Header(
         logoAsset: colorTheme == ColorMode.light
@@ -142,76 +140,84 @@ class _TransactionTableScreenState
                     margin: const EdgeInsets.only(
                         left: 40.0, right: 40.0, top: 8.0, bottom: 80.0),
                     child: SingleChildScrollView(
-                      child: PaginatedDataTable(
-                        source: source,
-                        showFirstLastButtons: true,
-                        rowsPerPage: _rowsPerPage,
-                        dataRowHeight: 80,
-                        availableRowsPerPage: const [1, 5, 10, 50],
-                        onRowsPerPageChanged: (newRowsPerPage) {
-                          if (newRowsPerPage != null) {
-                            // setState(() {
-                            //   _rowsPerPage = newRowsPerPage;
-                            // });
-                          }
-                        },
-                        onPageChanged: (int? n) {
-                          /// value of n is the number of rows displayed so far
-                          setState(() {
-                            if (n != null) {
-                              /// Update rowsPerPage if the remaining count is less than the default rowsPerPage
-                              if (source.rowCount - n < _rowsPerPage) {
-                                _rowsPerPage = source.rowCount - n;
-                              } else {
-                                _rowsPerPage =
-                                    PaginatedDataTable.defaultRowsPerPage;
-                              }
-                            } else {
-                              _rowsPerPage = 0;
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          cardColor: getSelectedColor(
+                              colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                        ),
+                        child: PaginatedDataTable(
+                          arrowHeadColor: getSelectedColor(
+                              colorTheme, 0xFF282A2C, 0xFFFEFEFE),
+                          source: source,
+                          showFirstLastButtons: true,
+                          rowsPerPage: _rowsPerPage,
+                          dataRowHeight: 80,
+                          availableRowsPerPage: const [1, 5, 10, 50],
+                          onRowsPerPageChanged: (newRowsPerPage) {
+                            if (newRowsPerPage != null) {
+                              // setState(() {
+                              //   _rowsPerPage = newRowsPerPage;
+                              // });
                             }
-                          });
-                        },
-                        columns: const [
-                          DataColumn(
-                            label: Padding(
-                              padding: EdgeInsets.only(left: 40.0),
-                              child: SizedBox(
-                                child: TableHeaderText(
-                                    name: Strings.tableHeaderTxnHashId),
+                          },
+                          onPageChanged: (int? n) {
+                            /// value of n is the number of rows displayed so far
+                            setState(() {
+                              if (n != null) {
+                                /// Update rowsPerPage if the remaining count is less than the default rowsPerPage
+                                if (source.rowCount - n < _rowsPerPage) {
+                                  _rowsPerPage = source.rowCount - n;
+                                } else {
+                                  _rowsPerPage =
+                                      PaginatedDataTable.defaultRowsPerPage;
+                                }
+                              } else {
+                                _rowsPerPage = 0;
+                              }
+                            });
+                          },
+                          columns: const [
+                            DataColumn(
+                              label: Padding(
+                                padding: EdgeInsets.only(left: 40.0),
+                                child: SizedBox(
+                                  child: TableHeaderText(
+                                      name: Strings.tableHeaderTxnHashId),
+                                ),
                               ),
                             ),
-                          ),
-                          DataColumn(
-                              label: Padding(
-                            padding: EdgeInsets.only(left: 40.0),
-                            child:
-                                TableHeaderText(name: Strings.tableHeaderBlock),
-                          )),
-                          DataColumn(
-                              label: Padding(
-                            padding: EdgeInsets.only(left: 40.0),
-                            child:
-                                TableHeaderText(name: Strings.tableHeaderType),
-                          )),
-                          DataColumn(
-                              label: Padding(
-                            padding: EdgeInsets.only(left: 40.0),
-                            child: TableHeaderText(
-                                name: Strings.tableHeaderSummary),
-                          )),
-                          DataColumn(
-                              label: Padding(
-                            padding: EdgeInsets.only(left: 40.0),
-                            child:
-                                TableHeaderText(name: Strings.tableHeaderFee),
-                          )),
-                          DataColumn(
-                              label: Padding(
-                            padding: EdgeInsets.only(left: 40.0),
-                            child: TableHeaderText(
-                                name: Strings.tableHeaderStatus),
-                          )),
-                        ],
+                            DataColumn(
+                                label: Padding(
+                              padding: EdgeInsets.only(left: 40.0),
+                              child: TableHeaderText(
+                                  name: Strings.tableHeaderBlock),
+                            )),
+                            DataColumn(
+                                label: Padding(
+                              padding: EdgeInsets.only(left: 40.0),
+                              child: TableHeaderText(
+                                  name: Strings.tableHeaderType),
+                            )),
+                            DataColumn(
+                                label: Padding(
+                              padding: EdgeInsets.only(left: 40.0),
+                              child: TableHeaderText(
+                                  name: Strings.tableHeaderSummary),
+                            )),
+                            DataColumn(
+                                label: Padding(
+                              padding: EdgeInsets.only(left: 40.0),
+                              child:
+                                  TableHeaderText(name: Strings.tableHeaderFee),
+                            )),
+                            DataColumn(
+                                label: Padding(
+                              padding: EdgeInsets.only(left: 40.0),
+                              child: TableHeaderText(
+                                  name: Strings.tableHeaderStatus),
+                            )),
+                          ],
+                        ),
                       ),
                     )),
               ],

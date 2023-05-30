@@ -3,9 +3,12 @@ import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/utils/transitions.dart';
 import 'package:flutter_annulus/shared/widgets/slide_left_builder.dart';
+import 'package:flutter_annulus/transactions/sections/transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+
 import 'package:vrouter/vrouter.dart';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
@@ -39,6 +42,11 @@ class AnnulusRouter extends StatelessWidget {
           path: HomeScreen.route,
           widget: const HomeScreen(),
         ),
+        VWidget(
+          path:
+              '/transactions_details/:transactionId', // Transaction details screen
+          widget: const TransactionDetailsPage(transactionId: ''),
+        ),
         VNester(
           path: '',
           widgetBuilder: (Widget child) => SlideLeftBuilder(child: child),
@@ -47,7 +55,7 @@ class AnnulusRouter extends StatelessWidget {
           nestedRoutes: [
             VWidget(
               path: TransactionTableScreen.route, // Transaction table screen
-              widget: const TransactionTableScreen(),
+              widget: TransactionTableScreen(),
             ),
 
             /// TODO: Add Block Details Screen

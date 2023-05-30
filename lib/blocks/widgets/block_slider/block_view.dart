@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_details_drawer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 
 import '../../../shared/providers/app_theme_provider.dart';
 import '../../../shared/utils/theme_color.dart';
@@ -19,6 +20,8 @@ class BlockView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+
     final colorTheme = ref.watch(appThemeColorProvider);
     return SizedBox(
       child: TextButton(
@@ -51,8 +54,11 @@ class BlockView extends ConsumerWidget {
           child: Container(
               width: 240,
               height: 344,
-              margin: const EdgeInsets.only(
-                  left: 20.0, right: 0.0, bottom: 0.0, top: 20.0),
+              margin: EdgeInsets.only(
+                  left: isMobile ? 6.0 : 20.0,
+                  right: 0.0,
+                  bottom: 0.0,
+                  top: 20.0),
               padding: const EdgeInsets.all(40.0),
               decoration: BoxDecoration(
                   color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
