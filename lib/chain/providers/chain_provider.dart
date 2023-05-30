@@ -1,10 +1,11 @@
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
+import 'package:flutter_annulus/genus/providers/genus_provider.dart';
+import 'package:flutter_annulus/node/providers/node_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final chainProvider =
-    StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
+final chainProvider = StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
   /// Adding some dev notes here
   ///
   /// THIS STILL NEEDS TO BE TESTED!
@@ -44,6 +45,9 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   /// If [setState] is false, it will not update the state of the provider
   Future<Chain> getSelectedChain({bool setState = false}) async {
     if (setState) state = const AsyncLoading();
+
+    final q = ref.read(genusProvider(selectedChain));
+    final w = ref.read(nodeProvider(selectedChain));
 
     const Chain chain = Chain(
       dataThroughput: 39.887,
