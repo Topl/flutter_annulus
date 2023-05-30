@@ -1,0 +1,32 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Release
+
+on:
+  push:
+    tags: ['*']
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml
+
+  publish_dockerhub:
+    uses: ./.github/workflows/_docker_publish_public.yml
+    needs: [build]
+    secrets: inherit
+    with:
+      remote-docker-image: "toplprotocol/annulus"
+
+  publish_ghcr:
+    uses: ./.github/workflows/_docker_publish_public.yml
+    needs: [build]
+    secrets: inherit
+    with:
+      remote-docker-image: "ghcr.io/topl/annulus"

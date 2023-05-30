@@ -1,0 +1,66 @@
+/// All the strings that are being used throughout the app.
+class Strings {
+  Strings._();
+  static const String appName = 'ANNULUS';
+  static const String topl = 'TOPL';
+  static const String submitForm = 'Submit Form';
+  static const String latestBlocks = 'Latest Blocks';
+  static const String multipleChainEmbedding = 'Multiple-chain Embedding';
+  static const String epoch = 'Epoch';
+  static const String header = 'Header';
+  static const String utc = 'UTC';
+  static const String secAgo = 'sec ago';
+  static const String height = 'Height';
+  static const String seeAllTransactions = 'See All Transactions';
+  static const String tableHeaderType = 'TYPE';
+  static const String tableHeaderBlock = 'BLOCK';
+  static const String tableHeaderTxnHashId = 'TXN HASH/ID';
+  static const String tableHeaderSummary = 'SUMMARY';
+  static const String tableHeaderFee = 'FEE';
+  static const String feeAcronym = 'LVL';
+  static const String bobs = 'BOBS';
+  static const String slot = 'Slot';
+  static const String email = 'Email';
+  static const String emailHint = 'Enter your email';
+  static const String emailError = 'Please enter a valid email';
+  static const String subscribe = 'Subscribe';
+  static const String tableHeaderStatus = 'STATUS';
+  static const String statusPending = 'Pending';
+  static const String statusConfirmed = 'Confirmed';
+  static const String statusFailed = 'Failed';
+  static const String footerColumn1Header = 'Protocol';
+  static const String footerColumn2Header = 'Solutions';
+  static const String footerColumn3Header = 'Blockchain';
+  static const String footerColumn4Header = 'About';
+  static const String footerColumn5Header = 'Subscribe to Our Newsletter';
+  static const String footerColumn5Button = 'Submit';
+  static const String footerColumn1Item1 = 'Energy Efficient Regularized PoS';
+  static const String footerColumn1Item2 =
+      'UTxO Ledger and Achieving Scalability';
+  static const String footerColumn1Item3 =
+      'User Ecosystem, Standards and Development';
+  static const String footerColumn1Item4 = 'Tokenomics';
+  static const String footerColumn1Item5 = 'Governance';
+  static const String footerColumn1Item6 = 'Ribn';
+  static const String footerColumn2Item1 = 'ToplTrax';
+  static const String footerColumn2Item2 = 'Traceable Journey';
+  static const String footerColumn2Item3 = 'Smart Labels';
+  static const String footerColumn2Item4 = 'Impact NFTs';
+  static const String footerColumn2Item5 = 'Blockchain-As-A-Service';
+  static const String footerColumn3Item1 = 'Buid';
+  static const String footerColumn3Item2 = 'Brambl';
+  static const String footerColumn3Item3 = 'Grant Programs';
+  static const String footerColumn3Item4 = 'Node Setup';
+  static const String footerColumn3Item5 = 'Knowledge Base';
+  static const String footerColumn4Item1 = 'Team';
+  static const String footerColumn4Item2 = 'Community';
+  static const String footerColumn4Item3 = 'Careers';
+  static const String footerColumn4Item4 = 'Press and Media';
+  static const String footerColumn4Item5 = 'Contact Us';
+  static const String footerPrivacyPolicy = 'Topl Privacy Policy';
+  static const String footerTermsOfUse = 'Terms of Use';
+  static const String footerCookiePolicy = 'Use of Cookies';
+  static const String footerCookiePreferences = 'Cookie Preferences';
+  static const String footerRightsReserved = '2023 © All rights reserved';
+  static const String latestBlocksHeader = 'Latest Blocks';
+}
