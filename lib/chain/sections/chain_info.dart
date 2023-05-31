@@ -38,34 +38,56 @@ class ChainInfo extends HookConsumerWidget {
                   style: BorderStyle.solid,
                   width: 1.0),
         ),
-        height: isTabletOrMobile ? 500 : 408,
+        height: isTabletOrMobile ? 600 : 408,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             //Top Metrics
-            Expanded(
+            SizedBox(
               child: Container(
-                padding: const EdgeInsets.all(42.0),
-                child: Row(
+                padding: isMobile
+                    ? const EdgeInsets.all(5.0)
+                    : const EdgeInsets.all(42.0),
+                margin: isMobile ? const EdgeInsets.only(bottom: 10.0) : null,
+                child: ResponsiveRowColumn(
+                  layout:
+                      ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
+                          ? ResponsiveRowColumnType.COLUMN
+                          : ResponsiveRowColumnType.ROW,
+                  columnSpacing: 20.0,
                   children: [
-                    TopStatWithIcon(
-                        iconString: 'images/speedometer.svg',
-                        titleString: "Data Throughput",
-                        statAmount: chain.dataThroughput.toString(),
-                        statSymbol: " kbps",
-                        firstItem: true),
-                    VerticalDivider(
-                      indent: 20,
-                      endIndent: 20,
-                      thickness: 1,
-                      color:
-                          getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                    ResponsiveRowColumnItem(
+                      child: TopStatWithIcon(
+                          iconString: 'images/speedometer.svg',
+                          titleString: "Data Throughput",
+                          statAmount: chain.dataThroughput.toString(),
+                          statSymbol: " kbps",
+                          firstItem: true),
                     ),
-                    TopStatWithIcon(
-                      iconString: 'images/wallet.svg',
-                      titleString: "Unique Active Addresses",
-                      statAmount: chain.uniqueActiveAddresses.toString(),
-                      statSymbol: " /3,135",
+                    ResponsiveRowColumnItem(
+                      child: isMobile
+                          ? Divider(
+                              color: getSelectedColor(
+                                  colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                              indent: 20,
+                              endIndent: 20,
+                              height: 1,
+                            )
+                          : VerticalDivider(
+                              indent: 20,
+                              endIndent: 20,
+                              thickness: 1,
+                              color: getSelectedColor(
+                                  colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                            ),
+                    ),
+                    ResponsiveRowColumnItem(
+                      child: TopStatWithIcon(
+                        iconString: 'images/wallet.svg',
+                        titleString: "Unique Active Addresses",
+                        statAmount: chain.uniqueActiveAddresses.toString(),
+                        statSymbol: " /3,135",
+                      ),
                     ),
                   ],
                 ),
@@ -77,133 +99,157 @@ class ChainInfo extends HookConsumerWidget {
               height: 1,
             ),
             //Bottom Metrics
-            Expanded(
-              child: Row(
+            SizedBox(
+              child: ResponsiveRowColumn(
+                layout:
+                    ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
+                        ? ResponsiveRowColumnType.COLUMN
+                        : ResponsiveRowColumnType.ROW,
                 children: [
-                  Expanded(
-                    flex: 1,
+                  ResponsiveRowColumnItem(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 32.0, horizontal: 40.0),
-                      child: Column(
+                      padding: EdgeInsets.symmetric(
+                          vertical: isMobile ? 20.0 : 32.0,
+                          horizontal: isMobile ? 25 : 40.0),
+                      child: ResponsiveRowColumn(
+                        layout: ResponsiveBreakpoints.of(context)
+                                .smallerOrEqualTo(MOBILE)
+                            ? ResponsiveRowColumnType.ROW
+                            : ResponsiveRowColumnType.COLUMN,
+                        rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Eon",
-                                style: TextStyle(
-                                  color: Color(0xFF858E8E),
-                                  fontSize: 16,
-                                  fontFamily: 'Rational Display Medium',
-                                ),
+                          ResponsiveRowColumnItem(
+                            child: SizedBox(
+                              width: 135.0,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Eon",
+                                    style: TextStyle(
+                                      color: Color(0xFF858E8E),
+                                      fontSize: 16,
+                                      fontFamily: 'Rational Display Medium',
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    chain.eon.toString(),
+                                    style: TextStyle(
+                                      color: getSelectedColor(
+                                          colorTheme, 0xFF282A2C, 0xFFFEFEFE),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Rational Display Medium',
+                                    ),
+                                  )
+                                ],
                               ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Text(
-                                chain.eon.toString(),
-                                style: TextStyle(
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFF282A2C, 0xFFFEFEFE),
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'Rational Display Medium',
-                                ),
-                              )
-                            ],
+                            ),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Era",
-                                style: TextStyle(
-                                  color: Color(0xFF858E8E),
-                                  fontSize: 16,
-                                  fontFamily: 'Rational Display Medium',
+                          ResponsiveRowColumnItem(
+                              child: SizedBox(
+                            width: 135,
+                            child: Row(
+                              children: [
+                                isMobile
+                                    ? SizedBox(
+                                        height: 40,
+                                        child: VerticalDivider(
+                                          thickness: 1,
+                                          color: getSelectedColor(colorTheme,
+                                              0xFFE7E8E8, 0xFF4B4B4B),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                                isMobile
+                                    ? const SizedBox(
+                                        width: 10,
+                                      )
+                                    : const SizedBox(),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Era",
+                                      style: TextStyle(
+                                        color: Color(0xFF858E8E),
+                                        fontSize: 16,
+                                        fontFamily: 'Rational Display Medium',
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      chain.era.toString(),
+                                      style: TextStyle(
+                                        color: getSelectedColor(
+                                            colorTheme, 0xFF282A2C, 0xFFFEFEFE),
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'Rational Display Medium',
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Text(
-                                chain.era.toString(),
-                                style: TextStyle(
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFF282A2C, 0xFFFEFEFE),
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'Rational Display Medium',
-                                ),
-                              )
-                            ],
-                          )
+                              ],
+                            ),
+                          )),
                         ],
                       ),
                     ),
                   ),
-                  VerticalDivider(
-                      indent: 0,
-                      color:
-                          getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                      width: 1),
-                  Expanded(
-                    flex: 5,
+                  ResponsiveRowColumnItem(
+                    rowColumn: true,
+                    child: isMobile
+                        ? Divider(
+                            color: getSelectedColor(
+                                colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                            indent: 0,
+                            height: 1,
+                            endIndent: 0,
+                          )
+                        : VerticalDivider(
+                            indent: 0,
+                            color: getSelectedColor(
+                                colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                            width: 1),
+                  ),
+                  ResponsiveRowColumnItem(
                     child: Column(
                       children: [
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 40.0),
-                            child: Row(
-                              children: [
-                                LowerStatWithoutIcon(
-                                  statValue: chain.epoch.toString(),
-                                  statSymbol: "Epoch",
-                                  firstItem: true,
-                                ),
-                                VerticalDivider(
-                                  indent: 5,
-                                  endIndent: 10,
-                                  thickness: 1,
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                                  width: 1,
-                                ),
-                                LowerStatWithoutIcon(
-                                  statValue:
-                                      chain.totalTransactionsInEpoch.toString(),
-                                  statSymbol: "Txs",
-                                ),
-                                VerticalDivider(
-                                  indent: 5,
-                                  endIndent: 10,
-                                  thickness: 1,
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                                ),
-                                LowerStatWithoutIcon(
-                                  statValue: chain.height.toString(),
-                                  statSymbol: "Height",
-                                ),
-                                VerticalDivider(
-                                  indent: 10,
-                                  endIndent: 10,
-                                  thickness: 1,
-                                  width: 1,
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                                ),
-                                LowerStatWithoutIcon(
-                                  statValue: chain.averageBlockTime.toString(),
-                                  statSymbol: "Avg Block Time",
-                                ),
-                              ],
-                            ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: isMobile ? 10.0 : 32.0,
+                              horizontal: isMobile ? 0 : 40.0),
+                          child: Wrap(
+                            spacing: 10.0,
+                            runSpacing: 20.0,
+                            alignment: WrapAlignment.spaceBetween,
+                            children: [
+                              LowerStatWithoutIcon(
+                                statValue: chain.epoch.toString(),
+                                statSymbol: "Epoch",
+                                firstItem: true,
+                              ),
+                              LowerStatWithoutIcon(
+                                statValue:
+                                    chain.totalTransactionsInEpoch.toString(),
+                                statSymbol: "Txs",
+                              ),
+                              LowerStatWithoutIcon(
+                                statValue: chain.height.toString(),
+                                statSymbol: "Height",
+                                firstItem: isMobile,
+                              ),
+                              LowerStatWithoutIcon(
+                                statValue: chain.averageBlockTime.toString(),
+                                statSymbol: "Avg Block Time",
+                              ),
+                            ],
                           ),
                         ),
                         Divider(
@@ -211,55 +257,37 @@ class ChainInfo extends HookConsumerWidget {
                               colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                           indent: 0,
                         ),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 40.0),
-                            child: Row(
-                              children: [
-                                LowerStatWithIcon(
-                                    icon: Icons.info_outline,
-                                    statString:
-                                        '${chain.totalStake.toString()}%',
-                                    statSymbol: "Total Stake"),
-                                VerticalDivider(
-                                  indent: 5,
-                                  endIndent: 10,
-                                  thickness: 1,
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                                ),
-                                LowerStatWithIcon(
-                                    icon: Icons.info_outline,
-                                    statString:
-                                        chain.registeredStakes.toString(),
-                                    statSymbol: "Registered Stakes"),
-                                VerticalDivider(
-                                  indent: 5,
-                                  endIndent: 10,
-                                  thickness: 1,
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                                ),
-                                LowerStatWithIcon(
-                                    icon: Icons.info_outline,
-                                    statString:
-                                        '${chain.activeStakes.toString()}%',
-                                    statSymbol: "Active Stakes"),
-                                VerticalDivider(
-                                  indent: 10,
-                                  endIndent: 10,
-                                  thickness: 1,
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                                ),
-                                LowerStatWithIcon(
-                                    icon: Icons.info_outline,
-                                    statString:
-                                        '${chain.inactiveStakes.toString()}%',
-                                    statSymbol: "Inactive Stakes"),
-                              ],
-                            ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: isMobile ? 20.0 : 32.0,
+                              horizontal: isMobile ? 0 : 40.0),
+                          child: Wrap(
+                            spacing: 10.0,
+                            runSpacing: 20.0,
+                            alignment: WrapAlignment.spaceBetween,
+                            children: [
+                              LowerStatWithIcon(
+                                icon: Icons.info_outline,
+                                statString: '${chain.totalStake.toString()}%',
+                                statSymbol: "Total Stake",
+                                firstItem: true,
+                              ),
+                              LowerStatWithIcon(
+                                  icon: Icons.info_outline,
+                                  statString: chain.registeredStakes.toString(),
+                                  statSymbol: "Registered Stakes"),
+                              LowerStatWithIcon(
+                                icon: Icons.info_outline,
+                                statString: '${chain.activeStakes.toString()}%',
+                                statSymbol: "Active Stakes",
+                                firstItem: isMobile,
+                              ),
+                              LowerStatWithIcon(
+                                  icon: Icons.info_outline,
+                                  statString:
+                                      '${chain.inactiveStakes.toString()}%',
+                                  statSymbol: "Inactive Stakes"),
+                            ],
                           ),
                         ),
                       ],

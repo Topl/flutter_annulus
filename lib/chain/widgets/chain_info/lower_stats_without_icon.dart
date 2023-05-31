@@ -17,32 +17,46 @@ class LowerStatWithoutIcon extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.only(left: firstItem ? 0 : 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              statValue,
-              style: TextStyle(
-                color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                fontFamily: 'Rational Display Medium',
-              ),
+    return SizedBox(
+      width: 135,
+      child: Row(
+        children: [
+          firstItem
+              ? const SizedBox()
+              : Container(
+                  margin: EdgeInsets.only(left: firstItem ? 0 : 10),
+                  height: 40,
+                  child: VerticalDivider(
+                    thickness: 1,
+                    color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                  ),
+                ),
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  statValue,
+                  style: TextStyle(
+                    color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Rational Display Medium',
+                  ),
+                ),
+                Text(
+                  statSymbol,
+                  style: TextStyle(
+                    color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Rational Display',
+                  ),
+                )
+              ],
             ),
-            Text(
-              statSymbol,
-              style: TextStyle(
-                color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Rational Display',
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

@@ -20,6 +20,7 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Annulus Event Explorer',
@@ -39,8 +40,8 @@ class HomeScreen extends HookConsumerWidget {
             children: [
               const SizedBox(height: 20),
               Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                margin: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 20.0 : 40.0, vertical: 20),
                 child: ResponsiveRowColumn(
                   layout: ResponsiveBreakpoints.of(context).smallerThan(DESKTOP)
                       ? ResponsiveRowColumnType.COLUMN
