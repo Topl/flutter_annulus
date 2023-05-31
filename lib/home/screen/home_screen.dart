@@ -5,6 +5,8 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_row_column.dart';
 import '../../chain/sections/chain_info.dart';
 import '../../chain/sections/chart_section.dart';
 import '../../shared/utils/theme_color.dart';
@@ -19,6 +21,7 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Annulus Event Explorer',
@@ -41,16 +44,20 @@ class HomeScreen extends HookConsumerWidget {
             children: [
               const SizedBox(height: 20),
               Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                child: Row(
+                margin: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 20.0 : 40.0, vertical: 20),
+                child: ResponsiveRowColumn(
+                  layout: ResponsiveBreakpoints.of(context).smallerThan(DESKTOP)
+                      ? ResponsiveRowColumnType.COLUMN
+                      : ResponsiveRowColumnType.ROW,
+                  columnSpacing: 40.0,
                   children: [
-                    const Expanded(
-                      flex: 3,
+                    const ResponsiveRowColumnItem(
+                      rowFlex: 3,
                       child: ChainInfo(),
                     ),
-                    Expanded(
-                      flex: 2,
+                    ResponsiveRowColumnItem(
+                      rowFlex: 2,
                       child: Container(
                         height: 408,
                         decoration: BoxDecoration(

@@ -38,6 +38,7 @@ class ChainInfo extends HookConsumerWidget {
                   style: BorderStyle.solid,
                   width: 1.0),
         ),
+        height: isTabletOrMobile ? 600 : 408,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -54,10 +55,8 @@ class ChainInfo extends HookConsumerWidget {
                           ? ResponsiveRowColumnType.COLUMN
                           : ResponsiveRowColumnType.ROW,
                   columnSpacing: 20.0,
-                  // rowSpacing: 60.0,
                   children: [
                     ResponsiveRowColumnItem(
-                      rowFlex: 1,
                       child: TopStatWithIcon(
                           iconString: 'images/speedometer.svg',
                           titleString: "Data Throughput",
@@ -83,13 +82,11 @@ class ChainInfo extends HookConsumerWidget {
                             ),
                     ),
                     ResponsiveRowColumnItem(
-                      rowFlex: 1,
                       child: TopStatWithIcon(
-                        iconString: 'images/coin.svg',
-                        titleString: "Average Transaction Fees",
-                        statAmount: chain.averageTransactionFee.toString(),
-                        statSymbol: " LVL",
-                        firstItem: isMobile,
+                        iconString: 'images/wallet.svg',
+                        titleString: "Unique Active Addresses",
+                        statAmount: chain.uniqueActiveAddresses.toString(),
+                        statSymbol: " /3,135",
                       ),
                     ),
                   ],
@@ -110,23 +107,20 @@ class ChainInfo extends HookConsumerWidget {
                         : ResponsiveRowColumnType.ROW,
                 children: [
                   ResponsiveRowColumnItem(
-                    rowFlex: 1,
                     child: Container(
                       padding: EdgeInsets.symmetric(
                           vertical: isMobile ? 20.0 : 32.0,
-                          horizontal: isMobile ? 25 : 20.0),
+                          horizontal: isMobile ? 25 : 40.0),
                       child: ResponsiveRowColumn(
                         layout: ResponsiveBreakpoints.of(context)
                                 .smallerOrEqualTo(MOBILE)
                             ? ResponsiveRowColumnType.ROW
                             : ResponsiveRowColumnType.COLUMN,
                         rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        columnCrossAxisAlignment: CrossAxisAlignment.start,
-                        columnSpacing: 30.0,
                         children: [
                           ResponsiveRowColumnItem(
-                            rowFlex: 1,
                             child: SizedBox(
+                              width: 135.0,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -156,59 +150,54 @@ class ChainInfo extends HookConsumerWidget {
                             ),
                           ),
                           ResponsiveRowColumnItem(
-                              rowFlex: 1,
                               child: SizedBox(
-                                child: Row(
+                            width: 135,
+                            child: Row(
+                              children: [
+                                isMobile
+                                    ? SizedBox(
+                                        height: 40,
+                                        child: VerticalDivider(
+                                          thickness: 1,
+                                          color: getSelectedColor(colorTheme,
+                                              0xFFE7E8E8, 0xFF4B4B4B),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                                isMobile
+                                    ? const SizedBox(
+                                        width: 10,
+                                      )
+                                    : const SizedBox(),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    isMobile
-                                        ? SizedBox(
-                                            height: 40,
-                                            child: VerticalDivider(
-                                              thickness: 1,
-                                              color: getSelectedColor(
-                                                  colorTheme,
-                                                  0xFFE7E8E8,
-                                                  0xFF4B4B4B),
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                    isMobile
-                                        ? const SizedBox(
-                                            width: 10,
-                                          )
-                                        : const SizedBox(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          "Era",
-                                          style: TextStyle(
-                                            color: Color(0xFF858E8E),
-                                            fontSize: 16,
-                                            fontFamily:
-                                                'Rational Display Medium',
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          chain.era.toString(),
-                                          style: TextStyle(
-                                            color: getSelectedColor(colorTheme,
-                                                0xFF282A2C, 0xFFFEFEFE),
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily:
-                                                'Rational Display Medium',
-                                          ),
-                                        )
-                                      ],
+                                    const Text(
+                                      "Era",
+                                      style: TextStyle(
+                                        color: Color(0xFF858E8E),
+                                        fontSize: 16,
+                                        fontFamily: 'Rational Display Medium',
+                                      ),
                                     ),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      chain.era.toString(),
+                                      style: TextStyle(
+                                        color: getSelectedColor(
+                                            colorTheme, 0xFF282A2C, 0xFFFEFEFE),
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'Rational Display Medium',
+                                      ),
+                                    )
                                   ],
                                 ),
-                              )),
+                              ],
+                            ),
+                          )),
                         ],
                       ),
                     ),
@@ -223,19 +212,13 @@ class ChainInfo extends HookConsumerWidget {
                             height: 1,
                             endIndent: 0,
                           )
-                        : SizedBox(
-                            height: 230,
-                            child: VerticalDivider(
-                                indent: 0,
-                                endIndent: 0,
-                                thickness: 1,
-                                color: getSelectedColor(
-                                    colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                                width: 1),
-                          ),
+                        : VerticalDivider(
+                            indent: 0,
+                            color: getSelectedColor(
+                                colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                            width: 1),
                   ),
                   ResponsiveRowColumnItem(
-                    rowFlex: 6,
                     child: Column(
                       crossAxisAlignment: !isMobile
                           ? CrossAxisAlignment.start
@@ -243,47 +226,31 @@ class ChainInfo extends HookConsumerWidget {
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(
-                              vertical: isMobile ? 20.0 : 32.0,
-                              horizontal: isMobile ? 20 : 20.0),
-                          child: ResponsiveRowColumn(
-                            layout: ResponsiveBreakpoints.of(context)
-                                    .smallerOrEqualTo(MOBILE)
-                                ? ResponsiveRowColumnType.COLUMN
-                                : ResponsiveRowColumnType.ROW,
-                            columnSpacing: 10.0,
+                              vertical: isMobile ? 10.0 : 32.0,
+                              horizontal: isMobile ? 0 : 40.0),
+                          child: Wrap(
+                            spacing: 10.0,
+                            runSpacing: 20.0,
+                            alignment: WrapAlignment.spaceBetween,
                             children: [
-                              ResponsiveRowColumnItem(
-                                rowFlex: 1,
-                                child: LowerStatWithoutIcon(
-                                  statValue: chain.epoch.toString(),
-                                  statSymbol: "Epoch",
-                                  firstItem: true,
-                                ),
+                              LowerStatWithoutIcon(
+                                statValue: chain.epoch.toString(),
+                                statSymbol: "Epoch",
+                                firstItem: true,
                               ),
-                              ResponsiveRowColumnItem(
-                                rowFlex: 1,
-                                child: LowerStatWithoutIcon(
-                                  statValue:
-                                      chain.totalTransactionsInEpoch.toString(),
-                                  statSymbol: "Txs",
-                                  firstItem: isMobile,
-                                ),
+                              LowerStatWithoutIcon(
+                                statValue:
+                                    chain.totalTransactionsInEpoch.toString(),
+                                statSymbol: "Txs",
                               ),
-                              ResponsiveRowColumnItem(
-                                rowFlex: 1,
-                                child: LowerStatWithoutIcon(
-                                  statValue: chain.height.toString(),
-                                  statSymbol: "Height",
-                                  firstItem: isMobile,
-                                ),
+                              LowerStatWithoutIcon(
+                                statValue: chain.height.toString(),
+                                statSymbol: "Height",
+                                firstItem: isMobile,
                               ),
-                              ResponsiveRowColumnItem(
-                                rowFlex: 1,
-                                child: LowerStatWithoutIcon(
-                                  statValue: chain.averageBlockTime.toString(),
-                                  statSymbol: "Avg Block Time",
-                                  firstItem: isMobile,
-                                ),
+                              LowerStatWithoutIcon(
+                                statValue: chain.averageBlockTime.toString(),
+                                statSymbol: "Avg Block Time",
                               ),
                             ],
                           ),
@@ -302,52 +269,33 @@ class ChainInfo extends HookConsumerWidget {
                         Container(
                           padding: EdgeInsets.symmetric(
                               vertical: isMobile ? 20.0 : 32.0,
-                              horizontal: isMobile ? 20.0 : 20.0),
-                          child: ResponsiveRowColumn(
-                            layout: ResponsiveBreakpoints.of(context)
-                                    .smallerOrEqualTo(MOBILE)
-                                ? ResponsiveRowColumnType.COLUMN
-                                : ResponsiveRowColumnType.ROW,
-                            columnSpacing: 10.0,
+                              horizontal: isMobile ? 0 : 40.0),
+                          child: Wrap(
+                            spacing: 10.0,
+                            runSpacing: 20.0,
+                            alignment: WrapAlignment.spaceBetween,
                             children: [
-                              ResponsiveRowColumnItem(
-                                rowFlex: 1,
-                                child: LowerStatWithIcon(
-                                  icon: Icons.info_outline,
-                                  statString: '${chain.totalStake.toString()}%',
-                                  statSymbol: "Total Stake",
-                                  firstItem: true,
-                                ),
+                              LowerStatWithIcon(
+                                icon: Icons.info_outline,
+                                statString: '${chain.totalStake.toString()}%',
+                                statSymbol: "Total Stake",
+                                firstItem: true,
                               ),
-                              ResponsiveRowColumnItem(
-                                rowFlex: 1,
-                                child: LowerStatWithIcon(
+                              LowerStatWithIcon(
                                   icon: Icons.info_outline,
                                   statString: chain.registeredStakes.toString(),
-                                  statSymbol: "Registered\nStakes",
-                                  firstItem: isMobile,
-                                ),
+                                  statSymbol: "Registered Stakes"),
+                              LowerStatWithIcon(
+                                icon: Icons.info_outline,
+                                statString: '${chain.activeStakes.toString()}%',
+                                statSymbol: "Active Stakes",
+                                firstItem: isMobile,
                               ),
-                              ResponsiveRowColumnItem(
-                                rowFlex: 1,
-                                child: LowerStatWithIcon(
-                                  icon: Icons.info_outline,
-                                  statString:
-                                      '${chain.activeStakes.toString()}%',
-                                  statSymbol: "Active\nStakes",
-                                  firstItem: isMobile,
-                                ),
-                              ),
-                              ResponsiveRowColumnItem(
-                                rowFlex: 1,
-                                child: LowerStatWithIcon(
+                              LowerStatWithIcon(
                                   icon: Icons.info_outline,
                                   statString:
                                       '${chain.inactiveStakes.toString()}%',
-                                  statSymbol: "Inactive\nStakes",
-                                  firstItem: isMobile,
-                                ),
-                              ),
+                                  statSymbol: "Inactive Stakes"),
                             ],
                           ),
                         ),

@@ -5,12 +5,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../shared/utils/theme_color.dart';
 
 class LowerStatWithIcon extends ConsumerWidget {
-  final IconData icon;
-  final String statString;
-  final String statSymbol;
-  final bool firstItem;
+  IconData icon;
+  String statString;
+  String statSymbol;
+  bool firstItem;
 
-  const LowerStatWithIcon({
+  LowerStatWithIcon({
     super.key,
     required this.icon,
     required this.statString,
