@@ -53,8 +53,8 @@ class TransactionDetailsPage extends HookConsumerWidget {
             length: 3,
             child: SingleChildScrollView(
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,14 +90,15 @@ class TransactionDetailsPage extends HookConsumerWidget {
                     const SizedBox(
                       height: 25,
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(left: 16),
                       child: Row(
                         children: [
                           Text(
                             "Transaction Details",
                             style: TextStyle(
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: getSelectedColor(
+                                  colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                               fontFamily: 'Rational Display',
                               fontSize: 20,
                               fontWeight: FontWeight.w800,

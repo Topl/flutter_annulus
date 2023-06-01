@@ -1,31 +1,34 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../shared/utils/theme_color.dart';
 import 'transactions.dart';
 
-class TransactionDetailsDrawer extends StatelessWidget {
+class TransactionDetailsDrawer extends HookConsumerWidget {
   const TransactionDetailsDrawer({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorTheme = ref.watch(appThemeColorProvider);
     return DefaultTabController(
       length: 3,
       child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
         ),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
-              padding: EdgeInsets.only(left: 60),
+              padding: const EdgeInsets.only(left: 60),
               child: Text(
                 'Transaction Details',
                 style: TextStyle(
-                    color: Colors.black,
+                    color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                     fontFamily: 'Rational Display',
                     fontSize: 24.0,
                     fontWeight: FontWeight.w600),

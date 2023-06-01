@@ -326,7 +326,12 @@ class CustomRowWithText extends StatelessWidget {
                     ? const EdgeInsets.only(
                         top: 0, bottom: 0, left: 10, right: 0)
                     : EdgeInsets.zero,
-                child: hasIcon ? const Icon(Icons.copy) : null),
+                child: hasIcon
+                    ? const Icon(
+                        Icons.copy,
+                        color: Color(0xFF858E8E),
+                      )
+                    : null),
           ],
         ),
       ],
@@ -372,7 +377,12 @@ class CustomColumnWithText extends StatelessWidget {
                     ? const EdgeInsets.only(
                         top: 0, bottom: 0, left: 10, right: 0)
                     : EdgeInsets.zero,
-                child: hasIcon ? const Icon(Icons.copy) : null),
+                child: hasIcon
+                    ? const Icon(
+                        Icons.copy,
+                        color: Color(0xFF858E8E),
+                      )
+                    : null),
           ],
         ),
       ],
