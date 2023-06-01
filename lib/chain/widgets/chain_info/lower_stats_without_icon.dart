@@ -18,7 +18,6 @@ class LowerStatWithoutIcon extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
     return SizedBox(
-      width: 135,
       child: Row(
         children: [
           firstItem

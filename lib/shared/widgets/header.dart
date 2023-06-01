@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
-import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
@@ -26,7 +25,7 @@ class Header extends HookConsumerWidget {
     final ColorMode colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
     final isSmallerThanTablet =
-        ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -57,7 +56,6 @@ class Header extends HookConsumerWidget {
                           showGeneralDialog(
                             context: context,
                             pageBuilder: (context, _, __) => MobileMenu(
-                              colorTheme: colorTheme,
                               onSwitchChange: () {
                                 ref
                                     .read(appThemeColorProvider.notifier)
@@ -73,35 +71,17 @@ class Header extends HookConsumerWidget {
                             transitionBuilder: (context, animation,
                                 secondaryAnimation, child) {
                               return SlideTransition(
-                                position: CurvedAnimation(
-                                        parent: animation,
-                                        curve: Curves.easeOutCubic)
-                                    .drive(
-                                  Tween<Offset>(
-                                      begin: const Offset(0, -1.0),
-                                      end: Offset.zero),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Material(
-                                      color: colorTheme == ColorMode.light
-                                          ? const Color.fromRGBO(
-                                              254, 254, 254, 0.96)
-                                          : const Color.fromRGBO(
-                                              53, 55, 57, 0.96),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: child,
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
+                                  position: CurvedAnimation(
+                                          parent: animation,
+                                          curve: Curves.easeOutCubic)
+                                      .drive(
+                                    Tween<Offset>(
+                                        begin: const Offset(0, -1.0),
+                                        end: Offset.zero),
+                                  ),
+                                  child: MaterialConsumer(
+                                    child: child,
+                                  ));
                             },
                           );
                         },
@@ -170,11 +150,39 @@ class Header extends HookConsumerWidget {
   }
 }
 
-class MobileMenu extends StatelessWidget {
-  MobileMenu(
-      {super.key, required this.colorTheme, required this.onSwitchChange});
+class MaterialConsumer extends HookConsumerWidget {
+  MaterialConsumer({Key? key, required this.child}) : super(key: key);
 
-  ColorMode colorTheme;
+  Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ColorMode colorTheme = ref.watch(appThemeColorProvider);
+
+    return Column(
+      children: [
+        Material(
+          color: colorTheme == ColorMode.light
+              ? const Color.fromRGBO(254, 254, 254, 0.96)
+              : const Color.fromRGBO(53, 55, 57, 0.96),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: child,
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class MobileMenu extends HookConsumerWidget {
+  MobileMenu({super.key, required this.onSwitchChange});
+
   VoidCallback onSwitchChange;
 
   List<String> footerLinks = [
@@ -185,7 +193,8 @@ class MobileMenu extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ColorMode colorTheme = ref.watch(appThemeColorProvider);
     return Expanded(
       child: Column(
         children: [
@@ -214,11 +223,13 @@ class MobileMenu extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Network',
                       style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Rational Display',
+                        color: getSelectedColor(
+                            colorTheme, 0xFF535757, 0xFFC0C4C4),
                       ),
                     ),
                     ChainNameDropDown(
@@ -232,11 +243,13 @@ class MobileMenu extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Dark Mode',
                       style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Rational Display',
+                        color: getSelectedColor(
+                            colorTheme, 0xFF535757, 0xFFC0C4C4),
                       ),
                     ),
                     ColorModeSwitch(

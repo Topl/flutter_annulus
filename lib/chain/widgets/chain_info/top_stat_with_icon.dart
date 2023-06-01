@@ -27,66 +27,84 @@ class TopStatWithIcon extends ConsumerWidget {
     final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
     return Container(
       margin: isMobile ? null : EdgeInsets.only(left: firstItem ? 0 : 20),
-      child: ResponsiveRowColumn(
-        layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
-            ? ResponsiveRowColumnType.ROW
-            : ResponsiveRowColumnType.COLUMN,
-        rowMainAxisAlignment: MainAxisAlignment.start,
-        rowCrossAxisAlignment: CrossAxisAlignment.start,
-        rowSpacing: 10.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ResponsiveRowColumnItem(
-            child: SvgPicture.asset(
-              iconString,
-              width: 20.0,
-              height: 16.0,
-            ),
-          ),
-          ResponsiveRowColumnItem(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: isMobile ? null : const EdgeInsets.only(top: 14),
-                  child: Text(
-                    titleString,
-                    style: TextStyle(
-                      color:
-                          getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
-                      fontSize: 16,
-                      fontFamily: 'Rational Display',
-                    ),
+          firstItem
+              ? const SizedBox()
+              : Container(
+                  margin: EdgeInsets.only(left: firstItem ? 0 : 10, right: 10),
+                  height: 60,
+                  child: VerticalDivider(
+                    thickness: 1,
+                    color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 16),
-                  child: Row(
-                    children: [
-                      Text(
-                        statAmount,
+          ResponsiveRowColumn(
+            layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
+                ? ResponsiveRowColumnType.ROW
+                : ResponsiveRowColumnType.COLUMN,
+            rowMainAxisAlignment: MainAxisAlignment.start,
+            rowCrossAxisAlignment: CrossAxisAlignment.start,
+            columnMainAxisAlignment: MainAxisAlignment.spaceBetween,
+            columnCrossAxisAlignment: CrossAxisAlignment.start,
+            rowSpacing: 10.0,
+            children: [
+              ResponsiveRowColumnItem(
+                child: SvgPicture.asset(
+                  iconString,
+                  width: 20.0,
+                  height: 16.0,
+                ),
+              ),
+              ResponsiveRowColumnItem(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: isMobile ? null : const EdgeInsets.only(top: 14),
+                      child: Text(
+                        titleString,
                         style: TextStyle(
                           color: getSelectedColor(
-                              colorTheme, 0xFF000000, 0xFFF5F5F5),
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Rational Display',
-                          fontSize: 24,
-                        ),
-                      ),
-                      Text(
-                        statSymbol,
-                        style: TextStyle(
-                          color: getSelectedColor(
-                              colorTheme, 0xFF535757, 0xFFC0C4C4),
+                              colorTheme, 0xFF858E8E, 0xFFC0C4C4),
                           fontSize: 16,
                           fontFamily: 'Rational Display',
                         ),
                       ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 16),
+                      child: Row(
+                        children: [
+                          Text(
+                            statAmount,
+                            style: TextStyle(
+                              color: getSelectedColor(
+                                  colorTheme, 0xFF000000, 0xFFF5F5F5),
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'Rational Display',
+                              fontSize: 24,
+                            ),
+                          ),
+                          Text(
+                            statSymbol,
+                            style: TextStyle(
+                              color: getSelectedColor(
+                                  colorTheme, 0xFF535757, 0xFFC0C4C4),
+                              fontSize: 16,
+                              fontFamily: 'Rational Display',
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
