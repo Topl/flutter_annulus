@@ -10,23 +10,36 @@ import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/widgets/footer.dart';
 import '../../shared/widgets/header.dart';
 import '../../shared/widgets/layout.dart';
-
+import '../models/transaction.dart';
+import '../providers/transactions_provider.dart';
 
 class TransactionDetailsPage extends HookConsumerWidget {
-  final String transactionId;
   const TransactionDetailsPage({
     Key? key,
     required this.transactionId,
   }) : super(key: key);
   static const String route = '/transactions_details/:transactionId';
+  final String transactionId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
-    /// Make a function with logic to fetch transactions
-    /// where each item has an id that matches the transactionId
+    final AsyncValue<List<Transaction>> transactionsInfo =
+        ref.watch(transactionsProvider);
+
+    final transaction = transactionsInfo.when(
+      data: (transactions) {
+        return transactions.firstWhere(
+          (transaction) => transactionId == transactionId,
+        );
+      },
+      loading: () => null,
+      error: (_, __) => null,
+    );
+
+    const int textLength = 30;
 
     return CustomLayout(
         header: Header(
@@ -51,7 +64,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                       padding: const EdgeInsets.only(left: 6),
                       child: TextButton(
                           onPressed: () {
-                            context.vRouter.to('/transactions');
+                            context.vRouter.to('/');
                           },
                           child: Row(
                             children: [
@@ -106,26 +119,35 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   rowFlex: isMobile ? 3 : 2,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
+                                          ? CustomColumnWithText(
                                               leftText: 'Txn Hash/ID',
-                                              rightText:
-                                                  '0x5be9d701Byd24neQfY1vXa987a',
+                                              rightText: transaction
+                                                      ?.transactionId
+                                                      .toString()
+                                                      .substring(
+                                                          0, textLength - 3) ??
+                                                  '',
                                               hasIcon: true,
                                             )
-                                          : const CustomRowWithText(
+                                          : CustomRowWithText(
                                               leftText: 'Txn Hash/ID',
-                                              rightText:
-                                                  '0x5be9d701Byd24neQfY1vXa987a',
+                                              rightText: transaction
+                                                      ?.transactionId
+                                                      .toString()
+                                                      .substring(
+                                                          0, textLength - 3) ??
+                                                  '',
                                               hasIcon: true,
                                             ))),
                             ],
                           ),
-                          const CustomResponsiveRowColumn(
+                          CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
                                   rowFlex: 1,
                                   child: CustomPadding(
-                                    child: CustomStatusWidget(),
+                                    child: CustomStatusWidget(
+                                        status: transaction?.status.name ?? ''),
                                   )),
                             ],
                           ),
@@ -135,12 +157,18 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
+                                          ? CustomColumnWithText(
                                               leftText: 'Block',
-                                              rightText: '242218')
-                                          : const CustomRowWithText(
+                                              rightText: transaction
+                                                      ?.block.height
+                                                      .toString() ??
+                                                  '')
+                                          : CustomRowWithText(
                                               leftText: 'Block',
-                                              rightText: '242218',
+                                              rightText: transaction
+                                                      ?.block.height
+                                                      .toString() ??
+                                                  '',
                                             ))),
                             ],
                           ),
@@ -150,13 +178,19 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
+                                          ? CustomColumnWithText(
                                               leftText: 'Broadcast Timestamp',
-                                              rightText: 'UTC 16:32:01',
+                                              rightText: transaction
+                                                      ?.broadcastTimestamp
+                                                      .toString() ??
+                                                  '',
                                             )
-                                          : const CustomRowWithText(
+                                          : CustomRowWithText(
                                               leftText: 'Broadcast Timestamp',
-                                              rightText: 'UTC 16:32:01',
+                                              rightText: transaction
+                                                      ?.broadcastTimestamp
+                                                      .toString() ??
+                                                  '',
                                             ))),
                             ],
                           ),
@@ -166,12 +200,18 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
+                                          ? CustomColumnWithText(
                                               leftText: 'Confirmed Timestamp',
-                                              rightText: 'UTC 16:34:51')
-                                          : const CustomRowWithText(
+                                              rightText: transaction
+                                                      ?.confirmedTimestamp
+                                                      .toString() ??
+                                                  '')
+                                          : CustomRowWithText(
                                               leftText: 'Confirmed Timestamp',
-                                              rightText: 'UTC 16:34:51',
+                                              rightText: transaction
+                                                      ?.confirmedTimestamp
+                                                      .toString() ??
+                                                  "",
                                             ))),
                             ],
                           )
@@ -191,12 +231,18 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
+                                          ? CustomColumnWithText(
                                               leftText: 'Type',
-                                              rightText: 'Transfer')
-                                          : const CustomRowWithText(
+                                              rightText: transaction
+                                                      ?.transactionType.string
+                                                      .toString() ??
+                                                  '')
+                                          : CustomRowWithText(
                                               leftText: 'Type',
-                                              rightText: 'Transfer',
+                                              rightText: transaction
+                                                      ?.transactionType.string
+                                                      .toString() ??
+                                                  '',
                                             ))),
                             ],
                           ),
@@ -206,12 +252,16 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
+                                          ? CustomColumnWithText(
                                               leftText: 'Amount',
-                                              rightText: '6,215.232 TOPL')
-                                          : const CustomRowWithText(
+                                              rightText: transaction?.amount
+                                                      .toString() ??
+                                                  '')
+                                          : CustomRowWithText(
                                               leftText: 'Amount',
-                                              rightText: '6,215.232 TOPL',
+                                              rightText: transaction?.amount
+                                                      .toString() ??
+                                                  '',
                                             ))),
                             ],
                           ),
@@ -221,12 +271,18 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
+                                          ? CustomColumnWithText(
                                               leftText: 'Txn Fee',
-                                              rightText: '2.1 LVL')
-                                          : const CustomRowWithText(
+                                              rightText: transaction
+                                                      ?.transactionFee
+                                                      .toString() ??
+                                                  '')
+                                          : CustomRowWithText(
                                               leftText: 'Txn Fee',
-                                              rightText: '2.1 LVL',
+                                              rightText: transaction
+                                                      ?.transactionFee
+                                                      .toString() ??
+                                                  '',
                                             ))),
                             ],
                           ),
@@ -236,14 +292,18 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
+                                          ? CustomColumnWithText(
                                               leftText: 'From',
-                                              rightText:
-                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic')
-                                          : const CustomRowWithText(
+                                              rightText: transaction
+                                                      ?.senderAddress
+                                                      .toString() ??
+                                                  "")
+                                          : CustomRowWithText(
                                               leftText: 'From',
-                                              rightText:
-                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
+                                              rightText: transaction
+                                                      ?.senderAddress
+                                                      .toString() ??
+                                                  "",
                                             ))),
                             ],
                           ),
@@ -253,14 +313,18 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
+                                          ? CustomColumnWithText(
                                               leftText: 'To',
-                                              rightText:
-                                                  '7bY6Dne54qMU12cz3oPF4yVx5aG6a')
-                                          : const CustomRowWithText(
+                                              rightText: transaction
+                                                      ?.receiverAddress
+                                                      .toString() ??
+                                                  "")
+                                          : CustomRowWithText(
                                               leftText: 'To',
-                                              rightText:
-                                                  '7bY6Dne54qMU12cz3oPF4yVx5aG6a',
+                                              rightText: transaction
+                                                      ?.receiverAddress
+                                                      .toString() ??
+                                                  "",
                                             ))),
                             ],
                           ),
@@ -275,12 +339,18 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                     rowFlex: 1,
                                     child: CustomPadding(
                                         child: isMobile
-                                            ? const CustomColumnWithText(
+                                            ? CustomColumnWithText(
                                                 leftText: 'Size of Txn',
-                                                rightText: '17321')
-                                            : const CustomRowWithText(
+                                                rightText: transaction
+                                                        ?.transactionSize
+                                                        .toString() ??
+                                                    '')
+                                            : CustomRowWithText(
                                                 leftText: 'Size of Txn',
-                                                rightText: '17321',
+                                                rightText: transaction
+                                                        ?.transactionSize
+                                                        .toString() ??
+                                                    '',
                                               ))),
                               ],
                             ),
@@ -290,12 +360,18 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                     rowFlex: 1,
                                     child: CustomPadding(
                                         child: isMobile
-                                            ? const CustomColumnWithText(
+                                            ? CustomColumnWithText(
                                                 leftText: 'Proposition',
-                                                rightText: '0x736e345d784cf4c')
-                                            : const CustomRowWithText(
+                                                rightText: transaction
+                                                        ?.proposition
+                                                        .toString() ??
+                                                    "")
+                                            : CustomRowWithText(
                                                 leftText: 'Proposition',
-                                                rightText: '0x736e345d784cf4c',
+                                                rightText: transaction
+                                                        ?.proposition
+                                                        .toString() ??
+                                                    "",
                                               ))),
                               ],
                             ),
@@ -305,12 +381,16 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                     rowFlex: 1,
                                     child: CustomPadding(
                                         child: isMobile
-                                            ? const CustomColumnWithText(
+                                            ? CustomColumnWithText(
                                                 leftText: 'Quantity',
-                                                rightText: '413113 / 64.31')
-                                            : const CustomRowWithText(
+                                                rightText: transaction?.quantity
+                                                        .toString() ??
+                                                    "")
+                                            : CustomRowWithText(
                                                 leftText: 'Quantity',
-                                                rightText: '413113 / 64.31',
+                                                rightText: transaction?.quantity
+                                                        .toString() ??
+                                                    "",
                                               ))),
                               ],
                             ),
@@ -320,12 +400,16 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                     rowFlex: 1,
                                     child: CustomPadding(
                                         child: isMobile
-                                            ? const CustomColumnWithText(
+                                            ? CustomColumnWithText(
                                                 leftText: 'Name',
-                                                rightText: 'Topl / Allie')
-                                            : const CustomRowWithText(
+                                                rightText: transaction?.name
+                                                        .toString() ??
+                                                    "")
+                                            : CustomRowWithText(
                                                 leftText: 'Name',
-                                                rightText: 'Topl / Allie',
+                                                rightText: transaction?.name
+                                                        .toString() ??
+                                                    "",
                                               ))),
                               ],
                             )

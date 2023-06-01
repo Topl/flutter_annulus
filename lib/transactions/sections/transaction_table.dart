@@ -9,6 +9,8 @@ import '../../shared/utils/theme_color.dart';
 import '../../shared/widgets/footer.dart';
 import '../../shared/widgets/header.dart';
 import '../../shared/widgets/layout.dart';
+import '../models/transaction.dart';
+import '../providers/transactions_provider.dart';
 
 class TransactionTableScreen extends StatefulHookConsumerWidget {
   TransactionTableScreen({Key? key}) : super(key: key);
@@ -17,65 +19,6 @@ class TransactionTableScreen extends StatefulHookConsumerWidget {
   _TransactionTableScreenState createState() => _TransactionTableScreenState();
 }
 
-List<Map> _data = [
-  {
-    "txnHashId": "0x5be9d701Byd24n...eQfY1vXa987a",
-    "type": "Transfer",
-    "fee": "2.3",
-    "status": "Pending",
-    "block": {
-      "height": "45,101",
-      "slot": "1,0297",
-    },
-    "summary": {
-      "toplValue": "2,450.400",
-      "bobsValue": "1,000.001",
-    }
-  },
-  {
-    "txnHashId": "0x5be9d701Byd24n...eQfY1vXa987a",
-    "type": "Transfer",
-    "fee": "2.3",
-    "status": "Confirmed",
-    "block": {
-      "height": "45,102",
-      "slot": "1,0297",
-    },
-    "summary": {
-      "toplValue": "2,450.400",
-      "bobsValue": "1,000.002",
-    }
-  },
-  {
-    "txnHashId": "0x5be9d701Byd24n...eQfY1vXa987a",
-    "type": "Transfer",
-    "fee": "2.3",
-    "status": "Failed",
-    "block": {
-      "height": "45,103",
-      "slot": "1,0297",
-    },
-    "summary": {
-      "toplValue": "2,450.400",
-      "bobsValue": "1,000.003",
-    }
-  },
-  {
-    "txnHashId": "0x5be9d701Byd24n...eQfY1vXa987a",
-    "type": "Transfer",
-    "fee": "2.3",
-    "status": "Confirmed",
-    "block": {
-      "height": "45,104",
-      "slot": "1,0297",
-    },
-    "summary": {
-      "toplValue": "2,450.400",
-      "bobsValue": "1,000.004",
-    }
-  },
-];
-
 class _TransactionTableScreenState
     extends ConsumerState<TransactionTableScreen> {
   bool viewAll = false;
@@ -83,151 +26,175 @@ class _TransactionTableScreenState
   @override
   Widget build(BuildContext context) {
     final colorTheme = ref.watch(appThemeColorProvider);
-    final source = RowDataSource(
-        _data, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
-    return CustomLayout(
-      header: Header(
-        logoAsset: colorTheme == ColorMode.light
-            ? 'images/logo.svg'
-            : 'images/logo_dark.svg',
-        onSearch: () {},
-        onDropdownChanged: (String value) {},
-      ),
-      content: Container(
-        color: colorTheme == ColorMode.light
-            ? const Color(0xFFFEFEFE)
-            : const Color(0xFF282A2C),
-        child: Column(
-          children: [
-            Wrap(
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(
-                        left: 40.0, right: 40.0, top: 40.0, bottom: 8.0),
-                    child: SizedBox(
-                      width: 100.0,
-                      height: 50.0,
-                      child: TextButton(
-                          onPressed: () {
-                            context.vRouter.to('/');
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.arrow_back,
-                                color: colorTheme == ColorMode.light
-                                    ? const Color(0xFF535757)
-                                    : const Color(0xFFAFB6B6),
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                "Back",
-                                style: TextStyle(
-                                  color: colorTheme == ColorMode.light
-                                      ? const Color(0xFF535757)
-                                      : const Color(0xFFAFB6B6),
-                                  fontFamily: 'Rational Display',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+    final AsyncValue<List<Transaction>> transactionsInfo =
+        ref.watch(transactionsProvider);
+    return transactionsInfo.when(
+        data: (transactions) => CustomLayout(
+              header: Header(
+                logoAsset: colorTheme == ColorMode.light
+                    ? 'images/logo.svg'
+                    : 'images/logo_dark.svg',
+                onSearch: () {},
+                onDropdownChanged: (String value) {},
+              ),
+              content: Container(
+                color: colorTheme == ColorMode.light
+                    ? const Color(0xFFFEFEFE)
+                    : const Color(0xFF282A2C),
+                child: Column(
+                  children: [
+                    Wrap(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                left: 40.0,
+                                right: 40.0,
+                                top: 40.0,
+                                bottom: 8.0),
+                            child: SizedBox(
+                              width: 100.0,
+                              height: 50.0,
+                              child: TextButton(
+                                  onPressed: () {
+                                    context.vRouter.to('/');
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.arrow_back,
+                                        color: colorTheme == ColorMode.light
+                                            ? const Color(0xFF535757)
+                                            : const Color(0xFFAFB6B6),
+                                      ),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text(
+                                        "Back",
+                                        style: TextStyle(
+                                          color: colorTheme == ColorMode.light
+                                              ? const Color(0xFF535757)
+                                              : const Color(0xFFAFB6B6),
+                                          fontFamily: 'Rational Display',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            )),
+                        Container(
+                            margin: const EdgeInsets.only(
+                                left: 40.0,
+                                right: 40.0,
+                                top: 8.0,
+                                bottom: 80.0),
+                            child: SingleChildScrollView(
+                              child: Theme(
+                                data: Theme.of(context).copyWith(
+                                  cardColor: getSelectedColor(
+                                      colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                                ),
+                                child: PaginatedDataTable(
+                                  arrowHeadColor: getSelectedColor(
+                                      colorTheme, 0xFF282A2C, 0xFFFEFEFE),
+                                  source: RowDataSource(
+                                      transactions,
+                                      context,
+                                      getSelectedColor(
+                                          colorTheme, 0xFFFEFEFE, 0xFF282A2C)),
+                                  showFirstLastButtons: true,
+                                  rowsPerPage: _rowsPerPage,
+                                  dataRowHeight: 80,
+                                  availableRowsPerPage: const [1, 5, 10, 50],
+                                  onRowsPerPageChanged: (newRowsPerPage) {
+                                    if (newRowsPerPage != null) {
+                                      // setState(() {
+                                      //   _rowsPerPage = newRowsPerPage;
+                                      // });
+                                    }
+                                  },
+                                  onPageChanged: (int? n) {
+                                    /// value of n is the number of rows displayed so far
+                                    setState(() {
+                                      if (n != null) {
+                                        final source = RowDataSource(
+                                            transactions,
+                                            context,
+                                            getSelectedColor(colorTheme,
+                                                0xFFFEFEFE, 0xFF282A2C));
+
+                                        /// Update rowsPerPage if the remaining count is less than the default rowsPerPage
+                                        if (source.rowCount - n <
+                                            _rowsPerPage) {
+                                          _rowsPerPage = source.rowCount - n;
+                                        } else {
+                                          _rowsPerPage = PaginatedDataTable
+                                              .defaultRowsPerPage;
+                                        }
+                                      } else {
+                                        _rowsPerPage = 0;
+                                      }
+                                    });
+                                  },
+                                  columns: const [
+                                    DataColumn(
+                                      label: Padding(
+                                        padding: EdgeInsets.only(left: 40.0),
+                                        child: SizedBox(
+                                          child: TableHeaderText(
+                                              name:
+                                                  Strings.tableHeaderTxnHashId),
+                                        ),
+                                      ),
+                                    ),
+                                    DataColumn(
+                                        label: Padding(
+                                      padding: EdgeInsets.only(left: 40.0),
+                                      child: TableHeaderText(
+                                          name: Strings.tableHeaderBlock),
+                                    )),
+                                    DataColumn(
+                                        label: Padding(
+                                      padding: EdgeInsets.only(left: 40.0),
+                                      child: TableHeaderText(
+                                          name: Strings.tableHeaderType),
+                                    )),
+                                    DataColumn(
+                                        label: Padding(
+                                      padding: EdgeInsets.only(left: 40.0),
+                                      child: TableHeaderText(
+                                          name: Strings.tableHeaderSummary),
+                                    )),
+                                    DataColumn(
+                                        label: Padding(
+                                      padding: EdgeInsets.only(left: 40.0),
+                                      child: TableHeaderText(
+                                          name: Strings.tableHeaderFee),
+                                    )),
+                                    DataColumn(
+                                        label: Padding(
+                                      padding: EdgeInsets.only(left: 40.0),
+                                      child: TableHeaderText(
+                                          name: Strings.tableHeaderStatus),
+                                    )),
+                                  ],
                                 ),
                               ),
-                            ],
-                          )),
-                    )),
-                Container(
-                    margin: const EdgeInsets.only(
-                        left: 40.0, right: 40.0, top: 8.0, bottom: 80.0),
-                    child: SingleChildScrollView(
-                      child: Theme(
-                        data: Theme.of(context).copyWith(
-                          cardColor: getSelectedColor(
-                              colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-                        ),
-                        child: PaginatedDataTable(
-                          arrowHeadColor: getSelectedColor(
-                              colorTheme, 0xFF282A2C, 0xFFFEFEFE),
-                          source: source,
-                          showFirstLastButtons: true,
-                          rowsPerPage: _rowsPerPage,
-                          dataRowHeight: 80,
-                          availableRowsPerPage: const [1, 5, 10, 50],
-                          onRowsPerPageChanged: (newRowsPerPage) {
-                            if (newRowsPerPage != null) {
-                              // setState(() {
-                              //   _rowsPerPage = newRowsPerPage;
-                              // });
-                            }
-                          },
-                          onPageChanged: (int? n) {
-                            /// value of n is the number of rows displayed so far
-                            setState(() {
-                              if (n != null) {
-                                /// Update rowsPerPage if the remaining count is less than the default rowsPerPage
-                                if (source.rowCount - n < _rowsPerPage) {
-                                  _rowsPerPage = source.rowCount - n;
-                                } else {
-                                  _rowsPerPage =
-                                      PaginatedDataTable.defaultRowsPerPage;
-                                }
-                              } else {
-                                _rowsPerPage = 0;
-                              }
-                            });
-                          },
-                          columns: const [
-                            DataColumn(
-                              label: Padding(
-                                padding: EdgeInsets.only(left: 40.0),
-                                child: SizedBox(
-                                  child: TableHeaderText(
-                                      name: Strings.tableHeaderTxnHashId),
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                                label: Padding(
-                              padding: EdgeInsets.only(left: 40.0),
-                              child: TableHeaderText(
-                                  name: Strings.tableHeaderBlock),
                             )),
-                            DataColumn(
-                                label: Padding(
-                              padding: EdgeInsets.only(left: 40.0),
-                              child: TableHeaderText(
-                                  name: Strings.tableHeaderType),
-                            )),
-                            DataColumn(
-                                label: Padding(
-                              padding: EdgeInsets.only(left: 40.0),
-                              child: TableHeaderText(
-                                  name: Strings.tableHeaderSummary),
-                            )),
-                            DataColumn(
-                                label: Padding(
-                              padding: EdgeInsets.only(left: 40.0),
-                              child:
-                                  TableHeaderText(name: Strings.tableHeaderFee),
-                            )),
-                            DataColumn(
-                                label: Padding(
-                              padding: EdgeInsets.only(left: 40.0),
-                              child: TableHeaderText(
-                                  name: Strings.tableHeaderStatus),
-                            )),
-                          ],
-                        ),
-                      ),
-                    )),
-              ],
-            )
-          ],
-        ),
-      ),
-      footer: Container(
-          color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-          child: const Footer()),
-    );
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              footer: Container(
+                  color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                  child: const Footer()),
+            ),
+        error: (error, stack) =>
+            const Text('Oops, something unexpected happened'),
+        loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ));
   }
 }

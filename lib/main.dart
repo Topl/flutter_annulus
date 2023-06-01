@@ -43,8 +43,7 @@ class AnnulusRouter extends StatelessWidget {
           widget: const HomeScreen(),
         ),
         VWidget(
-          path:
-              '/transactions_details/:transactionId', // Transaction details screen
+          path: TransactionDetailsPage.route, // Transaction details screen
           widget: const TransactionDetailsPage(transactionId: ''),
         ),
         VNester(

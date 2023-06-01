@@ -3,7 +3,6 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_row_column.dart';
-
 import '../../shared/utils/theme_color.dart';
 import '../sections/transactions.dart';
 
@@ -11,7 +10,6 @@ import '../sections/transactions.dart';
 class StatusButton extends ConsumerWidget {
   const StatusButton(
       {super.key, this.status = "pending", this.hideArrowIcon = true});
-
   final String status;
   final bool hideArrowIcon;
 
@@ -102,13 +100,10 @@ class TableHeaderText extends ConsumerWidget {
     super.key,
     required this.name,
   });
-
   final String name;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
-
     return Text(
       name,
       style: TextStyle(
@@ -209,7 +204,9 @@ class CustomContainer extends HookConsumerWidget {
 
 /// Widget for Transaction Status
 class CustomStatusWidget extends StatelessWidget {
-  const CustomStatusWidget({Key? key});
+  final String status;
+
+  const CustomStatusWidget({Key? key, required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -223,21 +220,21 @@ class CustomStatusWidget extends StatelessWidget {
         children: [
           ResponsiveRowColumnItem(
               child: isMobile
-                  ? const Column(
+                  ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 25,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 172,
                           child: CustomTextLeft(desc: 'Status'),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 6,
                         ),
                         StatusButton(
-                          status: 'Confirmed',
+                          status: status,
                           hideArrowIcon: false,
                         ),
                       ],
@@ -395,7 +392,6 @@ class CustomPadding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-
     return Padding(
       padding: isMobile
           ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10)

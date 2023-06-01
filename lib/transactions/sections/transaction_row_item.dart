@@ -98,12 +98,13 @@ class RowDataSource extends DataTableSource {
   RowDataSource(this.data, this.context, this.clr);
 
   BuildContext context;
-  List<Map> data;
+  List<Transaction> data;
   Color clr;
 
   @override
   DataRow? getRow(int index) {
     final row = data[index];
+
     if (index < data.length) {
       return DataRow(
           color: MaterialStateProperty.all(clr),
@@ -121,31 +122,33 @@ class RowDataSource extends DataTableSource {
           cells: <DataCell>[
             DataCell(GestureDetector(
               onTap: () {
-                context.vRouter.to('/transactions_details/${row['txnHashId']}');
+                context.vRouter.to(
+                  '/transactions_details/${row.transactionId}',
+                );
               },
               child: TransactionColumnText(
-                textTop: row["txnHashId"],
+                textTop: row.transactionId,
                 textBottom: "49 ${Strings.secAgo}",
               ),
             )),
             DataCell(TransactionColumnText(
-              textTop: '${Strings.height}: ${row['block']['height']}',
-              textBottom: '${Strings.slot}: ${row["block"]["slot"]}',
+              textTop: '${Strings.height}: ${row.block.height}',
+              textBottom: '${Strings.slot}: ${row.block.slot}',
             )),
             DataCell(TransactionColumnText(
-              textTop: row["type"],
+              textTop: row.transactionType.string,
               textBottom: "",
               isBottomTextRequired: false,
             )),
+            const DataCell(TransactionColumnText(
+                textTop: '3 ${Strings.topl}',
+                textBottom: '44 ${Strings.bobs}')),
             DataCell(TransactionColumnText(
-                textTop: '${row["summary"]["toplValue"]} ${Strings.topl}',
-                textBottom: '${row["summary"]["bobsValue"]} ${Strings.bobs}')),
-            DataCell(TransactionColumnText(
-              textTop: '${row["fee"]} ${Strings.feeAcronym}',
+              textTop: '${row.transactionFee} ${Strings.feeAcronym}',
               textBottom: "",
               isBottomTextRequired: false,
             )),
-            DataCell(StatusButton(status: row["status"])),
+            DataCell(StatusButton(status: row.status.string)),
           ]);
     } else
       return null;
