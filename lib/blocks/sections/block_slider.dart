@@ -30,8 +30,8 @@ class BlockViewSlider extends HookConsumerWidget {
           margin: EdgeInsets.only(
               top: 20.0,
               bottom: 20.0,
-              left: isMobile ? 5.0 : 40.0,
-              right: isMobile ? 10.0 : 40.0),
+              left: isMobile ? 0 : 40.0,
+              right: isMobile ? 0 : 40.0),
           padding: isDesktop || isTablet
               ? const EdgeInsets.only(
                   top: 20.0, bottom: 30.0, left: 0.0, right: 0.0)
@@ -152,7 +152,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 10.0,
-                  horizontal: 30.0,
+                  horizontal: 18,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

@@ -12,8 +12,12 @@ enum Chains {
   private_network(
     name: 'Private Network',
     host: 'localhost',
-    port: 50051,
-  );
+    port: 9091,
+  ),
+  dev_network(
+      name: 'Development Network',
+      host: 'tetra.dev.torus.topl.tech',
+      port: 9091);
 
   const Chains({
     required this.name,

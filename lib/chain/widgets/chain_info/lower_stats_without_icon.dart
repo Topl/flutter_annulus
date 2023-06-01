@@ -4,11 +4,11 @@ import '../../../shared/providers/app_theme_provider.dart';
 import '../../../shared/utils/theme_color.dart';
 
 class LowerStatWithoutIcon extends ConsumerWidget {
-  String statValue;
-  String statSymbol;
-  bool firstItem;
+  final String statValue;
+  final String statSymbol;
+  final bool firstItem;
 
-  LowerStatWithoutIcon(
+  const LowerStatWithoutIcon(
       {super.key,
       required this.statValue,
       required this.statSymbol,
