@@ -4,14 +4,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../shared/providers/app_theme_provider.dart';
 import '../../../shared/utils/theme_color.dart';
 
+/// TopStatWithIcon Widget that displays a stat with an icon on top of it.
 class TopStatWithIcon extends ConsumerWidget {
-  String iconString;
-  String titleString;
-  String statAmount;
-  String statSymbol;
-  bool firstItem;
+  final String iconString;
+  final String titleString;
+  final String statAmount;
+  final String statSymbol;
+  final bool firstItem;
 
-  TopStatWithIcon(
+  const TopStatWithIcon(
       {super.key,
       required this.iconString,
       required this.titleString,

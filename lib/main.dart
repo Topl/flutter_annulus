@@ -3,6 +3,7 @@ import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/utils/transitions.dart';
 import 'package:flutter_annulus/shared/widgets/slide_left_builder.dart';
+import 'package:flutter_annulus/transactions/sections/transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -31,7 +32,8 @@ class AnnulusRouter extends StatelessWidget {
           breakpoints: const [
             Breakpoint(start: 0, end: mobileBreak, name: MOBILE),
             Breakpoint(start: mobileBreak + 1, end: tabletBreak, name: TABLET),
-            Breakpoint(start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
+            Breakpoint(
+                start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
           ],
         );
       },
@@ -40,10 +42,15 @@ class AnnulusRouter extends StatelessWidget {
           path: HomeScreen.route,
           widget: const HomeScreen(),
         ),
+        VWidget(
+          path: TransactionDetailsPage.route, // Transaction details screen
+          widget: const TransactionDetailsPage(transactionId: ''),
+        ),
         VNester(
           path: '',
           widgetBuilder: (Widget child) => SlideLeftBuilder(child: child),
-          buildTransition: (animation, _, child) => slideLeftTransition(animation, child),
+          buildTransition: (animation, _, child) =>
+              slideLeftTransition(animation, child),
           nestedRoutes: [
             VWidget(
               path: TransactionTableScreen.route, // Transaction table screen
