@@ -27,13 +27,13 @@ class LowerStatWithIcon extends ConsumerWidget {
         firstItem
             ? const SizedBox()
             : Container(
-                margin: EdgeInsets.only(left: firstItem ? 0 : 10),
-                height: 40,
-                child: VerticalDivider(
-                  thickness: 1,
-                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                ),
-              ),
+          margin: EdgeInsets.only(left: firstItem ? 0 : 10),
+          height: 40,
+          child: VerticalDivider(
+            thickness: 1,
+            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+          ),
+        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
