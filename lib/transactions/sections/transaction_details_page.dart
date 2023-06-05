@@ -91,7 +91,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                       height: 25,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 16),
+                      padding: const EdgeInsets.only(left: 16),
                       child: Row(
                         children: [
                           Text(

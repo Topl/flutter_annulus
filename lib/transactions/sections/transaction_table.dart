@@ -13,7 +13,7 @@ import '../models/transaction.dart';
 import '../providers/transactions_provider.dart';
 
 class TransactionTableScreen extends StatefulHookConsumerWidget {
-  TransactionTableScreen({Key? key}) : super(key: key);
+  const TransactionTableScreen({Key? key}) : super(key: key);
   static const String route = '/transactions';
   @override
   _TransactionTableScreenState createState() => _TransactionTableScreenState();

@@ -212,7 +212,7 @@ class CustomContainer extends HookConsumerWidget {
 class CustomStatusWidget extends StatelessWidget {
   final String status;
 
-  const CustomStatusWidget({Key? key, required this.status});
+  const CustomStatusWidget({super.key, required this.status});
 
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,7 @@ import '../models/transaction.dart';
 
 /// A widget to display the list of transactions.
 class Transactions extends HookConsumerWidget {
-  Transactions({super.key});
+  const Transactions({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

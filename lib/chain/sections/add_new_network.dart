@@ -296,12 +296,6 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                       height: 56,
                       child: ElevatedButton(
                         onPressed: () {
-                          // setState(() {
-                          //   textEditingController.text.isEmpty
-                          //       ? validate = true
-                          //       : validate = false;
-                          // });
-
                           toast.showToast(
                               child: CustomToast(
                                   widget: widget,
