@@ -183,9 +183,9 @@ class MaterialConsumer extends HookConsumerWidget {
 class MobileMenu extends HookConsumerWidget {
   MobileMenu({super.key, required this.onSwitchChange});
 
-  VoidCallback onSwitchChange;
+  final VoidCallback onSwitchChange;
 
-  List<String> footerLinks = [
+  final List<String> footerLinks = [
     'Topl Privacy Policy',
     'Terms of Use',
     'Use of Cookies',

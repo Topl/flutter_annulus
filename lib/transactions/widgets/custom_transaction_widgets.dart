@@ -3,6 +3,8 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_row_column.dart';
+
+import '../../chain/sections/add_new_network.dart';
 import '../../shared/utils/theme_color.dart';
 import '../sections/transactions.dart';
 
@@ -10,6 +12,7 @@ import '../sections/transactions.dart';
 class StatusButton extends ConsumerWidget {
   const StatusButton(
       {super.key, this.status = "pending", this.hideArrowIcon = true});
+
   final String status;
   final bool hideArrowIcon;
 
@@ -100,10 +103,13 @@ class TableHeaderText extends ConsumerWidget {
     super.key,
     required this.name,
   });
+
   final String name;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+
     return Text(
       name,
       style: TextStyle(
@@ -206,7 +212,7 @@ class CustomContainer extends HookConsumerWidget {
 class CustomStatusWidget extends StatelessWidget {
   final String status;
 
-  const CustomStatusWidget({Key? key, required this.status});
+  const CustomStatusWidget({super.key, required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -326,12 +332,7 @@ class CustomRowWithText extends StatelessWidget {
                     ? const EdgeInsets.only(
                         top: 0, bottom: 0, left: 10, right: 0)
                     : EdgeInsets.zero,
-                child: hasIcon
-                    ? const Icon(
-                        Icons.copy,
-                        color: Color(0xFF858E8E),
-                      )
-                    : null),
+                child: hasIcon ? const Icon(Icons.copy) : null),
           ],
         ),
       ],
@@ -377,12 +378,7 @@ class CustomColumnWithText extends StatelessWidget {
                     ? const EdgeInsets.only(
                         top: 0, bottom: 0, left: 10, right: 0)
                     : EdgeInsets.zero,
-                child: hasIcon
-                    ? const Icon(
-                        Icons.copy,
-                        color: Color(0xFF858E8E),
-                      )
-                    : null),
+                child: hasIcon ? const Icon(Icons.copy) : null),
           ],
         ),
       ],
@@ -402,11 +398,96 @@ class CustomPadding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+
     return Padding(
       padding: isMobile
           ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10)
           : EdgeInsets.zero,
       child: child,
+    );
+  }
+}
+
+class CustomToast extends StatelessWidget {
+  const CustomToast({
+    Key? key,
+    required this.widget,
+    required this.cancel,
+    required this.isSuccess,
+  }) : super(key: key);
+
+  final AddNewNetworkContainer widget;
+  final VoidCallback cancel;
+  final bool isSuccess;
+
+  @override
+  Widget build(BuildContext context) {
+    final isTablet = ResponsiveBreakpoints.of(context).between(TABLET, DESKTOP);
+    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+
+    return Container(
+      height: 64,
+      width: isTablet ? 500 : 345,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: getSelectedColor(widget.colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+        border: Border.all(
+          color: getSelectedColor(widget.colorTheme, 0xFFE0E0E0, 0xFF858E8E),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          const SizedBox(width: 16),
+          isSuccess
+              ? const Icon(
+                  Icons.check,
+                  color: Colors.green,
+                  size: 24,
+                )
+              : const Icon(
+                  Icons.warning_amber,
+                  color: Colors.red,
+                  size: 24,
+                ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: SizedBox(
+              width: 450,
+              child: Text(
+                isSuccess
+                    ? "Network was added ${isMobile ? '\n' : ""} successfully"
+                    : "Something went wrong... ${isMobile ? '\n' : ""} Please try again later",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Rational Display',
+                  fontWeight: FontWeight.w300,
+                  color: getSelectedColor(
+                    widget.colorTheme,
+                    0xFF4B4B4B,
+                    0xFF858E8E,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: cancel,
+          ),
+        ],
+      ),
     );
   }
 }

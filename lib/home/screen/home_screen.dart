@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_slider.dart';
+import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-
 import '../../chain/sections/chain_info.dart';
 import '../../chain/sections/chart_section.dart';
 import '../../shared/utils/theme_color.dart';
@@ -20,7 +19,6 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
-    final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Annulus Event Explorer',
@@ -32,6 +30,9 @@ class HomeScreen extends HookConsumerWidget {
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
+        mobileHeader: ChainNameDropDown(
+          colorTheme: colorTheme,
+        ),
         content: Container(
           decoration: BoxDecoration(
             color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
@@ -40,20 +41,16 @@ class HomeScreen extends HookConsumerWidget {
             children: [
               const SizedBox(height: 20),
               Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: isMobile ? 20.0 : 40.0, vertical: 20),
-                child: ResponsiveRowColumn(
-                  layout: ResponsiveBreakpoints.of(context).smallerThan(DESKTOP)
-                      ? ResponsiveRowColumnType.COLUMN
-                      : ResponsiveRowColumnType.ROW,
-                  columnSpacing: 40.0,
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                child: Row(
                   children: [
-                    const ResponsiveRowColumnItem(
-                      rowFlex: 3,
+                    const Expanded(
+                      flex: 3,
                       child: ChainInfo(),
                     ),
-                    ResponsiveRowColumnItem(
-                      rowFlex: 2,
+                    Expanded(
+                      flex: 2,
                       child: Container(
                         height: 408,
                         decoration: BoxDecoration(
@@ -79,7 +76,6 @@ class HomeScreen extends HookConsumerWidget {
         ),
         footer: Container(
           color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-          // Terminal bug originating here
           child: const Footer(),
         ),
       ),

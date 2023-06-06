@@ -150,8 +150,9 @@ class RowDataSource extends DataTableSource {
             )),
             DataCell(StatusButton(status: row.status.string)),
           ]);
-    } else
+    } else {
       return null;
+    }
   }
 
   @override

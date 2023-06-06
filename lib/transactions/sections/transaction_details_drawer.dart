@@ -34,10 +34,10 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                     fontWeight: FontWeight.w600),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(
@@ -48,7 +48,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: '0x5be9d701Byd24neQfY1vXa987a'),
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(width: 172, child: CustomTextLeft(desc: 'Status')),
@@ -61,7 +61,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 )
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(width: 172, child: CustomTextLeft(desc: 'Block')),
@@ -71,7 +71,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: '242218')
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(
@@ -83,7 +83,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: 'UTC 16:32:01')
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(
@@ -95,10 +95,10 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: 'UTC 16:34:51')
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            SizedBox(
+            const SizedBox(
               // maximum width and draw line
               width: double.infinity,
               child: Divider(
@@ -106,10 +106,10 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 thickness: 2,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(width: 172, child: CustomTextLeft(desc: 'Type')),
@@ -119,7 +119,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: 'Transfer')
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(width: 172, child: CustomTextLeft(desc: 'Amount')),
@@ -129,7 +129,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: '6,215.232 TOPL')
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(width: 172, child: CustomTextLeft(desc: 'Txn Fee')),
@@ -139,7 +139,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: '2.1 LVL')
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(width: 172, child: CustomTextLeft(desc: 'From')),
@@ -149,7 +149,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic')
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(width: 172, child: CustomTextLeft(desc: 'To')),
@@ -159,10 +159,10 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: '7bY6Dne54qMU12cz3oPF4yVx5aG6a')
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            SizedBox(
+            const SizedBox(
               // maximum width and draw line
               width: double.infinity,
               child: Divider(
@@ -170,10 +170,10 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 thickness: 2,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(
@@ -184,7 +184,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: '17321')
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(
@@ -195,7 +195,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: '0x736e345d784cf4c')
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(width: 172, child: CustomTextLeft(desc: 'Quantity')),
@@ -205,7 +205,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 CustomTextRight(desc: '413113 / 64.31')
               ],
             ),
-            Row(
+            const Row(
               children: [
                 Spacing(),
                 SizedBox(width: 172, child: CustomTextLeft(desc: 'Name')),

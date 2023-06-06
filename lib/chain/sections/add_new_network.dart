@@ -1,7 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/utils/theme_color.dart';
+import '../../transactions/widgets/custom_transaction_widgets.dart';
 import '../models/currency.dart';
 
 /// A widget that displays a dropdown button for selecting a chain name.
@@ -24,14 +27,23 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
   String? selectedCurrencyValue = 'LVL';
 
   final TextEditingController textEditingController = TextEditingController();
+  final toast = FToast();
+  @override
+  void initState() {
+    super.initState();
+    toast.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+
     return Container(
       decoration: BoxDecoration(
           color: getSelectedColor(widget.colorTheme, 0xFFFFFFFF, 0xFF282A2C)),
       child: Padding(
-        padding: const EdgeInsets.all(40.0),
+        padding: EdgeInsets.all(isMobile ? 16.0 : 40.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -67,17 +79,19 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                     size: 24,
                   ),
                   const SizedBox(width: 16),
-                  SizedBox(
-                    width: 450,
-                    child: Text(
-                        'Some network providers may monitor your network activity. Please add only trusted networks.',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Rational Display',
-                          fontWeight: FontWeight.w300,
-                          color: getSelectedColor(
-                              widget.colorTheme, 0xFF7040EC, 0xFF858E8E),
-                        )),
+                  Expanded(
+                    child: SizedBox(
+                      width: 450,
+                      child: Text(
+                          'Some network providers may monitor your network activity. Please add only trusted networks.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Rational Display',
+                            fontWeight: FontWeight.w300,
+                            color: getSelectedColor(
+                                widget.colorTheme, 0xFF7040EC, 0xFF858E8E),
+                          )),
+                    ),
                   ),
                 ],
               ),
@@ -247,8 +261,8 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                 focusedBorder: customOutlineInputBorder(),
               ),
             ),
-            const SizedBox(
-              height: 48,
+            SizedBox(
+              height: !isMobile ? 48 : null,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 64.0),
@@ -256,51 +270,63 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SizedBox(
-                    width: 272,
-                    height: 56,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Cancel',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Rational Display',
-                            color: Color(0xFF858E8E),
-                          )),
+                  Expanded(
+                    child: SizedBox(
+                      width: isMobile ? 100 : 272,
+                      height: 56,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Cancel',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Rational Display',
+                              color: Color(0xFF858E8E),
+                            )),
+                      ),
                     ),
                   ),
                   const SizedBox(
                     width: 16,
                   ),
-                  SizedBox(
-                    width: 272,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          textEditingController.text.isEmpty
-                              ? validate = true
-                              : validate = false;
-                        });
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color(0xFF0DC8D4)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                  Expanded(
+                    child: SizedBox(
+                      width: isMobile ? 100 : 272,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          toast.showToast(
+                              child: CustomToast(
+                                  widget: widget,
+                                  isSuccess: true,
+                                  cancel: () => Fluttertoast.cancel()),
+                              toastDuration: const Duration(seconds: 4),
+                              positionedToastBuilder: (context, child) =>
+                                  Positioned(
+                                    top: 30,
+                                    left: isTablet ? 70 : 0,
+                                    right: 0,
+                                    child: child,
+                                  ));
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFF0DC8D4)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                           ),
                         ),
+                        child: const Text('Add',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Rational Display',
+                              color: Color(0xFFFEFEFE),
+                            )),
                       ),
-                      child: const Text('Add',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Rational Display',
-                            color: Color(0xFFFEFEFE),
-                          )),
                     ),
                   ),
                 ],
