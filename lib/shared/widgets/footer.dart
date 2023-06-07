@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/main.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../constants/strings.dart';
@@ -197,7 +197,7 @@ class Footer extends HookConsumerWidget {
                   width: 24,
                 ),
                 SvgPicture.asset(
-                  colorTheme == ColorMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+                  colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
                   width: 32,
                   height: 20,
                 ),

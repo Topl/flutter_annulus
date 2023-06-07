@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_details_drawer.dart';
-import 'package:flutter_annulus/main.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
@@ -75,7 +75,7 @@ class BlockView extends ConsumerWidget {
                               style: BorderStyle.solid,
                               width: 1.0)),
                       child: Image.asset(
-                        colorTheme == ColorMode.light
+                        colorTheme == ThemeMode.light
                             ? 'assets/icons/block-icon.png'
                             : 'assets/icons/dark-block-icon.png',
                         width: 20,

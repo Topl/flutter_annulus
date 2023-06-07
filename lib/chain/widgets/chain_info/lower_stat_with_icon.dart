@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/main.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../shared/utils/theme_color.dart';

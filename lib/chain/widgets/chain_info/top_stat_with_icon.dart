@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/main.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';

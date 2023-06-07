@@ -21,7 +21,7 @@ class HomeScreen extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     return CustomLayout(
       header: Header(
-        logoAsset: colorTheme == ColorMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+        logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
         onSearch: () {},
         onDropdownChanged: (String value) {},
       ),
