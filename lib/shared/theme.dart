@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 ThemeData lightTheme({
   required BuildContext context,
 }) {
   final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-  final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
-  final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+  // final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
+  // final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
   const Color textColor = Color(0xFF282A2C);
   const Color textColor2 = Color(0xFF000000);
@@ -31,8 +30,8 @@ ThemeData darkTheme({
   required BuildContext context,
 }) {
   final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-  final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
-  final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+  // final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
+  // final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
   const Color textColor = Color(0xFFFEFEFE);
   const Color textColor2 = Color(0xFFF5F5F5);
@@ -52,6 +51,7 @@ ThemeData darkTheme({
   );
 }
 
+/// Abstracting text theme for reusability between light and dark themes
 TextTheme _textTheme({
   required bool isMobile,
   required Color textColor,
