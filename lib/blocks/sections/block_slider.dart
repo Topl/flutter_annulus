@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/main.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -27,22 +28,14 @@ class BlockViewSlider extends HookConsumerWidget {
     return blocksInfo.when(
       data: (blocks) => SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(
-              top: 20.0,
-              bottom: 20.0,
-              left: isMobile ? 0 : 40.0,
-              right: isMobile ? 0 : 40.0),
-          padding: isDesktop || isTablet
-              ? const EdgeInsets.only(
-                  top: 20.0, bottom: 30.0, left: 0.0, right: 0.0)
-              : null,
+          margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 0 : 40.0, right: isMobile ? 0 : 40.0),
+          padding: isDesktop || isTablet ? const EdgeInsets.only(top: 20.0, bottom: 30.0, left: 0.0, right: 0.0) : null,
           decoration: isDesktop || isTablet
               ? BoxDecoration(
                   color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(
-                      color:
-                          getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                       style: BorderStyle.solid,
                       width: 1.0),
                 )
@@ -50,9 +43,7 @@ class BlockViewSlider extends HookConsumerWidget {
           child: Wrap(
             children: <Widget>[
               ResponsiveRowColumn(
-                layout: isMobile
-                    ? ResponsiveRowColumnType.COLUMN
-                    : ResponsiveRowColumnType.ROW,
+                layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
                 children: [
                   ResponsiveRowColumnItem(
                     rowFlex: isMobile ? 12 : 1,
@@ -69,10 +60,8 @@ class BlockViewSlider extends HookConsumerWidget {
                               BlockPlaceHolder(controller: _controller),
                               Expanded(
                                 child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  child: CustomCarousel(
-                                      blocks: blocks, controller: _controller),
+                                  width: MediaQuery.of(context).size.width * 0.7,
+                                  child: CustomCarousel(blocks: blocks, controller: _controller),
                                 ),
                               ),
                             ],
@@ -84,8 +73,7 @@ class BlockViewSlider extends HookConsumerWidget {
           ),
         ),
       ),
-      error: (error, stack) =>
-          const Text('Oops, something unexpected happened'),
+      error: (error, stack) => const Text('Oops, something unexpected happened'),
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
@@ -104,14 +92,11 @@ class BlockPlaceHolder extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     return SizedBox(
       width: isMobile ? 400 : 240,
       child: ResponsiveRowColumn(
-        layout: isMobile
-            ? ResponsiveRowColumnType.COLUMN
-            : ResponsiveRowColumnType.ROW,
+        layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
         children: [
           if (!isMobile)
             ResponsiveRowColumnItem(
@@ -121,7 +106,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
-                  LatestBlocksText(colorTheme: colorTheme, sizeFont: 30),
+                  Text(Strings.latestBlocks, style: headlineLarge(context)),
                   const SizedBox(height: 10),
                   const MultipleChainText(sizeFont: 16),
                   const SizedBox(height: 168),
@@ -161,7 +146,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        LatestBlocksText(colorTheme: colorTheme, sizeFont: 18),
+                        Text(Strings.latestBlocks, style: headlineLarge(context)),
                         const SizedBox(width: 10),
                         Row(
                           children: [
@@ -191,32 +176,6 @@ class BlockPlaceHolder extends HookConsumerWidget {
 }
 
 /// Latest Blocks Text Widget
-class LatestBlocksText extends StatelessWidget {
-  const LatestBlocksText({
-    super.key,
-    required this.colorTheme,
-    required this.sizeFont,
-  });
-
-  final ColorMode colorTheme;
-  final double sizeFont;
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      Strings.latestBlocks,
-      style: TextStyle(
-        fontSize: sizeFont,
-        fontWeight: FontWeight.w600,
-        color: getSelectedColor(
-          colorTheme,
-          0xFF282A2C,
-          0xFFFEFEFE,
-        ),
-        fontFamily: "Rational Display",
-      ),
-    );
-  }
-}
 
 /// Multiple-chain Embedding Text Widget
 class MultipleChainText extends StatelessWidget {
@@ -269,8 +228,7 @@ class CustomTextButton extends ConsumerWidget {
               fontSize: fontSize,
               fontWeight: FontWeight.w600,
             ),
-            backgroundColor:
-                getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
+            backgroundColor: getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/main.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../shared/providers/app_theme_provider.dart';
 import '../../../shared/utils/theme_color.dart';
@@ -8,11 +9,7 @@ class LowerStatWithoutIcon extends ConsumerWidget {
   final String statSymbol;
   final bool firstItem;
 
-  const LowerStatWithoutIcon(
-      {super.key,
-      required this.statValue,
-      required this.statSymbol,
-      this.firstItem = false});
+  const LowerStatWithoutIcon({super.key, required this.statValue, required this.statSymbol, this.firstItem = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,12 +42,7 @@ class LowerStatWithoutIcon extends ConsumerWidget {
                 ),
                 Text(
                   statSymbol,
-                  style: TextStyle(
-                    color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'Rational Display',
-                  ),
+                  style: bodySmall(context),
                 )
               ],
             ),

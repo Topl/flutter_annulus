@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/main.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -67,12 +68,7 @@ class TopStatWithIcon extends ConsumerWidget {
                       margin: isMobile ? null : const EdgeInsets.only(top: 14),
                       child: Text(
                         titleString,
-                        style: TextStyle(
-                          color: getSelectedColor(
-                              colorTheme, 0xFF858E8E, 0xFFC0C4C4),
-                          fontSize: 16,
-                          fontFamily: 'Rational Display',
-                        ),
+                        style: titleMedium(context),
                       ),
                     ),
                     Container(
@@ -81,22 +77,13 @@ class TopStatWithIcon extends ConsumerWidget {
                         children: [
                           Text(
                             statAmount,
-                            style: TextStyle(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFF000000, 0xFFF5F5F5),
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'Rational Display',
-                              fontSize: 24,
-                            ),
+                            style: titleLarge(context),
                           ),
+                          // QQQQ text color should be gre2TextColor but not sure if it is need
+                          // Might need to use label
                           Text(
                             statSymbol,
-                            style: TextStyle(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFF535757, 0xFFC0C4C4),
-                              fontSize: 16,
-                              fontFamily: 'Rational Display',
-                            ),
+                            style: titleMedium(context),
                           ),
                         ],
                       ),

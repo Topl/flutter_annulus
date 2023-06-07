@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/main.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../constants/strings.dart';
@@ -96,8 +97,7 @@ class Footer extends HookConsumerWidget {
                     Text(
                       Strings.footerColumn5Header,
                       style: TextStyle(
-                          color: getSelectedColor(
-                              colorTheme, 0xFF282A2C, 0xFFC0C4C4),
+                          color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFC0C4C4),
                           fontSize: 16,
                           fontFamily: 'Rational Display',
                           fontWeight: FontWeight.w600),
@@ -115,10 +115,8 @@ class Footer extends HookConsumerWidget {
                               controller: TextEditingController(text: ''),
                               decoration: const InputDecoration(
                                   border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFFE2E3E3), width: 1)),
+                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                      borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
                                   hintText: Strings.email),
                             ),
                           ),
@@ -131,14 +129,12 @@ class Footer extends HookConsumerWidget {
                           width: 102,
                           child: TextButton(
                               style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      getSelectedColor(
-                                          colorTheme, 0xFFE2E3E3, 0xFF434648))),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648))),
                               onPressed: null,
                               child: Text(Strings.subscribe,
                                   style: TextStyle(
-                                      color: getSelectedColor(
-                                          colorTheme, 0xFF000000, 0xFFFEFEFE),
+                                      color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
                                       fontSize: 14,
                                       fontFamily: 'Rational Display'))),
                         )
@@ -201,9 +197,7 @@ class Footer extends HookConsumerWidget {
                   width: 24,
                 ),
                 SvgPicture.asset(
-                  colorTheme == ColorMode.light
-                      ? 'images/logo.svg'
-                      : 'images/logo_dark.svg',
+                  colorTheme == ColorMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
                   width: 32,
                   height: 20,
                 ),
@@ -232,14 +226,9 @@ class FooterBottomLinks extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colorTheme = ref.watch(appThemeColorProvider);
     return Text(
       text,
-      style: TextStyle(
-          color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
-          fontSize: 12,
-          fontFamily: 'Rational Display',
-          fontWeight: FontWeight.w400),
+      style: bodySmall(context),
     );
   }
 }
@@ -266,16 +255,14 @@ class RowIconsFooter extends HookConsumerWidget {
                     width: 42,
                     height: 40,
                     decoration: BoxDecoration(
-                      color:
-                          getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
+                      color: getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: IconButton(
                       onPressed: null,
                       icon: SvgPicture.asset(
                         svgIcon,
-                        color: getSelectedColor(
-                            colorTheme, 0xFF535757, 0xFFC0C4C4),
+                        color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                       ),
                     ),
                   ),
@@ -311,10 +298,7 @@ class FooterColumn extends HookConsumerWidget {
         Text(
           footerTitle,
           style: const TextStyle(
-              color: Color(0xFF858E8E),
-              fontSize: 16,
-              fontFamily: 'Rational Display',
-              fontWeight: FontWeight.w600),
+              color: Color(0xFF858E8E), fontSize: 16, fontFamily: 'Rational Display', fontWeight: FontWeight.w600),
         ),
         const SizedBox(
           height: 16,
@@ -325,8 +309,7 @@ class FooterColumn extends HookConsumerWidget {
                     Text(
                       text,
                       style: TextStyle(
-                          color: getSelectedColor(
-                              colorTheme, 0xFF535757, 0xFFC0C4C4),
+                          color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                           fontSize: 14,
                           fontFamily: 'Rational Display'),
                     ),
