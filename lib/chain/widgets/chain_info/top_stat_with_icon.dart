@@ -79,11 +79,11 @@ class TopStatWithIcon extends ConsumerWidget {
                             statAmount,
                             style: titleLarge(context),
                           ),
-                          // QQQQ text color should be gre2TextColor but not sure if it is need
-                          // Might need to use label
                           Text(
                             statSymbol,
-                            style: titleMedium(context),
+                            style: titleMedium(context)!.copyWith(
+                              color: myColors(context).altTextColor2,
+                            ),
                           ),
                         ],
                       ),

@@ -16,6 +16,17 @@ ThemeData lightTheme({
 
   return ThemeData().copyWith(
     scaffoldBackgroundColor: backgroundColor,
+
+    /// Add new colors to extensions to access them in the app
+    extensions: [
+      const MyColors(
+        textColor: textColor,
+        textColor2: textColor2,
+        altTextColor: altTextColor,
+        altTextColor2: altTextColor2,
+        backgroundColor: backgroundColor,
+      ),
+    ],
     textTheme: _textTheme(
       isMobile: isMobile,
       textColor: textColor,
@@ -41,6 +52,15 @@ ThemeData darkTheme({
 
   return ThemeData.dark().copyWith(
     scaffoldBackgroundColor: backgroundColor,
+    extensions: [
+      const MyColors(
+        textColor: textColor,
+        textColor2: textColor2,
+        altTextColor: altTextColor,
+        altTextColor2: altTextColor2,
+        backgroundColor: backgroundColor,
+      ),
+    ],
     textTheme: _textTheme(
       isMobile: isMobile,
       textColor: textColor,
@@ -113,30 +133,89 @@ TextTheme _textTheme({
       );
 }
 
+/// Returns [Theme.of(context).textTheme.headlineLarge]
 TextStyle? headlineLarge(BuildContext context) {
   return Theme.of(context).textTheme.headlineLarge;
 }
 
+/// Returns [Theme.of(context).textTheme.titleLarge]
 TextStyle? titleLarge(BuildContext context) {
   return Theme.of(context).textTheme.titleLarge;
 }
 
+/// Returns [Theme.of(context).textTheme.titleMedium]
 TextStyle? titleMedium(BuildContext context) {
   return Theme.of(context).textTheme.titleMedium;
 }
 
+/// Returns [Theme.of(context).textTheme.titleSmall]
 TextStyle? titleSmall(BuildContext context) {
   return Theme.of(context).textTheme.titleSmall;
 }
 
+/// Returns [Theme.of(context).textTheme.labelLarge]
 TextStyle? labelLarge(BuildContext context) {
   return Theme.of(context).textTheme.labelLarge;
 }
 
+/// Returns [Theme.of(context).textTheme.bodyMedium]
 TextStyle? bodyMedium(BuildContext context) {
   return Theme.of(context).textTheme.bodyMedium;
 }
 
+/// Returns [Theme.of(context).textTheme.bodySmall]
 TextStyle? bodySmall(BuildContext context) {
   return Theme.of(context).textTheme.bodySmall;
+}
+
+/// Returns [Theme.of(context).extension<MyColors>()!]
+MyColors myColors(BuildContext context) {
+  return Theme.of(context).extension<MyColors>()!;
+}
+
+@immutable
+class MyColors extends ThemeExtension<MyColors> {
+  const MyColors({
+    required this.textColor,
+    required this.textColor2,
+    required this.altTextColor,
+    required this.altTextColor2,
+    required this.backgroundColor,
+  });
+
+  final Color textColor;
+  final Color textColor2;
+  final Color altTextColor;
+  final Color altTextColor2;
+  final Color backgroundColor;
+
+  @override
+  MyColors copyWith({Color? brandColor, Color? danger}) {
+    return MyColors(
+      textColor: textColor,
+      textColor2: textColor2,
+      altTextColor: altTextColor,
+      altTextColor2: altTextColor2,
+      backgroundColor: backgroundColor,
+    );
+  }
+
+  @override
+  MyColors lerp(MyColors? other, double t) {
+    if (other is! MyColors) {
+      return this;
+    }
+    return MyColors(
+      textColor: Color.lerp(textColor, other.textColor, t)!,
+      textColor2: Color.lerp(textColor2, other.textColor2, t)!,
+      altTextColor: Color.lerp(altTextColor, other.altTextColor, t)!,
+      altTextColor2: Color.lerp(altTextColor2, other.altTextColor2, t)!,
+      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t)!,
+    );
+  }
+
+  // Optional
+  @override
+  String toString() =>
+      'MyColors(textColor: $textColor, textColor2: $textColor2, altTextColor: $altTextColor, altTextColor2: $altTextColor2, backgroundColor: $backgroundColor)';
 }
