@@ -202,8 +202,6 @@ ChartResult _mockChartData({
   // Create a map of x-axis and y-axis results
   final results = Map<DateTime, int>.fromIterables(xAxisResults, yAxisResults);
 
-  print('QQQQ results $results');
-
   // Return the chart result
   return ChartResult(results: results);
 }
