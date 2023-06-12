@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/models/chart_option.dart';
 import 'package:flutter_annulus/chain/models/chart_result.dart';
+import 'package:flutter_annulus/chain/models/time_frame.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final chartOptionProvider = StateProvider<ChartOption>((ref) {
@@ -239,4 +240,3 @@ Duration timeFrameToDuration(TimeFrame timeFrame) {
       throw ArgumentError('Invalid time frame');
   }
 }
-
