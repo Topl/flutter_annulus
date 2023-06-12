@@ -22,10 +22,9 @@ class Header extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ColorMode colorTheme = ref.watch(appThemeColorProvider);
+    final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
-    final isSmallerThanTablet =
-        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
+    final isSmallerThanTablet = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -45,9 +44,7 @@ class Header extends HookConsumerWidget {
                 height: 48.0,
               ),
               //Search bar
-              isMobile
-                  ? const SizedBox()
-                  : SearchBar(onSearch: onSearch, colorTheme: colorTheme),
+              isMobile ? const SizedBox() : SearchBar(onSearch: onSearch, colorTheme: colorTheme),
               isSmallerThanTablet
                   ? SizedBox(
                       child: IconButton(
@@ -57,27 +54,17 @@ class Header extends HookConsumerWidget {
                             context: context,
                             pageBuilder: (context, _, __) => MobileMenu(
                               onSwitchChange: () {
-                                ref
-                                    .read(appThemeColorProvider.notifier)
-                                    .toggleTheme();
+                                ref.read(appThemeColorProvider.notifier).toggleTheme();
                               },
                             ),
                             barrierDismissible: true,
-                            transitionDuration:
-                                const Duration(milliseconds: 250),
-                            barrierLabel:
-                                MaterialLocalizations.of(context).dialogLabel,
+                            transitionDuration: const Duration(milliseconds: 250),
+                            barrierLabel: MaterialLocalizations.of(context).dialogLabel,
                             barrierColor: Colors.black.withOpacity(0.5),
-                            transitionBuilder: (context, animation,
-                                secondaryAnimation, child) {
+                            transitionBuilder: (context, animation, secondaryAnimation, child) {
                               return SlideTransition(
-                                  position: CurvedAnimation(
-                                          parent: animation,
-                                          curve: Curves.easeOutCubic)
-                                      .drive(
-                                    Tween<Offset>(
-                                        begin: const Offset(0, -1.0),
-                                        end: Offset.zero),
+                                  position: CurvedAnimation(parent: animation, curve: Curves.easeOutCubic).drive(
+                                    Tween<Offset>(begin: const Offset(0, -1.0), end: Offset.zero),
                                   ),
                                   child: MaterialConsumer(
                                     child: child,
@@ -96,8 +83,7 @@ class Header extends HookConsumerWidget {
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: getSelectedColor(colorTheme, 0xFFC0C4C4,
-                                  0xFF4B4B4B), // Set border color here
+                              color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B), // Set border color here
                               width: 1, // Set border width here
                             ),
                             borderRadius: BorderRadius.circular(12.0),
@@ -105,11 +91,9 @@ class Header extends HookConsumerWidget {
                           child: IconButton(
                             onPressed: () {
                               // toggle between light and dark theme
-                              ref
-                                  .read(appThemeColorProvider.notifier)
-                                  .toggleTheme();
+                              ref.read(appThemeColorProvider.notifier).toggleTheme();
                             },
-                            icon: colorTheme == ColorMode.light
+                            icon: colorTheme == ThemeMode.light
                                 ? const Icon(
                                     Icons.light_mode,
                                     color: Color(0xFF858E8E),
@@ -157,12 +141,12 @@ class MaterialConsumer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ColorMode colorTheme = ref.watch(appThemeColorProvider);
+    final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
 
     return Column(
       children: [
         Material(
-          color: colorTheme == ColorMode.light
+          color: colorTheme == ThemeMode.light
               ? const Color.fromRGBO(254, 254, 254, 0.96)
               : const Color.fromRGBO(53, 55, 57, 0.96),
           child: Column(
@@ -194,7 +178,7 @@ class MobileMenu extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ColorMode colorTheme = ref.watch(appThemeColorProvider);
+    final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     return Expanded(
       child: Column(
         children: [
@@ -228,8 +212,7 @@ class MobileMenu extends HookConsumerWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Rational Display',
-                        color: getSelectedColor(
-                            colorTheme, 0xFF535757, 0xFFC0C4C4),
+                        color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                       ),
                     ),
                     ChainNameDropDown(
@@ -248,11 +231,10 @@ class MobileMenu extends HookConsumerWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Rational Display',
-                        color: getSelectedColor(
-                            colorTheme, 0xFF535757, 0xFFC0C4C4),
+                        color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                       ),
                     ),
-                    ColorModeSwitch(
+                    ThemeModeSwitch(
                       onPressed: () {
                         // toggle between light and dark theme
                         onSwitchChange();
@@ -282,8 +264,7 @@ class MobileMenu extends HookConsumerWidget {
                         child: Text(
                           text,
                           style: TextStyle(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFF535757, 0xFFC0C4C4),
+                              color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                               fontSize: 14,
                               fontFamily: 'Rational Display'),
                         ),
@@ -299,16 +280,16 @@ class MobileMenu extends HookConsumerWidget {
   }
 }
 
-class ColorModeSwitch extends StatefulWidget {
-  const ColorModeSwitch({Key? key, required this.onPressed}) : super(key: key);
+class ThemeModeSwitch extends StatefulWidget {
+  const ThemeModeSwitch({Key? key, required this.onPressed}) : super(key: key);
 
   final Function onPressed;
 
   @override
-  State<ColorModeSwitch> createState() => _ColorModeSwitchState();
+  State<ThemeModeSwitch> createState() => _ThemeModeSwitchState();
 }
 
-class _ColorModeSwitchState extends State<ColorModeSwitch> {
+class _ThemeModeSwitchState extends State<ThemeModeSwitch> {
   bool darkMode = false;
 
   @override
@@ -335,7 +316,7 @@ class SearchBar extends StatelessWidget {
   });
 
   final VoidCallback onSearch;
-  final ColorMode colorTheme;
+  final ThemeMode colorTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -363,9 +344,7 @@ class SearchBar extends StatelessWidget {
           border: const OutlineInputBorder(),
           focusColor: const Color(0xFF4B4B4B),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-                width: 1.0),
+            borderSide: BorderSide(color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E), width: 1.0),
           ),
         ),
       ),
