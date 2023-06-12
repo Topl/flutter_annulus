@@ -8,9 +8,9 @@ import '../models/block.dart';
 class BlockDetailsDrawer extends HookConsumerWidget {
   const BlockDetailsDrawer({
     super.key,
-    required this.block,
+    this.block,
   });
-  final Block block;
+  final Block? block;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

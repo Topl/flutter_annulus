@@ -6,6 +6,7 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 
 import '../providers/app_theme_provider.dart';
 import '../utils/theme_color.dart';
+import 'package:flutter_annulus/shared/widgets/header.dart';
 
 class CustomLayout extends HookConsumerWidget {
   final Widget header;
@@ -87,6 +88,14 @@ class CustomLayout extends HookConsumerWidget {
               backgroundColor:
                   getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
               elevation: 4,
+              bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(70),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(bottom: 20, left: 16, right: 16),
+                    child: CustomSearchBar(
+                        onSearch: () {}, colorTheme: colorTheme),
+                  )),
               leading: Padding(
                 padding: const EdgeInsets.only(left: 16.0),
                 child: SvgPicture.asset(

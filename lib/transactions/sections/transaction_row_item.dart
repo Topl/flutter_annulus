@@ -20,6 +20,8 @@ class TransactionTableRow extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Transaction transaction = transactions[count];
+    final isLargerScreen =
+        ResponsiveBreakpoints.of(context).largerThan(DESKTOP);
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
@@ -32,7 +34,9 @@ class TransactionTableRow extends HookConsumerWidget {
               width: 640,
               barrierColor: Colors.white.withOpacity(0.64),
               barrierDismissible: true,
-              body: const TransactionDetailsDrawer());
+              body: TransactionDetailsDrawer(
+                transactionId: transaction.transactionId,
+              ));
         } else {
           context.vRouter.to('/transactions_details/:transactionId');
         }
@@ -41,10 +45,14 @@ class TransactionTableRow extends HookConsumerWidget {
       child: Expanded(
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(
-          width: isMobile ? 170 : 300,
+          width: isMobile
+              ? 170
+              : isLargerScreen
+                  ? 750
+                  : 300,
           child: TransactionColumnText(
             textTop: transaction.transactionId
-                .replaceRange(16, transaction.transactionId.length, "..."),
+                .replaceRange(25, transaction.transactionId.length, "..."),
             textBottom: "49 ${Strings.secAgo}",
           ),
         ),

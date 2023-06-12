@@ -3,16 +3,34 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../shared/utils/theme_color.dart';
+import '../models/transaction.dart';
+import '../providers/transactions_provider.dart';
 import 'transactions.dart';
 
 class TransactionDetailsDrawer extends HookConsumerWidget {
-  const TransactionDetailsDrawer({
-    super.key,
-  });
+  const TransactionDetailsDrawer({super.key, this.transactionId});
+
+  final String? transactionId;
+
+  static const String route = '/transactions_details/:transactionId';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+
+    final AsyncValue<List<Transaction>> transactionsInfo =
+        ref.watch(transactionsProvider);
+    final transaction = transactionsInfo.when(
+      data: (transactions) {
+        return transactions.firstWhere(
+          (transaction) => transactionId == transactionId,
+        );
+      },
+      loading: () => null,
+      error: (_, __) => null,
+    );
+
+    const int textLength = 30;
     return DefaultTabController(
       length: 3,
       child: Container(
@@ -37,62 +55,74 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             const SizedBox(
               height: 20,
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(
                     width: 172, child: CustomTextLeft(desc: 'Txn Hash/ID')),
-                SizedBox(
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: '0x5be9d701Byd24neQfY1vXa987a'),
+                Expanded(
+                  child: CustomTextRight(
+                      desc: transaction?.transactionId
+                              .toString()
+                              .substring(0, textLength - 3) ??
+                          ''),
+                )
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'Status')),
+                const Spacing(),
                 SizedBox(
+                    width: 172,
+                    child:
+                        CustomTextLeft(desc: transaction?.status.name ?? '')),
+                const SizedBox(
                   width: 24,
                 ),
-                StatusButton(
+                const StatusButton(
                   status: 'Confirmed',
                   hideArrowIcon: false,
                 )
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'Block')),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(
+                    width: 172, child: CustomTextLeft(desc: 'Block')),
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: '242218')
+                CustomTextRight(desc: transaction?.block.epoch.toString() ?? '')
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(
                     width: 172,
                     child: CustomTextLeft(desc: 'Broadcast Timestamp')),
-                SizedBox(
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: 'UTC 16:32:01')
+                CustomTextRight(
+                    desc: transaction?.broadcastTimestamp.toString() ?? '')
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(
                     width: 172,
                     child: CustomTextLeft(desc: 'Confirmed Timestamp')),
-                SizedBox(
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: 'UTC 16:34:51')
+                CustomTextRight(
+                    desc: transaction?.confirmedTimestamp.toString() ?? '')
               ],
             ),
             const SizedBox(
@@ -109,54 +139,60 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             const SizedBox(
               height: 10,
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'Type')),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Type')),
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: 'Transfer')
+                CustomTextRight(
+                    desc: transaction?.transactionType.string.toString() ?? '')
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'Amount')),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(
+                    width: 172, child: CustomTextLeft(desc: 'Amount')),
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: '6,215.232 TOPL')
+                CustomTextRight(desc: transaction?.amount.toString() ?? '')
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'Txn Fee')),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(
+                    width: 172, child: CustomTextLeft(desc: 'Txn Fee')),
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: '2.1 LVL')
+                CustomTextRight(
+                    desc: transaction?.transactionFee.toString() ?? '')
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'From')),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: 'From')),
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic')
+                CustomTextRight(
+                    desc: transaction?.senderAddress.toString() ?? '')
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'To')),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: 'To')),
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: '7bY6Dne54qMU12cz3oPF4yVx5aG6a')
+                CustomTextRight(
+                    desc: transaction?.receiverAddress.toString() ?? '')
               ],
             ),
             const SizedBox(
@@ -173,46 +209,48 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             const SizedBox(
               height: 10,
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(
                     width: 172, child: CustomTextLeft(desc: 'Size of Txn')),
-                SizedBox(
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: '17321')
+                CustomTextRight(
+                    desc: transaction?.transactionSize.toString() ?? '')
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(
                     width: 172, child: CustomTextLeft(desc: 'Proposition')),
-                SizedBox(
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: '0x736e345d784cf4c')
+                CustomTextRight(desc: transaction?.proposition.toString() ?? '')
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'Quantity')),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(
+                    width: 172, child: CustomTextLeft(desc: 'Quantity')),
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: '413113 / 64.31')
+                CustomTextRight(desc: transaction?.quantity.toString() ?? '')
               ],
             ),
-            const Row(
+            Row(
               children: [
-                Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: 'Name')),
-                SizedBox(
+                const Spacing(),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Name')),
+                const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: 'Topl / Allie')
+                CustomTextRight(desc: transaction?.name.toString() ?? '')
               ],
             ),
           ],
