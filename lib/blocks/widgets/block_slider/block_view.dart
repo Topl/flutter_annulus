@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_details_drawer.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
@@ -30,9 +31,7 @@ class BlockView extends ConsumerWidget {
                 context: context,
                 ignoreAppBar: false,
                 width: 640,
-                barrierColor:
-                    getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF353739)
-                        .withOpacity(0.64),
+                barrierColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF353739).withOpacity(0.64),
                 barrierDismissible: true,
                 body: BlockDetailsDrawer(block: block));
           },
@@ -43,8 +42,7 @@ class BlockView extends ConsumerWidget {
                 if (states.contains(MaterialState.hovered)) {
                   return Colors.white.withOpacity(0.0);
                 }
-                if (states.contains(MaterialState.focused) ||
-                    states.contains(MaterialState.pressed)) {
+                if (states.contains(MaterialState.focused) || states.contains(MaterialState.pressed)) {
                   return Colors.blue.withOpacity(0.12);
                 }
                 return null; // Defer to the widget's default.
@@ -54,18 +52,13 @@ class BlockView extends ConsumerWidget {
           child: Container(
               width: 240,
               height: 344,
-              margin: EdgeInsets.only(
-                  left: isMobile ? 6.0 : 20.0,
-                  right: 0.0,
-                  bottom: 0.0,
-                  top: 20.0),
+              margin: EdgeInsets.only(left: isMobile ? 6.0 : 20.0, right: 0.0, bottom: 0.0, top: 20.0),
               padding: const EdgeInsets.all(40.0),
               decoration: BoxDecoration(
                   color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                   borderRadius: BorderRadius.circular(16.0),
                   border: Border.all(
-                      color:
-                          getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                       style: BorderStyle.solid,
                       width: 1.0)),
               child: Column(
@@ -78,12 +71,11 @@ class BlockView extends ConsumerWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16.0),
                           border: Border.all(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                              color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                               style: BorderStyle.solid,
                               width: 1.0)),
                       child: Image.asset(
-                        colorTheme == ColorMode.light
+                        colorTheme == ThemeMode.light
                             ? 'assets/icons/block-icon.png'
                             : 'assets/icons/dark-block-icon.png',
                         width: 20,
@@ -95,8 +87,7 @@ class BlockView extends ConsumerWidget {
                     ),
                     Text(block.height.toString(),
                         style: TextStyle(
-                            color: getSelectedColor(
-                                colorTheme, 0xFF282A2C, 0xFFFEFEFE),
+                            color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                             fontWeight: FontWeight.w600,
                             fontSize: 24,
                             fontFamily: 'Rational Display',
@@ -111,17 +102,13 @@ class BlockView extends ConsumerWidget {
                     const SizedBox(
                       height: 8,
                     ),
-                    BlockHeaderText(
-                        text: block.header
-                            .replaceRange(7, block.header.length, '...')),
+                    BlockHeaderText(text: block.header.replaceRange(7, block.header.length, '...')),
                     const BlockSmallText(text: 'Header'),
                     const SizedBox(
                       height: 8,
                     ),
                     BlockHeaderText(
-                      text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp)
-                          .toString()
-                          .substring(11, 19),
+                      text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp).toString().substring(11, 19),
                     ),
                     const BlockSmallText(text: 'UTC'),
                   ]))
@@ -131,27 +118,22 @@ class BlockView extends ConsumerWidget {
   }
 }
 
-class BlockHeaderText extends HookConsumerWidget {
+class BlockHeaderText extends StatelessWidget {
   const BlockHeaderText({super.key, required this.text});
 
   final String text;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final colorTheme = ref.watch(appThemeColorProvider);
-    return Text(text,
-        style: TextStyle(
-          color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-          fontFamily: 'Rational Display Medium',
-          fontStyle: FontStyle.normal,
-        ));
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: titleSmall(context),
+    );
   }
 }
 
 //
-class BlockSmallText extends HookConsumerWidget {
+class BlockSmallText extends StatelessWidget {
   const BlockSmallText({
     super.key,
     required this.text,
@@ -160,15 +142,10 @@ class BlockSmallText extends HookConsumerWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final colorTheme = ref.watch(appThemeColorProvider);
-    return Text(text,
-        style: TextStyle(
-          color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
-          fontWeight: FontWeight.w400,
-          fontSize: 12,
-          fontFamily: 'Rational Display Light',
-          fontStyle: FontStyle.normal,
-        ));
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: bodySmall(context),
+    );
   }
 }

@@ -19,65 +19,56 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Annulus Event Explorer',
-      home: CustomLayout(
-        header: Header(
-          logoAsset: colorTheme == ColorMode.light
-              ? 'images/logo.svg'
-              : 'images/logo_dark.svg',
-          onSearch: () {},
-          onDropdownChanged: (String value) {},
-        ),
-        mobileHeader: ChainNameDropDown(
-          colorTheme: colorTheme,
-        ),
-        content: Container(
-          decoration: BoxDecoration(
-            color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-          ),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                child: Row(
-                  children: [
-                    const Expanded(
-                      flex: 3,
-                      child: ChainInfo(),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        height: 408,
-                        decoration: BoxDecoration(
-                          color: getSelectedColor(
-                              colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                              style: BorderStyle.solid,
-                              width: 1.0),
-                        ),
-                        child: const ChartSection(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              BlockViewSlider(),
-              Transactions(),
-            ],
-          ),
-        ),
-        footer: Container(
+    return CustomLayout(
+      header: Header(
+        logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+        onSearch: () {},
+        onDropdownChanged: (String value) {},
+      ),
+      mobileHeader: ChainNameDropDown(
+        colorTheme: colorTheme,
+      ),
+      content: Container(
+        decoration: BoxDecoration(
           color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-          child: const Footer(),
         ),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              child: Row(
+                children: [
+                  const Expanded(
+                    flex: 3,
+                    child: ChainInfo(),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      height: 408,
+                      decoration: BoxDecoration(
+                        color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                            style: BorderStyle.solid,
+                            width: 1.0),
+                      ),
+                      child: const ChartSection(),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            BlockViewSlider(),
+            Transactions(),
+          ],
+        ),
+      ),
+      footer: Container(
+        color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+        child: const Footer(),
       ),
     );
   }

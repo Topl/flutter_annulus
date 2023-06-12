@@ -22,7 +22,7 @@ class Header extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ColorMode colorTheme = ref.watch(appThemeColorProvider);
+    final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
     final isSmallerThanTablet = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
@@ -93,7 +93,7 @@ class Header extends HookConsumerWidget {
                               // toggle between light and dark theme
                               ref.read(appThemeColorProvider.notifier).toggleTheme();
                             },
-                            icon: colorTheme == ColorMode.light
+                            icon: colorTheme == ThemeMode.light
                                 ? const Icon(
                                     Icons.light_mode,
                                     color: Color(0xFF858E8E),
@@ -141,12 +141,12 @@ class MaterialConsumer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ColorMode colorTheme = ref.watch(appThemeColorProvider);
+    final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
 
     return Column(
       children: [
         Material(
-          color: colorTheme == ColorMode.light
+          color: colorTheme == ThemeMode.light
               ? const Color.fromRGBO(254, 254, 254, 0.96)
               : const Color.fromRGBO(53, 55, 57, 0.96),
           child: Column(
@@ -178,7 +178,7 @@ class MobileMenu extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ColorMode colorTheme = ref.watch(appThemeColorProvider);
+    final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     return Expanded(
       child: Column(
         children: [
@@ -234,7 +234,7 @@ class MobileMenu extends HookConsumerWidget {
                         color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                       ),
                     ),
-                    ColorModeSwitch(
+                    ThemeModeSwitch(
                       onPressed: () {
                         // toggle between light and dark theme
                         onSwitchChange();
@@ -280,16 +280,16 @@ class MobileMenu extends HookConsumerWidget {
   }
 }
 
-class ColorModeSwitch extends StatefulWidget {
-  const ColorModeSwitch({Key? key, required this.onPressed}) : super(key: key);
+class ThemeModeSwitch extends StatefulWidget {
+  const ThemeModeSwitch({Key? key, required this.onPressed}) : super(key: key);
 
   final Function onPressed;
 
   @override
-  State<ColorModeSwitch> createState() => _ColorModeSwitchState();
+  State<ThemeModeSwitch> createState() => _ThemeModeSwitchState();
 }
 
-class _ColorModeSwitchState extends State<ColorModeSwitch> {
+class _ThemeModeSwitchState extends State<ThemeModeSwitch> {
   bool darkMode = false;
 
   @override
@@ -316,7 +316,7 @@ class SearchBar extends StatelessWidget {
   });
 
   final VoidCallback onSearch;
-  final ColorMode colorTheme;
+  final ThemeMode colorTheme;
 
   @override
   Widget build(BuildContext context) {
