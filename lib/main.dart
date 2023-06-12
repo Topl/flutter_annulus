@@ -32,8 +32,7 @@ class AnnulusRouter extends StatelessWidget {
           breakpoints: const [
             Breakpoint(start: 0, end: mobileBreak, name: MOBILE),
             Breakpoint(start: mobileBreak + 1, end: tabletBreak, name: TABLET),
-            Breakpoint(
-                start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
+            Breakpoint(start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
           ],
         );
       },
@@ -49,8 +48,7 @@ class AnnulusRouter extends StatelessWidget {
         VNester(
           path: '',
           widgetBuilder: (Widget child) => SlideLeftBuilder(child: child),
-          buildTransition: (animation, _, child) =>
-              slideLeftTransition(animation, child),
+          buildTransition: (animation, _, child) => slideLeftTransition(animation, child),
           nestedRoutes: [
             VWidget(
               path: TransactionTableScreen.route, // Transaction table screen
