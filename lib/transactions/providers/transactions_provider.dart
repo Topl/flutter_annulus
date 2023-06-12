@@ -116,6 +116,6 @@ class TransactionsNotifier
         transactionSize: 10,
         proposition: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
         quantity: 10,
-        name: transactionRes.transactionReceipt.transaction.outputs[0].);
+        name: "transaction");
   }
 }
