@@ -135,9 +135,9 @@ class Header extends HookConsumerWidget {
 }
 
 class MaterialConsumer extends HookConsumerWidget {
-  MaterialConsumer({Key? key, required this.child}) : super(key: key);
+  const MaterialConsumer({Key? key, required this.child}) : super(key: key);
 
-  Widget child;
+  final Widget child;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
