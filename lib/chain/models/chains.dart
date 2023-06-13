@@ -12,7 +12,7 @@ enum Chains {
   private_network(
     name: 'Private Network',
     host: 'localhost',
-    port: 9091,
+    port: 8080,
   ),
   dev_network(
       name: 'Development Network',

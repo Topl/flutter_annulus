@@ -48,7 +48,8 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
 
     if (setState) state = const AsyncLoading();
     final List<Block> blocks = [];
-    const pageLimit = 4;
+    const chainHeight = 5932;
+    const pageLimit = 10;
 
     // var blockRes = await genusClient.getBlockByDepth(depth: 0);
     // print('height: ${blockRes.block.header.height}');
