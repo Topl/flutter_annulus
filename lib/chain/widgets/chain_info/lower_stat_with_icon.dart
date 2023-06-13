@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../shared/utils/theme_color.dart';
@@ -48,12 +49,7 @@ class LowerStatWithIcon extends ConsumerWidget {
             ),
             Text(
               statSymbol,
-              style: const TextStyle(
-                color: Color(0xFF858E8E),
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Rational Display',
-              ),
+              style: bodySmall(context),
             ),
           ],
         ),

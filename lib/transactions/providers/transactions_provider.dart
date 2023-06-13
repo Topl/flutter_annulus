@@ -1,6 +1,9 @@
+import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
+import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
+import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../blocks/models/block.dart';
@@ -10,12 +13,13 @@ import '../../blocks/models/block.dart';
 final transactionsProvider =
     StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>(
         (ref) {
-  return TransactionsNotifier();
+  return TransactionsNotifier(ref);
 });
 
 class TransactionsNotifier
     extends StateNotifier<AsyncValue<List<Transaction>>> {
-  TransactionsNotifier() : super(const AsyncLoading()) {
+  final Ref ref;
+  TransactionsNotifier(this.ref) : super(const AsyncLoading()) {
     getTransactions(setState: true);
   }
 
@@ -77,14 +81,41 @@ class TransactionsNotifier
   ///
   /// It takes a [transactionId] as a parameter
   /// and returns a [AsyncValue<Transaction>]
-  AsyncValue<Transaction> getSingleTransaction({
-    required String transactionId,
-  }) {
-    return state.when(
-      data: (data) => AsyncData(
-          data.firstWhere((element) => element.transactionId == transactionId)),
-      error: (error, stakeTrace) => AsyncError(error, stakeTrace),
-      loading: () => const AsyncLoading(),
+  Future<Transaction> getSingleTransaction({
+    required int transactionId,
+  }) async {
+    const tempChain = Chains.private_network;
+    final genusClient = ref.read(genusProvider(tempChain));
+
+    var transactionRes =
+        await genusClient.getTransactionById(transactionId: transactionId);
+
+    var block = const Block(
+      blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
+      epoch: 243827,
+      size: 5432.2,
+      height: 10,
+      slot: 5,
+      timestamp: 243827,
+      transactionNumber: 127,
+      withdrawalNumber: 127,
     );
+
+    return Transaction(
+        transactionId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+        status: TransactionStatus.confirmed,
+        block: block,
+        broadcastTimestamp: 243827,
+        confirmedTimestamp: 243827,
+        transactionType: TransactionType.transfer,
+        amount: 10,
+        transactionFee: 10,
+        senderAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+        receiverAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+        transactionSize: 10,
+        proposition: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+        quantity: 10,
+        name: "transaction");
   }
 }

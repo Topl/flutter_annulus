@@ -27,7 +27,7 @@ class CustomLayout extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isResponsive = ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
     final IsTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
-    final ColorMode colorTheme = ref.watch(appThemeColorProvider);
+    final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -39,8 +39,7 @@ class CustomLayout extends HookConsumerWidget {
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Drawer(
-            backgroundColor:
-                getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+            backgroundColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
             width: double.infinity,
             child: Column(
               children: <Widget>[
