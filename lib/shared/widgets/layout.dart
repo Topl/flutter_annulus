@@ -78,32 +78,11 @@ class CustomLayout extends HookConsumerWidget {
           ),
         ),
       ),
-      appBar: isResponsive
-          ? AppBar(
-              iconTheme: IconThemeData(
-                color: getSelectedColor(colorTheme, 0x809E9E9E, 0xFFFEFEFE),
-              ),
-              toolbarHeight: 80,
-              backgroundColor:
-                  getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-              elevation: 4,
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: SvgPicture.asset(
-                  colorTheme == ColorMode.light
-                      ? 'images/logo.svg'
-                      : 'images/logo_dark.svg',
-                ),
-              ),
-            )
-          : null,
+      appBar: null,
       body: Column(
         children: [
           // Header widget
-          Container(
-            color: Colors.white,
-            child: !isResponsive ? header : null,
-          ),
+          Container(color: Colors.white, child: header),
           // Content widget
           Expanded(
             child: Container(

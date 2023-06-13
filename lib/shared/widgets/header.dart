@@ -24,8 +24,8 @@ class Header extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ColorMode colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
-    final isSmallerThanTablet =
-        ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+    final isSmallerThanOrEqualToTablet =
+        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -48,7 +48,7 @@ class Header extends HookConsumerWidget {
               isMobile
                   ? const SizedBox()
                   : SearchBar(onSearch: onSearch, colorTheme: colorTheme),
-              isSmallerThanTablet
+              isSmallerThanOrEqualToTablet
                   ? SizedBox(
                       child: IconButton(
                         onPressed: () {
@@ -56,7 +56,6 @@ class Header extends HookConsumerWidget {
                           showGeneralDialog(
                             context: context,
                             pageBuilder: (context, _, __) => MobileMenu(
-                              //  colorTheme: colorTheme,
                               onSwitchChange: () {
                                 ref
                                     .read(appThemeColorProvider.notifier)
@@ -80,25 +79,8 @@ class Header extends HookConsumerWidget {
                                       begin: const Offset(0, -1.0),
                                       end: Offset.zero),
                                 ),
-                                child: Column(
-                                  children: [
-                                    Material(
-                                      color: colorTheme == ColorMode.light
-                                          ? const Color.fromRGBO(
-                                              254, 254, 254, 0.96)
-                                          : const Color.fromRGBO(
-                                              53, 55, 57, 0.96),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: child,
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                child: MaterialConsumer(
+                                  child: child,
                                 ),
                               );
                             },
@@ -239,22 +221,8 @@ class MobileMenu extends HookConsumerWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Network',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'Rational Display',
-                        color: getSelectedColor(
-                            colorTheme, 0xFF535757, 0xFFC0C4C4),
-                      ),
-                    ),
-                    ChainNameDropDown(
-                      colorTheme: colorTheme,
-                    )
-                  ],
+                ChainNameDropDown(
+                  colorTheme: colorTheme,
                 ),
                 const SizedBox(
                   height: 20,
@@ -274,7 +242,7 @@ class MobileMenu extends HookConsumerWidget {
                     ColorModeSwitch(
                       onPressed: () {
                         // toggle between light and dark theme
-                        onSwitchChange();
+                        ref.read(appThemeColorProvider.notifier).toggleTheme();
                       },
                     )
                   ],

@@ -99,45 +99,45 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
                         ),
                       ),
                       child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            showModalSideSheet(
-                                context: context,
-                                ignoreAppBar: true,
-                                width: 640,
-                                barrierColor: Colors.white.withOpacity(0.64),
-                                // with blur,
-                                barrierDismissible: true,
-                                body: AddNewNetworkContainer(
-                                  colorTheme: widget.colorTheme,
-                                ));
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          showModalSideSheet(
+                              context: context,
+                              ignoreAppBar: true,
+                              width: 640,
+                              barrierColor: Colors.white.withOpacity(0.64),
+                              // with blur,
+                              barrierDismissible: true,
+                              body: AddNewNetworkContainer(
+                                colorTheme: widget.colorTheme,
+                              ));
 
-                            widget.onItemSelected?.call();
-                          },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 10.0, bottom: 10),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.add,
-                                    color: Color(0xFF535757), size: 20),
-                                const SizedBox(width: 4),
-                                Text(
-                                  'Add new',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w800,
-                                    fontFamily: 'Rational Display',
-                                    color: getSelectedColor(
-                                      widget.colorTheme,
-                                      0xFF535757,
-                                      0xFF858E8E,
-                                    ),
+                          widget.onItemSelected?.call();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.add,
+                                  color: Color(0xFF535757), size: 20),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Add new',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  fontFamily: 'Rational Display',
+                                  color: getSelectedColor(
+                                    widget.colorTheme,
+                                    0xFF535757,
+                                    0xFF858E8E,
                                   ),
                                 ),
-                              ],
-                            ),
-                          )),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   )
                 ],

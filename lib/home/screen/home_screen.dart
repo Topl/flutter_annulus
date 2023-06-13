@@ -33,9 +33,6 @@ class HomeScreen extends HookConsumerWidget {
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
-        mobileHeader: ChainNameDropDown(
-          colorTheme: colorTheme,
-        ),
         content: Container(
           decoration: BoxDecoration(
             color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
