@@ -27,7 +27,7 @@ class HomeScreen extends HookConsumerWidget {
       title: 'Annulus Event Explorer',
       home: CustomLayout(
         header: Header(
-          logoAsset: colorTheme == ColorMode.light
+          logoAsset: colorTheme == ThemeMode.light
               ? 'images/logo.svg'
               : 'images/logo_dark.svg',
           onSearch: () {},
