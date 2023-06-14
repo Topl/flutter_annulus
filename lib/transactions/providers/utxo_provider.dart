@@ -12,7 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// ```
 /// final UTxO utxo = await context.read(utxoByIdProvider('utxoId').future);
 ///
-/// /// final AsyncValue<UTxO> utxoAsyncValue = useProvider(utxoByIdProvider('utxoId'));
+/// final AsyncValue<UTxO> utxoAsyncValue = useProvider(utxoByIdProvider('utxoId'));
 ///
 /// return utxoAsyncValue.when(
 ///   data: (utxo) => Text('UTxO: $utxo'),
