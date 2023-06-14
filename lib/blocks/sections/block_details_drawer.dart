@@ -82,7 +82,7 @@ class BlockDetailsDrawer extends HookConsumerWidget {
             ),
           ),
         ),
-        body: const BlockTabBarView(),
+        body: BlockTabBarView(block: block),
       ),
     );
   }

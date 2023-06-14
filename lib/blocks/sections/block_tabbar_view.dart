@@ -3,24 +3,26 @@ import 'package:flutter_annulus/transactions/sections/transactions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../shared/constants/strings.dart';
-import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/utils/theme_color.dart';
+import '../../shared/providers/app_theme_provider.dart';
 import '../../transactions/models/transaction.dart';
 import '../../transactions/providers/transactions_provider.dart';
 import '../../transactions/widgets/custom_transaction_widgets.dart';
+import '../models/block.dart';
 
 class BlockTabBarView extends HookConsumerWidget {
   const BlockTabBarView({
     super.key,
-    // required this.block,
+    this.block,
   });
   final _rowsPerPage = 5;
-  //final Block block;
+  final Block? block;
 
   // create a custom tab bar view
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const int textLength = 30;
     final colorTheme = ref.watch(appThemeColorProvider);
     final AsyncValue<List<Transaction>> transactionsInfo =
         ref.watch(transactionsProvider);
@@ -30,23 +32,25 @@ class BlockTabBarView extends HookConsumerWidget {
           decoration: BoxDecoration(
             color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
           ),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(width: 200, child: CustomTextLeft(desc: 'Block ID')),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(
+                      width: 200, child: CustomTextLeft(desc: 'Block ID')),
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: '242218'),
+                  CustomTextRight(
+                      desc: block!.blockId.substring(0, textLength - 3)),
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(width: 200, child: CustomTextLeft(desc: 'Status')),
@@ -59,7 +63,7 @@ class BlockTabBarView extends HookConsumerWidget {
                   )
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(width: 200, child: CustomTextLeft(desc: 'Time')),
@@ -71,28 +75,31 @@ class BlockTabBarView extends HookConsumerWidget {
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(width: 200, child: CustomTextLeft(desc: 'Epoch')),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(
+                      width: 200, child: CustomTextLeft(desc: 'Epoch')),
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: 'EP100')
+                  CustomTextRight(desc: block!.epoch.toString())
                 ],
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(width: 200, child: CustomTextLeft(desc: 'Header')),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(
+                      width: 200, child: CustomTextLeft(desc: 'Header')),
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: 'h1000')
+                  CustomTextRight(
+                      desc: block!.header.substring(0, textLength - 3))
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              SizedBox(
+              const SizedBox(
                 // maximum width and draw line
                 width: double.infinity,
                 child: Divider(
@@ -100,82 +107,88 @@ class BlockTabBarView extends HookConsumerWidget {
                   thickness: 1,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(width: 200, child: CustomTextLeft(desc: 'ID')),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: 'ID')),
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: '0x736e345d784cf4c9')
+                  CustomTextRight(desc: block!.blockId)
                 ],
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(
                       width: 200, child: CustomTextLeft(desc: 'Timestamp')),
-                  SizedBox(
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: 'UTC 16:32:01')
+                  CustomTextRight(
+                      desc:
+                          DateTime.fromMillisecondsSinceEpoch(block!.timestamp)
+                              .toString())
                 ],
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(width: 200, child: CustomTextLeft(desc: 'Height')),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(
+                      width: 200, child: CustomTextLeft(desc: 'Height')),
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: '17321')
+                  CustomTextRight(desc: block!.height.toString())
                 ],
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(width: 200, child: CustomTextLeft(desc: 'Size')),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(
+                      width: 200, child: CustomTextLeft(desc: 'Size')),
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: 'h1000')
+                  CustomTextRight(desc: block!.size.toString())
                 ],
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(width: 200, child: CustomTextLeft(desc: 'Slot')),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(
+                      width: 200, child: CustomTextLeft(desc: 'Slot')),
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: '12556')
+                  CustomTextRight(desc: block!.slot.toString())
                 ],
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(
                       width: 200,
                       child: CustomTextLeft(desc: 'Number of Transactions')),
-                  SizedBox(
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: '131')
+                  CustomTextRight(desc: block!.transactionNumber.toString())
                 ],
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(
                       width: 200,
                       child: CustomTextLeft(desc: 'Number of Withdrawals')),
-                  SizedBox(
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: '131')
+                  CustomTextRight(desc: block!.withdrawalNumber.toString())
                 ],
               ),
             ],
