@@ -4,10 +4,11 @@ import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:flutter_annulus/search/models/search_result.dart';
-import 'package:flutter_annulus/search/models/utxo.dart';
 import 'package:flutter_annulus/shared/models/logger.dart';
 import 'package:flutter_annulus/shared/providers/logger_provider.dart';
 import 'package:flutter_annulus/shared/providers/mock_state_provider.dart';
+import 'package:flutter_annulus/transactions/models/utxo.dart';
+import 'package:flutter_annulus/transactions/providers/utxo_provider.dart';
 import 'package:flutter_annulus/transactions/utils/extension.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -46,9 +47,7 @@ import 'package:topl_common/proto/genus/genus_rpc.pbgrpc.dart';
 ///   },
 ///  );
 /// ```
-final searchProvider =
-    StateNotifierProvider<SearchNotifier, AsyncValue<List<SearchResult>>>(
-        (ref) {
+final searchProvider = StateNotifierProvider<SearchNotifier, AsyncValue<List<SearchResult>>>((ref) {
   return SearchNotifier(ref);
 });
 
@@ -83,11 +82,7 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
       return [];
     }
 
-    final result = [
-      if (block != null) block,
-      if (transaction != null) transaction,
-      if (utxo != null) utxo
-    ];
+    final result = [if (block != null) block, if (transaction != null) transaction, if (utxo != null) utxo];
     state = AsyncData(result);
     return result;
   }
@@ -96,9 +91,7 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     try {
       if (!ref.read(mockStateProvider)) {
         final Chains selectedChain = ref.read(selectedChainProvider);
-        final BlockResponse blockResponse = await ref
-            .read(genusProvider(selectedChain))
-            .getBlockById(blockId: id);
+        final BlockResponse blockResponse = await ref.read(genusProvider(selectedChain)).getBlockById(blockId: id);
         return BlockResult(blockResponse.toBlock());
       } else {
         return Future.delayed(const Duration(milliseconds: 250), () {
@@ -122,9 +115,8 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     try {
       if (!ref.read(mockStateProvider)) {
         final Chains selectedChain = ref.read(selectedChainProvider);
-        final TransactionResponse response = await ref
-            .read(genusProvider(selectedChain))
-            .getTransactionById(transactionId: id);
+        final TransactionResponse response =
+            await ref.read(genusProvider(selectedChain)).getTransactionById(transactionId: id);
 
         return TransactionResult(response.toTransaction());
       } else {
@@ -145,10 +137,14 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     }
   }
 
+  // TODO: Are we sure that the id is a int?
   Future<UTxOResult?> _searchForUTxOById(int id) async {
     try {
-      // TODO: Have to implement find UTxO by id
-      return const UTxOResult(UTxO());
+      final UTxO utxo = await ref.read(utxoByIdProvider(
+        id.toString(),
+      ).future);
+
+      return UTxOResult(utxo);
     } catch (e) {
       ref.read(loggerProvider).log(
             logLevel: LogLevel.Warning,

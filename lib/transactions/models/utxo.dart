@@ -24,13 +24,13 @@ class UTxO with _$UTxO {
     required String changeBackAddress,
 
     // The amounts of the inputs to this transaction.
-    required List<int> inputAmount,
+    required List<double> inputAmount,
 
     // The amounts of the outputs from this transaction.
-    required List<int> outputAmount,
+    required List<double> outputAmount,
 
     // The fee for this transaction.
-    required int fee,
+    required double fee,
   }) = _UTxO;
 
   factory UTxO.fromJson(Map<String, dynamic> json) => _$UTxOFromJson(json);
