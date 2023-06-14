@@ -3,8 +3,7 @@ import 'package:flutter_annulus/transactions/models/utxo.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// The [utxoByIdProvider] retrieves the [UTxO] by its [utxoId].
-/// If [mockStateProvider] is true,
-/// the function returns a mock [UTxO] after a delay of 1 second.
+/// If [mockStateProvider] is true, the function returns a mock [UTxO] after a delay of 1 second.
 /// Otherwise, it throws an exception and still needs to be implemented
 ///
 /// Example usage:
