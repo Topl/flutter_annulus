@@ -10,9 +10,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// Example usage:
 ///
 /// ```
-/// final UTxO utxo = await context.read(utxoByIdProvider('utxoId').future);
+/// final UTxO utxo = await ref.read(utxoByIdProvider('utxoId').future);
 ///
-/// final AsyncValue<UTxO> utxoAsyncValue = useProvider(utxoByIdProvider('utxoId'));
+/// final AsyncValue<UTxO> utxoAsyncValue = ref.watch(utxoByIdProvider('utxoId'));
 ///
 /// return utxoAsyncValue.when(
 ///   data: (utxo) => Text('UTxO: $utxo'),
