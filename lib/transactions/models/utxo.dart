@@ -11,26 +11,11 @@ class UTxO with _$UTxO {
     // The unique identifier for this unspent transaction output.
     required String utxoId,
 
-    // The identifier of the block that contains this unspent transaction output.
-    required String blockId,
+    // The amount of the unspent transaction output.
+    required double utxoAmount,
 
-    // The address of the sender of this unspent transaction output.
-    required String senderAddress,
-
-    // The address of the receiver of this unspent transaction output.
-    required String receiverAddress,
-
-    // The address to which any change from this transaction should be sent.
-    required String changeBackAddress,
-
-    // The amounts of the inputs to this transaction.
-    required List<double> inputAmount,
-
-    // The amounts of the outputs from this transaction.
-    required List<double> outputAmount,
-
-    // The fee for this transaction.
-    required double fee,
+    // The transactionId of the transaction that contains this unspent transaction output.
+    required String transactionId,
   }) = _UTxO;
 
   factory UTxO.fromJson(Map<String, dynamic> json) => _$UTxOFromJson(json);
