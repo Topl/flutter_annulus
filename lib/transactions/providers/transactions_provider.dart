@@ -5,6 +5,7 @@ import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_annulus/shared/utils/get_chain_id.dart';
 
 import '../../blocks/models/block.dart';
 
@@ -35,32 +36,49 @@ class TransactionsNotifier
   }) async {
     if (setState) state = const AsyncLoading();
     final List<Transaction> transactions = [];
-    const int totalTransactions = 10;
 
-    for (int i = 0; i < totalTransactions; i++) {
+    //get most recent block
+    const tempChain = Chains.private_network;
+    final genusClient = ref.read(genusProvider(tempChain));
+
+    var latestBlockRes = await genusClient.getBlockByDepth(depth: 0);
+    int transactionCount = latestBlockRes.block.fullBody.transactions.length;
+
+    var latestBlock = Block(
+      header: getChainId(latestBlockRes.block.header.headerId.value),
+      epoch: 243827,
+      size: 5432.2,
+      height: latestBlockRes.block.header.height.toInt(),
+      slot: latestBlockRes.block.header.slot.toInt(),
+      timestamp: latestBlockRes.block.header.timestamp.toInt(),
+      transactionNumber: transactionCount,
+    );
+
+    //continue going through transactions, fetch new block if necessary
+    for (int i = 0; i < transactionCount; i++) {
       final iString = i.toString();
       final iDouble = i.toDouble();
+
+      //calculate transaction amount
+      //calculate transaction amount
+      var txAmount = latestBlockRes
+          .block.fullBody.transactions[i].inputs[0].value.lvl.quantity.value
+          .reduce((value, element) => value + element);
+
       transactions.add(
         Transaction(
-          transactionId: "8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q",
-          status: TransactionStatus.confirmed,
-          block: Block(
-            blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w$iString",
-            header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
-            epoch: 243827 - i,
-            size: 5432.2,
-            height: 1000 + 1,
-            slot: 10,
-            timestamp: 1683494060 + i,
-            transactionNumber: 200,
-            withdrawalNumber: 127,
-          ),
-          broadcastTimestamp: DateTime.now().millisecondsSinceEpoch,
-          confirmedTimestamp: DateTime.now().millisecondsSinceEpoch,
+          transactionId: getChainId(latestBlockRes
+              .block.fullBody.transactions[0].transactionId.value),
+          status: TransactionStatus.pending,
+          block: latestBlock,
+          broadcastTimestamp: latestBlock.timestamp,
+          confirmedTimestamp:
+              0, //for the latest block, it will never be confirmed (confirmation depth is 5)
           transactionType: TransactionType.transfer,
-          amount: iDouble,
+          amount: txAmount.toDouble(),
           transactionFee: iDouble,
-          senderAddress: iString,
+          senderAddress: getChainId(latestBlockRes
+              .block.fullBody.transactions[0].inputs[0].address.id.value),
           receiverAddress: iString,
           transactionSize: i,
           proposition: iString,
@@ -90,8 +108,10 @@ class TransactionsNotifier
     var transactionRes =
         await genusClient.getTransactionById(transactionId: transactionId);
 
+    // var block = await genusClient.getBlockById(
+    //     blockId: transactionRes.transactionReceipt.blockId.value);
+
     var block = const Block(
-      blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
       header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
       epoch: 243827,
       size: 5432.2,
@@ -99,11 +119,11 @@ class TransactionsNotifier
       slot: 5,
       timestamp: 243827,
       transactionNumber: 127,
-      withdrawalNumber: 127,
     );
 
     return Transaction(
-        transactionId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+        transactionId: getChainId(
+            transactionRes.transactionReceipt.transaction.transactionId.value),
         status: TransactionStatus.confirmed,
         block: block,
         broadcastTimestamp: 243827,

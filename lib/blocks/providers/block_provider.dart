@@ -48,7 +48,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
 
     if (setState) state = const AsyncLoading();
     final List<Block> blocks = [];
-    const chainHeight = 5932;
     const pageLimit = 10;
 
     // var blockRes = await genusClient.getBlockByDepth(depth: 0);
@@ -60,7 +59,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
       final iString = i.toString();
       blocks.add(
         Block(
-          blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w$iString",
           header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
           epoch: 243827 - i,
           size: 5432.2,
@@ -68,7 +66,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
           slot: blockRes.block.header.slot.toInt(),
           timestamp: blockRes.block.header.timestamp.toInt(),
           transactionNumber: blockRes.block.fullBody.transactions.length,
-          withdrawalNumber: 127,
         ),
       );
     }
@@ -89,14 +86,14 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
 
   /// This method is used to get a block by ID
   ///
-  /// It takes a [blockId] as a parameter
+  /// It takes a [header] as a parameter
   /// and returns a [AsyncValue<Block>]
   AsyncValue<Block> getBlockById({
-    required String blockId,
+    required String header,
   }) {
     return state.when(
       data: (data) =>
-          AsyncData(data.firstWhere((element) => element.blockId == blockId)),
+          AsyncData(data.firstWhere((element) => element.header == header)),
       error: (error, stakeTrace) => AsyncError(error, stakeTrace),
       loading: () => const AsyncLoading(),
     );
@@ -115,7 +112,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
     var blockRes = await genusClient.getBlockByHeight(height: height);
 
     return Block(
-      blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
       header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
       epoch: 243827,
       size: 5432.2,
@@ -123,7 +119,29 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
       slot: blockRes.block.header.slot.toInt(),
       timestamp: blockRes.block.header.timestamp.toInt(),
       transactionNumber: blockRes.block.fullBody.transactions.length,
-      withdrawalNumber: 127,
+    );
+  }
+
+  /// This method is used to get a block by height
+  ///
+  /// It takes a [depth] as a parameter
+  /// and returns a [AsyncValue<Block>]
+  Future<Block> getBlockByDepth({
+    required int depth,
+  }) async {
+    const tempChain = Chains.private_network;
+    final genusClient = ref.read(genusProvider(tempChain));
+
+    var blockRes = await genusClient.getBlockByDepth(depth: depth);
+
+    return Block(
+      header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
+      epoch: 243827,
+      size: 5432.2,
+      height: blockRes.block.header.height.toInt(),
+      slot: blockRes.block.header.slot.toInt(),
+      timestamp: blockRes.block.header.timestamp.toInt(),
+      transactionNumber: blockRes.block.fullBody.transactions.length,
     );
   }
 }

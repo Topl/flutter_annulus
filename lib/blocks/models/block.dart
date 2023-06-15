@@ -10,9 +10,6 @@ part 'block.g.dart';
 @freezed
 class Block with _$Block {
   const factory Block({
-    /// The on chain ID of the block.
-    required String blockId,
-
     /// String representing block header.
     required String header,
 
@@ -34,9 +31,6 @@ class Block with _$Block {
 
     /// The number of transactions
     required int transactionNumber,
-
-    /// The number of withdrawals
-    required int withdrawalNumber,
   }) = _Block;
 
   factory Block.fromJson(Map<String, dynamic> json) => _$BlockFromJson(json);
