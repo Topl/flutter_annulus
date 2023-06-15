@@ -4,6 +4,8 @@ import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_row_column.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../chain/sections/chain_info.dart';
 import '../../chain/sections/chart_section.dart';
@@ -19,9 +21,12 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
     return CustomLayout(
       header: Header(
-        logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+        logoAsset: colorTheme == ThemeMode.light
+            ? 'images/logo.svg'
+            : 'images/logo_dark.svg',
         onSearch: () {},
         onDropdownChanged: (String value) {},
       ),
@@ -36,22 +41,29 @@ class HomeScreen extends HookConsumerWidget {
           children: [
             const SizedBox(height: 20),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              child: Row(
+              margin: EdgeInsets.symmetric(
+                  horizontal: isMobile ? 20.0 : 40.0, vertical: 20),
+              child: ResponsiveRowColumn(
+                layout: ResponsiveBreakpoints.of(context).smallerThan(DESKTOP)
+                    ? ResponsiveRowColumnType.COLUMN
+                    : ResponsiveRowColumnType.ROW,
+                columnSpacing: 40.0,
                 children: [
-                  const Expanded(
-                    flex: 3,
+                  const ResponsiveRowColumnItem(
+                    rowFlex: 3,
                     child: ChainInfo(),
                   ),
-                  Expanded(
-                    flex: 2,
+                  ResponsiveRowColumnItem(
+                    rowFlex: 2,
                     child: Container(
                       height: 408,
                       decoration: BoxDecoration(
-                        color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                        color: getSelectedColor(
+                            colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                            color: getSelectedColor(
+                                colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                             style: BorderStyle.solid,
                             width: 1.0),
                       ),
