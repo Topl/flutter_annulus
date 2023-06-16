@@ -1,10 +1,11 @@
+import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final chainProvider =
-    StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
+final chainProvider = StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
   /// Adding some dev notes here
   ///
   /// THIS STILL NEEDS TO BE TESTED!
@@ -72,5 +73,24 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
     }
 
     return chain;
+  }
+
+  /// In order to calculate this we need the last 5 blocks
+  /// QQQQ can probably use block provider
+  /// Can also do a couple things, here
+  /// 1. Make individual properties asyncvalues and load those in individually
+  /// 2. Make a single asyncvalue and load all the data in at once
+  Future<double> _getDataThroughput(List<Block> blocks) async {
+    return ref.read(blockProvider).maybeWhen(
+      data: (blocks) {
+        for (Block block in blocks) {
+          block;
+        }
+        return 0.0;
+      },
+      orElse: () {
+        throw ('Error getting data throughput');
+      },
+    );
   }
 }
