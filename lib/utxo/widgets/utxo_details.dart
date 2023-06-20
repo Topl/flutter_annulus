@@ -93,7 +93,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                       child: Row(
                         children: [
                           Text(
-                            'UTxO Details',
+                            'UTxO Summary',
                             style: TextStyle(
                               color: getSelectedColor(
                                   colorTheme, 0xFF282A2C, 0xFFFEFEFE),
@@ -119,29 +119,19 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   child: CustomPadding(
                                       child: isMobile
                                           ? const CustomColumnWithText(
-                                              leftText: 'Txn Hash/ID',
+                                              leftText: 'UTxO ID',
                                               rightText:
                                                   '0x5be9d701Byd24neQfY1vXa987a',
                                               hasIcon: true,
                                             )
                                           : const CustomRowWithText(
-                                              leftText: 'Txn Hash/ID',
+                                              leftText: 'UTxO',
                                               rightText:
                                                   '0x5be9d701Byd24neQfY1vXa987a',
                                               hasIcon: true,
                                             ))),
                             ],
                           ),
-                          const CustomResponsiveRowColumn(
-                            children: [
-                              ResponsiveRowColumnItem(
-                                  rowFlex: 1,
-                                  child: CustomPadding(
-                                    child:
-                                        CustomStatusWidget(status: 'Confirmed'),
-                                  )),
-                            ],
-                          ),
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
@@ -149,56 +139,34 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   child: CustomPadding(
                                       child: isMobile
                                           ? const CustomColumnWithText(
-                                              leftText: 'Sender Address',
-                                              rightText:
-                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic')
+                                              leftText: 'UTxO',
+                                              rightText: '0.61 TOPL')
                                           : const CustomRowWithText(
-                                              leftText: 'Sender Address',
-                                              rightText:
-                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
+                                              leftText: 'UTxO',
+                                              rightText: '0.61 TOPL',
                                             ))),
                             ],
                           ),
-                          CustomResponsiveRowColumn(
-                            children: [
-                              ResponsiveRowColumnItem(
-                                  rowFlex: 1,
-                                  child: CustomPadding(
-                                      child: isMobile
-                                          ? const CustomColumnWithText(
-                                              leftText: 'Receiver Address',
-                                              rightText:
-                                                  '7bY6Dne54qMU12cz3oPF4yVx5aG6a',
-                                            )
-                                          : const CustomRowWithText(
-                                              leftText: 'Receiver Address',
-                                              rightText:
-                                                  '7bY6Dne54qMU12cz3oPF4yVx5aG6a',
-                                            ))),
-                            ],
-                          ),
-                          CustomResponsiveRowColumn(
-                            children: [
-                              ResponsiveRowColumnItem(
-                                  rowFlex: 1,
-                                  child: CustomPadding(
-                                      child: isMobile
-                                          ? const CustomColumnWithText(
-                                              leftText: 'Change back address',
-                                              rightText:
-                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic')
-                                          : const CustomRowWithText(
-                                              leftText: 'Change back address',
-                                              rightText:
-                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
-                                            ))),
-                            ],
-                          )
+                          CustomResponsiveRowColumn(children: [
+                            ResponsiveRowColumnItem(
+                                rowFlex: 1,
+                                child: CustomPadding(
+                                    child: isMobile
+                                        ? const CustomColumnWithText(
+                                            leftText: 'Txn ID',
+                                            rightText:
+                                                '503a2f166a3bb0b467b8ffaec53a2b4fffef33',
+                                            hasIcon: true,
+                                          )
+                                        : const CustomRowWithText(
+                                            leftText: 'Txn ID',
+                                            rightText:
+                                                '503a2f166a3bb0b467b8ffaec53a2b4fffef33',
+                                            hasIcon: true,
+                                          )))
+                          ])
                         ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
                     ),
                     CustomContainer(
                         child: Column(
