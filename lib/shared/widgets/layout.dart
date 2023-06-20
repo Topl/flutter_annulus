@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
@@ -25,8 +24,7 @@ class CustomLayout extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isResponsive = ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
-    final IsTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
     final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -34,7 +32,7 @@ class CustomLayout extends HookConsumerWidget {
       key: scaffoldKey,
       endDrawer: Container(
         height: 500,
-        margin: EdgeInsets.only(bottom: IsTablet ? 520 : 320),
+        margin: EdgeInsets.only(bottom: isTablet ? 520 : 320),
         color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
         child: Align(
           alignment: Alignment.bottomCenter,

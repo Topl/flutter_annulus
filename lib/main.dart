@@ -10,8 +10,8 @@ import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:vrouter/vrouter.dart';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'utxo/widgets/utxo_details.dart';
 
 void main() {
   runApp(
@@ -21,7 +21,8 @@ void main() {
         breakpoints: const [
           Breakpoint(start: 0, end: mobileBreak, name: MOBILE),
           Breakpoint(start: mobileBreak + 1, end: tabletBreak, name: TABLET),
-          Breakpoint(start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
+          Breakpoint(
+              start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
         ],
       ),
     ),
@@ -49,10 +50,15 @@ class AnnulusRouter extends HookConsumerWidget {
           path: TransactionDetailsPage.route, // Transaction details screen
           widget: const TransactionDetailsPage(transactionId: ''),
         ),
+        VWidget(
+          path: UTxODetailsPage.route, // UTxO details screen
+          widget: const UTxODetailsPage(),
+        ),
         VNester(
           path: '',
           widgetBuilder: (Widget child) => SlideLeftBuilder(child: child),
-          buildTransition: (animation, _, child) => slideLeftTransition(animation, child),
+          buildTransition: (animation, _, child) =>
+              slideLeftTransition(animation, child),
           nestedRoutes: [
             VWidget(
               path: TransactionTableScreen.route, // Transaction table screen

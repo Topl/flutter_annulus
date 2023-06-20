@@ -3,11 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-
 import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
-
+import 'custom_search_bar.dart';
 import '../utils/theme_color.dart';
 
+/// Header widget that displays the logo, search bar and dropdown.
 class Header extends HookConsumerWidget {
   final String logoAsset;
   final VoidCallback onSearch;
@@ -47,7 +47,7 @@ class Header extends HookConsumerWidget {
               //Search bar
               isMobile
                   ? const SizedBox()
-                  : SearchBar(onSearch: onSearch, colorTheme: colorTheme),
+                  : CustomSearchBar(onSearch: onSearch, colorTheme: colorTheme),
               isSmallerThanOrEqualToTablet
                   ? SizedBox(
                       child: IconButton(
@@ -137,7 +137,7 @@ class Header extends HookConsumerWidget {
             height: 20,
           ),
           isMobile
-              ? SearchBar(
+              ? CustomSearchBar(
                   onSearch: () {
                     // TODO: implement search
                     print("search");
@@ -151,6 +151,7 @@ class Header extends HookConsumerWidget {
   }
 }
 
+/// MaterialConsumer widget that displays the menu items.
 class MaterialConsumer extends HookConsumerWidget {
   const MaterialConsumer({Key? key, required this.child}) : super(key: key);
 
@@ -181,6 +182,7 @@ class MaterialConsumer extends HookConsumerWidget {
   }
 }
 
+/// MobileMenu widget that displays the menu items.
 class MobileMenu extends HookConsumerWidget {
   MobileMenu({super.key, required this.onSwitchChange});
 
@@ -286,15 +288,16 @@ class MobileMenu extends HookConsumerWidget {
   }
 }
 
+/// ThemeModeSwitch widget that displays the switch button.
 class ThemeModeSwitch extends StatefulWidget {
   const ThemeModeSwitch({Key? key, required this.onPressed}) : super(key: key);
-
   final Function onPressed;
 
   @override
   State<ThemeModeSwitch> createState() => _ThemeModeSwitchState();
 }
 
+/// ThemeModeSwitch widget state.
 class _ThemeModeSwitchState extends State<ThemeModeSwitch> {
   bool darkMode = false;
 
@@ -310,52 +313,6 @@ class _ThemeModeSwitchState extends State<ThemeModeSwitch> {
         });
         widget.onPressed();
       },
-    );
-  }
-}
-
-class SearchBar extends StatelessWidget {
-  const SearchBar({
-    super.key,
-    required this.onSearch,
-    required this.colorTheme,
-  });
-
-  final VoidCallback onSearch;
-  final ThemeMode colorTheme;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 400,
-      child: TextField(
-        onSubmitted: (query) => onSearch(),
-        decoration: InputDecoration(
-          hintText: 'Search by blocks, transactions, or UTxOs',
-          hintStyle: TextStyle(
-            color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-            fontFamily: 'Rational Display',
-          ),
-          prefixIcon: Icon(
-            Icons.search,
-            color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
-              width: 1.0,
-            ),
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          border: const OutlineInputBorder(),
-          focusColor: const Color(0xFF4B4B4B),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-                width: 1.0),
-          ),
-        ),
-      ),
     );
   }
 }
