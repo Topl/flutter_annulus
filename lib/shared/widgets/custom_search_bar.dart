@@ -96,7 +96,6 @@ class CustomSearchBar extends HookConsumerWidget {
               selectedBlock.value = block;
             },
             uTxO: (utxo) {
-              // TODO: Handle UTxO result
               utxoValue = "0x5be9d701Byd24neQfY1vXa987a";
               utxos.add(utxoValue);
               isUTxO.value = true;
