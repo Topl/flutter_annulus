@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_table_header.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_row_item.dart';
@@ -93,13 +94,9 @@ class Transactions extends HookConsumerWidget {
                 children: [
                   Text("See All Transactions",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: getSelectedColor(
-                            colorTheme, 0xFF535757, 0xFFC0C4C4),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Rational Display',
-                      )),
+                      style: 
+                      bodyMedium(context)
+                      ),
                   const SizedBox(width: 10.0),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -143,16 +140,9 @@ class CustomTextRight extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-    final colorMode = ref.watch(appThemeColorProvider);
+   
     return Text(desc,
-        style: TextStyle(
-          fontWeight: FontWeight.w500,
-          color: getSelectedColor(colorMode, 0xFF282A2C, 0xFFFEFEFE),
-          fontSize: isMobile ? 13 : 16,
-          fontFamily: 'Rational Display',
-          fontStyle: FontStyle.normal,
-        ));
+        style: bodyMedium(context));
   }
 }
 
@@ -166,14 +156,7 @@ class CustomTextLeft extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     return Text(desc,
-        style: TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: isMobile ? 14 : 16,
-          color: const Color(0xFF858E8E),
-          fontFamily: 'Rational Display Light',
-          fontStyle: FontStyle.normal,
-        ));
+        style: labelLarge(context));
   }
 }

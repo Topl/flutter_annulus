@@ -1,4 +1,3 @@
-import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
@@ -81,14 +80,9 @@ class TransactionsNotifier
   ///
   /// It takes a [transactionId] as a parameter
   /// and returns a [AsyncValue<Transaction>]
-  Future<Transaction> getSingleTransaction({
-    required int transactionId,
-  }) async {
-    const tempChain = Chains.private_network;
-    final genusClient = ref.read(genusProvider(tempChain));
-
-    var transactionRes =
-        await genusClient.getTransactionById(transactionId: transactionId);
+  AsyncValue<Transaction> getSingleTransaction({
+    required String transactionId,
+  }) {
 
     var block = const Block(
       blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
@@ -102,20 +96,23 @@ class TransactionsNotifier
       withdrawalNumber: 127,
     );
 
-    return Transaction(
-        transactionId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-        status: TransactionStatus.confirmed,
-        block: block,
-        broadcastTimestamp: 243827,
-        confirmedTimestamp: 243827,
-        transactionType: TransactionType.transfer,
-        amount: 10,
-        transactionFee: 10,
-        senderAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-        receiverAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-        transactionSize: 10,
-        proposition: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-        quantity: 10,
-        name: "transaction");
+    var transaction = Transaction(
+      transactionId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      status: TransactionStatus.confirmed,
+      block: block,
+      broadcastTimestamp: 243827,
+      confirmedTimestamp: 243827,
+      transactionType: TransactionType.transfer,
+      amount: 10,
+      transactionFee: 10,
+      senderAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      receiverAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      transactionSize: 10,
+      proposition: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      quantity: 10,
+      name: "transaction",
+    );
+
+    return AsyncValue.data(transaction);
   }
 }
