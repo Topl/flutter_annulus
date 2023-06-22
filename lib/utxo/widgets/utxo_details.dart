@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
-import 'package:flutter_annulus/transactions/models/transaction.dart';
-import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_row_column.dart';
 import 'package:vrouter/vrouter.dart';
 
+import '../../shared/constants/numbers.dart';
 import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/widgets/footer.dart';
 import '../../shared/widgets/header.dart';
 import '../../shared/widgets/layout.dart';
 
+// This is the page displays the UTxO details
 class UTxODetailsPage extends HookConsumerWidget {
   const UTxODetailsPage({
     Key? key,
@@ -25,19 +26,6 @@ class UTxODetailsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-
-    final AsyncValue<List<Transaction>> transactionsInfo =
-        ref.watch(transactionsProvider);
-
-    final transaction = transactionsInfo.when(
-      data: (transactions) {
-        //
-      },
-      loading: () => null,
-      error: (_, __) => null,
-    );
-
-    const int textLength = 30;
 
     return CustomLayout(
         header: Header(
@@ -74,13 +62,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                               ),
                               Text(
                                 'Back',
-                                style: TextStyle(
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFF535757, 0xFFAFB6B6),
-                                  fontFamily: 'Rational Display',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: bodyMedium(context),
                               ),
                             ],
                           )),
@@ -93,14 +75,8 @@ class UTxODetailsPage extends HookConsumerWidget {
                       child: Row(
                         children: [
                           Text(
-                            'UTxO Summary',
-                            style: TextStyle(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFF282A2C, 0xFFFEFEFE),
-                              fontFamily: 'Rational Display',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
-                            ),
+                            'UTxO Details',
+                            style: headlineLarge(context),
                           ),
                         ],
                       ),
@@ -118,17 +94,54 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   rowFlex: isMobile ? 3 : 2,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
-                                              leftText: 'UTxO ID',
+                                          ? CustomColumnWithText(
+                                              leftText: 'Txn Hash/ID',
                                               rightText:
-                                                  '0x5be9d701Byd24neQfY1vXa987a',
+                                                  '0x5be9d701Byd24neQfY1vXa987a'
+                                                      .toString()
+                                                      .substring(
+                                                          0,
+                                                          Numbers.textLength -
+                                                              4),
                                               hasIcon: true,
                                             )
                                           : const CustomRowWithText(
-                                              leftText: 'UTxO',
+                                              leftText: 'Txn Hash/ID',
                                               rightText:
                                                   '0x5be9d701Byd24neQfY1vXa987a',
                                               hasIcon: true,
+                                            ))),
+                            ],
+                          ),
+                          const CustomResponsiveRowColumn(
+                            children: [
+                              ResponsiveRowColumnItem(
+                                  rowFlex: 1,
+                                  child: CustomPadding(
+                                    child:
+                                        CustomStatusWidget(status: 'Confirmed'),
+                                  )),
+                            ],
+                          ),
+                          CustomResponsiveRowColumn(
+                            children: [
+                              ResponsiveRowColumnItem(
+                                  rowFlex: 1,
+                                  child: CustomPadding(
+                                      child: isMobile
+                                          ? CustomColumnWithText(
+                                              leftText: 'Sender Address',
+                                              rightText:
+                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'
+                                                      .toString()
+                                                      .substring(
+                                                          0,
+                                                          Numbers.textLength -
+                                                              4))
+                                          : const CustomRowWithText(
+                                              leftText: 'Sender Address',
+                                              rightText:
+                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
                                             ))),
                             ],
                           ),
@@ -138,35 +151,50 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
-                                          ? const CustomColumnWithText(
-                                              leftText: 'UTxO',
-                                              rightText: '0.61 TOPL')
+                                          ? CustomColumnWithText(
+                                              leftText: 'Receiver Address',
+                                              rightText:
+                                                  '7bY6Dne54qMU12cz3oPF4yVx5aG6a'
+                                                      .toString()
+                                                      .substring(
+                                                          0,
+                                                          Numbers.textLength -
+                                                              4),
+                                            )
                                           : const CustomRowWithText(
-                                              leftText: 'UTxO',
-                                              rightText: '0.61 TOPL',
+                                              leftText: 'Receiver Address',
+                                              rightText:
+                                                  '7bY6Dne54qMU12cz3oPF4yVx5aG6a',
                                             ))),
                             ],
                           ),
-                          CustomResponsiveRowColumn(children: [
-                            ResponsiveRowColumnItem(
-                                rowFlex: 1,
-                                child: CustomPadding(
-                                    child: isMobile
-                                        ? const CustomColumnWithText(
-                                            leftText: 'Txn ID',
-                                            rightText:
-                                                '503a2f166a3bb0b467b8ffaec53a2b4fffef33',
-                                            hasIcon: true,
-                                          )
-                                        : const CustomRowWithText(
-                                            leftText: 'Txn ID',
-                                            rightText:
-                                                '503a2f166a3bb0b467b8ffaec53a2b4fffef33',
-                                            hasIcon: true,
-                                          )))
-                          ])
+                          CustomResponsiveRowColumn(
+                            children: [
+                              ResponsiveRowColumnItem(
+                                  rowFlex: 1,
+                                  child: CustomPadding(
+                                      child: isMobile
+                                          ? CustomColumnWithText(
+                                              leftText: 'Change back address',
+                                              rightText:
+                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'
+                                                      .toString()
+                                                      .substring(
+                                                          0,
+                                                          Numbers.textLength -
+                                                              4))
+                                          : const CustomRowWithText(
+                                              leftText: 'Change back address',
+                                              rightText:
+                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
+                                            ))),
+                            ],
+                          )
                         ],
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     CustomContainer(
                         child: Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,7 +13,9 @@ import '../../shared/widgets/header.dart';
 import '../../shared/widgets/layout.dart';
 import '../models/transaction.dart';
 import '../providers/transactions_provider.dart';
+import '../../shared/constants/numbers.dart';
 
+/// This is a custom widget that shows the transaction details page
 class TransactionDetailsPage extends HookConsumerWidget {
   const TransactionDetailsPage({
     Key? key,
@@ -30,7 +33,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
     final transactionNotifier = ref.watch(transactionsProvider.notifier);
     final AsyncValue<Transaction> asyncTransaction =
         transactionNotifier.getSingleTransaction(transactionId: transactionId);
-    const int textLength = 30;
+     
 
     return asyncTransaction.when(
       data: (transaction) {
@@ -70,13 +73,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   ),
                                   Text(
                                     "Back",
-                                    style: TextStyle(
-                                      color: getSelectedColor(
-                                          colorTheme, 0xFF535757, 0xFFAFB6B6),
-                                      fontFamily: 'Rational Display',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: bodyMedium(context),
                                   ),
                                 ],
                               )),
@@ -90,13 +87,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                             children: [
                               Text(
                                 "Transaction Details",
-                                style: TextStyle(
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFF282A2C, 0xFFFEFEFE),
-                                  fontFamily: 'Rational Display',
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                                style: headlineLarge(context),
                               ),
                             ],
                           ),
@@ -120,7 +111,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                                       .transactionId
                                                       .toString()
                                                       .substring(
-                                                          0, textLength - 3),
+                                                          0, Numbers.textLength - 4),
                                                   hasIcon: true,
                                                 )
                                               : CustomRowWithText(
@@ -129,7 +120,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                                       .transactionId
                                                       .toString()
                                                       .substring(
-                                                          0, textLength - 3),
+                                                          0, Numbers.textLength - 3),
                                                   hasIcon: true,
                                                 ))),
                                 ],
@@ -281,12 +272,16 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                                   leftText: 'From',
                                                   rightText: transaction
                                                       .senderAddress
-                                                      .toString())
+                                                     .toString()
+                                                      .substring(
+                                                          0, Numbers.textLength - 3))
                                               : CustomRowWithText(
                                                   leftText: 'From',
                                                   rightText: transaction
                                                       .senderAddress
-                                                      .toString(),
+                                                      .toString()
+                                                      .substring(
+                                                          0, Numbers.textLength - 3),
                                                 ))),
                                 ],
                               ),
@@ -300,12 +295,16 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                                   leftText: 'To',
                                                   rightText: transaction
                                                       .receiverAddress
-                                                      .toString())
+                                                      .toString()
+                                                      .substring(
+                                                          0, Numbers.textLength - 3))
                                               : CustomRowWithText(
                                                   leftText: 'To',
                                                   rightText: transaction
                                                       .receiverAddress
-                                                      .toString(),
+                                                      .toString()
+                                                      .substring(
+                                                          0, Numbers.textLength - 3),
                                                 ))),
                                 ],
                               ),
@@ -343,12 +342,16 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                                     leftText: 'Proposition',
                                                     rightText: transaction
                                                         .proposition
-                                                        .toString())
+                                                        .toString()
+                                                      .substring(
+                                                          0, Numbers.textLength - 3))
                                                 : CustomRowWithText(
                                                     leftText: 'Proposition',
                                                     rightText: transaction
                                                         .proposition
-                                                        .toString(),
+                                                        .toString()
+                                                      .substring(
+                                                          0, Numbers.textLength - 3),
                                                   ))),
                                   ],
                                 ),

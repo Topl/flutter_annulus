@@ -6,6 +6,7 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 import '../providers/app_theme_provider.dart';
 import '../utils/theme_color.dart';
 
+/// This is a custom layout widget that displays a header, content and footer.
 class CustomLayout extends HookConsumerWidget {
   final Widget header;
   final Widget content;

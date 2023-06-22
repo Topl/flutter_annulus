@@ -3,6 +3,7 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 import '../../shared/constants/strings.dart';
 import '../widgets/custom_transaction_widgets.dart';
 
+/// This is a custom widget that shows the transaction table header
 class TransactionTableHeader extends StatelessWidget {
   const TransactionTableHeader({Key? key}) : super(key: key);
 

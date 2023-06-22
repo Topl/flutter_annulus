@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../shared/constants/numbers.dart';
 import '../../shared/utils/theme_color.dart';
 import '../models/transaction.dart';
 import '../providers/transactions_provider.dart';
 import 'transactions.dart';
 
+/// This is a custom widget that shows the transaction details drawer
 class TransactionDetailsDrawer extends HookConsumerWidget {
   const TransactionDetailsDrawer({super.key, this.transactionId});
 
@@ -19,7 +22,6 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
     final AsyncValue<Transaction> asyncTransaction =
         transactionNotifier.getSingleTransaction(transactionId: transactionId!);
 
-    const int textLength = 30;
     return asyncTransaction.when(
       data: (transaction) {
         return DefaultTabController(
@@ -36,12 +38,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                   padding: const EdgeInsets.only(left: 60),
                   child: Text(
                     'Transaction Details',
-                    style: TextStyle(
-                        color: getSelectedColor(
-                            colorTheme, 0xFF282A2C, 0xFFFEFEFE),
-                        fontFamily: 'Rational Display',
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.w600),
+                    style: headlineLarge(context),
                   ),
                 ),
                 const SizedBox(
@@ -59,7 +56,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                       child: CustomTextRight(
                           desc: transaction.transactionId
                               .toString()
-                              .substring(0, textLength - 3)),
+                              .substring(0, Numbers.textLength - 3)),
                     )
                   ],
                 ),
@@ -174,7 +171,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                     CustomTextRight(
                         desc: transaction.senderAddress
                             .toString()
-                            .substring(0, textLength - 3))
+                            .substring(0, Numbers.textLength - 3))
                   ],
                 ),
                 Row(
@@ -188,7 +185,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                     CustomTextRight(
                         desc: transaction.receiverAddress
                             .toString()
-                            .substring(0, textLength - 3))
+                            .substring(0, Numbers.textLength - 3))
                   ],
                 ),
                 const SizedBox(
@@ -226,7 +223,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                       width: 24,
                     ),
                     CustomTextRight(desc: transaction.proposition.toString()
-                            .substring(0, textLength - 3))
+                            .substring(0, Numbers.textLength - 3))
                   ],
                 ),
                 Row(

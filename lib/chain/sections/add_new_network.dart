@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../shared/utils/theme_color.dart';
@@ -45,12 +46,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Add New Network',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'Rational Display',
-                  color: getSelectedColor(widget.colorTheme, 0xFF282A2C, 0xFF858E8E),
-                )),
+                style: headlineLarge(context)),
             const SizedBox(
               height: 48,
             ),
@@ -112,7 +108,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
               style: customTextFieldStyle(),
               decoration: InputDecoration(
                 labelText: 'New RPC URL',
-                labelStyle: const TextStyle(fontSize: 16, fontFamily: 'Rational Display', color: Color(0xFF858E8E)),
+                labelStyle: bodySmall(context),
                 border: customOutlineInputBorder(),
                 enabledBorder: customOutlineInputBorder(),
                 focusedBorder: customOutlineInputBorder(),

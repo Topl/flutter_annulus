@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
@@ -28,7 +29,8 @@ class Header extends HookConsumerWidget {
         ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      padding:
+          EdgeInsets.symmetric(horizontal: isMobile ? 20 : 40, vertical: 20),
       decoration: BoxDecoration(
         color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
       ),
@@ -234,12 +236,7 @@ class MobileMenu extends HookConsumerWidget {
                   children: [
                     Text(
                       'Dark Mode',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'Rational Display',
-                        color: getSelectedColor(
-                            colorTheme, 0xFF535757, 0xFFC0C4C4),
-                      ),
+                      style: bodyMedium(context),
                     ),
                     ThemeModeSwitch(
                       onPressed: () {
@@ -270,11 +267,7 @@ class MobileMenu extends HookConsumerWidget {
                         margin: const EdgeInsets.only(bottom: 32),
                         child: Text(
                           text,
-                          style: TextStyle(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFF535757, 0xFFC0C4C4),
-                              fontSize: 14,
-                              fontFamily: 'Rational Display'),
+                          style: bodyMedium(context),
                         ),
                       ),
                     )

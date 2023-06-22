@@ -83,6 +83,7 @@ class TransactionsNotifier
   AsyncValue<Transaction> getSingleTransaction({
     required String transactionId,
   }) {
+
     var block = const Block(
       blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
       header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",

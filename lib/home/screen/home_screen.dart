@@ -13,6 +13,7 @@ import '../../shared/utils/theme_color.dart';
 import '../../shared/widgets/footer.dart';
 import '../../transactions/sections/transactions.dart';
 
+/// This is a custom widget that shows the home screen
 class HomeScreen extends HookConsumerWidget {
   static const String route = '/';
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -28,6 +29,7 @@ class CustomSearchBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
+    final layerLink = LayerLink();
 
     /// The controller used to control the search text field.
     final searchController = useTextEditingController();
@@ -35,7 +37,8 @@ class CustomSearchBar extends HookConsumerWidget {
     final selectedTransactionId = useState('');
     final selectedBlock = useState<Block?>(null);
     final isUTxO = useState(false);
-    String utxoValue = '';
+
+    OverlayEntry? entry;
 
     /// The list of filtered suggestions to display.
     final filteredSuggestions = useState<List<String>>([]);
@@ -96,13 +99,14 @@ class CustomSearchBar extends HookConsumerWidget {
               selectedBlock.value = block;
             },
             uTxO: (utxo) {
-              utxoValue = "0x5be9d701Byd24neQfY1vXa987a";
+              // TODO: Handle UTxO result
+              const utxoValue = "10x5be9d701Byd24neQfY1vXa987a";
               utxos.add(utxoValue);
               isUTxO.value = true;
             },
           );
         }
-
+        print('suggestions $transactions');
         suggestions.value = transactions + blocks + utxos;
       } else {
         print("No results found.");
@@ -114,98 +118,73 @@ class CustomSearchBar extends HookConsumerWidget {
       searchDebouncer.run(() => performSearch(id));
     }
 
-    return SizedBox(
-      width: isDesktop ? 400 : double.infinity,
-      child: Column(
-        children: [
-          TextField(
-            style: TextStyle(
-              color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-            ),
-            controller: searchController,
-            onSubmitted: (query) => onSearch(),
-            onChanged: (value) {
-              showSuggestions.value = value.isNotEmpty;
-              final valueId = int.tryParse(value);
+    void closeOverlay() {
+      entry?.remove();
+      entry = null;
+    }
 
-              if (valueId != null) {
-                searchByIdAndPrintResults(valueId);
-              }
-            },
-            decoration: InputDecoration(
-              hintText: 'Search by blocks, transactions, or UTxOs',
-              hintStyle: TextStyle(
-                color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-                fontFamily: 'Rational Display',
-              ),
-              prefixIcon: Icon(
-                Icons.search,
-                color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
+    /// Builds the overlay to display when the search bar is focused.
+    Widget buildOverlay() => Visibility(
+          visible: showSuggestions.value && filteredSuggestions.value.isNotEmpty,
+          child: Material(
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: const Color.fromARGB(255, 206, 206, 206),
                   width: 1.0,
                 ),
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              border: const OutlineInputBorder(),
-              focusColor: const Color(0xFF4B4B4B),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-                  width: 1.0,
-                ),
-              ),
-            ),
-          ),
-          if (showSuggestions.value && filteredSuggestions.value.isNotEmpty)
-            Stack(
-              children: <Widget>[
-                Positioned(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 206, 206, 206),
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: filteredSuggestions.value.length,
-                      itemBuilder: (context, index) {
-                        final suggestion = filteredSuggestions.value[index];
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: filteredSuggestions.value.length,
+                itemBuilder: (context, index) {
+                  final suggestion = filteredSuggestions.value[index];
 
-                        final displayText = suggestion.length == 6
-                            ? 'Block $suggestion'
-                            : suggestion;
-                        return ListTile(
-                          title: Text(displayText,
-                              style: const TextStyle(fontSize: 14)),
-                          textColor: getSelectedColor(
-                              colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-                          onTap: () {
-                            searchController.text = suggestion;
-                            showSuggestions.value = false;
-                            if (suggestion == "0x5be9d701Byd24neQfY1vXa987a") {
-                              context.vRouter.to('/utxo_details');
-                            } else if (isDesktop && suggestion.length > 6) {
-                              showModalSideSheet(
-                                context: context,
-                                ignoreAppBar: false,
-                                width: 640,
-                                barrierColor: Colors.white.withOpacity(0.64),
-                                barrierDismissible: true,
-                                body: TransactionDetailsDrawer(
-                                  transactionId: selectedTransactionId.value,
-                                ),
-                              );
-                            } else if (!isDesktop && suggestion.length > 6) {
-                              context.vRouter.to(
-                                  '/transactions_details/${selectedTransactionId.value}');
-                            } else {
-                              showModalSideSheet(
+                  final displayText =
+                      suggestion.length == 6 ? 'Block $suggestion' : suggestion;
+                  return ListTile(
+                    title: Text(displayText, style: bodyMedium(context)),
+                    textColor: getSelectedColor(
+                      colorTheme,
+                      0xFF4B4B4B,
+                      0xFF858E8E,
+                    ),
+                    onTap: () {
+                      searchController.text = suggestion;
+                      showSuggestions.value = false;
+                      closeOverlay();
+                      if (isDesktop &&
+                          suggestion.length > 6 &&
+                          suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
+                        showModalSideSheet(
+                          context: context,
+                          ignoreAppBar: true,
+                          width: 640,
+                          barrierColor: getSelectedColor(
+                            colorTheme,
+                            0xFFFEFEFE,
+                            0xFF353739,
+                          ).withOpacity(0.64),
+                          barrierDismissible: true,
+                          body: TransactionDetailsDrawer(
+                            transactionId: selectedTransactionId.value,
+                          ),
+                        );
+                      } else if (!isDesktop &&
+                          suggestion.length > 6 &&
+                          suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
+                        context.vRouter.to(
+                          '/transactions_details/${selectedTransactionId.value}',
+                        );
+                      } else if (suggestion ==
+                          "10x5be9d701Byd24neQfY1vXa987a") {
+                        context.vRouter.to(
+                          '/utxo_details/',
+                        );
+                      } else {
+                        isDesktop
+                            ? showModalSideSheet(
                                 context: context,
                                 ignoreAppBar: true,
                                 width: 640,
@@ -218,17 +197,74 @@ class CustomSearchBar extends HookConsumerWidget {
                                 body: BlockDetailsDrawer(
                                   block: selectedBlock.value as Block,
                                 ),
-                              );
-                            }
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                )
-              ],
+                              )
+                            : context.vRouter.to("/block_details");
+                      }
+                    },
+                  );
+                },
+              ),
             ),
-        ],
+          ),
+        );
+
+    /// Shows the overlay or dropdown on the search bar
+    void showOverlay() {
+      final overlay = Overlay.of(context);
+      final renderBox = context.findRenderObject() as RenderBox;
+      final size = renderBox.size;
+      final offset = renderBox.localToGlobal(Offset.zero);
+      entry = OverlayEntry(
+          builder: (context) => Positioned(
+              left: offset.dx,
+              top: offset.dy + size.height,
+              width: size.width,
+              child: buildOverlay()));
+
+      overlay.insert(entry!);
+    }
+
+    return SizedBox(
+      width: isDesktop ? 400 : double.infinity,
+      child: CompositedTransformTarget(
+        link: layerLink,
+        child: TextField(
+          style: bodyMedium(context),
+          controller: searchController,
+          onSubmitted: (query) => onSearch(),
+          onChanged: (value) {
+            showSuggestions.value = value.isNotEmpty;
+            final valueId = int.tryParse(value);
+
+            if (valueId != null) {
+              searchByIdAndPrintResults(valueId);
+            }
+            showOverlay();
+          },
+          decoration: InputDecoration(
+            hintText: 'Search by blocks, transactions, or UTxOs',
+            hintStyle: bodyMedium(context),
+            prefixIcon: Icon(
+              Icons.search,
+              color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
+                width: 1.0,
+              ),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            border: const OutlineInputBorder(),
+            focusColor: const Color(0xFF4B4B4B),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
+                width: 1.0,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
