@@ -75,11 +75,9 @@ class _ResponsiveDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-          child: Text(
-            "Network",
-            style: bodyMedium(context),
-          ),
+        Text(
+          "Network",
+          style: bodyMedium(context),
         ),
         DropdownButtonHideUnderline(
             child: DropdownButton2(
@@ -234,6 +232,7 @@ class _DesktopDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('QQQQ desktop');
     return Center(
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
