@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_row_item.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,6 +13,7 @@ import '../../shared/widgets/layout.dart';
 import '../models/transaction.dart';
 import '../providers/transactions_provider.dart';
 
+/// This is a custom widget that shows the transaction table screen
 class TransactionTableScreen extends StatefulHookConsumerWidget {
   const TransactionTableScreen({Key? key}) : super(key: key);
   static const String route = '/transactions';
@@ -61,14 +63,7 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                                       ),
                                       Text(
                                         "Back",
-                                        style: TextStyle(
-                                          color: colorTheme == ThemeMode.light
-                                              ? const Color(0xFF535757)
-                                              : const Color(0xFFAFB6B6),
-                                          fontFamily: 'Rational Display',
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: bodyMedium(context),
                                       ),
                                     ],
                                   )),

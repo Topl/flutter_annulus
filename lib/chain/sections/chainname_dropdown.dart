@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
@@ -46,7 +47,7 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
               Expanded(
                 child: Text(
                   "Network",
-                  style: TextStyle(color: getSelectedColor(widget.colorTheme, 0xFF4B4B4B, 0xFF858E8E)),
+                  style: bodyMedium(context),
                 ),
               ),
               DropdownButtonHideUnderline(
@@ -61,11 +62,7 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
                               children: [
                                 Text(
                                   item,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: 'Rational Display',
-                                    color: getSelectedColor(widget.colorTheme, 0xFF535757, 0xFF858E8E),
-                                  ),
+                                  style: bodyMedium(context),
                                 ),
                                 const SizedBox(width: 32),
                                 Icon(
@@ -116,16 +113,7 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
                                 const SizedBox(width: 4),
                                 Text(
                                   'Add new',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w800,
-                                    fontFamily: 'Rational Display',
-                                    color: getSelectedColor(
-                                      widget.colorTheme,
-                                      0xFF535757,
-                                      0xFF858E8E,
-                                    ),
-                                  ),
+                                  style: bodyMedium(context),
                                 ),
                               ],
                             ),
@@ -246,12 +234,7 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
                           const SizedBox(width: 8),
                           Text(
                             'Add new',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: 'Rational Display',
-                              color: getSelectedColor(widget.colorTheme, 0xFF535757, 0xFF858E8E),
-                            ),
+                            style: bodyMedium(context),
                           ),
                         ],
                       ),
@@ -264,11 +247,7 @@ class _ChainNameDropDownState extends State<ChainNameDropDown> {
                           children: [
                             Text(
                               item,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Rational Display Normal',
-                                color: getSelectedColor(widget.colorTheme, 0xFF535757, 0xFF858E8E),
-                              ),
+                              style: bodySmall(context),
                             ),
                           ],
                         ))
@@ -339,11 +318,7 @@ class CustomItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       item,
-      style: TextStyle(
-        fontSize: 16,
-        fontFamily: 'Rational Display',
-        color: getSelectedColor(widget.colorTheme, 0xFF535757, 0xFF858E8E),
-      ),
+      style: bodyMedium(context),
     );
   }
 }
@@ -360,11 +335,7 @@ class CustomTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'Chain Name',
-      style: TextStyle(
-        fontSize: 14,
-        fontFamily: 'Rational Display',
-        color: getSelectedColor(widget.colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-      ),
+      style: bodyMedium(context),
     );
   }
 }

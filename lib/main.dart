@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/blocks/sections/block_mobile_details.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_annulus/shared/utils/transitions.dart';
 import 'package:flutter_annulus/shared/widgets/slide_left_builder.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
+import 'package:flutter_annulus/utxo/widgets/utxo_details.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:vrouter/vrouter.dart';
@@ -49,6 +51,14 @@ class AnnulusRouter extends HookConsumerWidget {
           path: TransactionDetailsPage.route, // Transaction details screen
           widget: const TransactionDetailsPage(transactionId: ''),
         ),
+        VWidget(
+          path: UTxODetailsPage.route, // UTxO details screen
+          widget: const UTxODetailsPage(),
+        ),
+        VWidget(
+          path: BlockTabBarMobileView.route, // Block details screen
+          widget: const BlockTabBarMobileView(),
+        ),
         VNester(
           path: '',
           widgetBuilder: (Widget child) => SlideLeftBuilder(child: child),
@@ -56,7 +66,7 @@ class AnnulusRouter extends HookConsumerWidget {
           nestedRoutes: [
             VWidget(
               path: TransactionTableScreen.route, // Transaction table screen
-              widget: TransactionTableScreen(),
+              widget: const TransactionTableScreen(),
             ),
 
             /// TODO: Add Block Details Screen
