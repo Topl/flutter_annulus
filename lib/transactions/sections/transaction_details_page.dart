@@ -39,6 +39,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
         final Transaction transaction = await transactionNotifier.getSingleTransaction(transactionId: transactionId!);
         asyncTransaction.value = AsyncValue.data(transaction);
       } catch (e) {
+        print('QQQQ error in details page $e');
         asyncTransaction.value = AsyncValue.error(e, StackTrace.current);
       }
     }

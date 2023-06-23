@@ -12,9 +12,12 @@ import 'transactions.dart';
 
 /// This is a custom widget that shows the transaction details drawer
 class TransactionDetailsDrawer extends HookConsumerWidget {
-  const TransactionDetailsDrawer({super.key, this.transactionId});
+  const TransactionDetailsDrawer({
+    super.key,
+    required this.transactionId,
+  });
 
-  final String? transactionId;
+  final String transactionId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,9 +27,10 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
 
     Future<void> getTransaction() async {
       try {
-        final Transaction transaction = await transactionNotifier.getSingleTransaction(transactionId: transactionId!);
+        final Transaction transaction = await transactionNotifier.getSingleTransaction(transactionId: transactionId);
         asyncTransaction.value = AsyncValue.data(transaction);
       } catch (e) {
+        print('QQQQ error in details drawer $e');
         asyncTransaction.value = AsyncValue.error(e, StackTrace.current);
       }
     }
