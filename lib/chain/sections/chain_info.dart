@@ -22,10 +22,11 @@ class ChainInfo extends HookConsumerWidget {
     final AsyncValue<Chain> chainInfo = ref.watch(chainProvider);
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return chainInfo.when(
       data: (chain) => Container(
-        margin: isMobile ? null : const EdgeInsets.only(right: 40),
+        margin: isMobile ? null : EdgeInsets.only(right: isTablet ? 5 : 40),
         decoration: BoxDecoration(
           color: colorTheme == ThemeMode.light
               ? Colors.white
