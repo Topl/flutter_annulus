@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
-import 'custom_search_bar.dart';
+import '../../search/sections/custom_search_bar.dart';
 import '../utils/theme_color.dart';
 
 /// Header widget that displays the logo, search bar and dropdown.

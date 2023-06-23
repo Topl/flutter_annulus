@@ -10,10 +10,10 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../blocks/sections/block_details_drawer.dart';
-import '../../search/providers/search_provider.dart';
+import '../providers/search_provider.dart';
 import '../../transactions/sections/transaction_details_drawer.dart';
-import '../utils/debouncer.dart';
-import '../utils/theme_color.dart';
+import '../../shared/utils/debouncer.dart';
+import '../../shared/utils/theme_color.dart';
 
 /// A custom search bar widget that displays a search bar and a list of
 class CustomSearchBar extends HookConsumerWidget {
