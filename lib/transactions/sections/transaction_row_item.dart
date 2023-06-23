@@ -11,9 +11,7 @@ import '../widgets/custom_transaction_widgets.dart';
 
 /// A widget to display the list of transactions.
 class TransactionTableRow extends HookConsumerWidget {
-  const TransactionTableRow(
-      {Key? key, required this.transactions, this.count = 0})
-      : super(key: key);
+  const TransactionTableRow({Key? key, required this.transactions, this.count = 0}) : super(key: key);
   final int count;
   final List<Transaction> transactions;
 
@@ -32,7 +30,9 @@ class TransactionTableRow extends HookConsumerWidget {
               width: 640,
               barrierColor: Colors.white.withOpacity(0.64),
               barrierDismissible: true,
-              body: const TransactionDetailsDrawer());
+              body: TransactionDetailsDrawer(
+                transactionId: transaction.transactionId,
+              ));
         } else {
           context.vRouter.to('/transactions_details/:transactionId');
         }
@@ -43,8 +43,7 @@ class TransactionTableRow extends HookConsumerWidget {
         SizedBox(
           width: isMobile ? 170 : 300,
           child: TransactionColumnText(
-            textTop: transaction.transactionId
-                .replaceRange(16, transaction.transactionId.length, "..."),
+            textTop: transaction.transactionId.replaceRange(16, transaction.transactionId.length, "..."),
             textBottom: "49 ${Strings.secAgo}",
           ),
         ),
@@ -84,10 +83,7 @@ class TransactionTableRow extends HookConsumerWidget {
               isBottomTextRequired: false,
             ),
           ),
-        if (!isMobile)
-          SizedBox(
-              width: 300,
-              child: StatusButton(status: transaction.status.string)),
+        if (!isMobile) SizedBox(width: 300, child: StatusButton(status: transaction.status.string)),
       ])),
     );
   }
@@ -110,13 +106,16 @@ class RowDataSource extends DataTableSource {
           color: MaterialStateProperty.all(clr),
           onLongPress: () {
             showModalSideSheet(
-                context: context,
-                ignoreAppBar: false,
-                width: 640,
-                barrierColor: Colors.white.withOpacity(0.64),
-                // with blur,
-                barrierDismissible: true,
-                body: const TransactionDetailsDrawer());
+              context: context,
+              ignoreAppBar: false,
+              width: 640,
+              barrierColor: Colors.white.withOpacity(0.64),
+              // with blur,
+              barrierDismissible: true,
+              body: TransactionDetailsDrawer(
+                transactionId: row.transactionId,
+              ),
+            );
             // Add what you want to do on tap
           },
           cells: <DataCell>[
@@ -140,9 +139,7 @@ class RowDataSource extends DataTableSource {
               textBottom: "",
               isBottomTextRequired: false,
             )),
-            const DataCell(TransactionColumnText(
-                textTop: '3 ${Strings.topl}',
-                textBottom: '44 ${Strings.bobs}')),
+            const DataCell(TransactionColumnText(textTop: '3 ${Strings.topl}', textBottom: '44 ${Strings.bobs}')),
             DataCell(TransactionColumnText(
               textTop: '${row.transactionFee} ${Strings.feeAcronym}',
               textBottom: "",

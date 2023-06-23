@@ -9,14 +9,11 @@ import '../../blocks/models/block.dart';
 
 /// TODO: This provider is just mock data currently
 /// It is also untested, so it may not work in practice
-final transactionsProvider =
-    StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>(
-        (ref) {
+final transactionsProvider = StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>((ref) {
   return TransactionsNotifier(ref);
 });
 
-class TransactionsNotifier
-    extends StateNotifier<AsyncValue<List<Transaction>>> {
+class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> {
   final Ref ref;
   TransactionsNotifier(this.ref) : super(const AsyncLoading()) {
     getTransactions(setState: true);
@@ -80,9 +77,18 @@ class TransactionsNotifier
   ///
   /// It takes a [transactionId] as a parameter
   /// and returns a [AsyncValue<Transaction>]
-  AsyncValue<Transaction> getSingleTransaction({
+  Future<Transaction> getSingleTransaction({
     required String transactionId,
-  }) {
+  }) async {
+    // TODO: Implement this method
+    // First Search State, if there return
+    // Else, search genus
+
+    // const tempChain = Chains.private_network;
+    // final genusClient = ref.read(genusProvider(tempChain));
+
+    // // TODO, this will most likely break because the transactionId is a string and not an int
+    // var transactionRes = await genusClient.getTransactionById(transactionId: int.parse(transactionId));
 
     var block = const Block(
       blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
@@ -113,6 +119,6 @@ class TransactionsNotifier
       name: "transaction",
     );
 
-    return AsyncValue.data(transaction);
+    return transaction;
   }
 }
