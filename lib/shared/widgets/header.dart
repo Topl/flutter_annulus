@@ -25,12 +25,11 @@ class Header extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
-    final isSmallerThanOrEqualToTablet =
-        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
+    final isSmallerThanOrEqualToTablet = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return Container(
-      padding:
-          EdgeInsets.symmetric(horizontal: isMobile ? 20 : 40, vertical: 20),
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 20 : 40, vertical: 20),
       decoration: BoxDecoration(
         color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
       ),
@@ -49,7 +48,10 @@ class Header extends HookConsumerWidget {
               //Search bar
               isMobile
                   ? const SizedBox()
-                  : CustomSearchBar(onSearch: onSearch, colorTheme: colorTheme),
+                  : SizedBox(
+                      width: 400,
+                      child: CustomSearchBar(onSearch: onSearch, colorTheme: colorTheme),
+                    ),
               isSmallerThanOrEqualToTablet
                   ? SizedBox(
                       child: IconButton(
@@ -59,27 +61,17 @@ class Header extends HookConsumerWidget {
                             context: context,
                             pageBuilder: (context, _, __) => MobileMenu(
                               onSwitchChange: () {
-                                ref
-                                    .read(appThemeColorProvider.notifier)
-                                    .toggleTheme();
+                                ref.read(appThemeColorProvider.notifier).toggleTheme();
                               },
                             ),
                             barrierDismissible: true,
-                            transitionDuration:
-                                const Duration(milliseconds: 250),
-                            barrierLabel:
-                                MaterialLocalizations.of(context).dialogLabel,
+                            transitionDuration: const Duration(milliseconds: 250),
+                            barrierLabel: MaterialLocalizations.of(context).dialogLabel,
                             barrierColor: Colors.black.withOpacity(0.5),
-                            transitionBuilder: (context, animation,
-                                secondaryAnimation, child) {
+                            transitionBuilder: (context, animation, secondaryAnimation, child) {
                               return SlideTransition(
-                                  position: CurvedAnimation(
-                                          parent: animation,
-                                          curve: Curves.easeOutCubic)
-                                      .drive(
-                                    Tween<Offset>(
-                                        begin: const Offset(0, -1.0),
-                                        end: Offset.zero),
+                                  position: CurvedAnimation(parent: animation, curve: Curves.easeOutCubic).drive(
+                                    Tween<Offset>(begin: const Offset(0, -1.0), end: Offset.zero),
                                   ),
                                   child: MaterialConsumer(
                                     child: child,
@@ -98,8 +90,7 @@ class Header extends HookConsumerWidget {
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
+                              color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
                               // Set border color here
                               width: 1, // Set border width here
                             ),
@@ -108,9 +99,7 @@ class Header extends HookConsumerWidget {
                           child: IconButton(
                             onPressed: () {
                               // toggle between light and dark theme
-                              ref
-                                  .read(appThemeColorProvider.notifier)
-                                  .toggleTheme();
+                              ref.read(appThemeColorProvider.notifier).toggleTheme();
                             },
                             icon: colorTheme == ThemeMode.light
                                 ? const Icon(
