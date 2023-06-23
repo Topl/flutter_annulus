@@ -128,12 +128,15 @@ class Header extends HookConsumerWidget {
             height: 20,
           ),
           isMobile
-              ? CustomSearchBar(
-                  onSearch: () {
-                    // TODO: implement search
-                    print("search");
-                  },
-                  colorTheme: colorTheme,
+              ? SizedBox(
+                  width: double.infinity,
+                  child: CustomSearchBar(
+                    onSearch: () {
+                      // TODO: implement search
+                      print("search");
+                    },
+                    colorTheme: colorTheme,
+                  ),
                 )
               : const SizedBox(),
         ],
