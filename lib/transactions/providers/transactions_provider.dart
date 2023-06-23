@@ -1,22 +1,17 @@
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
-import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
-import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../blocks/models/block.dart';
 
 /// TODO: This provider is just mock data currently
 /// It is also untested, so it may not work in practice
-final transactionsProvider =
-    StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>(
-        (ref) {
+final transactionsProvider = StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>((ref) {
   return TransactionsNotifier(ref);
 });
 
-class TransactionsNotifier
-    extends StateNotifier<AsyncValue<List<Transaction>>> {
+class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> {
   final Ref ref;
   TransactionsNotifier(this.ref) : super(const AsyncLoading()) {
     getTransactions(setState: true);
@@ -83,7 +78,6 @@ class TransactionsNotifier
   AsyncValue<Transaction> getSingleTransaction({
     required String transactionId,
   }) {
-
     var block = const Block(
       blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
       header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",

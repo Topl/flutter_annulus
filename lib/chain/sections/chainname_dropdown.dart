@@ -79,6 +79,7 @@ class _ResponsiveDropDown extends StatelessWidget {
           "Network",
           style: bodyMedium(context),
         ),
+        const Spacer(),
         DropdownButtonHideUnderline(
             child: DropdownButton2(
           isExpanded: true,
@@ -178,7 +179,7 @@ class _ResponsiveDropDown extends StatelessWidget {
             ),
           ),
           dropdownStyleData: DropdownStyleData(
-              maxHeight: 200,
+              maxHeight: 260,
               width: 345,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
@@ -232,29 +233,31 @@ class _DesktopDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('QQQQ desktop');
     return Center(
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
           isExpanded: true,
-          hint: CustomTextWidget(),
+          hint: const CustomTextWidget(),
           items: [
             ...chains
                 .map(
                   (Chains chain) => DropdownMenuItem(
                     value: chain,
-                    child: Row(
-                      children: [
-                        CustomItem(
-                          name: chain.name,
-                        ),
-                        const SizedBox(width: 32),
-                        Icon(
-                          Icons.check,
-                          color: const Color(0xFF7040EC),
-                          size: selectedChain == chain ? 24 : 0,
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Row(
+                        children: [
+                          CustomItem(
+                            name: chain.name,
+                          ),
+                          const Spacer(),
+                          Icon(
+                            Icons.check,
+                            color: const Color(0xFF7040EC),
+                            size: selectedChain == chain ? 24 : 0,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 )
@@ -322,7 +325,7 @@ class _DesktopDropdown extends StatelessWidget {
             ),
           ),
           dropdownStyleData: DropdownStyleData(
-            maxHeight: 200,
+            maxHeight: 260,
             decoration: BoxDecoration(
               color: getSelectedColor(
                 colorTheme,
