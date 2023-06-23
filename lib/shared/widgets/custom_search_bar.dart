@@ -29,6 +29,7 @@ class CustomSearchBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
+    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final layerLink = LayerLink();
 
     /// The controller used to control the search text field.
@@ -125,7 +126,8 @@ class CustomSearchBar extends HookConsumerWidget {
 
     /// Builds the overlay to display when the search bar is focused.
     Widget buildOverlay() => Visibility(
-          visible: showSuggestions.value && filteredSuggestions.value.isNotEmpty,
+          visible:
+              showSuggestions.value && filteredSuggestions.value.isNotEmpty,
           child: Material(
             child: Container(
               decoration: BoxDecoration(
@@ -225,7 +227,7 @@ class CustomSearchBar extends HookConsumerWidget {
     }
 
     return SizedBox(
-      width: isDesktop ? 400 : double.infinity,
+      width: !isMobile ? 400 : double.infinity,
       child: CompositedTransformTarget(
         link: layerLink,
         child: TextField(
