@@ -58,6 +58,7 @@ dependencies:
   logging: ^1.1.1
   fl_chart: ^0.62.0
   fluttertoast: ^8.2.2
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

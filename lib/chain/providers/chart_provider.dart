@@ -6,17 +6,38 @@ import 'package:flutter_annulus/chain/models/chart_result.dart';
 import 'package:flutter_annulus/chain/models/time_frame.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final chartOptionProvider = StateProvider<ChartOption>((ref) {
-  return ChartOption.averageBlockTime;
+final chartOptionProvider =
+    StateNotifierProvider<ChartOptionNotifier, ChartOption>((ref) {
+  return ChartOptionNotifier();
 });
 
-final timeFrameProvider = StateProvider<TimeFrame>((ref) {
-  return TimeFrame.day;
+class ChartOptionNotifier extends StateNotifier<ChartOption> {
+  ChartOptionNotifier() : super(ChartOption.averageBlockTime);
+
+  void changeChartOption(String value) {
+    state = ChartOption.values.firstWhere((element) => element.name == value);
+  }
+}
+
+final timeFrameProvider =
+    StateNotifierProvider<TimeFrameNotifier, TimeFrame>((ref) {
+  return TimeFrameNotifier();
 });
 
-final chartProvider = StateNotifierProvider<ChartNotifier, AsyncValue<ChartResult>>((ref) {
+class TimeFrameNotifier extends StateNotifier<TimeFrame> {
+  TimeFrameNotifier() : super(TimeFrame.day);
+
+  void changeTimeFrame(String value) {
+    state = TimeFrame.values
+        .firstWhere((element) => element.name.toUpperCase() == value);
+  }
+}
+
+final chartProvider =
+    StateNotifierProvider<ChartNotifier, AsyncValue<ChartResult>>((ref) {
   final TimeFrame timeFrame = ref.watch(timeFrameProvider);
   final ChartOption chartOption = ref.watch(chartOptionProvider);
+
   return ChartNotifier(
     timeFrame: timeFrame,
     chartOption: chartOption,
@@ -26,6 +47,7 @@ final chartProvider = StateNotifierProvider<ChartNotifier, AsyncValue<ChartResul
 class ChartNotifier extends StateNotifier<AsyncValue<ChartResult>> {
   final TimeFrame timeFrame;
   final ChartOption chartOption;
+
   ChartNotifier({
     required this.timeFrame,
     required this.chartOption,
@@ -179,7 +201,8 @@ ChartResult _mockChartData({
   int next(int min, int max) => min + random.nextInt(max - min);
 
   // Generate random values for the y-axis
-  List<int> yAxisResults = List.generate(dataPoints, (index) => next(0, 500000));
+  List<int> yAxisResults =
+      List.generate(dataPoints, (index) => next(0, 500000));
 
   // Get the current date and time
   final currentDate = DateTime.now();
@@ -196,7 +219,8 @@ ChartResult _mockChartData({
   // Generate the x-axis results by adding minutes based on the difference ratio
   final xAxisResults = List.generate(
     dataPoints,
-    (index) => startDate.add(Duration(minutes: (index * differenceRatio).round())),
+    (index) =>
+        startDate.add(Duration(minutes: (index * differenceRatio).round())),
   );
 
   // Create a map of x-axis and y-axis results
