@@ -5,15 +5,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../shared/utils/theme_color.dart';
 
-class LowerStatWithIcon extends ConsumerWidget {
-  final IconData icon;
+class StatInfoCard extends ConsumerWidget {
   final String statString;
   final String statSymbol;
   final bool firstItem;
 
-  const LowerStatWithIcon({
+  const StatInfoCard({
     super.key,
-    required this.icon,
     required this.statString,
     required this.statSymbol,
     this.firstItem = false,
@@ -55,9 +53,9 @@ class LowerStatWithIcon extends ConsumerWidget {
         ),
         Container(
           margin: const EdgeInsets.only(left: 10),
-          child: Icon(
-            icon,
-            color: const Color(0xFF858E8E),
+          child: const Icon(
+            Icons.info_outline,
+            color: Color(0xFF858E8E),
           ),
         )
       ],

@@ -10,7 +10,7 @@ import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/utils/theme_color.dart';
 import '../providers/chain_provider.dart';
 import '../widgets/chain_info/top_stat_with_icon.dart';
-import '../widgets/chain_info/lower_stat_with_icon.dart';
+import '../widgets/chain_info/stat_info_card.dart';
 
 class ChainInfo extends HookConsumerWidget {
   const ChainInfo({
@@ -240,8 +240,8 @@ class ChainInfo extends HookConsumerWidget {
                                 rowFlex: 1,
                                 child: Tooltip(
                                   message: Strings.epochTooltipText,
-                                  child: LowerStatWithoutIcon(
-                                    statValue: chain.epoch.toString(),
+                                  child: StatInfoCard(
+                                    statString: chain.epoch.toString(),
                                     statSymbol: "Epoch",
                                     firstItem: true,
                                   ),
@@ -251,8 +251,8 @@ class ChainInfo extends HookConsumerWidget {
                                 rowFlex: 1,
                                 child: Tooltip(
                                   message: Strings.totalTransactionTooltipText,
-                                  child: LowerStatWithoutIcon(
-                                    statValue: chain.totalTransactionsInEpoch
+                                  child: StatInfoCard(
+                                    statString: chain.totalTransactionsInEpoch
                                         .toString(),
                                     statSymbol: "Txs",
                                     firstItem: isMobile,
@@ -263,8 +263,8 @@ class ChainInfo extends HookConsumerWidget {
                                 rowFlex: 1,
                                 child: Tooltip(
                                   message: Strings.heightTooltipText,
-                                  child: LowerStatWithoutIcon(
-                                    statValue: chain.height.toString(),
+                                  child: StatInfoCard(
+                                    statString: chain.height.toString(),
                                     statSymbol: "Height",
                                     firstItem: isMobile,
                                   ),
@@ -274,8 +274,8 @@ class ChainInfo extends HookConsumerWidget {
                                 rowFlex: 1,
                                 child: Tooltip(
                                   message: Strings.averageBlockTimeTooltipText,
-                                  child: LowerStatWithoutIcon(
-                                    statValue:
+                                  child: StatInfoCard(
+                                    statString:
                                         chain.averageBlockTime.toString(),
                                     statSymbol: "Avg Block Time",
                                     firstItem: isMobile,
@@ -311,8 +311,7 @@ class ChainInfo extends HookConsumerWidget {
                                 rowFlex: 1,
                                 child: Tooltip(
                                   message: Strings.totalStakeTooltipText,
-                                  child: LowerStatWithIcon(
-                                    icon: Icons.info_outline,
+                                  child: StatInfoCard(
                                     statString:
                                         '${chain.totalStake.toString()}%',
                                     statSymbol: "Total Stake",
@@ -324,8 +323,7 @@ class ChainInfo extends HookConsumerWidget {
                                 rowFlex: 1,
                                 child: Tooltip(
                                   message: Strings.registeredStakesTooltipText,
-                                  child: LowerStatWithIcon(
-                                    icon: Icons.info_outline,
+                                  child: StatInfoCard(
                                     statString:
                                         chain.registeredStakes.toString(),
                                     statSymbol: "Registered\nStakes",
@@ -337,8 +335,7 @@ class ChainInfo extends HookConsumerWidget {
                                   rowFlex: 1,
                                   child: Tooltip(
                                     message: Strings.activeStakesTooltipText,
-                                    child: LowerStatWithIcon(
-                                      icon: Icons.info_outline,
+                                    child: StatInfoCard(
                                       statString:
                                           '${chain.activeStakes.toString()}%',
                                       statSymbol: "Active\nStakes",
@@ -349,8 +346,7 @@ class ChainInfo extends HookConsumerWidget {
                                 rowFlex: 1,
                                 child: Tooltip(
                                   message: Strings.invalidStakesTooltipText,
-                                  child: LowerStatWithIcon(
-                                    icon: Icons.info_outline,
+                                  child: StatInfoCard(
                                     statString:
                                         '${chain.inactiveStakes.toString()}%',
                                     statSymbol: "Inactive\nStakes",
