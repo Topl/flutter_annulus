@@ -10,10 +10,10 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../blocks/sections/block_details_drawer.dart';
-import '../../search/providers/search_provider.dart';
+import '../providers/search_provider.dart';
 import '../../transactions/sections/transaction_details_drawer.dart';
-import '../utils/debouncer.dart';
-import '../utils/theme_color.dart';
+import '../../shared/utils/debouncer.dart';
+import '../../shared/utils/theme_color.dart';
 
 /// A custom search bar widget that displays a search bar and a list of
 class CustomSearchBar extends HookConsumerWidget {
@@ -29,7 +29,6 @@ class CustomSearchBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
-    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final layerLink = LayerLink();
 
     /// The controller used to control the search text field.
@@ -55,8 +54,7 @@ class CustomSearchBar extends HookConsumerWidget {
       final searchText = searchController.text.trim();
       if (searchText.isNotEmpty) {
         final filter = suggestions.value
-            .where((suggestion) =>
-                suggestion.toLowerCase().contains(searchText.toLowerCase()))
+            .where((suggestion) => suggestion.toLowerCase().contains(searchText.toLowerCase()))
             .toList();
         showSuggestions.value = true;
         filteredSuggestions.value = filter;
@@ -126,8 +124,7 @@ class CustomSearchBar extends HookConsumerWidget {
 
     /// Builds the overlay to display when the search bar is focused.
     Widget buildOverlay() => Visibility(
-          visible:
-              showSuggestions.value && filteredSuggestions.value.isNotEmpty,
+          visible: showSuggestions.value && filteredSuggestions.value.isNotEmpty,
           child: Material(
             child: Container(
               decoration: BoxDecoration(
@@ -143,8 +140,7 @@ class CustomSearchBar extends HookConsumerWidget {
                 itemBuilder: (context, index) {
                   final suggestion = filteredSuggestions.value[index];
 
-                  final displayText =
-                      suggestion.length == 6 ? 'Block $suggestion' : suggestion;
+                  final displayText = suggestion.length == 6 ? 'Block $suggestion' : suggestion;
                   return ListTile(
                     title: Text(displayText, style: bodyMedium(context)),
                     textColor: getSelectedColor(
@@ -156,9 +152,7 @@ class CustomSearchBar extends HookConsumerWidget {
                       searchController.text = suggestion;
                       showSuggestions.value = false;
                       closeOverlay();
-                      if (isDesktop &&
-                          suggestion.length > 6 &&
-                          suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
+                      if (isDesktop && suggestion.length > 6 && suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
                         showModalSideSheet(
                           context: context,
                           ignoreAppBar: true,
@@ -173,14 +167,11 @@ class CustomSearchBar extends HookConsumerWidget {
                             transactionId: selectedTransactionId.value,
                           ),
                         );
-                      } else if (!isDesktop &&
-                          suggestion.length > 6 &&
-                          suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
+                      } else if (!isDesktop && suggestion.length > 6 && suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
                         context.vRouter.to(
                           '/transactions_details/${selectedTransactionId.value}',
                         );
-                      } else if (suggestion ==
-                          "10x5be9d701Byd24neQfY1vXa987a") {
+                      } else if (suggestion == "10x5be9d701Byd24neQfY1vXa987a") {
                         context.vRouter.to(
                           '/utxo_details/',
                         );
@@ -217,17 +208,13 @@ class CustomSearchBar extends HookConsumerWidget {
       final size = renderBox.size;
       final offset = renderBox.localToGlobal(Offset.zero);
       entry = OverlayEntry(
-          builder: (context) => Positioned(
-              left: offset.dx,
-              top: offset.dy + size.height,
-              width: size.width,
-              child: buildOverlay()));
+          builder: (context) =>
+              Positioned(left: offset.dx, top: offset.dy + size.height, width: size.width, child: buildOverlay()));
 
       overlay.insert(entry!);
     }
 
-    return SizedBox(
-      width: !isMobile ? 400 : double.infinity,
+    return Expanded(
       child: CompositedTransformTarget(
         link: layerLink,
         child: TextField(

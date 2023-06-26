@@ -21,9 +21,7 @@ class ChartSection extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF220862), Color(0xFF7040EC)]),
+            begin: Alignment.bottomLeft, end: Alignment.bottomRight, colors: [Color(0xFF220862), Color(0xFF7040EC)]),
         borderRadius: BorderRadius.circular(16.0),
       ),
       padding: const EdgeInsets.all(20.0),
