@@ -75,9 +75,19 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
   ///
   /// It takes a [transactionId] as a parameter
   /// and returns a [AsyncValue<Transaction>]
-  AsyncValue<Transaction> getSingleTransaction({
+  Future<Transaction> getSingleTransaction({
     required String transactionId,
-  }) {
+  }) async {
+    // TODO: Implement this method
+    // First Search State, if there return
+    // Else, search genus
+
+    // const tempChain = Chains.private_network;
+    // final genusClient = ref.read(genusProvider(tempChain));
+
+    // // TODO, this will most likely break because the transactionId is a string and not an int
+    // var transactionRes = await genusClient.getTransactionById(transactionId: int.parse(transactionId));
+
     var block = const Block(
       blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
       header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
@@ -107,6 +117,6 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       name: "transaction",
     );
 
-    return AsyncValue.data(transaction);
+    return transaction;
   }
 }

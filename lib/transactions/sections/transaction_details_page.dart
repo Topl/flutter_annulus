@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_row_column.dart';
@@ -31,17 +32,31 @@ class TransactionDetailsPage extends HookConsumerWidget {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
     final transactionNotifier = ref.watch(transactionsProvider.notifier);
-    final AsyncValue<Transaction> asyncTransaction =
-        transactionNotifier.getSingleTransaction(transactionId: transactionId);
-     
+    final ValueNotifier<AsyncValue<Transaction>> asyncTransaction = useState(const AsyncLoading());
 
-    return asyncTransaction.when(
+    Future<void> getTransaction() async {
+      try {
+        final Transaction transaction = await transactionNotifier.getSingleTransaction(transactionId: transactionId!);
+        asyncTransaction.value = AsyncValue.data(transaction);
+      } catch (e) {
+        print('QQQQ error in details page $e');
+        asyncTransaction.value = AsyncValue.error(e, StackTrace.current);
+      }
+    }
+
+    useEffect(
+      () {
+        getTransaction();
+        return null;
+      },
+      [],
+    );
+
+    return asyncTransaction.value.when(
       data: (transaction) {
         return CustomLayout(
             header: Header(
-              logoAsset: colorTheme == ThemeMode.light
-                  ? 'images/logo.svg'
-                  : 'images/logo_dark.svg',
+              logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
               onSearch: () {},
               onDropdownChanged: (String value) {},
             ),
@@ -50,8 +65,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                 child: SingleChildScrollView(
                   child: Container(
                     decoration: BoxDecoration(
-                      color:
-                          getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                      color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,9 +79,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                               },
                               child: Row(
                                 children: [
-                                  Icon(Icons.arrow_back,
-                                      color: getSelectedColor(
-                                          colorTheme, 0xFF535757, 0xFFAFB6B6)),
+                                  Icon(Icons.arrow_back, color: getSelectedColor(colorTheme, 0xFF535757, 0xFFAFB6B6)),
                                   const SizedBox(
                                     width: 8,
                                   ),
@@ -107,20 +119,16 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                           child: isMobile
                                               ? CustomColumnWithText(
                                                   leftText: 'Txn Hash/ID',
-                                                  rightText: transaction
-                                                      .transactionId
+                                                  rightText: transaction.transactionId
                                                       .toString()
-                                                      .substring(
-                                                          0, Numbers.textLength - 4),
+                                                      .substring(0, Numbers.textLength - 4),
                                                   hasIcon: true,
                                                 )
                                               : CustomRowWithText(
                                                   leftText: 'Txn Hash/ID',
-                                                  rightText: transaction
-                                                      .transactionId
+                                                  rightText: transaction.transactionId
                                                       .toString()
-                                                      .substring(
-                                                          0, Numbers.textLength - 3),
+                                                      .substring(0, Numbers.textLength - 3),
                                                   hasIcon: true,
                                                 ))),
                                 ],
@@ -130,8 +138,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                   ResponsiveRowColumnItem(
                                       rowFlex: 1,
                                       child: CustomPadding(
-                                        child: CustomStatusWidget(
-                                            status: transaction.status.name),
+                                        child: CustomStatusWidget(status: transaction.status.name),
                                       )),
                                 ],
                               ),
@@ -142,15 +149,10 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText: 'Block',
-                                                  rightText: transaction
-                                                      .block.height
-                                                      .toString())
+                                                  leftText: 'Block', rightText: transaction.block.height.toString())
                                               : CustomRowWithText(
                                                   leftText: 'Block',
-                                                  rightText: transaction
-                                                      .block.height
-                                                      .toString(),
+                                                  rightText: transaction.block.height.toString(),
                                                 ))),
                                 ],
                               ),
@@ -161,18 +163,12 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText:
-                                                      'Broadcast Timestamp',
-                                                  rightText: transaction
-                                                      .broadcastTimestamp
-                                                      .toString(),
+                                                  leftText: 'Broadcast Timestamp',
+                                                  rightText: transaction.broadcastTimestamp.toString(),
                                                 )
                                               : CustomRowWithText(
-                                                  leftText:
-                                                      'Broadcast Timestamp',
-                                                  rightText: transaction
-                                                      .broadcastTimestamp
-                                                      .toString(),
+                                                  leftText: 'Broadcast Timestamp',
+                                                  rightText: transaction.broadcastTimestamp.toString(),
                                                 ))),
                                 ],
                               ),
@@ -183,17 +179,11 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText:
-                                                      'Confirmed Timestamp',
-                                                  rightText: transaction
-                                                      .confirmedTimestamp
-                                                      .toString())
+                                                  leftText: 'Confirmed Timestamp',
+                                                  rightText: transaction.confirmedTimestamp.toString())
                                               : CustomRowWithText(
-                                                  leftText:
-                                                      'Confirmed Timestamp',
-                                                  rightText: transaction
-                                                      .confirmedTimestamp
-                                                      .toString(),
+                                                  leftText: 'Confirmed Timestamp',
+                                                  rightText: transaction.confirmedTimestamp.toString(),
                                                 ))),
                                 ],
                               )
@@ -204,202 +194,160 @@ class TransactionDetailsPage extends HookConsumerWidget {
                           height: 10,
                         ),
                         CustomContainer(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                              CustomResponsiveRowColumn(
-                                children: [
-                                  ResponsiveRowColumnItem(
-                                      rowFlex: 1,
-                                      child: CustomPadding(
-                                          child: isMobile
-                                              ? CustomColumnWithText(
-                                                  leftText: 'Type',
-                                                  rightText: transaction
-                                                      .transactionType.string
-                                                      .toString())
-                                              : CustomRowWithText(
-                                                  leftText: 'Type',
-                                                  rightText: transaction
-                                                      .transactionType.string
-                                                      .toString(),
-                                                ))),
-                                ],
-                              ),
-                              CustomResponsiveRowColumn(
-                                children: [
-                                  ResponsiveRowColumnItem(
-                                      rowFlex: 1,
-                                      child: CustomPadding(
-                                          child: isMobile
-                                              ? CustomColumnWithText(
-                                                  leftText: 'Amount',
-                                                  rightText: transaction.amount
-                                                      .toString())
-                                              : CustomRowWithText(
-                                                  leftText: 'Amount',
-                                                  rightText: transaction.amount
-                                                      .toString(),
-                                                ))),
-                                ],
-                              ),
-                              CustomResponsiveRowColumn(
-                                children: [
-                                  ResponsiveRowColumnItem(
-                                      rowFlex: 1,
-                                      child: CustomPadding(
-                                          child: isMobile
-                                              ? CustomColumnWithText(
-                                                  leftText: 'Txn Fee',
-                                                  rightText: transaction
-                                                      .transactionFee
-                                                      .toString())
-                                              : CustomRowWithText(
-                                                  leftText: 'Txn Fee',
-                                                  rightText: transaction
-                                                      .transactionFee
-                                                      .toString(),
-                                                ))),
-                                ],
-                              ),
-                              CustomResponsiveRowColumn(
-                                children: [
-                                  ResponsiveRowColumnItem(
-                                      rowFlex: 1,
-                                      child: CustomPadding(
-                                          child: isMobile
-                                              ? CustomColumnWithText(
-                                                  leftText: 'From',
-                                                  rightText: transaction
-                                                      .senderAddress
-                                                     .toString()
-                                                      .substring(
-                                                          0, Numbers.textLength - 3))
-                                              : CustomRowWithText(
-                                                  leftText: 'From',
-                                                  rightText: transaction
-                                                      .senderAddress
-                                                      .toString()
-                                                      .substring(
-                                                          0, Numbers.textLength - 3),
-                                                ))),
-                                ],
-                              ),
-                              CustomResponsiveRowColumn(
-                                children: [
-                                  ResponsiveRowColumnItem(
-                                      rowFlex: 1,
-                                      child: CustomPadding(
-                                          child: isMobile
-                                              ? CustomColumnWithText(
-                                                  leftText: 'To',
-                                                  rightText: transaction
-                                                      .receiverAddress
-                                                      .toString()
-                                                      .substring(
-                                                          0, Numbers.textLength - 3))
-                                              : CustomRowWithText(
-                                                  leftText: 'To',
-                                                  rightText: transaction
-                                                      .receiverAddress
-                                                      .toString()
-                                                      .substring(
-                                                          0, Numbers.textLength - 3),
-                                                ))),
-                                ],
-                              ),
-                            ])),
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          CustomResponsiveRowColumn(
+                            children: [
+                              ResponsiveRowColumnItem(
+                                  rowFlex: 1,
+                                  child: CustomPadding(
+                                      child: isMobile
+                                          ? CustomColumnWithText(
+                                              leftText: 'Type',
+                                              rightText: transaction.transactionType.string.toString())
+                                          : CustomRowWithText(
+                                              leftText: 'Type',
+                                              rightText: transaction.transactionType.string.toString(),
+                                            ))),
+                            ],
+                          ),
+                          CustomResponsiveRowColumn(
+                            children: [
+                              ResponsiveRowColumnItem(
+                                  rowFlex: 1,
+                                  child: CustomPadding(
+                                      child: isMobile
+                                          ? CustomColumnWithText(
+                                              leftText: 'Amount', rightText: transaction.amount.toString())
+                                          : CustomRowWithText(
+                                              leftText: 'Amount',
+                                              rightText: transaction.amount.toString(),
+                                            ))),
+                            ],
+                          ),
+                          CustomResponsiveRowColumn(
+                            children: [
+                              ResponsiveRowColumnItem(
+                                  rowFlex: 1,
+                                  child: CustomPadding(
+                                      child: isMobile
+                                          ? CustomColumnWithText(
+                                              leftText: 'Txn Fee', rightText: transaction.transactionFee.toString())
+                                          : CustomRowWithText(
+                                              leftText: 'Txn Fee',
+                                              rightText: transaction.transactionFee.toString(),
+                                            ))),
+                            ],
+                          ),
+                          CustomResponsiveRowColumn(
+                            children: [
+                              ResponsiveRowColumnItem(
+                                  rowFlex: 1,
+                                  child: CustomPadding(
+                                      child: isMobile
+                                          ? CustomColumnWithText(
+                                              leftText: 'From',
+                                              rightText: transaction.senderAddress
+                                                  .toString()
+                                                  .substring(0, Numbers.textLength - 3))
+                                          : CustomRowWithText(
+                                              leftText: 'From',
+                                              rightText: transaction.senderAddress
+                                                  .toString()
+                                                  .substring(0, Numbers.textLength - 3),
+                                            ))),
+                            ],
+                          ),
+                          CustomResponsiveRowColumn(
+                            children: [
+                              ResponsiveRowColumnItem(
+                                  rowFlex: 1,
+                                  child: CustomPadding(
+                                      child: isMobile
+                                          ? CustomColumnWithText(
+                                              leftText: 'To',
+                                              rightText: transaction.receiverAddress
+                                                  .toString()
+                                                  .substring(0, Numbers.textLength - 3))
+                                          : CustomRowWithText(
+                                              leftText: 'To',
+                                              rightText: transaction.receiverAddress
+                                                  .toString()
+                                                  .substring(0, Numbers.textLength - 3),
+                                            ))),
+                            ],
+                          ),
+                        ])),
                         CustomContainer(
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            CustomResponsiveRowColumn(
                               children: [
-                                CustomResponsiveRowColumn(
-                                  children: [
-                                    ResponsiveRowColumnItem(
-                                        rowFlex: 1,
-                                        child: CustomPadding(
-                                            child: isMobile
-                                                ? CustomColumnWithText(
-                                                    leftText: 'Size of Txn',
-                                                    rightText: transaction
-                                                        .transactionSize
-                                                        .toString())
-                                                : CustomRowWithText(
-                                                    leftText: 'Size of Txn',
-                                                    rightText: transaction
-                                                        .transactionSize
-                                                        .toString(),
-                                                  ))),
-                                  ],
-                                ),
-                                CustomResponsiveRowColumn(
-                                  children: [
-                                    ResponsiveRowColumnItem(
-                                        rowFlex: 1,
-                                        child: CustomPadding(
-                                            child: isMobile
-                                                ? CustomColumnWithText(
-                                                    leftText: 'Proposition',
-                                                    rightText: transaction
-                                                        .proposition
-                                                        .toString()
-                                                      .substring(
-                                                          0, Numbers.textLength - 3))
-                                                : CustomRowWithText(
-                                                    leftText: 'Proposition',
-                                                    rightText: transaction
-                                                        .proposition
-                                                        .toString()
-                                                      .substring(
-                                                          0, Numbers.textLength - 3),
-                                                  ))),
-                                  ],
-                                ),
-                                CustomResponsiveRowColumn(
-                                  children: [
-                                    ResponsiveRowColumnItem(
-                                        rowFlex: 1,
-                                        child: CustomPadding(
-                                            child: isMobile
-                                                ? CustomColumnWithText(
-                                                    leftText: 'Quantity',
-                                                    rightText: transaction
-                                                        .quantity
-                                                        .toString())
-                                                : CustomRowWithText(
-                                                    leftText: 'Quantity',
-                                                    rightText: transaction
-                                                        .quantity
-                                                        .toString(),
-                                                  ))),
-                                  ],
-                                ),
-                                CustomResponsiveRowColumn(
-                                  children: [
-                                    ResponsiveRowColumnItem(
-                                        rowFlex: 1,
-                                        child: CustomPadding(
-                                            child: isMobile
-                                                ? CustomColumnWithText(
-                                                    leftText: 'Name',
-                                                    rightText: transaction.name
-                                                        .toString())
-                                                : CustomRowWithText(
-                                                    leftText: 'Name',
-                                                    rightText: transaction.name
-                                                        .toString(),
-                                                  ))),
-                                  ],
-                                )
-                              ]),
+                                ResponsiveRowColumnItem(
+                                    rowFlex: 1,
+                                    child: CustomPadding(
+                                        child: isMobile
+                                            ? CustomColumnWithText(
+                                                leftText: 'Size of Txn',
+                                                rightText: transaction.transactionSize.toString())
+                                            : CustomRowWithText(
+                                                leftText: 'Size of Txn',
+                                                rightText: transaction.transactionSize.toString(),
+                                              ))),
+                              ],
+                            ),
+                            CustomResponsiveRowColumn(
+                              children: [
+                                ResponsiveRowColumnItem(
+                                    rowFlex: 1,
+                                    child: CustomPadding(
+                                        child: isMobile
+                                            ? CustomColumnWithText(
+                                                leftText: 'Proposition',
+                                                rightText: transaction.proposition
+                                                    .toString()
+                                                    .substring(0, Numbers.textLength - 3))
+                                            : CustomRowWithText(
+                                                leftText: 'Proposition',
+                                                rightText: transaction.proposition
+                                                    .toString()
+                                                    .substring(0, Numbers.textLength - 3),
+                                              ))),
+                              ],
+                            ),
+                            CustomResponsiveRowColumn(
+                              children: [
+                                ResponsiveRowColumnItem(
+                                    rowFlex: 1,
+                                    child: CustomPadding(
+                                        child: isMobile
+                                            ? CustomColumnWithText(
+                                                leftText: 'Quantity', rightText: transaction.quantity.toString())
+                                            : CustomRowWithText(
+                                                leftText: 'Quantity',
+                                                rightText: transaction.quantity.toString(),
+                                              ))),
+                              ],
+                            ),
+                            CustomResponsiveRowColumn(
+                              children: [
+                                ResponsiveRowColumnItem(
+                                    rowFlex: 1,
+                                    child: CustomPadding(
+                                        child: isMobile
+                                            ? CustomColumnWithText(
+                                                leftText: 'Name', rightText: transaction.name.toString())
+                                            : CustomRowWithText(
+                                                leftText: 'Name',
+                                                rightText: transaction.name.toString(),
+                                              ))),
+                              ],
+                            )
+                          ]),
                         ),
                       ],
                     ),
                   ),
                 )),
-            footer: Container(
-                color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-                child: const Footer()));
+            footer: Container(color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C), child: const Footer()));
       },
       error: (error, stackTrace) {
         return Text('Error occurred: $error');
