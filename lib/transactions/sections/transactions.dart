@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_table_header.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_row_item.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,27 +13,33 @@ import '../models/transaction.dart';
 
 /// A widget to display the list of transactions.
 class Transactions extends HookConsumerWidget {
-  Transactions({super.key});
+  const Transactions({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<Transaction>> transactionsInfo =
         ref.watch(transactionsProvider);
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
     return transactionsInfo.when(
       data: (transactions) => Container(
-        margin: const EdgeInsets.only(
-            top: 20.0, bottom: 20.0, left: 80.0, right: 80.0),
+        margin: EdgeInsets.only(
+            top: 20.0,
+            bottom: 20.0,
+            left: isMobile ? 16.0 : 40.0,
+            right: isMobile ? 16.0 : 40.0),
         padding: const EdgeInsets.only(
             top: 20.0, bottom: 20.0, left: 0.0, right: 0.0),
         decoration: BoxDecoration(
           color: getSelectedColor(colorTheme, 0xFFFFFFFF, 0xFF282A2C),
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(
-              color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-              style: BorderStyle.solid,
-              width: 1.0),
+          borderRadius: BorderRadius.circular(!isMobile ? 10.0 : 0.0),
+          border: !isMobile
+              ? Border.all(
+                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                  style: BorderStyle.solid,
+                  width: 1.0)
+              : null,
         ),
         child: Column(children: <Widget>[
           Table(
@@ -86,13 +94,9 @@ class Transactions extends HookConsumerWidget {
                 children: [
                   Text("See All Transactions",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: getSelectedColor(
-                            colorTheme, 0xFF535757, 0xFFC0C4C4),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Rational Display',
-                      )),
+                      style: 
+                      bodyMedium(context)
+                      ),
                   const SizedBox(width: 10.0),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -136,15 +140,9 @@ class CustomTextRight extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colorMode = ref.watch(appThemeColorProvider);
+   
     return Text(desc,
-        style: TextStyle(
-          fontWeight: FontWeight.w500,
-          color: getSelectedColor(colorMode, 0xFF282A2C, 0xFFFEFEFE),
-          fontSize: 16,
-          fontFamily: 'Rational Display',
-          fontStyle: FontStyle.normal,
-        ));
+        style: bodyMedium(context));
   }
 }
 
@@ -159,12 +157,6 @@ class CustomTextLeft extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(desc,
-        style: const TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 16,
-          color: Color(0xFF858E8E),
-          fontFamily: 'Rational Display Light',
-          fontStyle: FontStyle.normal,
-        ));
+        style: labelLarge(context));
   }
 }

@@ -1,2 +1,2 @@
-const double tabletBreak = 800;
+const double tabletBreak = 820;
 const double mobileBreak = 550;

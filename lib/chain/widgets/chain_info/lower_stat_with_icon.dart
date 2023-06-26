@@ -1,61 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 
 import '../../../shared/utils/theme_color.dart';
 
 class LowerStatWithIcon extends ConsumerWidget {
-  IconData icon;
-  String statString;
-  String statSymbol;
+  final IconData icon;
+  final String statString;
+  final String statSymbol;
+  final bool firstItem;
 
-  LowerStatWithIcon({
+  const LowerStatWithIcon({
     super.key,
     required this.icon,
     required this.statString,
     required this.statSymbol,
+    this.firstItem = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
-    return Expanded(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  statString,
-                  style: TextStyle(
-                    color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Rational Display Medium',
-                  ),
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        firstItem
+            ? const SizedBox()
+            : Container(
+                margin: EdgeInsets.only(left: firstItem ? 0 : 10),
+                height: 40,
+                child: VerticalDivider(
+                  thickness: 1,
+                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                 ),
-                Text(
-                  statSymbol,
-                  style: const TextStyle(
-                    color: Color(0xFF858E8E),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'Rational Display',
-                  ),
-                )
-              ],
+              ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              statString,
+              style: TextStyle(
+                color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'Rational Display Medium',
+              ),
             ),
+            Text(
+              statSymbol,
+              style: bodySmall(context),
+            ),
+          ],
+        ),
+        if (isTablet) const SizedBox(width: 20),
+        Container(
+          margin: const EdgeInsets.only(left: 10),
+          child: Icon(
+            icon,
+            color: const Color(0xFF858E8E),
           ),
-          Expanded(
-            child: Icon(
-              icon,
-              color: const Color(0xFF858E8E),
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }

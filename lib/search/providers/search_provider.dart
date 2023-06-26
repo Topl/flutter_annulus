@@ -1,10 +1,18 @@
-import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/utils/extensions.dart';
+import 'package:flutter_annulus/blocks/utils/utils.dart';
+import 'package:flutter_annulus/chain/models/chains.dart';
+import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
+import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:flutter_annulus/search/models/search_result.dart';
-import 'package:flutter_annulus/search/models/utxo.dart';
-import 'package:flutter_annulus/transactions/models/transaction.dart';
-import 'package:flutter_annulus/transactions/models/transaction_status.dart';
-import 'package:flutter_annulus/transactions/models/transaction_type.dart';
+import 'package:flutter_annulus/shared/models/logger.dart';
+import 'package:flutter_annulus/shared/providers/logger_provider.dart';
+import 'package:flutter_annulus/shared/providers/mock_state_provider.dart';
+import 'package:flutter_annulus/transactions/models/utxo.dart';
+import 'package:flutter_annulus/transactions/providers/utxo_provider.dart';
+import 'package:flutter_annulus/transactions/utils/extension.dart';
+import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:topl_common/proto/genus/genus_rpc.pbgrpc.dart';
 
 /// This provider returns a [AsyncValue<List<SearchResult>>]
 ///
@@ -18,13 +26,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// searchResult.when(
 ///  data: (SearchResult result) {
 ///     return result.map(
-///       block: (Block block) {
+///       block: (BlockResult result) {
+///        final Block block = result.block;
 ///         // Show block
 ///       },
-///       transaction: (Transaction transaction) {
+///       transaction: (TransactionResult result) {
+///       final Transaction transaction = result.transaction;
 ///         // Show transaction
 ///       },
-///       utxo: (UTxO utxo) {
+///       utxo: (UTxOResult result) {
+///      final UTxO utxo = result.utxo;
 ///         // Show utxo
 ///       },
 ///   },
@@ -37,86 +48,115 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 ///  );
 /// ```
 final searchProvider = StateNotifierProvider<SearchNotifier, AsyncValue<List<SearchResult>>>((ref) {
-  return SearchNotifier();
+  return SearchNotifier(ref);
 });
 
 class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
-  SearchNotifier() : super(const AsyncLoading());
+  final Ref ref;
+  SearchNotifier(this.ref) : super(const AsyncLoading());
 
-  Future<List<SearchResult>> search(String query) async {
-    final List<BlockResult> blocks = await _searchBlocks(query);
-    final List<TransactionResult> transactions = await _searchTransactions(query);
-    final List<UTxOResult> utxos = await _searchUTxOs(query);
-    final result = [...blocks, ...transactions, ...utxos];
+  /// Searches for a list of [SearchResult] objects by the given [id].
+  /// Returns a [Future] that completes with the search results.
+  ///
+  /// If no results are found, an empty list is returned.
+  ///
+  /// The search results are collected from three different methods:
+  /// - [_searchForBlockById]
+  /// - [_searchForTransactionById]
+  /// - [_searchForUTxOById]
+  ///
+  /// If any of the results are null, it means no corresponding result was found.
+  /// In such cases, the [state] is set to an [AsyncError] with a message and [StackTrace].
+  /// Otherwise, the search results are stored in the [state] as an [AsyncData] object.
+  ///
+  /// Typically the return value is a list of one item,
+  /// but it can be more than one item if multiple results are found
+  /// IE. An ID returns both a block and a transaction
+  Future<List<SearchResult>> searchById(int id) async {
+    final BlockResult? block = await _searchForBlockById(id);
+    final TransactionResult? transaction = await _searchForTransactionById(id);
+    final UTxOResult? utxo = await _searchForUTxOById(id);
+
+    if (block == null && transaction == null && utxo == null) {
+      state = AsyncError('No results found', StackTrace.current);
+      return [];
+    }
+
+    final result = [if (block != null) block, if (transaction != null) transaction, if (utxo != null) utxo];
     state = AsyncData(result);
     return result;
-    // Add Transaction
   }
 
-  Future<List<BlockResult>> _searchBlocks(String query) {
-    return Future.delayed(const Duration(milliseconds: 250), () {
-      return List.generate(3, (i) {
-        final iString = i.toString();
-        return BlockResult(
-          Block(
-            blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w$iString",
-            header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
-            epoch: 243827 - i,
-            size: 5432.2,
-            height: 1000 + 1,
-            slot: 10,
-            timestamp: 1683494060 + i,
-            transactionNumber: 200,
-            withdrawalNumber: 127,
-          ),
-        );
-      });
-    });
+  Future<BlockResult?> _searchForBlockById(int id) async {
+    try {
+      if (!ref.read(mockStateProvider)) {
+        final Chains selectedChain = ref.read(selectedChainProvider);
+        final BlockResponse blockResponse = await ref.read(genusProvider(selectedChain)).getBlockById(blockId: id);
+        return BlockResult(blockResponse.toBlock());
+      } else {
+        return Future.delayed(const Duration(milliseconds: 250), () {
+          return BlockResult(
+            getMockBlock(),
+          );
+        });
+      }
+    } catch (e) {
+      ref.read(loggerProvider).log(
+            logLevel: LogLevel.Warning,
+            loggerClass: LoggerClass.ApiError,
+            message: 'Block not found for id: $id',
+          );
+
+      return null;
+    }
   }
 
-  Future<List<TransactionResult>> _searchTransactions(String query) {
-    return Future.delayed(const Duration(milliseconds: 250), () {
-      return List.generate(3, (i) {
-        final iString = i.toString();
-        final iDouble = i.toDouble();
-        return TransactionResult(
-          Transaction(
-            transactionId: "8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q",
-            status: TransactionStatus.confirmed,
-            block: Block(
-              blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w$iString",
-              header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
-              epoch: 243827 - i,
-              size: 5432.2,
-              height: 1000 + 1,
-              slot: 10,
-              timestamp: 1683494060 + i,
-              transactionNumber: 200,
-              withdrawalNumber: 127,
-            ),
-            broadcastTimestamp: DateTime.now().millisecondsSinceEpoch,
-            confirmedTimestamp: DateTime.now().millisecondsSinceEpoch,
-            transactionType: TransactionType.transfer,
-            amount: iDouble,
-            transactionFee: iDouble,
-            senderAddress: iString,
-            receiverAddress: iString,
-            transactionSize: i,
-            proposition: iString,
-            quantity: i,
-            name: iString,
-          ),
-        );
-      });
-    });
+  Future<TransactionResult?> _searchForTransactionById(int id) async {
+    try {
+      if (!ref.read(mockStateProvider)) {
+        final Chains selectedChain = ref.read(selectedChainProvider);
+        final TransactionResponse response =
+            await ref.read(genusProvider(selectedChain)).getTransactionById(transactionId: id);
+
+        return TransactionResult(response.toTransaction());
+      } else {
+        return Future.delayed(const Duration(milliseconds: 250), () {
+          return TransactionResult(
+            getMockTransaction(),
+          );
+        });
+      }
+    } catch (e) {
+      ref.read(loggerProvider).log(
+            logLevel: LogLevel.Warning,
+            loggerClass: LoggerClass.ApiError,
+            message: 'Transaction not found for id: $id',
+          );
+
+      return null;
+    }
   }
 
-  Future<List<UTxOResult>> _searchUTxOs(String query) async {
-    return List.generate(3, (i) {
-      return UTxOResult(UTxO());
-    });
+  // TODO: Are we sure that the id is a int?
+  Future<UTxOResult?> _searchForUTxOById(int id) async {
+    try {
+      final UTxO utxo = await ref.read(utxoByIdProvider(
+        id.toString(),
+      ).future);
+
+      return UTxOResult(utxo);
+    } catch (e) {
+      ref.read(loggerProvider).log(
+            logLevel: LogLevel.Warning,
+            loggerClass: LoggerClass.ApiError,
+            message: 'UTxO not found for id: $id',
+          );
+
+      return null;
+    }
   }
 
+  /// Clears the search results by setting the [state] to an empty list.
   void clearSearch() {
     state = const AsyncValue.data([]);
   }

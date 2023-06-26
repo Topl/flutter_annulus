@@ -21,9 +21,7 @@ class ChartSection extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF220862), Color(0xFF7040EC)]),
+            begin: Alignment.bottomLeft, end: Alignment.bottomRight, colors: [Color(0xFF220862), Color(0xFF7040EC)]),
         borderRadius: BorderRadius.circular(16.0),
       ),
       padding: const EdgeInsets.all(20.0),
@@ -57,14 +55,14 @@ class ChartSection extends StatelessWidget {
 }
 
 class ChartTabItem extends StatelessWidget {
-  ChartTabItem({
+  const ChartTabItem({
     super.key,
     this.clicked = false,
     this.text,
   });
 
-  bool clicked;
-  String? text;
+  final bool clicked;
+  final String? text;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +85,7 @@ class ChartTabItem extends StatelessWidget {
         ),
         onPressed: null,
         child: Text(
-          "${text}",
+          text.toString(),
           style: const TextStyle(color: Colors.white, fontSize: 12),
         ),
       ),

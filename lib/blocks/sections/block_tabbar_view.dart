@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/transactions/sections/transactions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 
+import '../../shared/constants/numbers.dart';
 import '../../shared/constants/strings.dart';
 import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/utils/theme_color.dart';
@@ -10,6 +11,7 @@ import '../../transactions/models/transaction.dart';
 import '../../transactions/providers/transactions_provider.dart';
 import '../../transactions/widgets/custom_transaction_widgets.dart';
 
+/// This is a custom widget that shows the block tab bar view
 class BlockTabBarView extends HookConsumerWidget {
   const BlockTabBarView({
     super.key,
@@ -23,21 +25,25 @@ class BlockTabBarView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final AsyncValue<List<Transaction>> transactionsInfo =
         ref.watch(transactionsProvider);
+
     return TabBarView(
       children: [
         Container(
+          padding:
+              isMobile ? const EdgeInsets.all(2.0) : const EdgeInsets.all(0),
           decoration: BoxDecoration(
             color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
           ),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(width: 200, child: CustomTextLeft(desc: 'Block ID')),
@@ -49,18 +55,20 @@ class BlockTabBarView extends HookConsumerWidget {
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(width: 200, child: CustomTextLeft(desc: 'Status')),
-                  SizedBox(
-                    width: 24,
+                  const Spacing(),
+                  const SizedBox(
+                      width: 200,
+                      child: Expanded(child: CustomTextLeft(desc: 'Status'))),
+                  SizedBox(width: !isMobile ? 24 : 0),
+                  const Expanded(
+                    child: StatusButton(
+                      status: 'Confirmed',
+                      hideArrowIcon: false,
+                    ),
                   ),
-                  StatusButton(
-                    status: 'Confirmed',
-                    hideArrowIcon: false,
-                  )
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(width: 200, child: CustomTextLeft(desc: 'Time')),
@@ -70,7 +78,7 @@ class BlockTabBarView extends HookConsumerWidget {
                   CustomTextRight(desc: '12 sec ago')
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(width: 200, child: CustomTextLeft(desc: 'Epoch')),
@@ -80,7 +88,7 @@ class BlockTabBarView extends HookConsumerWidget {
                   CustomTextRight(desc: 'EP100')
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(width: 200, child: CustomTextLeft(desc: 'Header')),
@@ -90,10 +98,10 @@ class BlockTabBarView extends HookConsumerWidget {
                   CustomTextRight(desc: 'h1000')
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              SizedBox(
+              const SizedBox(
                 // maximum width and draw line
                 width: double.infinity,
                 child: Divider(
@@ -101,20 +109,23 @@ class BlockTabBarView extends HookConsumerWidget {
                   thickness: 1,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
                 children: [
-                  Spacing(),
-                  SizedBox(width: 200, child: CustomTextLeft(desc: 'ID')),
-                  SizedBox(
+                  const Spacing(),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: 'ID')),
+                  const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: '0x736e345d784cf4c9')
+                  CustomTextRight(
+                      desc: isMobile
+                          ? '${'0x736e345d784cf4c9'.substring(0, Numbers.textLength - 3)}...'
+                          : '0x736e345d784cf4c9')
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(
@@ -125,7 +136,7 @@ class BlockTabBarView extends HookConsumerWidget {
                   CustomTextRight(desc: 'UTC 16:32:01')
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(width: 200, child: CustomTextLeft(desc: 'Height')),
@@ -135,7 +146,7 @@ class BlockTabBarView extends HookConsumerWidget {
                   CustomTextRight(desc: '17321')
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(width: 200, child: CustomTextLeft(desc: 'Size')),
@@ -145,7 +156,7 @@ class BlockTabBarView extends HookConsumerWidget {
                   CustomTextRight(desc: 'h1000')
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(width: 200, child: CustomTextLeft(desc: 'Slot')),
@@ -155,7 +166,7 @@ class BlockTabBarView extends HookConsumerWidget {
                   CustomTextRight(desc: '12556')
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(
@@ -167,7 +178,7 @@ class BlockTabBarView extends HookConsumerWidget {
                   CustomTextRight(desc: '131')
                 ],
               ),
-              Row(
+              const Row(
                 children: [
                   Spacing(),
                   SizedBox(

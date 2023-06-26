@@ -1,6 +1,7 @@
 /// All the strings that are being used throughout the app.
 class Strings {
   Strings._();
+
   static const String appName = 'ANNULUS';
   static const String topl = 'TOPL';
   static const String submitForm = 'Submit Form';
@@ -63,4 +64,22 @@ class Strings {
   static const String footerCookiePreferences = 'Cookie Preferences';
   static const String footerRightsReserved = '2023 © All rights reserved';
   static const String latestBlocksHeader = 'Latest Blocks';
+  static const String eraTooltipText =
+      'An era is a period during which a specific set of active validators exists.';
+  static const String epochTooltipText =
+      'An epoch or session is one-sixth of an era. \nDuring the last epoch, the active set of the next era is elected. \nAnd after the end of each era, the rewards are calculated and are ready to be distributed to the validators and nominators.';
+  static const String totalTransactionTooltipText =
+      'Indicates the total number of transactions on the Topl blockchain.';
+  static const String heightTooltipText =
+      'Indicates the number of blocks that have been confirmed in the entire history of the Topl blockchain.';
+  static const String averageBlockTimeTooltipText =
+      'The average time taken to generate a new block.';
+  static const String totalStakeTooltipText =
+      'Indicates the total percentage of users that have staked on the Topl blockchain to confirm transactions.';
+  static const String registeredStakesTooltipText =
+      'Indicates the total numbers of registered stakes on the Topl blockchain.';
+  static const String activeStakesTooltipText =
+      'Indicates the total validators actively being nominated for the current era. \nA single validator is nominated in each era with the full stake. \nThis validator will pay rewards once the payout has been activated at the end of that era.';
+  static const String invalidStakesTooltipText =
+      'Indicates the validators in the active validator set and in the list of nominations. \nHowever, they are not actively being nominated for for this era, and they will not give rewards for this era.';
 }
