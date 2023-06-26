@@ -47,7 +47,7 @@ class ChainInfo extends HookConsumerWidget {
               child: Container(
                 padding: isMobile
                     ? const EdgeInsets.all(5.0)
-                    : const EdgeInsets.all(42.0),
+                    : const EdgeInsets.all(20.0),
                 margin: isMobile ? const EdgeInsets.only(bottom: 10.0) : null,
                 child: ResponsiveRowColumn(
                   layout:

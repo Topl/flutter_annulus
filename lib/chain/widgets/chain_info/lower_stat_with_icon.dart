@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 
 import '../../../shared/utils/theme_color.dart';
 
@@ -22,6 +23,8 @@ class LowerStatWithIcon extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -53,6 +56,7 @@ class LowerStatWithIcon extends ConsumerWidget {
             ),
           ],
         ),
+        if (isTablet) const SizedBox(width: 20),
         Container(
           margin: const EdgeInsets.only(left: 10),
           child: Icon(
