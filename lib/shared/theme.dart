@@ -5,8 +5,21 @@ ThemeData lightTheme({
   required BuildContext context,
 }) {
   final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-  // final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
-  // final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+
+  /// This is used to check if screen is zoomed in
+  double zoomFactor = MediaQuery.of(context).devicePixelRatio;
+  double titleFontSize = 10;
+
+  /// This checks if screen is 100% zoomed in
+  if (zoomFactor >= 2) {
+    titleFontSize = 9;
+
+    /// This checks if screen is 80% zoomed in
+  } else if (zoomFactor == 1.600000023841858) {
+    titleFontSize = 8;
+  } else {
+    titleFontSize = 10;
+  }
 
   const Color textColor = Color(0xFF282A2C);
   const Color textColor2 = Color(0xFF000000);
@@ -33,6 +46,8 @@ ThemeData lightTheme({
       textColor2: textColor2,
       altTextColor: altTextColor,
       altTextColor2: altTextColor2,
+      zoomFactor: zoomFactor,
+      titleFontSize: titleFontSize,
     ),
   );
 }
@@ -41,8 +56,6 @@ ThemeData darkTheme({
   required BuildContext context,
 }) {
   final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-  // final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
-  // final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
   const Color textColor = Color(0xFFFEFEFE);
   const Color textColor2 = Color(0xFFF5F5F5);
@@ -67,6 +80,8 @@ ThemeData darkTheme({
       textColor2: textColor2,
       altTextColor: altTextColor,
       altTextColor2: altTextColor2,
+      zoomFactor: 1,
+      titleFontSize: 16,
     ),
   );
 }
@@ -78,6 +93,8 @@ TextTheme _textTheme({
   required Color textColor2,
   required Color altTextColor,
   required Color altTextColor2,
+  required double zoomFactor,
+  required double titleFontSize,
 }) {
   return ThemeData().textTheme.copyWith(
         /// Headline
@@ -118,7 +135,7 @@ TextTheme _textTheme({
 
         /// Body
         bodyMedium: TextStyle(
-          fontSize: 16.0,
+          fontSize: 16,
           color: altTextColor2,
           fontWeight: FontWeight.w300,
           fontFamily: "Rational Display",
@@ -126,7 +143,7 @@ TextTheme _textTheme({
         bodySmall: TextStyle(
           color: altTextColor,
           fontWeight: FontWeight.w400,
-          fontSize: 12,
+          fontSize: titleFontSize,
           fontFamily: 'Rational Display Light',
           fontStyle: FontStyle.normal,
         ),
