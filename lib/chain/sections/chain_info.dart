@@ -21,19 +21,18 @@ class ChainInfo extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<Chain> chainInfo = ref.watch(chainProvider);
     final colorTheme = ref.watch(appThemeColorProvider);
-    final isTabletOrMobile =
-        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
     final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return chainInfo.when(
       data: (chain) => Container(
-        margin: isTabletOrMobile ? null : const EdgeInsets.only(right: 40),
+        margin: isMobile ? null : EdgeInsets.only(right: isTablet ? 5 : 40),
         decoration: BoxDecoration(
           color: colorTheme == ThemeMode.light
               ? Colors.white
               : const Color(0xFF282A2C),
           borderRadius: BorderRadius.circular(10.0),
-          border: isTabletOrMobile
+          border: isMobile
               ? null
               : Border.all(
                   color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
@@ -48,7 +47,7 @@ class ChainInfo extends HookConsumerWidget {
               child: Container(
                 padding: isMobile
                     ? const EdgeInsets.all(5.0)
-                    : const EdgeInsets.all(42.0),
+                    : const EdgeInsets.all(20.0),
                 margin: isMobile ? const EdgeInsets.only(bottom: 10.0) : null,
                 child: ResponsiveRowColumn(
                   layout:
