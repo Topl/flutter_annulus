@@ -50,7 +50,10 @@ class Header extends HookConsumerWidget {
                   ? const SizedBox()
                   : SizedBox(
                       width: 400,
-                      child: CustomSearchBar(onSearch: onSearch, colorTheme: colorTheme),
+                      child: CustomSearchBar(
+                        onSearch: onSearch,
+                        colorTheme: colorTheme,
+                      ),
                     ),
               isSmallerThanOrEqualToTablet
                   ? SizedBox(

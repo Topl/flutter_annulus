@@ -98,3 +98,10 @@ test_coverage:
 	@flutter test --coverage
 	@genhtml coverage/lcov.info -o coverage/html
 	@open coverage/html/index.html
+
+web_profile:
+	@flutter run -d chrome --profile
+
+web_build_and_host:
+	@flutter build web
+	@cd build/web && python3 -m http.server 8000
