@@ -23,7 +23,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
   }) : super(key: key);
   final String transactionId;
 
-  static const String route = '/transactions_details/:transactionId';
+  static const String route = '/transactions_details/';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -39,7 +39,7 @@ class TransactionTableRow extends HookConsumerWidget {
                 transaction: transaction,
               ));
         } else {
-          context.vRouter.to('/transactions_details/:transactionId');
+          context.vRouter.to('/transactions_details/');
         }
         // Add what you want to do on tap
       },
@@ -145,7 +145,7 @@ class RowDataSource extends DataTableSource {
                           transaction: row,
                         ))
                     : context.vRouter.to(
-                        '/transactions_details/${row.transactionId}',
+                        '/transactions_details/',
                       );
               },
               child: TransactionColumnText(
