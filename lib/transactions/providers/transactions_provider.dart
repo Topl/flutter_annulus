@@ -1,19 +1,20 @@
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
-import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
-import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../blocks/models/block.dart';
 
 /// TODO: This provider is just mock data currently
 /// It is also untested, so it may not work in practice
-final transactionsProvider = StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>((ref) {
+final transactionsProvider =
+    StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>(
+        (ref) {
   return TransactionsNotifier(ref);
 });
 
-class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> {
+class TransactionsNotifier
+    extends StateNotifier<AsyncValue<List<Transaction>>> {
   final Ref ref;
   TransactionsNotifier(this.ref) : super(const AsyncLoading()) {
     getTransactions(setState: true);
@@ -45,7 +46,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
             header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
             epoch: 243827 - i,
             size: 5432.2,
-            height: 1000 + 1,
+            height: 1000 + i,
             slot: 10,
             timestamp: 1683494060 + i,
             transactionNumber: 200,
@@ -77,18 +78,9 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
   ///
   /// It takes a [transactionId] as a parameter
   /// and returns a [AsyncValue<Transaction>]
-  Future<Transaction> getSingleTransaction({
+  AsyncValue<Transaction> getSingleTransaction({
     required String transactionId,
-  }) async {
-    // TODO: Implement this method
-    // First Search State, if there return
-    // Else, search genus
-
-    // const tempChain = Chains.private_network;
-    // final genusClient = ref.read(genusProvider(tempChain));
-
-    // // TODO, this will most likely break because the transactionId is a string and not an int
-    // var transactionRes = await genusClient.getTransactionById(transactionId: int.parse(transactionId));
+  }) {
 
     var block = const Block(
       blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
@@ -119,6 +111,6 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       name: "transaction",
     );
 
-    return transaction;
+    return AsyncValue.data(transaction);
   }
 }

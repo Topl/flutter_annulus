@@ -42,6 +42,7 @@ class StatusButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     return Padding(
       padding: EdgeInsets.only(
@@ -50,7 +51,7 @@ class StatusButton extends ConsumerWidget {
         children: [
           SizedBox(
             height: 40,
-            width: 160,
+            width: isTablet ? 130 : 160,
             child: Expanded(
               child: TextButton(
                 onPressed: () {},
@@ -71,13 +72,15 @@ class StatusButton extends ConsumerWidget {
                     const SizedBox(
                       width: 8.0,
                     ),
-                    Text(
-                      status,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Rational Display",
-                        fontWeight: FontWeight.w500,
-                        color: Color(_color(status)),
+                    Expanded(
+                      child: Text(
+                        status,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Rational Display",
+                          fontWeight: FontWeight.w500,
+                          color: Color(_color(status)),
+                        ),
                       ),
                     ),
                   ],
@@ -171,8 +174,11 @@ class CustomContainer extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     return Container(
-        margin: const EdgeInsets.only(
-            top: 20.0, bottom: 20.0, left: 16.0, right: 16.0),
+        margin: EdgeInsets.only(
+            top: 20.0,
+            bottom: 20.0,
+            left: isMobile ? 20.0 : 40.0,
+            right: isMobile ? 20.0 : 40.0),
         padding: const EdgeInsets.only(
           top: 20.0,
           bottom: 30.0,
@@ -454,9 +460,8 @@ class CustomToast extends StatelessWidget {
                     ? "Network was added ${isMobile ? '\n' : ""} successfully"
                     : "Something went wrong... ${isMobile ? '\n' : ""} Please try again later",
                 style: bodyMedium(context),
-                ),
               ),
-            
+            ),
           ),
           const SizedBox(
             width: 20,
