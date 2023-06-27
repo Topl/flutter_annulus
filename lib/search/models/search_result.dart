@@ -1,6 +1,6 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
-import 'package:flutter_annulus/search/models/utxo.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
+import 'package:flutter_annulus/transactions/models/utxo.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'search_result.freezed.dart';

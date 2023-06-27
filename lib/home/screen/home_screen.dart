@@ -22,6 +22,7 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
     return CustomLayout(
       header: Header(
         logoAsset: colorTheme == ThemeMode.light
@@ -57,16 +58,18 @@ class HomeScreen extends HookConsumerWidget {
                     rowFlex: 2,
                     child: Container(
                       height: 408,
-                      decoration: BoxDecoration(
-                        color: getSelectedColor(
-                            colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                            color: getSelectedColor(
-                                colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                            style: BorderStyle.solid,
-                            width: 1.0),
-                      ),
+                      decoration: !isTablet
+                          ? BoxDecoration(
+                              color: getSelectedColor(
+                                  colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                  color: getSelectedColor(
+                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                                  style: BorderStyle.solid,
+                                  width: 1.0),
+                            )
+                          : null,
                       child: const ChartSection(),
                     ),
                   )

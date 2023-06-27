@@ -1,4 +1,3 @@
-import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
@@ -10,14 +9,11 @@ import '../../blocks/models/block.dart';
 
 /// TODO: This provider is just mock data currently
 /// It is also untested, so it may not work in practice
-final transactionsProvider =
-    StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>(
-        (ref) {
+final transactionsProvider = StateNotifierProvider<TransactionsNotifier, AsyncValue<List<Transaction>>>((ref) {
   return TransactionsNotifier(ref);
 });
 
-class TransactionsNotifier
-    extends StateNotifier<AsyncValue<List<Transaction>>> {
+class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> {
   final Ref ref;
   TransactionsNotifier(this.ref) : super(const AsyncLoading()) {
     getTransactions(setState: true);
@@ -82,13 +78,17 @@ class TransactionsNotifier
   /// It takes a [transactionId] as a parameter
   /// and returns a [AsyncValue<Transaction>]
   Future<Transaction> getSingleTransaction({
-    required int transactionId,
+    required String transactionId,
   }) async {
-    const tempChain = Chains.private_network;
-    final genusClient = ref.read(genusProvider(tempChain));
+    // TODO: Implement this method
+    // First Search State, if there return
+    // Else, search genus
 
-    var transactionRes =
-        await genusClient.getTransactionById(transactionId: transactionId);
+    // const tempChain = Chains.private_network;
+    // final genusClient = ref.read(genusProvider(tempChain));
+
+    // // TODO, this will most likely break because the transactionId is a string and not an int
+    // var transactionRes = await genusClient.getTransactionById(transactionId: int.parse(transactionId));
 
     var block = const Block(
       blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
@@ -102,20 +102,23 @@ class TransactionsNotifier
       withdrawalNumber: 127,
     );
 
-    return Transaction(
-        transactionId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-        status: TransactionStatus.confirmed,
-        block: block,
-        broadcastTimestamp: 243827,
-        confirmedTimestamp: 243827,
-        transactionType: TransactionType.transfer,
-        amount: 10,
-        transactionFee: 10,
-        senderAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-        receiverAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-        transactionSize: 10,
-        proposition: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-        quantity: 10,
-        name: "transaction");
+    var transaction = Transaction(
+      transactionId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      status: TransactionStatus.confirmed,
+      block: block,
+      broadcastTimestamp: 243827,
+      confirmedTimestamp: 243827,
+      transactionType: TransactionType.transfer,
+      amount: 10,
+      transactionFee: 10,
+      senderAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      receiverAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      transactionSize: 10,
+      proposition: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      quantity: 10,
+      name: "transaction",
+    );
+
+    return transaction;
   }
 }

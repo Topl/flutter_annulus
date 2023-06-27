@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-
 import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
-
+import '../../search/sections/custom_search_bar.dart';
 import '../utils/theme_color.dart';
 
+/// Header widget that displays the logo, search bar and dropdown.
 class Header extends HookConsumerWidget {
   final String logoAsset;
   final VoidCallback onSearch;
@@ -24,11 +25,11 @@ class Header extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
-    final isSmallerThanOrEqualToTablet =
-        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
+    final isSmallerThanOrEqualToTablet = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 20 : 40, vertical: 20),
       decoration: BoxDecoration(
         color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
       ),
@@ -47,7 +48,10 @@ class Header extends HookConsumerWidget {
               //Search bar
               isMobile
                   ? const SizedBox()
-                  : SearchBar(onSearch: onSearch, colorTheme: colorTheme),
+                  : SizedBox(
+                      width: 400,
+                      child: CustomSearchBar(onSearch: onSearch, colorTheme: colorTheme),
+                    ),
               isSmallerThanOrEqualToTablet
                   ? SizedBox(
                       child: IconButton(
@@ -57,27 +61,17 @@ class Header extends HookConsumerWidget {
                             context: context,
                             pageBuilder: (context, _, __) => MobileMenu(
                               onSwitchChange: () {
-                                ref
-                                    .read(appThemeColorProvider.notifier)
-                                    .toggleTheme();
+                                ref.read(appThemeColorProvider.notifier).toggleTheme();
                               },
                             ),
                             barrierDismissible: true,
-                            transitionDuration:
-                                const Duration(milliseconds: 250),
-                            barrierLabel:
-                                MaterialLocalizations.of(context).dialogLabel,
+                            transitionDuration: const Duration(milliseconds: 250),
+                            barrierLabel: MaterialLocalizations.of(context).dialogLabel,
                             barrierColor: Colors.black.withOpacity(0.5),
-                            transitionBuilder: (context, animation,
-                                secondaryAnimation, child) {
+                            transitionBuilder: (context, animation, secondaryAnimation, child) {
                               return SlideTransition(
-                                  position: CurvedAnimation(
-                                          parent: animation,
-                                          curve: Curves.easeOutCubic)
-                                      .drive(
-                                    Tween<Offset>(
-                                        begin: const Offset(0, -1.0),
-                                        end: Offset.zero),
+                                  position: CurvedAnimation(parent: animation, curve: Curves.easeOutCubic).drive(
+                                    Tween<Offset>(begin: const Offset(0, -1.0), end: Offset.zero),
                                   ),
                                   child: MaterialConsumer(
                                     child: child,
@@ -96,8 +90,7 @@ class Header extends HookConsumerWidget {
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
+                              color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
                               // Set border color here
                               width: 1, // Set border width here
                             ),
@@ -106,9 +99,7 @@ class Header extends HookConsumerWidget {
                           child: IconButton(
                             onPressed: () {
                               // toggle between light and dark theme
-                              ref
-                                  .read(appThemeColorProvider.notifier)
-                                  .toggleTheme();
+                              ref.read(appThemeColorProvider.notifier).toggleTheme();
                             },
                             icon: colorTheme == ThemeMode.light
                                 ? const Icon(
@@ -137,12 +128,15 @@ class Header extends HookConsumerWidget {
             height: 20,
           ),
           isMobile
-              ? SearchBar(
-                  onSearch: () {
-                    // TODO: implement search
-                    print("search");
-                  },
-                  colorTheme: colorTheme,
+              ? SizedBox(
+                  width: double.infinity,
+                  child: CustomSearchBar(
+                    onSearch: () {
+                      // TODO: implement search
+                      print("search");
+                    },
+                    colorTheme: colorTheme,
+                  ),
                 )
               : const SizedBox(),
         ],
@@ -151,6 +145,7 @@ class Header extends HookConsumerWidget {
   }
 }
 
+/// MaterialConsumer widget that displays the menu items.
 class MaterialConsumer extends HookConsumerWidget {
   const MaterialConsumer({Key? key, required this.child}) : super(key: key);
 
@@ -181,6 +176,7 @@ class MaterialConsumer extends HookConsumerWidget {
   }
 }
 
+/// MobileMenu widget that displays the menu items.
 class MobileMenu extends HookConsumerWidget {
   MobileMenu({super.key, required this.onSwitchChange});
 
@@ -232,12 +228,7 @@ class MobileMenu extends HookConsumerWidget {
                   children: [
                     Text(
                       'Dark Mode',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'Rational Display',
-                        color: getSelectedColor(
-                            colorTheme, 0xFF535757, 0xFFC0C4C4),
-                      ),
+                      style: bodyMedium(context),
                     ),
                     ThemeModeSwitch(
                       onPressed: () {
@@ -268,11 +259,7 @@ class MobileMenu extends HookConsumerWidget {
                         margin: const EdgeInsets.only(bottom: 32),
                         child: Text(
                           text,
-                          style: TextStyle(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFF535757, 0xFFC0C4C4),
-                              fontSize: 14,
-                              fontFamily: 'Rational Display'),
+                          style: bodyMedium(context),
                         ),
                       ),
                     )
@@ -286,15 +273,16 @@ class MobileMenu extends HookConsumerWidget {
   }
 }
 
+/// ThemeModeSwitch widget that displays the switch button.
 class ThemeModeSwitch extends StatefulWidget {
   const ThemeModeSwitch({Key? key, required this.onPressed}) : super(key: key);
-
   final Function onPressed;
 
   @override
   State<ThemeModeSwitch> createState() => _ThemeModeSwitchState();
 }
 
+/// ThemeModeSwitch widget state.
 class _ThemeModeSwitchState extends State<ThemeModeSwitch> {
   bool darkMode = false;
 
@@ -310,52 +298,6 @@ class _ThemeModeSwitchState extends State<ThemeModeSwitch> {
         });
         widget.onPressed();
       },
-    );
-  }
-}
-
-class SearchBar extends StatelessWidget {
-  const SearchBar({
-    super.key,
-    required this.onSearch,
-    required this.colorTheme,
-  });
-
-  final VoidCallback onSearch;
-  final ThemeMode colorTheme;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 400,
-      child: TextField(
-        onSubmitted: (query) => onSearch(),
-        decoration: InputDecoration(
-          hintText: 'Search by blocks, transactions, or UTxOs',
-          hintStyle: TextStyle(
-            color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-            fontFamily: 'Rational Display',
-          ),
-          prefixIcon: Icon(
-            Icons.search,
-            color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
-              width: 1.0,
-            ),
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          border: const OutlineInputBorder(),
-          focusColor: const Color(0xFF4B4B4B),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-                width: 1.0),
-          ),
-        ),
-      ),
     );
   }
 }
