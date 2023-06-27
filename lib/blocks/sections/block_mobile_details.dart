@@ -78,9 +78,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                               CustomResponsiveRowColumn(children: [
                                 ResponsiveRowColumnItem(
                                   rowFlex: isMobile ? 3 : 2,
-                                  child: const CustomPadding(
-                                    child: CustomStatusWidget(status: "Confirmed"),
-                                  ),
+                                  child: CustomStatusWidget(status: "Confirmed"),
                                 ),
                               ]),
                               CustomResponsiveRowColumn(children: [
