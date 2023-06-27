@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
-import 'package:flutter_annulus/chain/widgets/chain_info/lower_stats_without_icon.dart';
+import 'package:flutter_annulus/chain/widgets/chain_info/custom_tooltip.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -129,68 +129,85 @@ class ChainInfo extends HookConsumerWidget {
                           ResponsiveRowColumnItem(
                             rowFlex: 1,
                             child: SizedBox(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
                                 children: [
-                                  Text(
-                                    "Eon",
-                                    style: titleMedium(context),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Eon",
+                                        style: titleMedium(context),
+                                      ),
+                                      const SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        chain.eon.toString(),
+                                        style: titleLarge(context),
+                                      )
+                                    ],
                                   ),
                                   const SizedBox(
-                                    height: 4,
+                                    width: 10,
                                   ),
-                                  Text(
-                                    chain.eon.toString(),
-                                    style: titleLarge(context),
-                                  )
+                                  const CustomTooltip(
+                                    tooltipText: Strings.eonTooltipText,
+                                    child: Icon(
+                                      Icons.info_outline,
+                                      color: Color(0xFF858E8E),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ),
                           ResponsiveRowColumnItem(
                             rowFlex: 1,
-                            child: Tooltip(
-                              message: Strings.eraTooltipText,
-                              child: SizedBox(
-                                child: Row(
+                            child: Row(
+                              children: [
+                                isMobile
+                                    ? SizedBox(
+                                        height: 40,
+                                        child: VerticalDivider(
+                                          thickness: 1,
+                                          color: getSelectedColor(colorTheme,
+                                              0xFFE7E8E8, 0xFF4B4B4B),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                                isMobile
+                                    ? const SizedBox(
+                                        width: 10,
+                                      )
+                                    : const SizedBox(),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    isMobile
-                                        ? SizedBox(
-                                            height: 40,
-                                            child: VerticalDivider(
-                                              thickness: 1,
-                                              color: getSelectedColor(
-                                                  colorTheme,
-                                                  0xFFE7E8E8,
-                                                  0xFF4B4B4B),
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                    isMobile
-                                        ? const SizedBox(
-                                            width: 10,
-                                          )
-                                        : const SizedBox(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Era",
-                                          style: titleMedium(context),
-                                        ),
-                                        const SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          chain.era.toString(),
-                                          style: titleLarge(context),
-                                        )
-                                      ],
+                                    Text(
+                                      "Era",
+                                      style: titleMedium(context),
                                     ),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      chain.era.toString(),
+                                      style: titleLarge(context),
+                                    )
                                   ],
                                 ),
-                              ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const CustomTooltip(
+                                  tooltipText: Strings.eraTooltipText,
+                                  child: Icon(
+                                    Icons.info_outline,
+                                    color: Color(0xFF858E8E),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -238,48 +255,40 @@ class ChainInfo extends HookConsumerWidget {
                             children: [
                               ResponsiveRowColumnItem(
                                 rowFlex: 1,
-                                child: Tooltip(
-                                  message: Strings.epochTooltipText,
-                                  child: StatInfoCard(
-                                    statString: chain.epoch.toString(),
-                                    statSymbol: "Epoch",
-                                    firstItem: true,
-                                  ),
+                                child: StatInfoCard(
+                                  statString: chain.epoch.toString(),
+                                  statSymbol: "Epoch",
+                                  firstItem: true,
+                                  tooltipText: Strings.epochTooltipText,
                                 ),
                               ),
                               ResponsiveRowColumnItem(
                                 rowFlex: 1,
-                                child: Tooltip(
-                                  message: Strings.totalTransactionTooltipText,
-                                  child: StatInfoCard(
+                                child: StatInfoCard(
                                     statString: chain.totalTransactionsInEpoch
                                         .toString(),
                                     statSymbol: "Txs",
                                     firstItem: isMobile,
-                                  ),
+                                    tooltipText:
+                                        Strings.totalTransactionTooltipText),
+                              ),
+                              ResponsiveRowColumnItem(
+                                rowFlex: 1,
+                                child: StatInfoCard(
+                                  statString: chain.height.toString(),
+                                  statSymbol: "Height",
+                                  firstItem: isMobile,
+                                  tooltipText: Strings.heightTooltipText,
                                 ),
                               ),
                               ResponsiveRowColumnItem(
                                 rowFlex: 1,
-                                child: Tooltip(
-                                  message: Strings.heightTooltipText,
-                                  child: StatInfoCard(
-                                    statString: chain.height.toString(),
-                                    statSymbol: "Height",
-                                    firstItem: isMobile,
-                                  ),
-                                ),
-                              ),
-                              ResponsiveRowColumnItem(
-                                rowFlex: 1,
-                                child: Tooltip(
-                                  message: Strings.averageBlockTimeTooltipText,
-                                  child: StatInfoCard(
-                                    statString:
-                                        chain.averageBlockTime.toString(),
-                                    statSymbol: "Avg Block Time",
-                                    firstItem: isMobile,
-                                  ),
+                                child: StatInfoCard(
+                                  statString: chain.averageBlockTime.toString(),
+                                  statSymbol: "Avg Block Time",
+                                  firstItem: isMobile,
+                                  tooltipText:
+                                      Strings.averageBlockTimeTooltipText,
                                 ),
                               ),
                             ],
@@ -309,49 +318,41 @@ class ChainInfo extends HookConsumerWidget {
                             children: [
                               ResponsiveRowColumnItem(
                                 rowFlex: 1,
-                                child: Tooltip(
-                                  message: Strings.totalStakeTooltipText,
-                                  child: StatInfoCard(
-                                    statString:
-                                        '${chain.totalStake.toString()}%',
-                                    statSymbol: "Total Stake",
-                                    firstItem: true,
-                                  ),
+                                child: StatInfoCard(
+                                  statString: '${chain.totalStake.toString()}%',
+                                  statSymbol: "Total Stake",
+                                  firstItem: true,
+                                  tooltipText: Strings.totalStakeTooltipText,
                                 ),
                               ),
                               ResponsiveRowColumnItem(
                                 rowFlex: 1,
-                                child: Tooltip(
-                                  message: Strings.registeredStakesTooltipText,
-                                  child: StatInfoCard(
-                                    statString:
-                                        chain.registeredStakes.toString(),
-                                    statSymbol: "Registered\nStakes",
-                                    firstItem: isMobile,
-                                  ),
+                                child: StatInfoCard(
+                                  statString: chain.registeredStakes.toString(),
+                                  statSymbol: "Registered\nStakes",
+                                  firstItem: isMobile,
+                                  tooltipText:
+                                      Strings.registeredStakesTooltipText,
                                 ),
                               ),
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
-                                  child: Tooltip(
-                                    message: Strings.activeStakesTooltipText,
-                                    child: StatInfoCard(
-                                      statString:
-                                          '${chain.activeStakes.toString()}%',
-                                      statSymbol: "Active\nStakes",
-                                      firstItem: isMobile,
-                                    ),
-                                  )),
+                                rowFlex: 1,
+                                child: StatInfoCard(
+                                  statString:
+                                      '${chain.activeStakes.toString()}%',
+                                  statSymbol: "Active\nStakes",
+                                  firstItem: isMobile,
+                                  tooltipText: Strings.activeStakesTooltipText,
+                                ),
+                              ),
                               ResponsiveRowColumnItem(
                                 rowFlex: 1,
-                                child: Tooltip(
-                                  message: Strings.invalidStakesTooltipText,
-                                  child: StatInfoCard(
-                                    statString:
-                                        '${chain.inactiveStakes.toString()}%',
-                                    statSymbol: "Inactive\nStakes",
-                                    firstItem: isMobile,
-                                  ),
+                                child: StatInfoCard(
+                                  statString:
+                                      '${chain.inactiveStakes.toString()}%',
+                                  statSymbol: "Inactive\nStakes",
+                                  firstItem: isMobile,
+                                  tooltipText: Strings.invalidStakesTooltipText,
                                 ),
                               ),
                             ],

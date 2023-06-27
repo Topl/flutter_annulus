@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/chain/widgets/chain_info/custom_tooltip.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,12 +10,14 @@ class StatInfoCard extends ConsumerWidget {
   final String statString;
   final String statSymbol;
   final bool firstItem;
+  final String tooltipText;
 
   const StatInfoCard({
     super.key,
     required this.statString,
     required this.statSymbol,
     this.firstItem = false,
+    this.tooltipText = "",
   });
 
   @override
@@ -53,9 +56,12 @@ class StatInfoCard extends ConsumerWidget {
         ),
         Container(
           margin: const EdgeInsets.only(left: 10),
-          child: const Icon(
-            Icons.info_outline,
-            color: Color(0xFF858E8E),
+          child: CustomTooltip(
+            tooltipText: tooltipText,
+            child: const Icon(
+              Icons.info_outline,
+              color: Color(0xFF858E8E),
+            ),
           ),
         )
       ],

@@ -136,6 +136,9 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
     color: Colors.white,
     letterSpacing: -0.2,
   );
+  if (value == meta.min || value == meta.max) {
+    return const SizedBox();
+  }
   final dateFormat = DateFormat('d/MM');
   final DateTime date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
 
