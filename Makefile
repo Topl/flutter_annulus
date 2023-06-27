@@ -103,5 +103,5 @@ web_profile:
 	@flutter run -d chrome --profile
 
 web_build_and_host:
-	@flutter build web
+	@flutter build web --release
 	@cd build/web && python3 -m http.server 8000

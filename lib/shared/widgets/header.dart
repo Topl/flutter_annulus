@@ -195,83 +195,81 @@ class MobileMenu extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
-    return Expanded(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(
-                        Icons.close,
-                        size: 24.0,
-                        color: Color(0xFF858E8E),
-                      ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(
+                      Icons.close,
+                      size: 24.0,
+                      color: Color(0xFF858E8E),
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ChainNameDropDown(
-                  colorTheme: colorTheme,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Dark Mode',
-                      style: bodyMedium(context),
-                    ),
-                    ThemeModeSwitch(
-                      onPressed: () {
-                        // toggle between light and dark theme
-                        onSwitchChange();
-                      },
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ChainNameDropDown(
+                colorTheme: colorTheme,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Dark Mode',
+                    style: bodyMedium(context),
+                  ),
+                  ThemeModeSwitch(
+                    onPressed: () {
+                      // toggle between light and dark theme
+                      onSwitchChange();
+                    },
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+            ],
           ),
-          const Divider(
-            color: Color(0xFFC0C4C4),
-            thickness: 1,
-          ),
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ...footerLinks
-                    .map(
-                      (text) => Container(
-                        margin: const EdgeInsets.only(bottom: 32),
-                        child: Text(
-                          text,
-                          style: bodyMedium(context),
-                        ),
+        ),
+        const Divider(
+          color: Color(0xFFC0C4C4),
+          thickness: 1,
+        ),
+        Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ...footerLinks
+                  .map(
+                    (text) => Container(
+                      margin: const EdgeInsets.only(bottom: 32),
+                      child: Text(
+                        text,
+                        style: bodyMedium(context),
                       ),
-                    )
-                    .toList()
-              ],
-            ),
-          )
-        ],
-      ),
+                    ),
+                  )
+                  .toList()
+            ],
+          ),
+        )
+      ],
     );
   }
 }
