@@ -26,7 +26,6 @@ class Header extends HookConsumerWidget {
     final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).isMobile;
     final isSmallerThanOrEqualToTablet = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
-
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: isMobile ? 20 : 40, vertical: 20),

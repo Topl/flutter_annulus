@@ -167,26 +167,25 @@ class CustomContainer extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     return Container(
-        margin: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 16.0, right: 16.0),
-        padding: const EdgeInsets.only(
-          top: 20.0,
-          bottom: 30.0,
-          left: 0.0,
-          right: 0.0,
+      margin: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 16.0, right: 16.0),
+      padding: const EdgeInsets.only(
+        top: 20.0,
+        bottom: 30.0,
+        left: 0.0,
+        right: 0.0,
+      ),
+      width: isMobile ? 670 : null,
+      decoration: BoxDecoration(
+        color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+          style: BorderStyle.solid,
+          width: 1.0,
         ),
-        width: isMobile ? 670 : null,
-        decoration: BoxDecoration(
-          color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(
-            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-            style: BorderStyle.solid,
-            width: 1.0,
-          ),
-        ),
-        child: Expanded(
-          child: child,
-        ));
+      ),
+      child: child,
+    );
   }
 }
 
@@ -265,10 +264,7 @@ class CustomResponsiveRowColumn extends StatelessWidget {
       children: children.map((child) {
         return ResponsiveRowColumnItem(
           rowFlex: isMobile ? 3 : 2,
-          child: Padding(
-            padding: isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10) : EdgeInsets.zero,
-            child: child,
-          ),
+          child: child,
         );
       }).toList(),
     );
