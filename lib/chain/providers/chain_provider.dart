@@ -3,8 +3,10 @@ import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
+import 'package:flutter_annulus/chain/utils/chain_utils.dart';
 import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:topl_common/genus/services/transaction_grpc.dart';
 
 final chainProvider = StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
   /// Adding some dev notes here
@@ -29,10 +31,13 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   final Chains selectedChain;
   final Ref ref;
 
+  final GenusGRPCService genusClient;
+
   ChainNotifier(
     this.ref,
     this.selectedChain,
-  ) : super(
+  )   : genusClient = ref.read(genusProvider(selectedChain)),
+        super(
           const AsyncLoading(),
         ) {
     getSelectedChain(setState: true);
@@ -47,30 +52,29 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   Future<Chain> getSelectedChain({bool setState = false}) async {
     if (setState) state = const AsyncLoading();
 
-    await _dataThroughPut();
-
-    const Chain chain = Chain(
-      dataThroughput: 39.887,
-      averageTransactionFee: 3.71,
-      uniqueActiveAddresses: 2076,
-      eon: 2,
-      era: 5,
-      epoch: 72109,
-      totalTransactionsInEpoch: 266,
-      height: 22100762,
-      averageBlockTime: 127,
-      totalStake: .77,
-      registeredStakes: 519,
-      activeStakes: 453,
-      inactiveStakes: 66,
+    final Chain chain = Chain(
+      dataThroughput: await _getDataThroughPut(),
+      averageTransactionFee: await _getAverageTransactionFee(),
+      uniqueActiveAddresses: await _getUniqueActiveAddresses(),
+      eon: await _getEon(),
+      era: await _getEra(),
+      epoch: await _getEpoch(),
+      totalTransactionsInEpoch: await _getTotalTransactionsInEpoch(),
+      height: await _getHeight(),
+      averageBlockTime: await _getAverageBlockTime(),
+      totalStake: await _getTotalStake(),
+      registeredStakes: await _getRegisteredStakes(),
+      activeStakes: await _getActiveStakes(),
+      inactiveStakes: await _getInactiveStakes(),
     );
+
     // Adding delay here to simulate API call
     if (setState) {
       Future.delayed(
-        Duration(seconds: 1),
+        const Duration(seconds: 1),
         () {
           // Do API call here
-          state = const AsyncData(chain);
+          state = AsyncData(chain);
         },
       );
     }
@@ -78,17 +82,120 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
     return chain;
   }
 
-  Future<void> _dataThroughPut() async {
-    print('QQQQ dataThroughPut');
+  /// TODO: This probably can be simplified to reduce calls by using the blocks already in the block proovider
+  Future<double> _getDataThroughPut() async {
+    if (selectedChain == Chains.mock)
+      return getMockChain().dataThroughput;
+    else {
+      Future<double?> _getDataThroughPutForBlockAtDepth(int depth) async {
+        try {
+          final block = await genusClient.getBlockByDepth(depth: depth);
+          final blockHeader = block.block.header;
+          final timeStamp = blockHeader.timestamp;
 
-    try {
-      final genusClient = ref.read(genusProvider(selectedChain));
-      final block = await genusClient.getBlockByDepth(depth: 0);
-      final blockHeader = block.block.header;
-      print('QQQQ block: $block');
-      print('QQQQ block string: ${block.block.header}');
-    } catch (e) {
-      print('QQQQ error: $e');
+          print('QQQQ block: $block');
+          print('QQQQ block string: ${block.block.header}');
+          return 10;
+        } catch (e) {
+          print('QQQQ error: $e');
+          return null;
+        }
+      }
+
+      const int amountOfBlocksToCheck = 10;
+      final List<double> averageDataThroughPut = [];
+      for (int i = 0; i < amountOfBlocksToCheck; i++) {
+        final dataThroughput = await _getDataThroughPutForBlockAtDepth(i);
+
+        if (dataThroughput != null) {
+          averageDataThroughPut.add(dataThroughput);
+        }
+      }
+      return averageDataThroughPut.reduce((a, b) => a + b) / averageDataThroughPut.length;
     }
+  }
+
+  /// TODO: This probably can be simplified to reduce calls by using the transactions already in the transaction proovider
+  Future<double> _getAverageTransactionFee() async {
+    if (selectedChain == Chains.mock)
+      return getMockChain().averageTransactionFee;
+    else {
+      /// TODO: Implement=
+      Future<double?> _getSingleAverageTransactionFee() async {}
+
+      const int amountOfTransactionsToCheck = 10;
+
+      final List<double> averageTransactionFee = [];
+
+      for (int i = 0; i < amountOfTransactionsToCheck; i++) {
+        final transactionFee = await _getSingleAverageTransactionFee();
+
+        if (transactionFee != null) {
+          averageTransactionFee.add(transactionFee);
+        }
+      }
+
+      return averageTransactionFee.reduce((a, b) => a + b) / averageTransactionFee.length;
+    }
+  }
+
+  /// TODO: Implement
+  Future<int> _getUniqueActiveAddresses() async {
+    return getMockChain().uniqueActiveAddresses;
+  }
+
+  /// TODO: Implement
+  Future<int> _getEon() async {
+    return getMockChain().eon;
+  }
+
+  /// TODO: Implement
+  Future<int> _getEra() async {
+    return getMockChain().era;
+  }
+
+  /// TODO: Implement
+  Future<int> _getEpoch() async {
+    return getMockChain().epoch;
+  }
+
+  /// TODO: Implement
+  Future<int> _getTotalTransactionsInEpoch() async {
+    return getMockChain().totalTransactionsInEpoch;
+  }
+
+  /// TODO: Probably can be simplified by using the blocks already in the block provider
+  Future<int> _getHeight() async {
+    if (selectedChain == Chains.mock) return getMockChain().height;
+    final block = await genusClient.getBlockByDepth(depth: 0);
+
+    final height = block.block.header.height;
+
+    return height.toInt();
+  }
+
+  /// TODO: Implement
+  Future<int> _getAverageBlockTime() async {
+    return getMockChain().averageBlockTime;
+  }
+
+  /// TODO: Implement
+  Future<double> _getTotalStake() async {
+    return getMockChain().totalStake;
+  }
+
+  /// TODO: Implement
+  Future<int> _getRegisteredStakes() async {
+    return getMockChain().registeredStakes;
+  }
+
+  /// TODO: Implement
+  Future<int> _getActiveStakes() async {
+    return getMockChain().activeStakes;
+  }
+
+  /// TODO: Implement
+  Future<int> _getInactiveStakes() async {
+    return getMockChain().inactiveStakes;
   }
 }
