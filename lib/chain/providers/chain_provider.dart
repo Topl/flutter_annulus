@@ -1,3 +1,5 @@
+import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
