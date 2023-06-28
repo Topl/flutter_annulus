@@ -1,10 +1,10 @@
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
+import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final chainProvider =
-    StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
+final chainProvider = StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
   /// Adding some dev notes here
   ///
   /// THIS STILL NEEDS TO BE TESTED!
@@ -45,6 +45,8 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   Future<Chain> getSelectedChain({bool setState = false}) async {
     if (setState) state = const AsyncLoading();
 
+    await _dataThroughPut();
+
     const Chain chain = Chain(
       dataThroughput: 39.887,
       averageTransactionFee: 3.71,
@@ -72,5 +74,19 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
     }
 
     return chain;
+  }
+
+  Future<void> _dataThroughPut() async {
+    print('QQQQ dataThroughPut');
+
+    try {
+      final genusClient = ref.read(genusProvider(selectedChain));
+      final block = await genusClient.getBlockByDepth(depth: 0);
+      final blockHeader = block.block.header;
+      print('QQQQ block: $block');
+      print('QQQQ block string: ${block.block.header}');
+    } catch (e) {
+      print('QQQQ error: $e');
+    }
   }
 }
