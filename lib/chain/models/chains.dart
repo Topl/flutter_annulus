@@ -1,23 +1,29 @@
 enum Chains {
   topl_mainnet(
-    name: 'Topl Mainnet',
+    name: 'Toplnet',
     host: 'mainnet.topl.network',
     port: 50051,
   ),
   valhalla_testnet(
-    name: 'Valhalla Testnet',
+    name: 'Valhalla',
     host: 'testnet.topl.network',
     port: 50051,
   ),
   private_network(
-    name: 'Private Network',
+    name: 'Private',
     host: 'localhost',
     port: 8080,
   ),
   dev_network(
-      name: 'Development Network',
-      host: 'tetra.dev.torus.topl.tech',
-      port: 9091);
+    name: 'Development',
+    host: 'tetra.dev.torus.topl.tech',
+    port: 9091,
+  ),
+  mock(
+    name: 'Mock',
+    host: 'mock',
+    port: 0000,
+  );
 
   const Chains({
     required this.name,

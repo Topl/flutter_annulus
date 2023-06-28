@@ -5,7 +5,6 @@ import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:vrouter/vrouter.dart';
 import '../../shared/providers/app_theme_provider.dart';
 import '../models/block.dart';
 
@@ -27,16 +26,13 @@ class BlockDetailsDrawer extends HookConsumerWidget {
       child: Scaffold(
         appBar: !isMobile
             ? AppBar(
-                backgroundColor:
-                    getSelectedColor(colorMode, 0xFFFFFFFF, 0xFF282A2C),
+                backgroundColor: getSelectedColor(colorMode, 0xFFFFFFFF, 0xFF282A2C),
                 elevation: 0.0,
                 automaticallyImplyLeading: false,
                 centerTitle: false,
                 titleSpacing: 10.0,
                 title: Padding(
-                  padding: isMobile
-                      ? const EdgeInsets.only(left: 2.0, right: 16)
-                      : const EdgeInsets.all(40.0),
+                  padding: isMobile ? const EdgeInsets.only(left: 2.0, right: 16) : const EdgeInsets.all(40.0),
                   child: Text(
                     'Block Details',
                     style: headlineLarge(context),
@@ -51,17 +47,13 @@ class BlockDetailsDrawer extends HookConsumerWidget {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 4.5,
                       child: TabBar(
-                        unselectedLabelColor:
-                            getSelectedColor(colorMode, 0xFF282A2C, 0xFF858E8E),
-                        labelColor:
-                            getSelectedColor(colorMode, 0xFF282A2C, 0xFF434648),
+                        unselectedLabelColor: getSelectedColor(colorMode, 0xFF282A2C, 0xFF858E8E),
+                        labelColor: getSelectedColor(colorMode, 0xFF282A2C, 0xFF434648),
                         labelStyle: labelLarge(context),
                         indicatorSize: TabBarIndicatorSize.label,
                         indicator: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(16.0)),
-                          color: getSelectedColor(
-                              colorMode, 0xFFE7E8E8, 0xFFFEFEFE),
+                          borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                          color: getSelectedColor(colorMode, 0xFFE7E8E8, 0xFFFEFEFE),
                         ),
                         padding: const EdgeInsets.only(left: 30.0, top: 8.0),
                         tabs: [
@@ -89,8 +81,7 @@ class BlockDetailsDrawer extends HookConsumerWidget {
                 ),
               )
             : null,
-        body:
-            isMobile ? const BlockTabBarMobileView() : const BlockTabBarView(),
+        body: isMobile ? const BlockTabBarMobileView() : const BlockTabBarView(),
       ),
     );
   }
