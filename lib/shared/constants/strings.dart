@@ -64,6 +64,7 @@ class Strings {
   static const String footerCookiePreferences = 'Cookie Preferences';
   static const String footerRightsReserved = '2023 © All rights reserved';
   static const String latestBlocksHeader = 'Latest Blocks';
+  static const String eonTooltipText = '';
   static const String eraTooltipText =
       'An era is a period during which a specific set of active validators exists.';
   static const String epochTooltipText =
