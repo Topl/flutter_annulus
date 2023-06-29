@@ -169,7 +169,7 @@ class CustomSearchBar extends HookConsumerWidget {
                         );
                       } else if (!isDesktop && suggestion.length > 6 && suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
                         context.vRouter.to(
-                          '/transactions_details/${selectedTransactionId.value}',
+                          '/transactions_details/',
                         );
                       } else if (suggestion == "10x5be9d701Byd24neQfY1vXa987a") {
                         context.vRouter.to(

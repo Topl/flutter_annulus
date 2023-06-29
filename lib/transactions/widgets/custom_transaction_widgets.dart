@@ -41,6 +41,7 @@ class StatusButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     return Padding(
       padding: EdgeInsets.only(left: hideArrowIcon ? 40.0 : 0, bottom: 16, right: 40, top: 16),
@@ -48,36 +49,38 @@ class StatusButton extends ConsumerWidget {
         children: [
           SizedBox(
             height: 40,
-            width: 160,
-            child: TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+            width: isTablet ? 130 : 160,
+            child: Expanded(
+              child: TextButton(
+                onPressed: () {},
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  backgroundColor: Color(_color(status)).withOpacity(0.04),
+                  // add opacity to the color
                 ),
-                backgroundColor: Color(_color(status)).withOpacity(0.04),
-                // add opacity to the color
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Icon(
-                    _icon(status),
-                    color: Color(_color(status)),
-                  ),
-                  const SizedBox(
-                    width: 8.0,
-                  ),
-                  Text(
-                    status,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: "Rational Display",
-                      fontWeight: FontWeight.w500,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Icon(
+                      _icon(status),
                       color: Color(_color(status)),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    Text(
+                      status,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: "Rational Display",
+                        fontWeight: FontWeight.w500,
+                        color: Color(_color(status)),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -167,7 +170,7 @@ class CustomContainer extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     return Container(
-      margin: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 16.0, right: 16.0),
+      margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 20.0 : 40.0, right: isMobile ? 20.0 : 40.0),
       padding: const EdgeInsets.only(
         top: 20.0,
         bottom: 30.0,

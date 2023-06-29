@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter_annulus/chain/models/chart_option.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ChartOptionsDropdown extends StatefulWidget {
-  const ChartOptionsDropdown({Key? key}) : super(key: key);
+import '../providers/chart_provider.dart';
 
-  @override
-  State<ChartOptionsDropdown> createState() => _ChartOptionsDropdownState();
-}
-
-class _ChartOptionsDropdownState extends State<ChartOptionsDropdown> {
-  final List<String> chartOptions = [
-    'Average Transaction Fee',
-  ];
-
-  String? selectedOption;
+class ChartOptionsDropdown extends HookConsumerWidget {
+  final List<String> chartOptions =
+  ChartOption.values.map((e) => e.name).toList();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedOption = ref
+        .watch(chartOptionProvider)
+        .name;
+
     return Center(
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
@@ -42,7 +40,8 @@ class _ChartOptionsDropdownState extends State<ChartOptionsDropdown> {
           ),
           items: chartOptions
               .map(
-                (item) => DropdownMenuItem(
+                (item) =>
+                DropdownMenuItem(
                   value: item,
                   child: Text(
                     item,
@@ -55,12 +54,11 @@ class _ChartOptionsDropdownState extends State<ChartOptionsDropdown> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              )
+          )
               .toList(),
+          value: selectedOption,
           onChanged: (value) {
-            setState(() {
-              selectedOption = value;
-            });
+            ref.read(chartOptionProvider.notifier).changeChartOption(value!);
           },
           buttonStyleData: ButtonStyleData(
             height: 45,
