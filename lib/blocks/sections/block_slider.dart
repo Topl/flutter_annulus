@@ -28,14 +28,22 @@ class BlockViewSlider extends HookConsumerWidget {
     return blocksInfo.when(
       data: (blocks) => SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 0 : 40.0, right: isMobile ? 0 : 40.0),
-          padding: isDesktop || isTablet ? const EdgeInsets.only(top: 20.0, bottom: 30.0, left: 0.0, right: 0.0) : null,
+          margin: EdgeInsets.only(
+              top: 20.0,
+              bottom: 20.0,
+              left: isMobile ? 0 : 40.0,
+              right: isMobile ? 0 : 40.0),
+          padding: isDesktop || isTablet
+              ? const EdgeInsets.only(
+                  top: 20.0, bottom: 30.0, left: 0.0, right: 0.0)
+              : null,
           decoration: isDesktop || isTablet
               ? BoxDecoration(
                   color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(
-                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      color:
+                          getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                       style: BorderStyle.solid,
                       width: 1.0),
                 )
@@ -43,7 +51,9 @@ class BlockViewSlider extends HookConsumerWidget {
           child: Wrap(
             children: <Widget>[
               ResponsiveRowColumn(
-                layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
+                layout: isMobile
+                    ? ResponsiveRowColumnType.COLUMN
+                    : ResponsiveRowColumnType.ROW,
                 children: [
                   ResponsiveRowColumnItem(
                     rowFlex: isMobile ? 12 : 1,
@@ -60,8 +70,10 @@ class BlockViewSlider extends HookConsumerWidget {
                               BlockPlaceHolder(controller: _controller),
                               Expanded(
                                 child: SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.7,
-                                  child: CustomCarousel(blocks: blocks, controller: _controller),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
+                                  child: CustomCarousel(
+                                      blocks: blocks, controller: _controller),
                                 ),
                               ),
                             ],
@@ -73,7 +85,8 @@ class BlockViewSlider extends HookConsumerWidget {
           ),
         ),
       ),
-      error: (error, stack) => const Text('Oops, something unexpected happened'),
+      error: (error, stack) =>
+          const Text('Oops, something unexpected happened'),
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
@@ -96,7 +109,9 @@ class BlockPlaceHolder extends HookConsumerWidget {
     return SizedBox(
       width: isMobile ? 400 : 240,
       child: ResponsiveRowColumn(
-        layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
+        layout: isMobile
+            ? ResponsiveRowColumnType.COLUMN
+            : ResponsiveRowColumnType.ROW,
         children: [
           if (!isMobile)
             ResponsiveRowColumnItem(
@@ -146,7 +161,8 @@ class BlockPlaceHolder extends HookConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(Strings.latestBlocks, style: headlineLarge(context)),
+                        Text(Strings.latestBlocks,
+                            style: headlineLarge(context)),
                         const SizedBox(width: 10),
                         Row(
                           children: [
@@ -186,14 +202,11 @@ class MultipleChainText extends StatelessWidget {
   final double sizeFont;
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+
     return Text(
       "Multiple-chain Embedding",
-      style: TextStyle(
-        fontSize: sizeFont,
-        fontWeight: FontWeight.w500,
-        color: const Color(0xFF858E8E),
-        fontFamily: "Rational Display",
-      ),
+      style: isMobile ? bodySmall(context) : titleMedium(context),
     );
   }
 }
@@ -212,7 +225,6 @@ class CustomTextButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-    final fontSize = isMobile ? 18.0 : 28.0;
 
     final colorTheme = ref.watch(appThemeColorProvider);
     return Container(
@@ -224,20 +236,15 @@ class CustomTextButton extends ConsumerWidget {
         child: TextButton(
           style: TextButton.styleFrom(
             fixedSize: isMobile ? const Size(46, 46) : const Size(56, 56),
-            textStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.w600,
-            ),
-            backgroundColor: getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
+            textStyle: titleMedium(context),
+            backgroundColor:
+                getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          onPressed: () => _controller.previousPage(),
-          child: Text(text,
-              style: TextStyle(
-                color: getSelectedColor(colorTheme, 0xFF535757, 0xFFAFB6B6),
-              )),
+          onPressed: () => {_controller.previousPage()},
+          child: Text(text, style: titleMedium(context)),
         ));
   }
 }
@@ -331,19 +338,14 @@ class CustomCarousel extends StatelessWidget {
                   ),
                 ],
               )
-            : const SizedBox(
+            : SizedBox(
                 height: 0,
                 child: Center(
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       "No blocks loaded",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF282A2C),
-                        fontFamily: "Rational Display",
-                      ),
+                      style: bodyMedium(context),
                     ),
                   ),
                 ),

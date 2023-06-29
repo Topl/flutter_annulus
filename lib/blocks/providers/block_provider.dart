@@ -1,11 +1,11 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final blockProvider =
-    StateNotifierProvider<BlockNotifier, AsyncValue<List<Block>>>((ref) {
+final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<List<Block>>>((ref) {
   /// Notes:
   /// We'll need to watch for the selectedChain here since we will need to know which
   /// instance of Genus to target
@@ -43,10 +43,11 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   /// If [setState] is true, it will update the state of the provider
   /// If [setState] is false, it will not update the state of the provider
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
-    const tempChain = Chains.private_network;
-    final genusClient = ref.read(genusProvider(tempChain));
+    // TODO: Re-implement
+    // final genusClient = ref.read(genusProvider(tempChain));
 
     if (setState) state = const AsyncLoading();
+
     final List<Block> blocks = [];
     const pageLimit = 10;
 
@@ -54,7 +55,8 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
     // print('height: ${blockRes.block.header.height}');
 
     for (int i = 0; i < pageLimit; i++) {
-      var blockRes = await genusClient.getBlockByDepth(depth: i);
+      // TODO: Re-implement
+      // var blockRes = await genusClient.getBlockByDepth(depth: i);
 
       final iString = i.toString();
       blocks.add(
@@ -94,6 +96,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
     return state.when(
       data: (data) =>
           AsyncData(data.firstWhere((element) => element.header == header)),
+      data: (data) => AsyncData(data.firstWhere((element) => element.blockId == blockId)),
       error: (error, stakeTrace) => AsyncError(error, stakeTrace),
       loading: () => const AsyncLoading(),
     );

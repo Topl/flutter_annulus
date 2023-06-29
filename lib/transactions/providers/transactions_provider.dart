@@ -1,9 +1,6 @@
-import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
-import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
-import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/utils/get_chain_id.dart';
 
@@ -99,14 +96,9 @@ class TransactionsNotifier
   ///
   /// It takes a [transactionId] as a parameter
   /// and returns a [AsyncValue<Transaction>]
-  Future<Transaction> getSingleTransaction({
-    required int transactionId,
-  }) async {
-    const tempChain = Chains.private_network;
-    final genusClient = ref.read(genusProvider(tempChain));
-
-    var transactionRes =
-        await genusClient.getTransactionById(transactionId: transactionId);
+  AsyncValue<Transaction> getSingleTransaction({
+    required String transactionId,
+  }) {
 
     // var block = await genusClient.getBlockById(
     //     blockId: transactionRes.transactionReceipt.blockId.value);
@@ -121,7 +113,7 @@ class TransactionsNotifier
       transactionNumber: 127,
     );
 
-    return Transaction(
+    var transaction = Transaction(
         transactionId: getChainId(
             transactionRes.transactionReceipt.transaction.transactionId.value),
         status: TransactionStatus.confirmed,
@@ -137,5 +129,7 @@ class TransactionsNotifier
         proposition: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
         quantity: 10,
         name: "transaction");
+
+    return AsyncValue.data(transaction);
   }
 }

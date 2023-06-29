@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
 import '../providers/app_theme_provider.dart';
 import '../utils/theme_color.dart';
 
+/// This is a custom layout widget that displays a header, content and footer.
 class CustomLayout extends HookConsumerWidget {
   final Widget header;
   final Widget content;
@@ -25,8 +25,7 @@ class CustomLayout extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isResponsive = ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
-    final IsTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
     final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -34,12 +33,13 @@ class CustomLayout extends HookConsumerWidget {
       key: scaffoldKey,
       endDrawer: Container(
         height: 500,
-        margin: EdgeInsets.only(bottom: IsTablet ? 520 : 320),
+        margin: EdgeInsets.only(bottom: isTablet ? 520 : 320),
         color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Drawer(
-            backgroundColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+            backgroundColor:
+                getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
             width: double.infinity,
             child: Column(
               children: <Widget>[
@@ -77,29 +77,11 @@ class CustomLayout extends HookConsumerWidget {
           ),
         ),
       ),
-      appBar: isResponsive
-          ? AppBar(
-              iconTheme: IconThemeData(
-                color: getSelectedColor(colorTheme, 0x809E9E9E, 0xFFFEFEFE),
-              ),
-              toolbarHeight: 80,
-              backgroundColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-              elevation: 4,
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: SvgPicture.asset(
-                  colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
-                ),
-              ),
-            )
-          : null,
+      appBar: null,
       body: Column(
         children: [
           // Header widget
-          Container(
-            color: Colors.white,
-            child: !isResponsive ? header : null,
-          ),
+          Container(color: Colors.white, child: header),
           // Content widget
           Expanded(
             child: Container(

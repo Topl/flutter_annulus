@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/chain/widgets/chain_info/custom_tooltip.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 
 import '../../../shared/utils/theme_color.dart';
 
-class LowerStatWithIcon extends ConsumerWidget {
-  final IconData icon;
+class StatInfoCard extends ConsumerWidget {
   final String statString;
   final String statSymbol;
   final bool firstItem;
+  final String tooltipText;
 
-  const LowerStatWithIcon({
+  const StatInfoCard({
     super.key,
-    required this.icon,
     required this.statString,
     required this.statSymbol,
     this.firstItem = false,
+    this.tooltipText = "",
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -53,11 +57,15 @@ class LowerStatWithIcon extends ConsumerWidget {
             ),
           ],
         ),
+        if (isTablet) const SizedBox(width: 20),
         Container(
           margin: const EdgeInsets.only(left: 10),
-          child: Icon(
-            icon,
-            color: const Color(0xFF858E8E),
+          child: CustomTooltip(
+            tooltipText: tooltipText,
+            child: const Icon(
+              Icons.info_outline,
+              color: Color(0xFF858E8E),
+            ),
           ),
         )
       ],

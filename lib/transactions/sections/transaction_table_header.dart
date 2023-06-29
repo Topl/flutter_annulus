@@ -3,12 +3,14 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 import '../../shared/constants/strings.dart';
 import '../widgets/custom_transaction_widgets.dart';
 
+/// This is a custom widget that shows the transaction table header
 class TransactionTableHeader extends StatelessWidget {
   const TransactionTableHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     return GestureDetector(
       onTap: () {
@@ -22,7 +24,11 @@ class TransactionTableHeader extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                 SizedBox(
-                    width: isMobile ? 180 : 300,
+                    width: isMobile
+                        ? 180
+                        : isTablet
+                            ? 150
+                            : 300,
                     height: 60,
                     child: Padding(
                       padding: EdgeInsets.only(
@@ -31,46 +37,62 @@ class TransactionTableHeader extends StatelessWidget {
                           name: Strings.tableHeaderTxnHashId),
                     )),
                 SizedBox(
-                    width: isMobile ? 180 : 200,
+                    width: isMobile
+                        ? 180
+                        : isTablet
+                            ? 100
+                            : 200,
                     height: 60,
                     child: Padding(
                       padding: EdgeInsets.only(
-                          left: isMobile ? 21.0 : 40.0, top: 16),
+                          left: isMobile
+                              ? 21.0
+                              : isTablet
+                                  ? 16.0
+                                  : 40.0,
+                          top: 16),
                       child:
                           const TableHeaderText(name: Strings.tableHeaderBlock),
                     )),
                 if (!isMobile)
-                  const SizedBox(
-                      width: 200,
+                  SizedBox(
+                      width: isTablet ? 100 : 200,
                       height: 60,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 40.0, top: 16),
-                        child: TableHeaderText(name: Strings.tableHeaderType),
+                        padding: EdgeInsets.only(
+                            left: isTablet ? 16.0 : 40.0, top: 16),
+                        child: const TableHeaderText(
+                            name: Strings.tableHeaderType),
                       )),
                 if (!isMobile)
-                  const SizedBox(
-                      width: 200,
+                  SizedBox(
+                      width: isTablet ? 100 : 200,
                       height: 60,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 40.0, top: 16),
+                        padding: EdgeInsets.only(
+                            left: isTablet ? 16.0 : 40.0, top: 16),
+                        child: const TableHeaderText(
+                            name: Strings.tableHeaderSummary),
+                      )),
+                if (!isMobile)
+                  SizedBox(
+                      width: isTablet ? 100 : 150,
+                      height: 60,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: isTablet ? 16.0 : 40.0, top: 16),
                         child:
-                            TableHeaderText(name: Strings.tableHeaderSummary),
+                            const TableHeaderText(name: Strings.tableHeaderFee),
                       )),
                 if (!isMobile)
-                  const SizedBox(
-                      width: 150,
-                      height: 60,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 40.0, top: 16),
-                        child: TableHeaderText(name: Strings.tableHeaderFee),
-                      )),
-                if (!isMobile)
-                  const SizedBox(
+                  SizedBox(
                       width: 300,
                       height: 60,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 40.0, top: 16),
-                        child: TableHeaderText(name: Strings.tableHeaderStatus),
+                        padding:
+                            EdgeInsets.only(left: isTablet ? 0 : 40.0, top: 16),
+                        child: const TableHeaderText(
+                            name: Strings.tableHeaderStatus),
                       )),
               ])),
         ],

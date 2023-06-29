@@ -1,51 +1,76 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/chain/models/chart_result.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
+import "dart:math";
 
-class LineGraph extends StatefulWidget {
-  const LineGraph({Key? key}) : super(key: key);
+import '../providers/chart_provider.dart';
 
+class LineGraph extends HookConsumerWidget {
   @override
-  State<LineGraph> createState() => _LineGraphState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final chartData = ref.watch(chartProvider);
+    return chartData.when(
+      data: (chart) => LineGraphContainer(chartData: chart),
+      error: (error, stack) =>
+          const Text('Oops, something unexpected happened'),
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
 }
 
-class _LineGraphState extends State<LineGraph> {
-  final List<FlSpot> points = const [
-    FlSpot(0, 3),
-    FlSpot(2.6, 2),
-    FlSpot(4.9, 5),
-    FlSpot(6.8, 3.1),
-    FlSpot(8, 4),
-    FlSpot(9.5, 3),
-    FlSpot(11, 4),
-    FlSpot(13, 6),
-    FlSpot(14, 3),
-    FlSpot(15, 4),
-  ];
-  List<Color> gradientColors = [
-    Colors.cyan,
-    Colors.blue,
-  ];
+class LineGraphContainer extends StatelessWidget {
+  const LineGraphContainer({super.key, required this.chartData});
+
+  final ChartResult chartData;
 
   @override
   Widget build(BuildContext context) {
+    final pointList = chartData.results.entries
+        .map((e) =>
+            FlSpot(e.key.millisecondsSinceEpoch.toDouble(), e.value.toDouble()))
+        .toList();
+
+    final maxYValue = chartData.results.entries
+        .map((e) => e.value.toDouble())
+        .toList()
+        .reduce(max)
+        .ceilToDouble();
+
+    final maxXValue = chartData.results.entries
+        .map((e) => e.key.millisecondsSinceEpoch.toDouble())
+        .toList()
+        .reduce(max)
+        .toDouble();
+
+    final minXValue = chartData.results.entries
+        .map((e) => e.key.millisecondsSinceEpoch.toDouble())
+        .toList()
+        .reduce(min)
+        .toDouble();
+
     return LineChart(
       LineChartData(
         lineBarsData: [
           LineChartBarData(
-            spots: points.map((point) => FlSpot(point.x, point.y)).toList(),
-            isCurved: false,
+            spots: pointList,
+            isCurved: true,
             dotData: FlDotData(
               show: false,
             ),
             belowBarData: BarAreaData(
               show: true,
               gradient: const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color.fromRGBO(13, 200, 212, 0.48),
-                    Color.fromRGBO(13, 200, 212, 0),
-                  ]),
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromRGBO(13, 200, 212, 0.48),
+                  Color.fromRGBO(13, 200, 212, 0),
+                ],
+              ),
             ),
           ),
         ],
@@ -55,10 +80,10 @@ class _LineGraphState extends State<LineGraph> {
         borderData: FlBorderData(
           show: false,
         ),
-        minX: 0,
-        maxX: 15,
+        minX: minXValue,
+        maxX: maxXValue,
         minY: 0,
-        maxY: 6,
+        maxY: maxYValue,
         titlesData: FlTitlesData(
           topTitles: AxisTitles(
             sideTitles: SideTitles(showTitles: false),
@@ -69,9 +94,9 @@ class _LineGraphState extends State<LineGraph> {
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              interval: 1,
+              interval: maxYValue / 5,
               getTitlesWidget: leftTitleWidgets,
-              reservedSize: 42,
+              reservedSize: 40,
             ),
           ),
           bottomTitles: AxisTitles(
@@ -79,13 +104,14 @@ class _LineGraphState extends State<LineGraph> {
               showTitles: true,
               reservedSize: 30,
               getTitlesWidget: bottomTitleWidgets,
-              interval: 1,
+              interval: (maxXValue - minXValue) / 5,
             ),
           ),
         ),
       ),
-      swapAnimationDuration: const Duration(milliseconds: 150), // Optional
-      swapAnimationCurve: Curves.linear,
+      swapAnimationDuration: const Duration(milliseconds: 150),
+      // Optional
+      swapAnimationCurve: Curves.ease,
     );
   }
 }
@@ -97,33 +123,12 @@ Widget leftTitleWidgets(double value, TitleMeta meta) {
     color: Colors.white,
     letterSpacing: -0.2,
   );
-  String text;
-  switch (value.toInt()) {
-    case 0:
-      text = '0';
-      break;
-    case 1:
-      text = '100K';
-      break;
-    case 2:
-      text = '200k';
-      break;
-    case 3:
-      text = '300k';
-      break;
-    case 4:
-      text = '400k';
-      break;
-    case 5:
-      text = '500k';
-      break;
-    default:
-      return Container();
-  }
 
-  return Text(text, style: style, textAlign: TextAlign.left);
+  return Text(NumberFormat.compact().format(value).toString(),
+      style: style, textAlign: TextAlign.left);
 }
 
+// Displays the timeline axis
 Widget bottomTitleWidgets(double value, TitleMeta meta) {
   const style = TextStyle(
     fontFamily: 'Rational Display',
@@ -131,36 +136,14 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
     color: Colors.white,
     letterSpacing: -0.2,
   );
-  Widget text;
-  switch (value.toInt()) {
-    case 2:
-      text = const Text('03/26', style: style);
-      break;
-    case 4:
-      text = const Text('03/27', style: style);
-      break;
-    case 6:
-      text = const Text('03/28', style: style);
-      break;
-    case 8:
-      text = const Text('03/29', style: style);
-      break;
-    case 10:
-      text = const Text('03/30', style: style);
-      break;
-    case 12:
-      text = const Text('03/31', style: style);
-      break;
-    case 14:
-      text = const Text('04/01', style: style);
-      break;
-    default:
-      text = const Text('', style: style);
-      break;
+  if (value == meta.min || value == meta.max) {
+    return const SizedBox();
   }
+  final dateFormat = DateFormat('d/MM');
+  final DateTime date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
 
   return SideTitleWidget(
     axisSide: meta.axisSide,
-    child: text,
+    child: Text(dateFormat.format(date).toString(), style: style),
   );
 }

@@ -22,6 +22,9 @@ class TransactionTableRow extends HookConsumerWidget {
     final Transaction transaction = transactions[count];
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+    final isResponsive =
+        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return GestureDetector(
       onTap: () {
@@ -32,19 +35,25 @@ class TransactionTableRow extends HookConsumerWidget {
               width: 640,
               barrierColor: Colors.white.withOpacity(0.64),
               barrierDismissible: true,
-              body: const TransactionDetailsDrawer());
+              body: TransactionDetailsDrawer(
+                transaction: transaction,
+              ));
         } else {
-          context.vRouter.to('/transactions_details/:transactionId');
+          context.vRouter.to('/transactions_details/');
         }
         // Add what you want to do on tap
       },
       child: Expanded(
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(
-          width: isMobile ? 170 : 300,
+          width: isTablet
+              ? 130
+              : isMobile
+                  ? 170
+                  : 300,
           child: TransactionColumnText(
-            textTop: transaction.transactionId
-                .replaceRange(16, transaction.transactionId.length, "..."),
+            textTop: transaction.transactionId.replaceRange(
+                isTablet ? 7 : 16, transaction.transactionId.length, "..."),
             textBottom: "49 ${Strings.secAgo}",
           ),
         ),
@@ -53,7 +62,7 @@ class TransactionTableRow extends HookConsumerWidget {
             width: 30,
           ),
         SizedBox(
-          width: isMobile ? 100 : 200,
+          width: isResponsive ? 100 : 200,
           child: TransactionColumnText(
             textTop: '${Strings.height}: ${transaction.block.height}',
             textBottom: '${Strings.slot}: ${transaction.block.slot}',
@@ -61,7 +70,7 @@ class TransactionTableRow extends HookConsumerWidget {
         ),
         if (!isMobile)
           SizedBox(
-            width: 200,
+            width: isTablet ? 110 : 200,
             child: TransactionColumnText(
               textTop: transaction.transactionType.string,
               textBottom: "",
@@ -70,14 +79,14 @@ class TransactionTableRow extends HookConsumerWidget {
           ),
         if (!isMobile)
           SizedBox(
-            width: 200,
+            width: isTablet ? 90 : 200,
             child: TransactionColumnText(
                 textTop: '${transaction.quantity} ${Strings.topl}',
                 textBottom: '${transaction.amount} ${Strings.bobs}'),
           ),
         if (!isMobile)
           SizedBox(
-            width: 150,
+            width: isTablet ? 70 : 150,
             child: TransactionColumnText(
               textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
               textBottom: "",
@@ -86,7 +95,7 @@ class TransactionTableRow extends HookConsumerWidget {
           ),
         if (!isMobile)
           SizedBox(
-              width: 300,
+              width: isTablet ? 85 : 300,
               child: StatusButton(status: transaction.status.string)),
       ])),
     );
@@ -103,8 +112,10 @@ class RowDataSource extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
-    final row = data[index];
+    final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
 
+    final row = data[index];
+    print('row $row');
     if (index < data.length) {
       return DataRow(
           color: MaterialStateProperty.all(clr),
@@ -116,15 +127,26 @@ class RowDataSource extends DataTableSource {
                 barrierColor: Colors.white.withOpacity(0.64),
                 // with blur,
                 barrierDismissible: true,
-                body: const TransactionDetailsDrawer());
+                body: TransactionDetailsDrawer(transaction: row));
             // Add what you want to do on tap
           },
           cells: <DataCell>[
             DataCell(GestureDetector(
               onTap: () {
-                context.vRouter.to(
-                  '/transactions_details/${row.transactionId}',
-                );
+                isDesktop
+                    ? showModalSideSheet(
+                        context: context,
+                        ignoreAppBar: true,
+                        width: 640,
+                        barrierColor: Colors.white.withOpacity(0.64),
+                        // with blur,
+                        barrierDismissible: true,
+                        body: TransactionDetailsDrawer(
+                          transaction: row,
+                        ))
+                    : context.vRouter.to(
+                        '/transactions_details/',
+                      );
               },
               child: TransactionColumnText(
                 textTop: row.transactionId,
