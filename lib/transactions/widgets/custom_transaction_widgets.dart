@@ -11,8 +11,7 @@ import '../sections/transactions.dart';
 
 /// Custom Status Button Widget
 class StatusButton extends ConsumerWidget {
-  const StatusButton(
-      {super.key, this.status = "pending", this.hideArrowIcon = true});
+  const StatusButton({super.key, this.status = "pending", this.hideArrowIcon = true});
 
   final String status;
   final bool hideArrowIcon;
@@ -44,44 +43,41 @@ class StatusButton extends ConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
 
     return Padding(
-      padding: EdgeInsets.only(
-          left: hideArrowIcon ? 40.0 : 0, bottom: 16, right: 40, top: 16),
+      padding: EdgeInsets.only(left: hideArrowIcon ? 40.0 : 0, bottom: 16, right: 40, top: 16),
       child: Row(
         children: [
           SizedBox(
             height: 40,
             width: 160,
-            child: Expanded(
-              child: TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  backgroundColor: Color(_color(status)).withOpacity(0.04),
-                  // add opacity to the color
+            child: TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      _icon(status),
+                backgroundColor: Color(_color(status)).withOpacity(0.04),
+                // add opacity to the color
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    _icon(status),
+                    color: Color(_color(status)),
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    status,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "Rational Display",
+                      fontWeight: FontWeight.w500,
                       color: Color(_color(status)),
                     ),
-                    const SizedBox(
-                      width: 8.0,
-                    ),
-                    Text(
-                      status,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Rational Display",
-                        fontWeight: FontWeight.w500,
-                        color: Color(_color(status)),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -171,27 +167,25 @@ class CustomContainer extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     return Container(
-        margin: const EdgeInsets.only(
-            top: 20.0, bottom: 20.0, left: 16.0, right: 16.0),
-        padding: const EdgeInsets.only(
-          top: 20.0,
-          bottom: 30.0,
-          left: 0.0,
-          right: 0.0,
+      margin: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 16.0, right: 16.0),
+      padding: const EdgeInsets.only(
+        top: 20.0,
+        bottom: 30.0,
+        left: 0.0,
+        right: 0.0,
+      ),
+      width: isMobile ? 670 : null,
+      decoration: BoxDecoration(
+        color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+          style: BorderStyle.solid,
+          width: 1.0,
         ),
-        width: isMobile ? 670 : null,
-        decoration: BoxDecoration(
-          color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(
-            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-            style: BorderStyle.solid,
-            width: 1.0,
-          ),
-        ),
-        child: Expanded(
-          child: child,
-        ));
+      ),
+      child: child,
+    );
   }
 }
 
@@ -207,9 +201,7 @@ class CustomStatusWidget extends StatelessWidget {
 // ResponsiveColumn
 
     return ResponsiveRowColumn(
-        layout: isMobile
-            ? ResponsiveRowColumnType.COLUMN
-            : ResponsiveRowColumnType.ROW,
+        layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
         children: [
           ResponsiveRowColumnItem(
               child: isMobile
@@ -265,20 +257,14 @@ class CustomResponsiveRowColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
-    final layout =
-        isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW;
+    final layout = isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW;
 
     return ResponsiveRowColumn(
       layout: layout,
       children: children.map((child) {
         return ResponsiveRowColumnItem(
           rowFlex: isMobile ? 3 : 2,
-          child: Padding(
-            padding: isMobile
-                ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10)
-                : EdgeInsets.zero,
-            child: child,
-          ),
+          child: child,
         );
       }).toList(),
     );
@@ -290,11 +276,7 @@ class CustomRowWithText extends StatelessWidget {
   final String rightText;
   final String leftText;
   final bool hasIcon;
-  const CustomRowWithText(
-      {Key? key,
-      required this.leftText,
-      required this.rightText,
-      this.hasIcon = false})
+  const CustomRowWithText({Key? key, required this.leftText, required this.rightText, this.hasIcon = false})
       : super(key: key);
 
   @override
@@ -315,10 +297,7 @@ class CustomRowWithText extends StatelessWidget {
           children: [
             CustomTextRight(desc: rightText),
             Padding(
-                padding: !isMobile
-                    ? const EdgeInsets.only(
-                        top: 0, bottom: 0, left: 10, right: 0)
-                    : EdgeInsets.zero,
+                padding: !isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 0) : EdgeInsets.zero,
                 child: hasIcon ? const Icon(Icons.copy) : null),
           ],
         ),
@@ -361,10 +340,7 @@ class CustomColumnWithText extends StatelessWidget {
           children: [
             CustomTextRight(desc: rightText),
             Padding(
-                padding: isMobile
-                    ? const EdgeInsets.only(
-                        top: 0, bottom: 0, left: 10, right: 0)
-                    : EdgeInsets.zero,
+                padding: isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 0) : EdgeInsets.zero,
                 child: hasIcon ? const Icon(Icons.copy) : null),
           ],
         ),
@@ -387,9 +363,7 @@ class CustomPadding extends StatelessWidget {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
     return Padding(
-      padding: isMobile
-          ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10)
-          : EdgeInsets.zero,
+      padding: isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10) : EdgeInsets.zero,
       child: child,
     );
   }
@@ -454,9 +428,8 @@ class CustomToast extends StatelessWidget {
                     ? "Network was added ${isMobile ? '\n' : ""} successfully"
                     : "Something went wrong... ${isMobile ? '\n' : ""} Please try again later",
                 style: bodyMedium(context),
-                ),
               ),
-            
+            ),
           ),
           const SizedBox(
             width: 20,

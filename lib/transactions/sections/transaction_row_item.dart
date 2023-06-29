@@ -38,8 +38,7 @@ class TransactionTableRow extends HookConsumerWidget {
         }
         // Add what you want to do on tap
       },
-      child: Expanded(
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(
           width: isMobile ? 170 : 300,
           child: TransactionColumnText(
@@ -84,7 +83,7 @@ class TransactionTableRow extends HookConsumerWidget {
             ),
           ),
         if (!isMobile) SizedBox(width: 300, child: StatusButton(status: transaction.status.string)),
-      ])),
+      ]),
     );
   }
 }
