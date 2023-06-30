@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/widgets/custom_block_widgets.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/widgets/footer.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
@@ -18,7 +19,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
   const BlockTabBarMobileView({
     super.key,
     // required this.block,
-     this.widgetRoute,
+    this.widgetRoute,
   });
   final _rowsPerPage = 5;
   //final Block block;
@@ -70,12 +71,12 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                         child: CustomPadding(
                                           child: isMobile
                                               ? const CustomColumnWithText(
-                                                  leftText: 'Block ID',
+                                                  leftText: Strings.blockId,
                                                   rightText: "242218",
                                                   hasIcon: true,
                                                 )
                                               : const CustomRowWithText(
-                                                  leftText: 'Block ID',
+                                                  leftText: Strings.blockId,
                                                   rightText: "242218",
                                                   hasIcon: true,
                                                 ),
@@ -96,11 +97,11 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                         child: CustomPadding(
                                           child: isMobile
                                               ? const CustomColumnWithText(
-                                                  leftText: 'Time',
+                                                  leftText: Strings.time,
                                                   rightText: "12 sec ago",
                                                 )
                                               : const CustomRowWithText(
-                                                  leftText: 'Time',
+                                                  leftText: Strings.time,
                                                   rightText: "12 sec ago",
                                                 ),
                                         ),
@@ -112,11 +113,11 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                         child: CustomPadding(
                                           child: isMobile
                                               ? const CustomColumnWithText(
-                                                  leftText: 'Epoch',
+                                                  leftText: Strings.epoch,
                                                   rightText: "EP100",
                                                 )
                                               : const CustomRowWithText(
-                                                  leftText: 'Epoch',
+                                                  leftText: Strings.epoch,
                                                   rightText: "EP100",
                                                 ),
                                         ),
@@ -136,13 +137,13 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                         child: CustomPadding(
                                           child: isMobile
                                               ? const CustomColumnWithText(
-                                                  leftText: 'ID',
+                                                  leftText: Strings.blockId,
                                                   rightText:
                                                       "0x736e345d784cf4c9",
                                                   hasIcon: true,
                                                 )
                                               : const CustomRowWithText(
-                                                  leftText: 'ID',
+                                                  leftText: Strings.blockId,
                                                   rightText:
                                                       "0x736e345d784cf4c9",
                                                   hasIcon: true,
@@ -156,11 +157,11 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                         child: CustomPadding(
                                           child: isMobile
                                               ? const CustomColumnWithText(
-                                                  leftText: 'Timestamp',
+                                                  leftText: Strings.timeStamp,
                                                   rightText: "UTC 16:32:01",
                                                 )
                                               : const CustomRowWithText(
-                                                  leftText: 'Timestamp',
+                                                  leftText: Strings.timeStamp,
                                                   rightText: "UTC 16:32:01",
                                                 ),
                                         ),
@@ -172,11 +173,11 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                         child: CustomPadding(
                                           child: isMobile
                                               ? const CustomColumnWithText(
-                                                  leftText: 'Height',
+                                                  leftText: Strings.height,
                                                   rightText: "17321",
                                                 )
                                               : const CustomRowWithText(
-                                                  leftText: 'Height',
+                                                  leftText: Strings.height,
                                                   rightText: "17321",
                                                 ),
                                         ),
@@ -188,11 +189,11 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                         child: CustomPadding(
                                           child: isMobile
                                               ? const CustomColumnWithText(
-                                                  leftText: 'Size',
+                                                  leftText: Strings.size,
                                                   rightText: "h1000",
                                                 )
                                               : const CustomRowWithText(
-                                                  leftText: 'Size',
+                                                  leftText: Strings.size,
                                                   rightText: "h1000",
                                                 ),
                                         ),
@@ -204,11 +205,11 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                         child: CustomPadding(
                                           child: isMobile
                                               ? const CustomColumnWithText(
-                                                  leftText: 'Slot',
+                                                  leftText: Strings.slot,
                                                   rightText: "12556",
                                                 )
                                               : const CustomRowWithText(
-                                                  leftText: 'Slot',
+                                                  leftText: Strings.slot,
                                                   rightText: "12556",
                                                 ),
                                         ),
@@ -220,13 +221,13 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                         child: CustomPadding(
                                           child: isMobile
                                               ? const CustomColumnWithText(
-                                                  leftText:
-                                                      'Number of Transactions',
+                                                  leftText: Strings
+                                                      .numberOfTransactions,
                                                   rightText: "131",
                                                 )
                                               : const CustomRowWithText(
-                                                  leftText:
-                                                      'Number of Transactions',
+                                                  leftText: Strings
+                                                      .numberOfTransactions,
                                                   rightText: "131",
                                                 ),
                                         ),

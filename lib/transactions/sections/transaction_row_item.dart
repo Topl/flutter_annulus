@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_details_drawer.dart';
@@ -52,6 +53,7 @@ class TransactionTableRow extends HookConsumerWidget {
                   ? 170
                   : 300,
           child: TransactionColumnText(
+            isTransactionTable: false,
             textTop: transaction.transactionId.replaceRange(
                 isTablet ? 7 : 16, transaction.transactionId.length, "..."),
             textBottom: "49 ${Strings.secAgo}",
@@ -64,6 +66,7 @@ class TransactionTableRow extends HookConsumerWidget {
         SizedBox(
           width: isResponsive ? 100 : 200,
           child: TransactionColumnText(
+            isTransactionTable: false,
             textTop: '${Strings.height}: ${transaction.block.height}',
             textBottom: '${Strings.slot}: ${transaction.block.slot}',
           ),
@@ -72,6 +75,7 @@ class TransactionTableRow extends HookConsumerWidget {
           SizedBox(
             width: isTablet ? 110 : 200,
             child: TransactionColumnText(
+              isTransactionTable: false,
               textTop: transaction.transactionType.string,
               textBottom: "",
               isBottomTextRequired: false,
@@ -81,13 +85,15 @@ class TransactionTableRow extends HookConsumerWidget {
           SizedBox(
             width: isTablet ? 90 : 200,
             child: TransactionColumnText(
+                isTransactionTable: false,
                 textTop: '${transaction.quantity} ${Strings.topl}',
                 textBottom: '${transaction.amount} ${Strings.bobs}'),
           ),
         if (!isMobile)
           SizedBox(
-            width: isTablet ? 70 : 150,
+            width: isTablet ? 110 : 150,
             child: TransactionColumnText(
+              isTransactionTable: false,
               textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
               textBottom: "",
               isBottomTextRequired: false,
@@ -96,7 +102,8 @@ class TransactionTableRow extends HookConsumerWidget {
         if (!isMobile)
           SizedBox(
               width: isTablet ? 85 : 300,
-              child: StatusButton(status: transaction.status.string)),
+              child: StatusButton(
+                  isTransactionTable: true, status: transaction.status.string)),
       ])),
     );
   }
@@ -113,9 +120,9 @@ class RowDataSource extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     final row = data[index];
-    print('row $row');
     if (index < data.length) {
       return DataRow(
           color: MaterialStateProperty.all(clr),
@@ -149,28 +156,36 @@ class RowDataSource extends DataTableSource {
                       );
               },
               child: TransactionColumnText(
-                textTop: row.transactionId,
+                isTransactionTable: true,
+                textTop: isTablet
+                    ? row.transactionId.substring(0, 9)
+                    : row.transactionId,
                 textBottom: "49 ${Strings.secAgo}",
               ),
             )),
             DataCell(TransactionColumnText(
+              isTransactionTable: true,
               textTop: '${Strings.height}: ${row.block.height}',
               textBottom: '${Strings.slot}: ${row.block.slot}',
             )),
             DataCell(TransactionColumnText(
+              isTransactionTable: true,
               textTop: row.transactionType.string,
               textBottom: "",
               isBottomTextRequired: false,
             )),
             const DataCell(TransactionColumnText(
+                isTransactionTable: true,
                 textTop: '3 ${Strings.topl}',
                 textBottom: '44 ${Strings.bobs}')),
             DataCell(TransactionColumnText(
+              isTransactionTable: true,
               textTop: '${row.transactionFee} ${Strings.feeAcronym}',
               textBottom: "",
               isBottomTextRequired: false,
             )),
-            DataCell(StatusButton(status: row.status.string)),
+            DataCell(StatusButton(
+                isTransactionTable: true, status: row.status.string)),
           ]);
     } else {
       return null;

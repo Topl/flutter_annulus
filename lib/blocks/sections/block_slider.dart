@@ -205,7 +205,7 @@ class MultipleChainText extends StatelessWidget {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
     return Text(
-      "Multiple-chain Embedding",
+      Strings.multipleChainEmbedding,
       style: isMobile ? bodySmall(context) : titleMedium(context),
     );
   }
@@ -344,7 +344,7 @@ class CustomCarousel extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      "No blocks loaded",
+                      Strings.noBlocksLoaded,
                       style: bodyMedium(context),
                     ),
                   ),
