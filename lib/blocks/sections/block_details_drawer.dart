@@ -91,7 +91,9 @@ class BlockDetailsDrawer extends HookConsumerWidget {
             : null,
         body: isMobile
             ? const BlockTabBarMobileView()
-            : BlockTabBarView(block: block),
+            : BlockTabBarView(
+                block: block
+              ),
       ),
     );
   }
