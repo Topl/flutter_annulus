@@ -10,8 +10,7 @@ import 'transactions.dart';
 
 /// This is a custom widget that shows the transaction details drawer
 class TransactionDetailsDrawer extends HookConsumerWidget {
-  const TransactionDetailsDrawer(
-      {super.key, this.transactionId, this.transaction});
+  const TransactionDetailsDrawer({super.key, this.transactionId, this.transaction});
 
   final String? transactionId;
   final Transaction? transaction;
@@ -43,25 +42,20 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(
-                    width: 172, child: CustomTextLeft(desc: 'Txn Hash/ID')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Txn Hash/ID')),
                 const SizedBox(
                   width: 24,
                 ),
                 Expanded(
-                  child: CustomTextRight(
-                      desc: transaction!.transactionId
-                          .toString()
-                          .substring(0, Numbers.textLength - 4)),
+                  child:
+                      CustomTextRight(desc: transaction!.transactionId.toString().substring(0, Numbers.textLength - 4)),
                 )
               ],
             ),
             Row(
               children: [
                 const Spacing(),
-                SizedBox(
-                    width: 172,
-                    child: CustomTextLeft(desc: transaction!.status.name)),
+                SizedBox(width: 172, child: CustomTextLeft(desc: transaction!.status.name)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -74,8 +68,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(
-                    width: 172, child: CustomTextLeft(desc: 'Block')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Block')),
                 const SizedBox(
                   width: 24,
                 ),
@@ -85,27 +78,21 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(
-                    width: 172,
-                    child: CustomTextLeft(desc: 'Broadcast Timestamp')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Broadcast Timestamp')),
                 const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(
-                    desc: transaction!.broadcastTimestamp.toString())
+                CustomTextRight(desc: transaction!.broadcastTimestamp.toString())
               ],
             ),
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(
-                    width: 172,
-                    child: CustomTextLeft(desc: 'Confirmed Timestamp')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Confirmed Timestamp')),
                 const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(
-                    desc: transaction!.confirmedTimestamp.toString())
+                CustomTextRight(desc: transaction!.confirmedTimestamp.toString())
               ],
             ),
             const SizedBox(
@@ -129,15 +116,13 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(
-                    desc: transaction!.transactionType.string.toString())
+                CustomTextRight(desc: transaction!.transactionType.string.toString())
               ],
             ),
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(
-                    width: 172, child: CustomTextLeft(desc: 'Amount')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Amount')),
                 const SizedBox(
                   width: 24,
                 ),
@@ -147,8 +132,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(
-                    width: 172, child: CustomTextLeft(desc: 'Txn Fee')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Txn Fee')),
                 const SizedBox(
                   width: 24,
                 ),
@@ -188,49 +172,6 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             ),
             const SizedBox(
               height: 10,
-            ),
-            Row(
-              children: [
-                const Spacing(),
-                const SizedBox(
-                    width: 172, child: CustomTextLeft(desc: 'Size of Txn')),
-                const SizedBox(
-                  width: 24,
-                ),
-                CustomTextRight(desc: transaction!.transactionSize.toString())
-              ],
-            ),
-            Row(
-              children: [
-                const Spacing(),
-                const SizedBox(
-                    width: 172, child: CustomTextLeft(desc: 'Proposition')),
-                const SizedBox(
-                  width: 24,
-                ),
-                CustomTextRight(desc: transaction!.proposition)
-              ],
-            ),
-            Row(
-              children: [
-                const Spacing(),
-                const SizedBox(
-                    width: 172, child: CustomTextLeft(desc: 'Quantity')),
-                const SizedBox(
-                  width: 24,
-                ),
-                CustomTextRight(desc: transaction!.quantity.toString())
-              ],
-            ),
-            Row(
-              children: [
-                const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Name')),
-                const SizedBox(
-                  width: 24,
-                ),
-                CustomTextRight(desc: transaction!.name)
-              ],
             ),
           ],
         ),
