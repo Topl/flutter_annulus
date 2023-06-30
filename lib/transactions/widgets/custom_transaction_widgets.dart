@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,15 +8,21 @@ import 'package:responsive_framework/responsive_row_column.dart';
 
 import '../../chain/sections/add_new_network.dart';
 import '../../shared/utils/theme_color.dart';
+import '../../shared/widgets/copy_to_clipboard.dart';
 import '../sections/transactions.dart';
+import 'package:flutter/services.dart';
 
 /// Custom Status Button Widget
 class StatusButton extends ConsumerWidget {
   const StatusButton(
-      {super.key, this.status = "pending", this.hideArrowIcon = true});
+      {super.key,
+      this.status = "pending",
+      this.hideArrowIcon = true,
+      this.isTransactionTable = true});
 
   final String status;
   final bool hideArrowIcon;
+  final bool isTransactionTable;
 
   /// Function to return color based on status
   int _color(String statusSelected) {
@@ -46,12 +53,15 @@ class StatusButton extends ConsumerWidget {
 
     return Padding(
       padding: EdgeInsets.only(
-          left: hideArrowIcon ? 40.0 : 0, bottom: 16, right: 40, top: 16),
+          left: hideArrowIcon && !isTablet && !isTransactionTable ? 40.0 : 0,
+          bottom: 16,
+          right: 40,
+          top: 16),
       child: Row(
         children: [
           SizedBox(
             height: 40,
-            width: isTablet ? 130 : 160,
+            width: isTablet ? 120 : 160,
             child: Expanded(
               child: TextButton(
                 onPressed: () {},
@@ -76,8 +86,8 @@ class StatusButton extends ConsumerWidget {
                       child: Text(
                         status,
                         style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: "Rational Display",
+                          fontSize: isTablet ? 10 : 14,
+                          fontFamily: Strings.rationalDisplayFont,
                           fontWeight: FontWeight.w500,
                           color: Color(_color(status)),
                         ),
@@ -88,8 +98,8 @@ class StatusButton extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(
-            width: 42.0,
+          SizedBox(
+            width: isTablet ? 3.0 : 42.0,
           ),
           hideArrowIcon
               ? Icon(
@@ -129,18 +139,24 @@ class TransactionColumnText extends ConsumerWidget {
     required this.textTop,
     required this.textBottom,
     this.isBottomTextRequired = true,
+    this.isTransactionTable = false,
   });
 
   final String textTop;
   final String textBottom;
   final bool isBottomTextRequired;
+  final bool isTransactionTable;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     return Padding(
-      padding: EdgeInsets.only(left: isMobile ? 0 : 40.0, bottom: 16, top: 16),
+      padding: EdgeInsets.only(
+          left: isMobile || isTablet && isTransactionTable ? 0 : 40.0,
+          bottom: 16,
+          top: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -325,7 +341,18 @@ class CustomRowWithText extends StatelessWidget {
                     ? const EdgeInsets.only(
                         top: 0, bottom: 0, left: 10, right: 0)
                     : EdgeInsets.zero,
-                child: hasIcon ? const Icon(Icons.copy) : null),
+                child: hasIcon
+                    ? GestureDetector(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: rightText));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Copied to Clipboard'),
+                            ),
+                          );
+                        },
+                        child: const Icon(Icons.copy))
+                    : null),
           ],
         ),
       ],
@@ -371,7 +398,7 @@ class CustomColumnWithText extends StatelessWidget {
                     ? const EdgeInsets.only(
                         top: 0, bottom: 0, left: 10, right: 0)
                     : EdgeInsets.zero,
-                child: hasIcon ? const Icon(Icons.copy) : null),
+                child: hasIcon ? CopyToClipboard(rightText: rightText) : null),
           ],
         ),
       ],
