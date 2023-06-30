@@ -84,17 +84,14 @@ class TransactionTableRow extends HookConsumerWidget {
               isBottomTextRequired: false,
             ),
           ),
-        if (isMobile)
-          const SizedBox(
-            width: 30,
+        if (!isMobile)
+          SizedBox(
+            width: isTablet ? 90 : 200,
+            child: TransactionColumnText(
+                isTransactionTable: false,
+                textTop: '${transaction.quantity} ${Strings.topl}',
+                textBottom: '${transaction.amount} ${Strings.bobs}'),
           ),
-        SizedBox(
-          width: isResponsive ? 100 : 200,
-          child: TransactionColumnText(
-              isTransactionTable: false,
-              textTop: '${transaction.quantity} ${Strings.topl}',
-              textBottom: '${transaction.amount} ${Strings.bobs}'),
-        ),
         if (!isMobile)
           SizedBox(
             width: isTablet ? 110 : 150,
