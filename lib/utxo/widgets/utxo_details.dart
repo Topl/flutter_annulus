@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
@@ -61,7 +62,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                                 width: 8,
                               ),
                               Text(
-                                'Back',
+                                Strings.backText,
                                 style: bodyMedium(context),
                               ),
                             ],
@@ -95,7 +96,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
-                                              leftText: 'Txn Hash/ID',
+                                              leftText: Strings.transactionHash,
                                               rightText:
                                                   '0x5be9d701Byd24neQfY1vXa987a'
                                                       .toString()
@@ -106,7 +107,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                                               hasIcon: true,
                                             )
                                           : const CustomRowWithText(
-                                              leftText: 'Txn Hash/ID',
+                                              leftText: Strings.transactionHash,
                                               rightText:
                                                   '0x5be9d701Byd24neQfY1vXa987a',
                                               hasIcon: true,
@@ -118,8 +119,8 @@ class UTxODetailsPage extends HookConsumerWidget {
                               ResponsiveRowColumnItem(
                                   rowFlex: 1,
                                   child: CustomPadding(
-                                    child:
-                                        CustomStatusWidget(status: 'Confirmed'),
+                                    child: CustomStatusWidget(
+                                        status: Strings.statusConfirmed),
                                   )),
                             ],
                           ),
@@ -130,7 +131,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
-                                              leftText: 'Sender Address',
+                                              leftText: Strings.senderAddress,
                                               rightText:
                                                   '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'
                                                       .toString()
@@ -139,7 +140,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                                                           Numbers.textLength -
                                                               4))
                                           : const CustomRowWithText(
-                                              leftText: 'Sender Address',
+                                              leftText: Strings.senderAddress,
                                               rightText:
                                                   '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
                                             ))),
@@ -152,7 +153,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
-                                              leftText: 'Receiver Address',
+                                              leftText: Strings.receiverAddress,
                                               rightText:
                                                   '7bY6Dne54qMU12cz3oPF4yVx5aG6a'
                                                       .toString()
@@ -162,7 +163,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                                                               4),
                                             )
                                           : const CustomRowWithText(
-                                              leftText: 'Receiver Address',
+                                              leftText: Strings.receiverAddress,
                                               rightText:
                                                   '7bY6Dne54qMU12cz3oPF4yVx5aG6a',
                                             ))),
@@ -175,7 +176,8 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
-                                              leftText: 'Change back address',
+                                              leftText:
+                                                  Strings.changeBackAddress,
                                               rightText:
                                                   '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'
                                                       .toString()
@@ -184,7 +186,8 @@ class UTxODetailsPage extends HookConsumerWidget {
                                                           Numbers.textLength -
                                                               4))
                                           : const CustomRowWithText(
-                                              leftText: 'Change back address',
+                                              leftText:
+                                                  Strings.changeBackAddress,
                                               rightText:
                                                   '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
                                             ))),
@@ -207,10 +210,10 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   child: CustomPadding(
                                       child: isMobile
                                           ? const CustomColumnWithText(
-                                              leftText: 'Input amount',
+                                              leftText: Strings.inputAmount,
                                               rightText: '5.5 TOPL')
                                           : const CustomRowWithText(
-                                              leftText: 'Input amount',
+                                              leftText: Strings.inputAmount,
                                               rightText: '5.5 TOPL',
                                             ))),
                             ],
@@ -222,10 +225,10 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   child: CustomPadding(
                                       child: isMobile
                                           ? const CustomColumnWithText(
-                                              leftText: 'Input amount',
+                                              leftText: Strings.inputAmount,
                                               rightText: '5.5 TOPL')
                                           : const CustomRowWithText(
-                                              leftText: 'Input amount',
+                                              leftText: Strings.inputAmount,
                                               rightText: '1.23 TOPL',
                                             ))),
                             ],
@@ -242,10 +245,10 @@ class UTxODetailsPage extends HookConsumerWidget {
                                     child: CustomPadding(
                                         child: isMobile
                                             ? const CustomColumnWithText(
-                                                leftText: 'Output amount',
+                                                leftText: Strings.outputAmount,
                                                 rightText: '6 TOPL')
                                             : const CustomRowWithText(
-                                                leftText: 'Output amount',
+                                                leftText: Strings.outputAmount,
                                                 rightText: '6 TOPL',
                                               ))),
                               ],
@@ -257,10 +260,10 @@ class UTxODetailsPage extends HookConsumerWidget {
                                     child: CustomPadding(
                                         child: isMobile
                                             ? const CustomColumnWithText(
-                                                leftText: 'Output amount',
+                                                leftText: Strings.outputAmount,
                                                 rightText: '0.63 TOPL')
                                             : const CustomRowWithText(
-                                                leftText: 'Output amount',
+                                                leftText: Strings.outputAmount,
                                                 rightText: '0.63 TOPL',
                                               ))),
                               ],
@@ -272,10 +275,10 @@ class UTxODetailsPage extends HookConsumerWidget {
                                     child: CustomPadding(
                                         child: isMobile
                                             ? const CustomColumnWithText(
-                                                leftText: 'Fee amount',
+                                                leftText: Strings.feeAmount,
                                                 rightText: '0.1 TOPL')
                                             : const CustomRowWithText(
-                                                leftText: 'Fee amount',
+                                                leftText: Strings.feeAmount,
                                                 rightText: '0.1 TOPL',
                                               ))),
                               ],

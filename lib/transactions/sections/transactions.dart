@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
@@ -92,11 +93,8 @@ class Transactions extends HookConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("See All Transactions",
-                      textAlign: TextAlign.center,
-                      style: 
-                      bodyMedium(context)
-                      ),
+                  Text(Strings.seeAllTransactions,
+                      textAlign: TextAlign.center, style: bodyMedium(context)),
                   const SizedBox(width: 10.0),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -140,9 +138,7 @@ class CustomTextRight extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-   
-    return Text(desc,
-        style: bodyMedium(context));
+    return Text(desc, style: bodyMedium(context));
   }
 }
 
@@ -156,7 +152,6 @@ class CustomTextLeft extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(desc,
-        style: labelLarge(context));
+    return Text(desc, style: labelLarge(context));
   }
 }
