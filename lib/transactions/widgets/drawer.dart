@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 
 class TransactionDrawer extends StatefulWidget {
@@ -20,14 +21,14 @@ class _TransactionDrawerState extends State<TransactionDrawer> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Modal Side sheet Demo"),
+            const Text(Strings.modalSideSheetDemo),
             ElevatedButton(
                 onPressed: () {
                   // setState(() {
                   //   show = !show;
                   // });
                 },
-                child: const Text("Show Standard Side Sheet")),
+                child: const Text(Strings.standardSideSheet)),
             ElevatedButton(
                 onPressed: () {
                   showModalSideSheet(

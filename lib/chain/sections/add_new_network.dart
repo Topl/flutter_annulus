@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,7 +10,8 @@ import '../models/currency.dart';
 
 /// A widget that displays a dropdown button for selecting a chain name.
 class AddNewNetworkContainer extends StatefulWidget {
-  const AddNewNetworkContainer({Key? key, required this.colorTheme}) : super(key: key);
+  const AddNewNetworkContainer({Key? key, required this.colorTheme})
+      : super(key: key);
   final ThemeMode colorTheme;
   @override
   _AddNewNetworkState createState() => _AddNewNetworkState();
@@ -23,7 +25,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
   bool validate = false;
 
   /// selectedCurrencyValue is used to store the selected value from the dropdown
-  String? selectedCurrencyValue = 'LVL';
+  String? selectedCurrencyValue = Strings.currencyValue;
 
   final TextEditingController textEditingController = TextEditingController();
   final toast = FToast();
@@ -39,14 +41,14 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     return Container(
-      decoration: BoxDecoration(color: getSelectedColor(widget.colorTheme, 0xFFFFFFFF, 0xFF282A2C)),
+      decoration: BoxDecoration(
+          color: getSelectedColor(widget.colorTheme, 0xFFFFFFFF, 0xFF282A2C)),
       child: Padding(
         padding: EdgeInsets.all(isMobile ? 16.0 : 40.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Add New Network',
-                style: headlineLarge(context)),
+            Text(Strings.addNewNetwork, style: headlineLarge(context)),
             const SizedBox(
               height: 48,
             ),
@@ -57,7 +59,8 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                 borderRadius: BorderRadius.circular(8),
                 color: const Color.fromRGBO(112, 64, 236, 0.04),
                 border: Border.all(
-                  color: getSelectedColor(widget.colorTheme, 0xFFE0E0E0, 0xFF858E8E),
+                  color: getSelectedColor(
+                      widget.colorTheme, 0xFFE0E0E0, 0xFF858E8E),
                 ),
               ),
               child: Row(
@@ -65,20 +68,21 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                   const SizedBox(width: 16),
                   Icon(
                     Icons.warning_amber,
-                    color: getSelectedColor(widget.colorTheme, 0xFF7040EC, 0xFF858E8E),
+                    color: getSelectedColor(
+                        widget.colorTheme, 0xFF7040EC, 0xFF858E8E),
                     size: 24,
                   ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: SizedBox(
                       width: 450,
-                      child: Text(
-                          'Some network providers may monitor your network activity. Please add only trusted networks.',
+                      child: Text(Strings.networkInfoMessage,
                           style: TextStyle(
                             fontSize: 14,
-                            fontFamily: 'Rational Display',
+                            fontFamily: Strings.rationalDisplayFont,
                             fontWeight: FontWeight.w300,
-                            color: getSelectedColor(widget.colorTheme, 0xFF7040EC, 0xFF858E8E),
+                            color: getSelectedColor(
+                                widget.colorTheme, 0xFF7040EC, 0xFF858E8E),
                           )),
                     ),
                   ),
@@ -89,11 +93,11 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
               height: 48,
             ),
             TextField(
-              controller: TextEditingController(text: 'Topl Mainnet'),
+              controller: TextEditingController(text: Strings.toplMainet),
               enabled: false,
               style: customTextFieldStyle(),
               decoration: InputDecoration(
-                labelText: 'Network Name',
+                labelText: Strings.networkName,
                 labelStyle: customTextStyle(),
                 border: customOutlineInputBorder(),
                 enabledBorder: customOutlineInputBorder(),
@@ -107,7 +111,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
               controller: textEditingController,
               style: customTextFieldStyle(),
               decoration: InputDecoration(
-                labelText: 'New RPC URL',
+                labelText: Strings.rpcUrl,
                 labelStyle: bodySmall(context),
                 border: customOutlineInputBorder(),
                 enabledBorder: customOutlineInputBorder(),
@@ -122,8 +126,11 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    validate ? "This field is required" : '',
-                    style: const TextStyle(fontSize: 14, fontFamily: 'Rational Display', color: Color(0xFFF07575)),
+                    validate ? Strings.requiredField : '',
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontFamily: Strings.rationalDisplayFont,
+                        color: Color(0xFFF07575)),
                   ),
                 ],
               ),
@@ -132,12 +139,13 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
               height: 16,
             ),
             TextField(
-              controller: TextEditingController(text: '192.158.0.0'),
+              controller:
+                  TextEditingController(text: Strings.chainIdPlaceHolder),
               style: customTextFieldStyle(),
               decoration: InputDecoration(
-                labelText: 'Chain ID',
+                labelText: Strings.chainId,
                 suffixIcon: Tooltip(
-                  message: 'The Chain ID is a unique identifier for the network.',
+                  message: Strings.chainIdIdentifierMsg,
                   showDuration: const Duration(seconds: 10),
                   decoration: BoxDecoration(
                     color: Colors.blue.withOpacity(0.9),
@@ -159,10 +167,10 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
             ),
             DropdownButton2(
               hint: const Text(
-                'Select a Network',
+                Strings.selectNetwork,
                 style: TextStyle(
                   fontSize: 16,
-                  fontFamily: 'Rational Display',
+                  fontFamily: Strings.rationalDisplayFont,
                   color: Color(0xFF858E8E),
                 ),
               ),
@@ -177,15 +185,18 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
                   border: Border.all(
-                    color: getSelectedColor(widget.colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
+                    color: getSelectedColor(
+                        widget.colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
                   ),
-                  color: getSelectedColor(widget.colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                  color: getSelectedColor(
+                      widget.colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                 ),
               ),
               dropdownStyleData: DropdownStyleData(
                 maxHeight: 200,
                 decoration: BoxDecoration(
-                  color: getSelectedColor(widget.colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                  color: getSelectedColor(
+                      widget.colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(8.0),
                     bottomRight: Radius.circular(8.0),
@@ -233,7 +244,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
               controller: TextEditingController(text: ''),
               style: customTextFieldStyle(),
               decoration: InputDecoration(
-                hintText: 'Block Explorer URL (Optional)',
+                hintText: Strings.blockExplorerUrl,
                 hintStyle: customTextStyle(),
                 border: customOutlineInputBorder(),
                 enabledBorder: customOutlineInputBorder(),
@@ -257,10 +268,10 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Cancel',
+                        child: const Text(Strings.cancelText,
                             style: TextStyle(
                               fontSize: 16,
-                              fontFamily: 'Rational Display',
+                              fontFamily: Strings.rationalDisplayFont,
                               color: Color(0xFF858E8E),
                             )),
                       ),
@@ -276,9 +287,13 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                       child: ElevatedButton(
                         onPressed: () {
                           toast.showToast(
-                              child: CustomToast(widget: widget, isSuccess: true, cancel: () => Fluttertoast.cancel()),
+                              child: CustomToast(
+                                  widget: widget,
+                                  isSuccess: true,
+                                  cancel: () => Fluttertoast.cancel()),
                               toastDuration: const Duration(seconds: 4),
-                              positionedToastBuilder: (context, child) => Positioned(
+                              positionedToastBuilder: (context, child) =>
+                                  Positioned(
                                     top: 30,
                                     left: isTablet ? 70 : 0,
                                     right: 0,
@@ -286,17 +301,19 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                                   ));
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF0DC8D4)),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFF0DC8D4)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
                           ),
                         ),
-                        child: const Text('Add',
+                        child: const Text(Strings.addText,
                             style: TextStyle(
                               fontSize: 16,
-                              fontFamily: 'Rational Display',
+                              fontFamily: Strings.rationalDisplayFont,
                               color: Color(0xFFFEFEFE),
                             )),
                       ),
@@ -314,14 +331,14 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
   TextStyle customTextFieldStyle() {
     return TextStyle(
         fontSize: 16,
-        fontFamily: 'Rational Display',
+        fontFamily: Strings.rationalDisplayFont,
         color: getSelectedColor(widget.colorTheme, 0xFF535757, 0xFF858E8E));
   }
 
   TextStyle customTextStyle() {
     return const TextStyle(
       fontSize: 16,
-      fontFamily: 'Rational Display',
+      fontFamily: Strings.rationalDisplayFont,
       color: Color(0xFF858E8E),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 ThemeData lightTheme({
@@ -102,7 +103,7 @@ TextTheme _textTheme({
           fontSize: isMobile ? 18 : 30,
           fontWeight: FontWeight.w600,
           color: textColor,
-          fontFamily: "Rational Display",
+          fontFamily: Strings.rationalDisplayFont,
         ),
 
         /// Title
@@ -110,18 +111,19 @@ TextTheme _textTheme({
           color: textColor2,
           fontWeight: FontWeight.w600,
           fontSize: 24,
-          fontFamily: "Rational Display",
+          fontFamily: Strings.rationalDisplayFont,
         ),
         titleMedium: TextStyle(
           color: altTextColor,
           fontSize: 16,
-          fontFamily: "Rational Display",
+          fontFamily: Strings.rationalDisplayFont,
         ),
         titleSmall: TextStyle(
           color: textColor,
           fontWeight: FontWeight.w500,
           fontSize: 16,
-          fontFamily: 'Rational Display Medium',
+          fontFamily:
+              '${Strings.rationalDisplayFont}${Strings.rationalDisplayFontMedium}',
           fontStyle: FontStyle.normal,
         ),
 
@@ -130,7 +132,7 @@ TextTheme _textTheme({
           fontSize: 14.0,
           fontWeight: FontWeight.w600,
           color: altTextColor,
-          fontFamily: "Rational Display",
+          fontFamily: Strings.rationalDisplayFont,
         ),
 
         /// Body
@@ -138,13 +140,13 @@ TextTheme _textTheme({
           fontSize: 16,
           color: altTextColor2,
           fontWeight: FontWeight.w300,
-          fontFamily: "Rational Display",
+          fontFamily: Strings.rationalDisplayFont,
         ),
         bodySmall: TextStyle(
           color: altTextColor,
           fontWeight: FontWeight.w400,
           fontSize: titleFontSize,
-          fontFamily: 'Rational Display Light',
+          fontFamily: '${Strings.rationalDisplayFont} Light',
           fontStyle: FontStyle.normal,
         ),
       );

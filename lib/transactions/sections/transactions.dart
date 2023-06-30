@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
@@ -19,7 +20,8 @@ class Transactions extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<Transaction>> transactionsInfo = ref.watch(transactionsProvider);
+    final AsyncValue<List<Transaction>> transactionsInfo =
+        ref.watch(transactionsProvider);
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
@@ -40,14 +42,21 @@ class Transactions extends HookConsumerWidget {
 
     return transactionsInfo.when(
       data: (transactions) => Container(
-        margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 16.0 : 40.0, right: isMobile ? 16.0 : 40.0),
-        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 0.0, right: 0.0),
+        margin: EdgeInsets.only(
+            top: 20.0,
+            bottom: 20.0,
+            left: isMobile ? 16.0 : 40.0,
+            right: isMobile ? 16.0 : 40.0),
+        padding: const EdgeInsets.only(
+            top: 20.0, bottom: 20.0, left: 0.0, right: 0.0),
         decoration: BoxDecoration(
           color: getSelectedColor(colorTheme, 0xFFFFFFFF, 0xFF282A2C),
           borderRadius: BorderRadius.circular(!isMobile ? 10.0 : 0.0),
           border: !isMobile
               ? Border.all(
-                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B), style: BorderStyle.solid, width: 1.0)
+                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                  style: BorderStyle.solid,
+                  width: 1.0)
               : null,
         ),
         child: Column(
@@ -66,11 +75,13 @@ class Transactions extends HookConsumerWidget {
                     .map(
                       (columnHeader) => DataColumn(
                         label: Padding(
-                          padding: EdgeInsets.only(left: isMobile ? 0 : 40.0, bottom: 16, top: 16),
+                          padding: EdgeInsets.only(
+                              left: isMobile ? 0 : 40.0, bottom: 16, top: 16),
                           child: Text(
                             columnHeader,
                             style: TextStyle(
-                              color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFFE7E8E8),
+                              color: getSelectedColor(
+                                  colorTheme, 0xFF4B4B4B, 0xFFE7E8E8),
                               fontSize: 14.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -105,15 +116,19 @@ class Transactions extends HookConsumerWidget {
                         cells: [
                           DataCell(
                             TransactionColumnText(
-                              textTop: transaction.transactionId
-                                  .replaceRange(isTablet ? 7 : 16, transaction.transactionId.length, "..."),
+                              textTop: transaction.transactionId.replaceRange(
+                                  isTablet ? 7 : 16,
+                                  transaction.transactionId.length,
+                                  "..."),
                               textBottom: "49 ${Strings.secAgo}",
                             ),
                           ),
                           DataCell(
                             TransactionColumnText(
-                              textTop: '${Strings.height}: ${transaction.block.height}',
-                              textBottom: '${Strings.slot}: ${transaction.block.slot}',
+                              textTop:
+                                  '${Strings.height}: ${transaction.block.height}',
+                              textBottom:
+                                  '${Strings.slot}: ${transaction.block.slot}',
                             ),
                           ),
                           if (!isMobile)
@@ -127,14 +142,17 @@ class Transactions extends HookConsumerWidget {
                           if (!isMobile)
                             DataCell(
                               TransactionColumnText(
-                                textTop: '${transaction.quantity} ${Strings.topl}',
-                                textBottom: '${transaction.amount} ${Strings.bobs}',
+                                textTop:
+                                    '${transaction.quantity} ${Strings.topl}',
+                                textBottom:
+                                    '${transaction.amount} ${Strings.bobs}',
                               ),
                             ),
                           if (!isMobile)
                             DataCell(
                               TransactionColumnText(
-                                textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
+                                textTop:
+                                    '${transaction.transactionFee} ${Strings.feeAcronym}',
                                 textBottom: "",
                                 isBottomTextRequired: false,
                               ),
@@ -160,7 +178,8 @@ class Transactions extends HookConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("See All Transactions", textAlign: TextAlign.center, style: bodyMedium(context)),
+                  Text(Strings.seeAllTransactions,
+                      textAlign: TextAlign.center, style: bodyMedium(context)),
                   const SizedBox(width: 10.0),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -173,7 +192,8 @@ class Transactions extends HookConsumerWidget {
           ],
         ),
       ),
-      error: (error, stack) => const Text('Oops, something unexpected happened'),
+      error: (error, stack) =>
+          const Text('Oops, something unexpected happened'),
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),

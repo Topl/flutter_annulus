@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,14 +8,21 @@ import 'package:responsive_framework/responsive_row_column.dart';
 
 import '../../chain/sections/add_new_network.dart';
 import '../../shared/utils/theme_color.dart';
+import '../../shared/widgets/copy_to_clipboard.dart';
 import '../sections/transactions.dart';
+import 'package:flutter/services.dart';
 
 /// Custom Status Button Widget
 class StatusButton extends ConsumerWidget {
-  const StatusButton({super.key, this.status = "pending", this.hideArrowIcon = true});
+  const StatusButton(
+      {super.key,
+      this.status = "pending",
+      this.hideArrowIcon = true,
+      this.isTransactionTable = true});
 
   final String status;
   final bool hideArrowIcon;
+  final bool isTransactionTable;
 
   /// Function to return color based on status
   int _color(String statusSelected) {
@@ -44,12 +52,16 @@ class StatusButton extends ConsumerWidget {
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     return Padding(
-      padding: EdgeInsets.only(left: hideArrowIcon ? 40.0 : 0, bottom: 16, right: 40, top: 16),
+      padding: EdgeInsets.only(
+          left: hideArrowIcon && !isTablet && !isTransactionTable ? 40.0 : 0,
+          bottom: 16,
+          right: 40,
+          top: 16),
       child: Row(
         children: [
           SizedBox(
             height: 40,
-            width: isTablet ? 130 : 160,
+            width: isTablet ? 120 : 160,
             child: Expanded(
               child: TextButton(
                 onPressed: () {},
@@ -70,13 +82,15 @@ class StatusButton extends ConsumerWidget {
                     const SizedBox(
                       width: 8.0,
                     ),
-                    Text(
-                      status,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Rational Display",
-                        fontWeight: FontWeight.w500,
-                        color: Color(_color(status)),
+                    Expanded(
+                      child: Text(
+                        status,
+                        style: TextStyle(
+                          fontSize: isTablet ? 10 : 14,
+                          fontFamily: Strings.rationalDisplayFont,
+                          fontWeight: FontWeight.w500,
+                          color: Color(_color(status)),
+                        ),
                       ),
                     ),
                   ],
@@ -84,8 +98,8 @@ class StatusButton extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(
-            width: 42.0,
+          SizedBox(
+            width: isTablet ? 3.0 : 42.0,
           ),
           hideArrowIcon
               ? Icon(
@@ -125,18 +139,24 @@ class TransactionColumnText extends ConsumerWidget {
     required this.textTop,
     required this.textBottom,
     this.isBottomTextRequired = true,
+    this.isTransactionTable = false,
   });
 
   final String textTop;
   final String textBottom;
   final bool isBottomTextRequired;
+  final bool isTransactionTable;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     return Padding(
-      padding: EdgeInsets.only(left: isMobile ? 0 : 40.0, bottom: 16, top: 16),
+      padding: EdgeInsets.only(
+          left: isMobile || isTablet && isTransactionTable ? 0 : 40.0,
+          bottom: 16,
+          top: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -170,7 +190,11 @@ class CustomContainer extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     return Container(
-      margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 20.0 : 40.0, right: isMobile ? 20.0 : 40.0),
+      margin: EdgeInsets.only(
+          top: 20.0,
+          bottom: 20.0,
+          left: isMobile ? 20.0 : 40.0,
+          right: isMobile ? 20.0 : 40.0),
       padding: const EdgeInsets.only(
         top: 20.0,
         bottom: 30.0,
@@ -204,7 +228,9 @@ class CustomStatusWidget extends StatelessWidget {
 // ResponsiveColumn
 
     return ResponsiveRowColumn(
-        layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
+        layout: isMobile
+            ? ResponsiveRowColumnType.COLUMN
+            : ResponsiveRowColumnType.ROW,
         children: [
           ResponsiveRowColumnItem(
               child: isMobile
@@ -260,7 +286,8 @@ class CustomResponsiveRowColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
-    final layout = isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW;
+    final layout =
+        isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW;
 
     return ResponsiveRowColumn(
       layout: layout,
@@ -279,7 +306,11 @@ class CustomRowWithText extends StatelessWidget {
   final String rightText;
   final String leftText;
   final bool hasIcon;
-  const CustomRowWithText({Key? key, required this.leftText, required this.rightText, this.hasIcon = false})
+  const CustomRowWithText(
+      {Key? key,
+      required this.leftText,
+      required this.rightText,
+      this.hasIcon = false})
       : super(key: key);
 
   @override
@@ -300,8 +331,22 @@ class CustomRowWithText extends StatelessWidget {
           children: [
             CustomTextRight(desc: rightText),
             Padding(
-                padding: !isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 0) : EdgeInsets.zero,
-                child: hasIcon ? const Icon(Icons.copy) : null),
+                padding: !isMobile
+                    ? const EdgeInsets.only(
+                        top: 0, bottom: 0, left: 10, right: 0)
+                    : EdgeInsets.zero,
+                child: hasIcon
+                    ? GestureDetector(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: rightText));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Copied to Clipboard'),
+                            ),
+                          );
+                        },
+                        child: const Icon(Icons.copy))
+                    : null),
           ],
         ),
       ],
@@ -343,8 +388,11 @@ class CustomColumnWithText extends StatelessWidget {
           children: [
             CustomTextRight(desc: rightText),
             Padding(
-                padding: isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 0) : EdgeInsets.zero,
-                child: hasIcon ? const Icon(Icons.copy) : null),
+                padding: isMobile
+                    ? const EdgeInsets.only(
+                        top: 0, bottom: 0, left: 10, right: 0)
+                    : EdgeInsets.zero,
+                child: hasIcon ? CopyToClipboard(rightText: rightText) : null),
           ],
         ),
       ],
@@ -366,7 +414,9 @@ class CustomPadding extends StatelessWidget {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
     return Padding(
-      padding: isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10) : EdgeInsets.zero,
+      padding: isMobile
+          ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10)
+          : EdgeInsets.zero,
       child: child,
     );
   }

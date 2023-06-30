@@ -34,7 +34,7 @@ class CustomTabBar extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    "Back",
+                    Strings.backText,
                     style: bodyMedium(context),
                   ),
                 ],

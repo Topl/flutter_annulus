@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_details_drawer.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
@@ -98,21 +99,20 @@ class BlockView extends ConsumerWidget {
                     const SizedBox(
                       height: 16,
                     ),
-                    Text(block.height.toString(),
-                        style: titleLarge(context)),
-                    const BlockSmallText(text: '12 sec ago'),
+                    Text(block.height.toString(), style: titleLarge(context)),
+                    const BlockSmallText(text: '12 ${Strings.secAgo}'),
                     const SizedBox(
                       height: 8,
                     ),
                     BlockHeaderText(text: block.epoch.toString()),
-                    const BlockSmallText(text: 'Epoch'),
+                    const BlockSmallText(text: Strings.epoch),
                     const SizedBox(
                       height: 8,
                     ),
                     BlockHeaderText(
                         text: block.header
                             .replaceRange(7, block.header.length, '...')),
-                    const BlockSmallText(text: 'Header'),
+                    const BlockSmallText(text: Strings.header),
                     const SizedBox(
                       height: 8,
                     ),
@@ -121,7 +121,7 @@ class BlockView extends ConsumerWidget {
                           .toString()
                           .substring(11, 19),
                     ),
-                    const BlockSmallText(text: 'UTC'),
+                    const BlockSmallText(text: Strings.utc),
                   ]))
           //cardChild,
           ),
