@@ -89,72 +89,70 @@ class Footer extends HookConsumerWidget {
             ),
             SizedBox(
               width: 312,
-              child: Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      Strings.footerColumn5Header,
-                      style: TextStyle(
-                          color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFC0C4C4),
-                          fontSize: 16,
-                          fontFamily: 'Rational Display',
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 14,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            width: 202,
-                            height: 40,
-                            child: TextField(
-                              controller: TextEditingController(text: ''),
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                                      borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
-                                  hintText: Strings.email),
-                            ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    Strings.footerColumn5Header,
+                    style: TextStyle(
+                        color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFC0C4C4),
+                        fontSize: 16,
+                        fontFamily: 'Rational Display',
+                        fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          width: 202,
+                          height: 40,
+                          child: TextField(
+                            controller: TextEditingController(text: ''),
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                                    borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
+                                hintText: Strings.email),
                           ),
                         ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        SizedBox(
-                          height: 40,
-                          width: 102,
-                          child: TextButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648))),
-                              onPressed: null,
-                              child: Text(Strings.subscribe,
-                                  style: TextStyle(
-                                      color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
-                                      fontSize: 14,
-                                      fontFamily: 'Rational Display'))),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 80,
-                    ),
-                    const RowIconsFooter(
-                      svgIcons: [
-                        'assets/icons/linkedin.svg',
-                        'assets/icons/github.svg',
-                        'assets/icons/instagram.svg',
-                        'assets/icons/facebook.svg',
-                        'assets/icons/medium.svg',
-                        'assets/icons/twitter.svg',
-                      ],
-                    )
-                  ],
-                ),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      SizedBox(
+                        height: 40,
+                        width: 102,
+                        child: TextButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648))),
+                            onPressed: null,
+                            child: Text(Strings.subscribe,
+                                style: TextStyle(
+                                    color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
+                                    fontSize: 14,
+                                    fontFamily: 'Rational Display'))),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 80,
+                  ),
+                  const RowIconsFooter(
+                    svgIcons: [
+                      'assets/icons/linkedin.svg',
+                      'assets/icons/github.svg',
+                      'assets/icons/instagram.svg',
+                      'assets/icons/facebook.svg',
+                      'assets/icons/medium.svg',
+                      'assets/icons/twitter.svg',
+                    ],
+                  )
+                ],
               ),
             ),
           ],
