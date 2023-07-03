@@ -214,43 +214,41 @@ class CustomSearchBar extends HookConsumerWidget {
       overlay.insert(entry!);
     }
 
-    return Expanded(
-      child: CompositedTransformTarget(
-        link: layerLink,
-        child: TextField(
-          style: bodyMedium(context),
-          controller: searchController,
-          onSubmitted: (query) => onSearch(),
-          onChanged: (value) {
-            showSuggestions.value = value.isNotEmpty;
-            final valueId = int.tryParse(value);
+    return CompositedTransformTarget(
+      link: layerLink,
+      child: TextField(
+        style: bodyMedium(context),
+        controller: searchController,
+        onSubmitted: (query) => onSearch(),
+        onChanged: (value) {
+          showSuggestions.value = value.isNotEmpty;
+          final valueId = int.tryParse(value);
 
-            if (valueId != null) {
-              searchByIdAndPrintResults(valueId);
-            }
-            showOverlay();
-          },
-          decoration: InputDecoration(
-            hintText: 'Search by blocks, transactions, or UTxOs',
-            hintStyle: bodyMedium(context),
-            prefixIcon: Icon(
-              Icons.search,
+          if (valueId != null) {
+            searchByIdAndPrintResults(valueId);
+          }
+          showOverlay();
+        },
+        decoration: InputDecoration(
+          hintText: 'Search by blocks, transactions, or UTxOs',
+          hintStyle: bodyMedium(context),
+          prefixIcon: Icon(
+            Icons.search,
+            color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
               color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
+              width: 1.0,
             ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            border: const OutlineInputBorder(),
-            focusColor: const Color(0xFF4B4B4B),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-                width: 1.0,
-              ),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          border: const OutlineInputBorder(),
+          focusColor: const Color(0xFF4B4B4B),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
+              width: 1.0,
             ),
           ),
         ),
