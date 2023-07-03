@@ -6,6 +6,7 @@ import 'package:flutter_annulus/genus/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:topl_common/genus/services/transaction_grpc.dart';
 import 'package:topl_common/proto/consensus/models/block_header.pb.dart';
+import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 
 final last10BlockHeadersProvider = FutureProvider<List<BlockHeader>>((ref) async {
   final selectedChain = ref.watch(selectedChainProvider);
@@ -88,19 +89,15 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
 
     // Adding delay here to simulate API call
     if (setState) {
-      Future.delayed(
-        const Duration(seconds: 1),
-        () {
-          // Do API call here
-          state = AsyncData(chain);
-        },
-      );
+      state = AsyncData(chain);
     }
 
     return chain;
   }
 
   /// TODO: This probably can be simplified to reduce calls by using the blocks already in the block proovider
+  /// QQQQ How do you actually calculate?
+  /// Add the block size of each block and then divide by the difference in time between the first and last block?
   Future<double> _getDataThroughPut() async {
     if (selectedChain == Chains.mock) {
       return getMockChain().dataThroughput;
@@ -144,16 +141,19 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   }
 
   /// TODO: Implement
+  /// QQQQ is this implemented?
   Future<int> _getUniqueActiveAddresses() async {
     return getMockChain().uniqueActiveAddresses;
   }
 
   /// TODO: Implement
+  /// QQQQ is this implemented?
   Future<int> _getEon() async {
     return getMockChain().eon;
   }
 
   /// TODO: Implement
+  /// QQQQ is this implemented?
   Future<int> _getEra() async {
     return getMockChain().era;
   }
@@ -163,6 +163,11 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
     if (selectedChain == Chains.mock) {
       return getMockChain().epoch;
     } else {
+      final BlockResponse blockAtHeight1 = await genusClient.getBlockByHeight(height: 1);
+      final BlockHeader blockHeader = blockAtHeight1.block.header;
+      final int timeStamp = blockHeader.timestamp.toInt();
+
+      /// QQQQ how do I get slots in node config
       return getMockChain().epoch;
     }
   }
@@ -204,11 +209,13 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   }
 
   /// TODO: Implement
+  /// QQQQ is this implemented?
   Future<int> _getActiveStakes() async {
     return getMockChain().activeStakes;
   }
 
   /// TODO: Implement
+  /// QQQQ is this implemented?
   Future<int> _getInactiveStakes() async {
     return getMockChain().inactiveStakes;
   }
