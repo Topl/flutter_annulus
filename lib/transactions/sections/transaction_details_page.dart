@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
@@ -60,7 +61,10 @@ class TransactionDetailsPage extends HookConsumerWidget {
                           padding: EdgeInsets.only(left: isMobile ? 6 : 30),
                           child: TextButton(
                               onPressed: () {
-                                context.vRouter.to('/transactions');
+                                final prevUrl = context.vRouter.previousUrl;
+                                if (prevUrl != null) {
+                                  context.vRouter.to(prevUrl);
+                                }
                               },
                               child: Row(
                                 children: [
@@ -71,7 +75,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                     width: 8,
                                   ),
                                   Text(
-                                    "Back",
+                                    Strings.backText,
                                     style: bodyMedium(context),
                                   ),
                                 ],
@@ -85,7 +89,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                           child: Row(
                             children: [
                               Text(
-                                "Transaction Details",
+                                Strings.transactionDetailsHeader,
                                 style: headlineLarge(context),
                               ),
                             ],
@@ -105,7 +109,8 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText: 'Txn Hash/ID',
+                                                  leftText: Strings
+                                                      .tableHeaderTxnHashId,
                                                   rightText: transaction
                                                       .transactionId
                                                       .toString()
@@ -116,7 +121,8 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                                   hasIcon: true,
                                                 )
                                               : CustomRowWithText(
-                                                  leftText: 'Txn Hash/ID',
+                                                  leftText: Strings
+                                                      .tableHeaderTxnHashId,
                                                   rightText: transaction
                                                       .transactionId
                                                       .toString()
@@ -145,12 +151,12 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText: 'Block',
+                                                  leftText: Strings.block,
                                                   rightText: transaction
                                                       .block.height
                                                       .toString())
                                               : CustomRowWithText(
-                                                  leftText: 'Block',
+                                                  leftText: Strings.block,
                                                   rightText: transaction
                                                       .block.height
                                                       .toString(),
@@ -164,15 +170,15 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText:
-                                                      'Broadcast Timestamp',
+                                                  leftText: Strings
+                                                      .broadcastTimestamp,
                                                   rightText: transaction
                                                       .broadcastTimestamp
                                                       .toString(),
                                                 )
                                               : CustomRowWithText(
-                                                  leftText:
-                                                      'Broadcast Timestamp',
+                                                  leftText: Strings
+                                                      .broadcastTimestamp,
                                                   rightText: transaction
                                                       .broadcastTimestamp
                                                       .toString(),
@@ -186,14 +192,14 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText:
-                                                      'Confirmed Timestamp',
+                                                  leftText: Strings
+                                                      .confirmedTimestamp,
                                                   rightText: transaction
                                                       .confirmedTimestamp
                                                       .toString())
                                               : CustomRowWithText(
-                                                  leftText:
-                                                      'Confirmed Timestamp',
+                                                  leftText: Strings
+                                                      .confirmedTimestamp,
                                                   rightText: transaction
                                                       .confirmedTimestamp
                                                       .toString(),
@@ -217,12 +223,12 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText: 'Type',
+                                                  leftText: Strings.type,
                                                   rightText: transaction
                                                       .transactionType.string
                                                       .toString())
                                               : CustomRowWithText(
-                                                  leftText: 'Type',
+                                                  leftText: Strings.type,
                                                   rightText: transaction
                                                       .transactionType.string
                                                       .toString(),
@@ -236,11 +242,11 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText: 'Amount',
+                                                  leftText: Strings.amount,
                                                   rightText: transaction.amount
                                                       .toString())
                                               : CustomRowWithText(
-                                                  leftText: 'Amount',
+                                                  leftText: Strings.amount,
                                                   rightText: transaction.amount
                                                       .toString(),
                                                 ))),
@@ -253,12 +259,12 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText: 'Txn Fee',
+                                                  leftText: Strings.txnFee,
                                                   rightText: transaction
                                                       .transactionFee
                                                       .toString())
                                               : CustomRowWithText(
-                                                  leftText: 'Txn Fee',
+                                                  leftText: Strings.txnFee,
                                                   rightText: transaction
                                                       .transactionFee
                                                       .toString(),
@@ -272,7 +278,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText: 'From',
+                                                  leftText: Strings.fromAddress,
                                                   rightText: transaction
                                                       .senderAddress
                                                       .toString()
@@ -281,7 +287,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                                           Numbers.textLength -
                                                               3))
                                               : CustomRowWithText(
-                                                  leftText: 'From',
+                                                  leftText: Strings.fromAddress,
                                                   rightText: transaction
                                                       .senderAddress
                                                       .toString()
@@ -299,7 +305,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText: 'To',
+                                                  leftText: Strings.toAddress,
                                                   rightText: transaction
                                                       .receiverAddress
                                                       .toString()
@@ -308,7 +314,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                                           Numbers.textLength -
                                                               3))
                                               : CustomRowWithText(
-                                                  leftText: 'To',
+                                                  leftText: Strings.toAddress,
                                                   rightText: transaction
                                                       .receiverAddress
                                                       .toString()
@@ -326,12 +332,14 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
-                                                  leftText: 'Size of Txn',
+                                                  leftText:
+                                                      Strings.transactionSize,
                                                   rightText: transaction
                                                       .transactionSize
                                                       .toString())
                                               : CustomRowWithText(
-                                                  leftText: 'Size of Txn',
+                                                  leftText:
+                                                      Strings.transactionSize,
                                                   rightText: transaction
                                                       .transactionSize
                                                       .toString(),

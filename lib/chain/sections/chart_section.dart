@@ -18,8 +18,10 @@ class ChartSection extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-            begin: Alignment.bottomLeft, end: Alignment.bottomRight, colors: [Color(0xFF220862), Color(0xFF7040EC)]),
-        borderRadius: BorderRadius.circular(16.0),
+            begin: Alignment.bottomLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF220862), Color(0xFF7040EC)]),
+        borderRadius: BorderRadius.circular(10.0),
       ),
       padding: const EdgeInsets.all(30.0),
       child: Column(

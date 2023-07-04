@@ -141,7 +141,8 @@ class _ResponsiveDropDown extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 10.0, bottom: 10),
                       child: Row(
                         children: [
-                          const Icon(Icons.add, color: Color(0xFF535757), size: 20),
+                          const Icon(Icons.add,
+                              color: Color(0xFF535757), size: 20),
                           const SizedBox(width: 4),
                           Text(
                             'Add new',
@@ -296,7 +297,7 @@ class _DesktopDropdown extends StatelessWidget {
                     children: [
                       Text(
                         chain.name,
-                        style: bodySmall(context),
+                        style: titleMedium(context),
                       ),
                     ],
                   ))

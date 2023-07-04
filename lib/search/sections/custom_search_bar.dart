@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
@@ -34,7 +35,7 @@ class CustomSearchBar extends HookConsumerWidget {
     /// The controller used to control the search text field.
     final searchController = useTextEditingController();
     final showSuggestions = useState(false);
-    final selectedTransactionId = useState('');
+    final selectedTransactionId = useState([]);
     final selectedBlock = useState<Block?>(null);
     final isUTxO = useState(false);
 
@@ -54,7 +55,8 @@ class CustomSearchBar extends HookConsumerWidget {
       final searchText = searchController.text.trim();
       if (searchText.isNotEmpty) {
         final filter = suggestions.value
-            .where((suggestion) => suggestion.toLowerCase().contains(searchText.toLowerCase()))
+            .where((suggestion) =>
+                suggestion.toLowerCase().contains(searchText.toLowerCase()))
             .toList();
         showSuggestions.value = true;
         filteredSuggestions.value = filter;
@@ -81,16 +83,15 @@ class CustomSearchBar extends HookConsumerWidget {
     Future<void> performSearch(int id) async {
       final searchResults = await searchNotifier.searchById(id);
       if (searchResults.isNotEmpty) {
-        final transactions = <String>[];
+        final transactions = [];
         final blocks = <String>[];
         final utxos = <String>[];
 
         for (var searchResult in searchResults) {
           searchResult.when(
             transaction: (transaction) {
-              final transactionId = transaction.transactionId;
-              transactions.add(transactionId);
-              selectedTransactionId.value = transactionId;
+              transactions.add(transaction);
+              selectedTransactionId.value = transactions;
             },
             block: (block) {
               final blockValue = block.epoch;
@@ -105,10 +106,11 @@ class CustomSearchBar extends HookConsumerWidget {
             },
           );
         }
-        print('suggestions $transactions');
-        suggestions.value = transactions + blocks + utxos;
-      } else {
-        print("No results found.");
+        suggestions.value = [
+          ...transactions.map((transaction) => transaction.transactionId),
+          ...blocks,
+          ...utxos,
+        ];
       }
     }
 
@@ -124,7 +126,8 @@ class CustomSearchBar extends HookConsumerWidget {
 
     /// Builds the overlay to display when the search bar is focused.
     Widget buildOverlay() => Visibility(
-          visible: showSuggestions.value && filteredSuggestions.value.isNotEmpty,
+          visible:
+              showSuggestions.value && filteredSuggestions.value.isNotEmpty,
           child: Material(
             child: Container(
               decoration: BoxDecoration(
@@ -140,7 +143,9 @@ class CustomSearchBar extends HookConsumerWidget {
                 itemBuilder: (context, index) {
                   final suggestion = filteredSuggestions.value[index];
 
-                  final displayText = suggestion.length == 6 ? 'Block $suggestion' : suggestion;
+                  final displayText = suggestion.length == 6
+                      ? '${Strings.block} $suggestion'
+                      : suggestion;
                   return ListTile(
                     title: Text(displayText, style: bodyMedium(context)),
                     textColor: getSelectedColor(
@@ -152,7 +157,9 @@ class CustomSearchBar extends HookConsumerWidget {
                       searchController.text = suggestion;
                       showSuggestions.value = false;
                       closeOverlay();
-                      if (isDesktop && suggestion.length > 6 && suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
+                      if (isDesktop &&
+                          suggestion.length > 6 &&
+                          suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
                         showModalSideSheet(
                           context: context,
                           ignoreAppBar: true,
@@ -164,14 +171,17 @@ class CustomSearchBar extends HookConsumerWidget {
                           ).withOpacity(0.64),
                           barrierDismissible: true,
                           body: TransactionDetailsDrawer(
-                            transactionId: selectedTransactionId.value,
+                            transaction: selectedTransactionId.value[index],
                           ),
                         );
-                      } else if (!isDesktop && suggestion.length > 6 && suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
+                      } else if (!isDesktop &&
+                          suggestion.length > 6 &&
+                          suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
                         context.vRouter.to(
                           '/transactions_details/',
                         );
-                      } else if (suggestion == "10x5be9d701Byd24neQfY1vXa987a") {
+                      } else if (suggestion ==
+                          "10x5be9d701Byd24neQfY1vXa987a") {
                         context.vRouter.to(
                           '/utxo_details/',
                         );
@@ -208,50 +218,59 @@ class CustomSearchBar extends HookConsumerWidget {
       final size = renderBox.size;
       final offset = renderBox.localToGlobal(Offset.zero);
       entry = OverlayEntry(
-          builder: (context) =>
-              Positioned(left: offset.dx, top: offset.dy + size.height, width: size.width, child: buildOverlay()));
+          builder: (context) => Positioned(
+              left: offset.dx,
+              top: offset.dy + size.height,
+              width: size.width,
+              child: buildOverlay()));
 
       overlay.insert(entry!);
     }
 
     return CompositedTransformTarget(
       link: layerLink,
-      child: TextField(
-        style: bodyMedium(context),
-        controller: searchController,
-        onSubmitted: (query) => onSearch(),
-        onChanged: (value) {
-          showSuggestions.value = value.isNotEmpty;
-          final valueId = int.tryParse(value);
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              style: bodyMedium(context),
+              controller: searchController,
+              onSubmitted: (query) => onSearch(),
+              onChanged: (value) {
+                showSuggestions.value = value.isNotEmpty;
+                final valueId = int.tryParse(value);
 
-          if (valueId != null) {
-            searchByIdAndPrintResults(valueId);
-          }
-          showOverlay();
-        },
-        decoration: InputDecoration(
-          hintText: 'Search by blocks, transactions, or UTxOs',
-          hintStyle: bodyMedium(context),
-          prefixIcon: Icon(
-            Icons.search,
-            color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
-              width: 1.0,
+                if (valueId != null) {
+                  searchByIdAndPrintResults(valueId);
+                }
+                showOverlay();
+              },
+              decoration: InputDecoration(
+                hintText: Strings.searchHintText,
+                hintStyle: bodyMedium(context),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: getSelectedColor(colorTheme, 0xFFC0C4C4, 0xFF4B4B4B),
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                border: const OutlineInputBorder(),
+                focusColor: const Color(0xFF4B4B4B),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
+                    width: 1.0,
+                  ),
+                ),
+              ),
             ),
-            borderRadius: BorderRadius.circular(8.0),
           ),
-          border: const OutlineInputBorder(),
-          focusColor: const Color(0xFF4B4B4B),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFF858E8E),
-              width: 1.0,
-            ),
-          ),
-        ),
+        ],
       ),
     );
   }

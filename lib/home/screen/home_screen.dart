@@ -57,7 +57,7 @@ class HomeScreen extends HookConsumerWidget {
                   ResponsiveRowColumnItem(
                     rowFlex: 2,
                     child: Container(
-                      height: 408,
+                      height: 367,
                       decoration: !isTablet
                           ? BoxDecoration(
                               color: getSelectedColor(
