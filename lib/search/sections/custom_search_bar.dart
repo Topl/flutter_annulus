@@ -264,8 +264,7 @@ class CustomSearchBar extends HookConsumerWidget {
               width: 1.0,
             ),
           ),
-        ),
       ),
-    );
+    ));
   }
 }

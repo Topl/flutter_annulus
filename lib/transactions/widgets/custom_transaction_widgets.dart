@@ -62,51 +62,50 @@ class StatusButton extends ConsumerWidget {
           SizedBox(
             height: 40,
             width: isTablet ? 120 : 160,
-            child: Expanded(
-              child: TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  backgroundColor: Color(_color(status)).withOpacity(0.04),
-                  // add opacity to the color
+            child: TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      _icon(status),
-                      color: Color(_color(status)),
-                    ),
-                    const SizedBox(
-                      width: 8.0,
-                    ),
-                    Expanded(
-                      child: Text(
-                        status,
-                        style: TextStyle(
-                          fontSize: isTablet ? 10 : 14,
-                          fontFamily: Strings.rationalDisplayFont,
-                          fontWeight: FontWeight.w500,
-                          color: Color(_color(status)),
-                        ),
+                backgroundColor: Color(_color(status)).withOpacity(0.04),
+                // add opacity to the color
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    _icon(status),
+                    color: Color(_color(status)),
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Expanded(
+                    child: Text(
+                      status,
+                      style: TextStyle(
+                        fontSize: isTablet ? 10 : 14,
+                        fontFamily: Strings.rationalDisplayFont,
+                        fontWeight: FontWeight.w500,
+                        color: Color(_color(status)),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
           SizedBox(
-            width: isTablet ? 3.0 : 42.0,
+            width: isTablet ? 3.0 : 45.0,
           ),
           hideArrowIcon
-              ? Icon(
+              ? Expanded(
+                  child: Icon(
                   Icons.arrow_forward_ios,
                   color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
                   size: 14,
-                )
+                ))
               : const SizedBox(),
         ],
       ),
@@ -140,12 +139,14 @@ class TransactionColumnText extends ConsumerWidget {
     required this.textBottom,
     this.isBottomTextRequired = true,
     this.isTransactionTable = false,
+    this.isSmallFont = false,
   });
 
   final String textTop;
   final String textBottom;
   final bool isBottomTextRequired;
   final bool isTransactionTable;
+  final bool isSmallFont;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -168,7 +169,8 @@ class TransactionColumnText extends ConsumerWidget {
           isBottomTextRequired
               ? Text(
                   textBottom,
-                  style: bodySmall(context),
+                  overflow: TextOverflow.ellipsis,
+                  style: isSmallFont ? bodySmall(context) : bodyMedium(context),
                 )
               : const SizedBox(height: 0),
         ],

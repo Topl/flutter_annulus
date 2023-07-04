@@ -48,7 +48,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                   children: [
                     const SizedBox(height: 20),
                     Padding(
-                      padding: const EdgeInsets.only(left: 6),
+                      padding: EdgeInsets.only(left: isMobile ? 6 : 30),
                       child: TextButton(
                           onPressed: () {
                             context.vRouter.to('/');
@@ -72,7 +72,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                       height: 25,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16),
+                      padding: EdgeInsets.only(left: isMobile ? 16 : 40),
                       child: Row(
                         children: [
                           Text(
