@@ -30,8 +30,6 @@ class BlockTabBarView extends HookConsumerWidget {
     final AsyncValue<List<Transaction>> transactionsInfo =
         ref.watch(transactionsProvider);
 
-    print('object $block');
-
     return TabBarView(
       children: [
         Container(

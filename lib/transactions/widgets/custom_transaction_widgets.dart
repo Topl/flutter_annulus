@@ -62,51 +62,50 @@ class StatusButton extends ConsumerWidget {
           SizedBox(
             height: 40,
             width: isTablet ? 120 : 160,
-            child: Expanded(
-              child: TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  backgroundColor: Color(_color(status)).withOpacity(0.04),
-                  // add opacity to the color
+            child: TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      _icon(status),
-                      color: Color(_color(status)),
-                    ),
-                    const SizedBox(
-                      width: 8.0,
-                    ),
-                    Expanded(
-                      child: Text(
-                        status,
-                        style: TextStyle(
-                          fontSize: isTablet ? 10 : 14,
-                          fontFamily: Strings.rationalDisplayFont,
-                          fontWeight: FontWeight.w500,
-                          color: Color(_color(status)),
-                        ),
+                backgroundColor: Color(_color(status)).withOpacity(0.04),
+                // add opacity to the color
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    _icon(status),
+                    color: Color(_color(status)),
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Expanded(
+                    child: Text(
+                      status,
+                      style: TextStyle(
+                        fontSize: isTablet ? 10 : 14,
+                        fontFamily: Strings.rationalDisplayFont,
+                        fontWeight: FontWeight.w500,
+                        color: Color(_color(status)),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
           SizedBox(
-            width: isTablet ? 3.0 : 42.0,
+            width: isTablet ? 3.0 : 45.0,
           ),
           hideArrowIcon
-              ? Icon(
+              ? Expanded(
+                  child: Icon(
                   Icons.arrow_forward_ios,
                   color: getSelectedColor(colorTheme, 0xFF858E8E, 0xFFC0C4C4),
                   size: 14,
-                )
+                ))
               : const SizedBox(),
         ],
       ),
@@ -140,12 +139,14 @@ class TransactionColumnText extends ConsumerWidget {
     required this.textBottom,
     this.isBottomTextRequired = true,
     this.isTransactionTable = false,
+    this.isSmallFont = false,
   });
 
   final String textTop;
   final String textBottom;
   final bool isBottomTextRequired;
   final bool isTransactionTable;
+  final bool isSmallFont;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -168,7 +169,8 @@ class TransactionColumnText extends ConsumerWidget {
           isBottomTextRequired
               ? Text(
                   textBottom,
-                  style: bodySmall(context),
+                  overflow: TextOverflow.ellipsis,
+                  style: isSmallFont ? bodySmall(context) : bodyMedium(context),
                 )
               : const SizedBox(height: 0),
         ],
@@ -190,30 +192,29 @@ class CustomContainer extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     return Container(
-        margin: EdgeInsets.only(
-            top: 20.0,
-            bottom: 20.0,
-            left: isMobile ? 20.0 : 40.0,
-            right: isMobile ? 20.0 : 40.0),
-        padding: const EdgeInsets.only(
+      margin: EdgeInsets.only(
           top: 20.0,
-          bottom: 30.0,
-          left: 0.0,
-          right: 0.0,
+          bottom: 20.0,
+          left: isMobile ? 20.0 : 40.0,
+          right: isMobile ? 20.0 : 40.0),
+      padding: const EdgeInsets.only(
+        top: 20.0,
+        bottom: 30.0,
+        left: 0.0,
+        right: 0.0,
+      ),
+      width: isMobile ? 670 : null,
+      decoration: BoxDecoration(
+        color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+          style: BorderStyle.solid,
+          width: 1.0,
         ),
-        width: isMobile ? 670 : null,
-        decoration: BoxDecoration(
-          color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(
-            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-            style: BorderStyle.solid,
-            width: 1.0,
-          ),
-        ),
-        child: Expanded(
-          child: child,
-        ));
+      ),
+      child: child,
+    );
   }
 }
 

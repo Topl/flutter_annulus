@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
@@ -64,6 +63,7 @@ class Transactions extends HookConsumerWidget {
             SizedBox(
               width: double.infinity,
               child: DataTable(
+                columnSpacing: isTablet ? 10 : null,
                 border: TableBorder.symmetric(
                   inside: BorderSide(
                     color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),

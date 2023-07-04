@@ -58,16 +58,15 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 )
               ],
             ),
-            Row(
+            const Row(
               children: [
-                const Spacing(),
+                Spacing(),
                 SizedBox(
-                    width: 172,
-                    child: CustomTextLeft(desc: transaction!.status.name)),
-                const SizedBox(
+                    width: 172, child: CustomTextLeft(desc: Strings.status)),
+                SizedBox(
                   width: 24,
                 ),
-                const StatusButton(
+                StatusButton(
                   status: 'Confirmed',
                   hideArrowIcon: false,
                 )
@@ -127,7 +126,8 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Type')),
+                const SizedBox(
+                    width: 172, child: CustomTextLeft(desc: Strings.type)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -162,7 +162,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 const Spacing(),
                 const SizedBox(
                     width: 172,
-                    child: CustomTextLeft(desc: Strings.senderAddress)),
+                    child: CustomTextLeft(desc: Strings.fromAddress)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -173,8 +173,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
               children: [
                 const Spacing(),
                 const SizedBox(
-                    width: 172,
-                    child: CustomTextLeft(desc: Strings.receiverAddress)),
+                    width: 172, child: CustomTextLeft(desc: Strings.toAddress)),
                 const SizedBox(
                   width: 24,
                 ),
