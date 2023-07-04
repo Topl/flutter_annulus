@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../shared/theme.dart';
@@ -19,10 +19,12 @@ class CustomTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 16),
+          padding: EdgeInsets.only(left: isTablet ? 35 : 16),
           child: TextButton(
               onPressed: () {
                 context.vRouter.to('/');
@@ -43,7 +45,7 @@ class CustomTabBar extends StatelessWidget {
               )),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 25.0, top: 20.0),
+          padding: EdgeInsets.only(left: isTablet ? 45.0 : 25.0, top: 20.0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -66,7 +68,8 @@ class CustomTabBar extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                 color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFFFEFEFE),
               ),
-              padding: const EdgeInsets.only(right: 100.0, top: 20.0),
+              padding:
+                  EdgeInsets.only(right: isTablet ? 400.0 : 100.0, top: 20.0),
               tabs: [
                 Container(
                   width: 100.0,
