@@ -66,7 +66,7 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                                         width: 8,
                                       ),
                                       Text(
-                                        "Back",
+                                        Strings.backText,
                                         style: bodyMedium(context),
                                       ),
                                     ],
@@ -81,6 +81,7 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                                   cardColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                                 ),
                                 child: PaginatedDataTable(
+                                  showCheckboxColumn: false,
                                   headingRowHeight: 50,
                                   columnSpacing: isTablet ? 34 : 40,
                                   arrowHeadColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),

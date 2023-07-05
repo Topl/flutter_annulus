@@ -87,27 +87,28 @@ class Transactions extends HookConsumerWidget {
                     .sublist(0, 3)
                     .map(
                       (transaction) => DataRow(
+                        onSelectChanged: (value) {
+                          //handles on click
+                          if (isDesktop) {
+                            showModalSideSheet(
+                              context: context,
+                              ignoreAppBar: false,
+                              width: 640,
+                              barrierColor: Colors.white.withOpacity(0.64),
+                              barrierDismissible: true,
+                              body: TransactionDetailsDrawer(
+                                transaction: transaction,
+                              ),
+                            );
+                          } else {
+                            context.vRouter.to('/transactions_details/');
+                          }
+                        },
                         cells: [
                           DataCell(
                             Padding(
                               padding: EdgeInsets.only(top: isDesktop ? 14.0 : 0.0),
                               child: GestureDetector(
-                                onTap: () {
-                                  if (isDesktop) {
-                                    showModalSideSheet(
-                                      context: context,
-                                      ignoreAppBar: false,
-                                      width: 640,
-                                      barrierColor: Colors.white.withOpacity(0.64),
-                                      barrierDismissible: true,
-                                      body: TransactionDetailsDrawer(
-                                        transaction: transaction,
-                                      ),
-                                    );
-                                  } else {
-                                    context.vRouter.to('/transactions_details/');
-                                  }
-                                },
                                 child: TransactionColumnText(
                                   textTop: transaction.transactionId
                                       .replaceRange(isTablet ? 7 : 16, transaction.transactionId.length, "..."),

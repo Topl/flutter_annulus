@@ -141,35 +141,24 @@ class RowDataSource extends DataTableSource {
     if (index < data.length) {
       return DataRow(
           color: MaterialStateProperty.all(clr),
-          onLongPress: () {
-            showModalSideSheet(
-                context: context,
-                ignoreAppBar: false,
-                width: 640,
-                barrierColor: Colors.white.withOpacity(0.64),
-                // with blur,
-                barrierDismissible: true,
-                body: TransactionDetailsDrawer(transaction: row));
-            // Add what you want to do on tap
+          onSelectChanged: (value) {
+            if (isDesktop) {
+              showModalSideSheet(
+                  context: context,
+                  ignoreAppBar: true,
+                  width: 640,
+                  barrierColor: Colors.white.withOpacity(0.64),
+                  // with blur,
+                  barrierDismissible: true,
+                  body: TransactionDetailsDrawer(
+                    transaction: row,
+                  ));
+            } else {
+              context.vRouter.to('/transactions_details/');
+            }
           },
           cells: <DataCell>[
             DataCell(GestureDetector(
-              onTap: () {
-                isDesktop
-                    ? showModalSideSheet(
-                        context: context,
-                        ignoreAppBar: true,
-                        width: 640,
-                        barrierColor: Colors.white.withOpacity(0.64),
-                        // with blur,
-                        barrierDismissible: true,
-                        body: TransactionDetailsDrawer(
-                          transaction: row,
-                        ))
-                    : context.vRouter.to(
-                        '/transactions_details/',
-                      );
-              },
               child: TransactionColumnText(
                 isTransactionTable: true,
                 textTop: isTablet ? row.transactionId.substring(0, 9) : row.transactionId.substring(0, 38),
