@@ -8,6 +8,7 @@ import 'package:vrouter/vrouter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../shared/constants/strings.dart';
+import '../../shared/constants/ui.dart';
 import '../../shared/utils/theme_color.dart';
 import '../models/transaction.dart';
 import '../widgets/custom_transaction_widgets.dart';
@@ -94,7 +95,7 @@ class Transactions extends HookConsumerWidget {
                               context: context,
                               ignoreAppBar: false,
                               width: 640,
-                              barrierColor: Colors.white.withOpacity(0.64),
+                              barrierColor: Colors.white.withOpacity(barrierOpacity),
                               barrierDismissible: true,
                               body: TransactionDetailsDrawer(
                                 transaction: transaction,

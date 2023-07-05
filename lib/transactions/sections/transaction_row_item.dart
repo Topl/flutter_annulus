@@ -7,6 +7,7 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../shared/constants/strings.dart';
+import '../../shared/constants/ui.dart';
 import '../widgets/custom_transaction_widgets.dart';
 
 /// A widget to display the list of transactions.
@@ -30,7 +31,7 @@ class TransactionTableRow extends HookConsumerWidget {
                 context: context,
                 ignoreAppBar: false,
                 width: 640,
-                barrierColor: Colors.white.withOpacity(0.64),
+                barrierColor: Colors.white.withOpacity(barrierOpacity),
                 barrierDismissible: true,
                 body: TransactionDetailsDrawer(
                   transaction: transaction,
@@ -147,7 +148,7 @@ class RowDataSource extends DataTableSource {
                   context: context,
                   ignoreAppBar: true,
                   width: 640,
-                  barrierColor: Colors.white.withOpacity(0.64),
+                  barrierColor: Colors.white.withOpacity(barrierOpacity),
                   // with blur,
                   barrierDismissible: true,
                   body: TransactionDetailsDrawer(

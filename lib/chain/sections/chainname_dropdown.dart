@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
+import '../../shared/constants/ui.dart';
 import '../../shared/utils/theme_color.dart';
 import 'add_new_network.dart';
 
@@ -128,7 +129,7 @@ class _ResponsiveDropDown extends StatelessWidget {
                           context: context,
                           ignoreAppBar: true,
                           width: 640,
-                          barrierColor: Colors.white.withOpacity(0.64),
+                          barrierColor: Colors.white.withOpacity(barrierOpacity),
                           // with blur,
                           barrierDismissible: true,
                           body: AddNewNetworkContainer(
@@ -270,7 +271,7 @@ class _DesktopDropdown extends StatelessWidget {
                       context: context,
                       ignoreAppBar: false,
                       width: 640,
-                      barrierColor: Colors.white.withOpacity(0.64),
+                      barrierColor: Colors.white.withOpacity(barrierOpacity),
                       // with blur,
                       barrierDismissible: true,
                       body: AddNewNetworkContainer(
