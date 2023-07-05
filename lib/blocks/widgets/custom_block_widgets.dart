@@ -31,9 +31,7 @@ class CustomTabBar extends StatelessWidget {
               },
               child: Row(
                 children: [
-                  Icon(Icons.arrow_back,
-                      color:
-                          getSelectedColor(colorTheme, 0xFF535757, 0xFFAFB6B6)),
+                  Icon(Icons.arrow_back, color: getSelectedColor(colorTheme, 0xFF535757, 0xFFAFB6B6)),
                   const SizedBox(
                     width: 8,
                   ),
@@ -59,8 +57,7 @@ class CustomTabBar extends StatelessWidget {
           preferredSize: const Size.fromHeight(40.0),
           child: SizedBox(
             child: TabBar(
-              unselectedLabelColor:
-                  getSelectedColor(colorTheme, 0xFF282A2C, 0xFF858E8E),
+              unselectedLabelColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFF858E8E),
               labelColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFF434648),
               labelStyle: labelLarge(context),
               indicatorSize: TabBarIndicatorSize.label,
@@ -68,8 +65,7 @@ class CustomTabBar extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                 color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFFFEFEFE),
               ),
-              padding:
-                  EdgeInsets.only(right: isTablet ? 400.0 : 100.0, top: 20.0),
+              padding: EdgeInsets.only(right: isTablet ? 400.0 : 100.0, top: 20.0),
               tabs: [
                 Container(
                   width: 100.0,
@@ -133,8 +129,7 @@ class CustomPaginatedTable extends StatelessWidget {
                     label: Padding(
                       padding: EdgeInsets.only(right: 60.0),
                       child: SizedBox(
-                        child:
-                            TableHeaderText(name: Strings.tableHeaderTxnHashId),
+                        child: TableHeaderText(name: Strings.tableHeaderTxnHashId),
                       ),
                     ),
                   ),
@@ -191,8 +186,7 @@ class TableDataSource extends DataTableSource {
               textBottom: '${Strings.slot}: ${row.block.slot}',
             )),
             DataCell(TransactionColumnText(
-                textTop: '${row.amount} ${Strings.topl}',
-                textBottom: '${row.quantity} ${Strings.bobs}')),
+                textTop: '${row.amount} ${Strings.topl}', textBottom: '${row.quantity} ${Strings.bobs}')),
             DataCell(TransactionColumnText(
               textTop: '${row.transactionFee} ${Strings.feeAcronym}',
               textBottom: "",

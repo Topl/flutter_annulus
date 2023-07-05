@@ -25,9 +25,7 @@ class HomeScreen extends HookConsumerWidget {
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
     return CustomLayout(
       header: Header(
-        logoAsset: colorTheme == ThemeMode.light
-            ? 'images/logo.svg'
-            : 'images/logo_dark.svg',
+        logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
         onSearch: () {},
         onDropdownChanged: (String value) {},
       ),
@@ -42,8 +40,7 @@ class HomeScreen extends HookConsumerWidget {
           children: [
             const SizedBox(height: 20),
             Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: isMobile ? 20.0 : 40.0, vertical: 20),
+              margin: EdgeInsets.symmetric(horizontal: isMobile ? 20.0 : 40.0, vertical: 20),
               child: ResponsiveRowColumn(
                 layout: ResponsiveBreakpoints.of(context).smallerThan(DESKTOP)
                     ? ResponsiveRowColumnType.COLUMN
@@ -60,12 +57,10 @@ class HomeScreen extends HookConsumerWidget {
                       height: 367,
                       decoration: !isTablet
                           ? BoxDecoration(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                              color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                                   style: BorderStyle.solid,
                                   width: 1.0),
                             )

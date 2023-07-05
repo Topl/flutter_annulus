@@ -18,7 +18,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
   const BlockTabBarMobileView({
     super.key,
     // required this.block,
-     this.widgetRoute,
+    this.widgetRoute,
   });
   final _rowsPerPage = 5;
   //final Block block;
@@ -33,8 +33,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-    final AsyncValue<List<Transaction>> transactionsInfo =
-        ref.watch(transactionsProvider);
+    final AsyncValue<List<Transaction>> transactionsInfo = ref.watch(transactionsProvider);
 
     return DefaultTabController(
       length: 2,
@@ -43,9 +42,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
           children: [
             CustomLayout(
                 header: Header(
-                  logoAsset: colorTheme == ThemeMode.light
-                      ? 'images/logo.svg'
-                      : 'images/logo_dark.svg',
+                  logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
                   onSearch: () {},
                   onDropdownChanged: (String value) {},
                 ),
@@ -85,9 +82,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                     CustomResponsiveRowColumn(children: [
                                       ResponsiveRowColumnItem(
                                         rowFlex: isMobile ? 3 : 2,
-                                        child: const CustomPadding(
-                                            child: CustomStatusWidget(
-                                                status: "Confirmed")),
+                                        child: const CustomPadding(child: CustomStatusWidget(status: "Confirmed")),
                                       ),
                                     ]),
                                     CustomResponsiveRowColumn(children: [
@@ -137,14 +132,12 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                           child: isMobile
                                               ? const CustomColumnWithText(
                                                   leftText: 'ID',
-                                                  rightText:
-                                                      "0x736e345d784cf4c9",
+                                                  rightText: "0x736e345d784cf4c9",
                                                   hasIcon: true,
                                                 )
                                               : const CustomRowWithText(
                                                   leftText: 'ID',
-                                                  rightText:
-                                                      "0x736e345d784cf4c9",
+                                                  rightText: "0x736e345d784cf4c9",
                                                   hasIcon: true,
                                                 ),
                                         ),
@@ -220,13 +213,11 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                                         child: CustomPadding(
                                           child: isMobile
                                               ? const CustomColumnWithText(
-                                                  leftText:
-                                                      'Number of Transactions',
+                                                  leftText: 'Number of Transactions',
                                                   rightText: "131",
                                                 )
                                               : const CustomRowWithText(
-                                                  leftText:
-                                                      'Number of Transactions',
+                                                  leftText: 'Number of Transactions',
                                                   rightText: "131",
                                                 ),
                                         ),
@@ -242,14 +233,10 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                     ),
                   ],
                 ),
-                footer: Container(
-                    color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-                    child: const Footer())),
+                footer: Container(color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C), child: const Footer())),
             CustomLayout(
                 header: Header(
-                  logoAsset: colorTheme == ThemeMode.light
-                      ? 'images/logo.svg'
-                      : 'images/logo_dark.svg',
+                  logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
                   onSearch: () {},
                   onDropdownChanged: (String value) {},
                 ),
@@ -262,13 +249,9 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                       CustomTabBar(colorTheme: colorTheme),
                       transactionsInfo.when(
                           data: (data) {
-                            final source = TableDataSource(
-                                data,
-                                context,
-                                getSelectedColor(
-                                    colorTheme, 0xFFFEFEFE, 0xFF282A2C));
-                            return CustomPaginatedTable(
-                                source: source, rowsPerPage: _rowsPerPage);
+                            final source =
+                                TableDataSource(data, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
+                            return CustomPaginatedTable(source: source, rowsPerPage: _rowsPerPage);
                           },
                           loading: () => const Center(
                                 child: CircularProgressIndicator(),
@@ -279,9 +262,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                footer: Container(
-                    color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-                    child: const Footer()))
+                footer: Container(color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C), child: const Footer()))
           ],
         ),
       ),

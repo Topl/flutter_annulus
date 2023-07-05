@@ -30,9 +30,7 @@ class UTxODetailsPage extends HookConsumerWidget {
 
     return CustomLayout(
         header: Header(
-          logoAsset: colorTheme == ThemeMode.light
-              ? 'images/logo.svg'
-              : 'images/logo_dark.svg',
+          logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
@@ -55,9 +53,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                           },
                           child: Row(
                             children: [
-                              Icon(Icons.arrow_back,
-                                  color: getSelectedColor(
-                                      colorTheme, 0xFF535757, 0xFFAFB6B6)),
+                              Icon(Icons.arrow_back, color: getSelectedColor(colorTheme, 0xFF535757, 0xFFAFB6B6)),
                               const SizedBox(
                                 width: 8,
                               ),
@@ -97,19 +93,14 @@ class UTxODetailsPage extends HookConsumerWidget {
                                       child: isMobile
                                           ? CustomColumnWithText(
                                               leftText: Strings.transactionHash,
-                                              rightText:
-                                                  '0x5be9d701Byd24neQfY1vXa987a'
-                                                      .toString()
-                                                      .substring(
-                                                          0,
-                                                          Numbers.textLength -
-                                                              4),
+                                              rightText: '0x5be9d701Byd24neQfY1vXa987a'
+                                                  .toString()
+                                                  .substring(0, Numbers.textLength - 4),
                                               hasIcon: true,
                                             )
                                           : const CustomRowWithText(
                                               leftText: Strings.transactionHash,
-                                              rightText:
-                                                  '0x5be9d701Byd24neQfY1vXa987a',
+                                              rightText: '0x5be9d701Byd24neQfY1vXa987a',
                                               hasIcon: true,
                                             ))),
                             ],
@@ -119,8 +110,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                               ResponsiveRowColumnItem(
                                   rowFlex: 1,
                                   child: CustomPadding(
-                                    child: CustomStatusWidget(
-                                        status: Strings.statusConfirmed),
+                                    child: CustomStatusWidget(status: Strings.statusConfirmed),
                                   )),
                             ],
                           ),
@@ -132,17 +122,12 @@ class UTxODetailsPage extends HookConsumerWidget {
                                       child: isMobile
                                           ? CustomColumnWithText(
                                               leftText: Strings.senderAddress,
-                                              rightText:
-                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'
-                                                      .toString()
-                                                      .substring(
-                                                          0,
-                                                          Numbers.textLength -
-                                                              4))
+                                              rightText: '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'
+                                                  .toString()
+                                                  .substring(0, Numbers.textLength - 4))
                                           : const CustomRowWithText(
                                               leftText: Strings.senderAddress,
-                                              rightText:
-                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
+                                              rightText: '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
                                             ))),
                             ],
                           ),
@@ -154,18 +139,13 @@ class UTxODetailsPage extends HookConsumerWidget {
                                       child: isMobile
                                           ? CustomColumnWithText(
                                               leftText: Strings.receiverAddress,
-                                              rightText:
-                                                  '7bY6Dne54qMU12cz3oPF4yVx5aG6a'
-                                                      .toString()
-                                                      .substring(
-                                                          0,
-                                                          Numbers.textLength -
-                                                              4),
+                                              rightText: '7bY6Dne54qMU12cz3oPF4yVx5aG6a'
+                                                  .toString()
+                                                  .substring(0, Numbers.textLength - 4),
                                             )
                                           : const CustomRowWithText(
                                               leftText: Strings.receiverAddress,
-                                              rightText:
-                                                  '7bY6Dne54qMU12cz3oPF4yVx5aG6a',
+                                              rightText: '7bY6Dne54qMU12cz3oPF4yVx5aG6a',
                                             ))),
                             ],
                           ),
@@ -176,20 +156,13 @@ class UTxODetailsPage extends HookConsumerWidget {
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
-                                              leftText:
-                                                  Strings.changeBackAddress,
-                                              rightText:
-                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'
-                                                      .toString()
-                                                      .substring(
-                                                          0,
-                                                          Numbers.textLength -
-                                                              4))
+                                              leftText: Strings.changeBackAddress,
+                                              rightText: '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic'
+                                                  .toString()
+                                                  .substring(0, Numbers.textLength - 4))
                                           : const CustomRowWithText(
-                                              leftText:
-                                                  Strings.changeBackAddress,
-                                              rightText:
-                                                  '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
+                                              leftText: Strings.changeBackAddress,
+                                              rightText: '3m21ucZ0pFyvxa1by9dnE2q87e3P6ic',
                                             ))),
                             ],
                           )
@@ -200,97 +173,83 @@ class UTxODetailsPage extends HookConsumerWidget {
                       height: 10,
                     ),
                     CustomContainer(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                          CustomResponsiveRowColumn(
-                            children: [
-                              ResponsiveRowColumnItem(
-                                  rowFlex: 1,
-                                  child: CustomPadding(
-                                      child: isMobile
-                                          ? const CustomColumnWithText(
-                                              leftText: Strings.inputAmount,
-                                              rightText: '5.5 TOPL')
-                                          : const CustomRowWithText(
-                                              leftText: Strings.inputAmount,
-                                              rightText: '5.5 TOPL',
-                                            ))),
-                            ],
-                          ),
-                          CustomResponsiveRowColumn(
-                            children: [
-                              ResponsiveRowColumnItem(
-                                  rowFlex: 1,
-                                  child: CustomPadding(
-                                      child: isMobile
-                                          ? const CustomColumnWithText(
-                                              leftText: Strings.inputAmount,
-                                              rightText: '5.5 TOPL')
-                                          : const CustomRowWithText(
-                                              leftText: Strings.inputAmount,
-                                              rightText: '1.23 TOPL',
-                                            ))),
-                            ],
-                          ),
-                        ])),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      CustomResponsiveRowColumn(
+                        children: [
+                          ResponsiveRowColumnItem(
+                              rowFlex: 1,
+                              child: CustomPadding(
+                                  child: isMobile
+                                      ? const CustomColumnWithText(leftText: Strings.inputAmount, rightText: '5.5 TOPL')
+                                      : const CustomRowWithText(
+                                          leftText: Strings.inputAmount,
+                                          rightText: '5.5 TOPL',
+                                        ))),
+                        ],
+                      ),
+                      CustomResponsiveRowColumn(
+                        children: [
+                          ResponsiveRowColumnItem(
+                              rowFlex: 1,
+                              child: CustomPadding(
+                                  child: isMobile
+                                      ? const CustomColumnWithText(leftText: Strings.inputAmount, rightText: '5.5 TOPL')
+                                      : const CustomRowWithText(
+                                          leftText: Strings.inputAmount,
+                                          rightText: '1.23 TOPL',
+                                        ))),
+                        ],
+                      ),
+                    ])),
                     CustomContainer(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        CustomResponsiveRowColumn(
                           children: [
-                            CustomResponsiveRowColumn(
-                              children: [
-                                ResponsiveRowColumnItem(
-                                    rowFlex: 1,
-                                    child: CustomPadding(
-                                        child: isMobile
-                                            ? const CustomColumnWithText(
-                                                leftText: Strings.outputAmount,
-                                                rightText: '6 TOPL')
-                                            : const CustomRowWithText(
-                                                leftText: Strings.outputAmount,
-                                                rightText: '6 TOPL',
-                                              ))),
-                              ],
-                            ),
-                            CustomResponsiveRowColumn(
-                              children: [
-                                ResponsiveRowColumnItem(
-                                    rowFlex: 1,
-                                    child: CustomPadding(
-                                        child: isMobile
-                                            ? const CustomColumnWithText(
-                                                leftText: Strings.outputAmount,
-                                                rightText: '0.63 TOPL')
-                                            : const CustomRowWithText(
-                                                leftText: Strings.outputAmount,
-                                                rightText: '0.63 TOPL',
-                                              ))),
-                              ],
-                            ),
-                            CustomResponsiveRowColumn(
-                              children: [
-                                ResponsiveRowColumnItem(
-                                    rowFlex: 1,
-                                    child: CustomPadding(
-                                        child: isMobile
-                                            ? const CustomColumnWithText(
-                                                leftText: Strings.feeAmount,
-                                                rightText: '0.1 TOPL')
-                                            : const CustomRowWithText(
-                                                leftText: Strings.feeAmount,
-                                                rightText: '0.1 TOPL',
-                                              ))),
-                              ],
-                            ),
-                          ]),
+                            ResponsiveRowColumnItem(
+                                rowFlex: 1,
+                                child: CustomPadding(
+                                    child: isMobile
+                                        ? const CustomColumnWithText(
+                                            leftText: Strings.outputAmount, rightText: '6 TOPL')
+                                        : const CustomRowWithText(
+                                            leftText: Strings.outputAmount,
+                                            rightText: '6 TOPL',
+                                          ))),
+                          ],
+                        ),
+                        CustomResponsiveRowColumn(
+                          children: [
+                            ResponsiveRowColumnItem(
+                                rowFlex: 1,
+                                child: CustomPadding(
+                                    child: isMobile
+                                        ? const CustomColumnWithText(
+                                            leftText: Strings.outputAmount, rightText: '0.63 TOPL')
+                                        : const CustomRowWithText(
+                                            leftText: Strings.outputAmount,
+                                            rightText: '0.63 TOPL',
+                                          ))),
+                          ],
+                        ),
+                        CustomResponsiveRowColumn(
+                          children: [
+                            ResponsiveRowColumnItem(
+                                rowFlex: 1,
+                                child: CustomPadding(
+                                    child: isMobile
+                                        ? const CustomColumnWithText(leftText: Strings.feeAmount, rightText: '0.1 TOPL')
+                                        : const CustomRowWithText(
+                                            leftText: Strings.feeAmount,
+                                            rightText: '0.1 TOPL',
+                                          ))),
+                          ],
+                        ),
+                      ]),
                     ),
                   ],
                 ),
               ),
             )),
-        footer: Container(
-            color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-            child: const Footer()));
+        footer: Container(color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C), child: const Footer()));
   }
 }

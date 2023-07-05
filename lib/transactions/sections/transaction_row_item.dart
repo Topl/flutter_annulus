@@ -11,9 +11,7 @@ import '../widgets/custom_transaction_widgets.dart';
 
 /// A widget to display the list of transactions.
 class TransactionTableRow extends HookConsumerWidget {
-  const TransactionTableRow(
-      {Key? key, required this.transactions, this.count = 0})
-      : super(key: key);
+  const TransactionTableRow({Key? key, required this.transactions, this.count = 0}) : super(key: key);
   final int count;
   final List<Transaction> transactions;
 
@@ -23,8 +21,7 @@ class TransactionTableRow extends HookConsumerWidget {
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
-    final isResponsive =
-        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
+    final isResponsive = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return GestureDetector(
         onTap: () {
@@ -44,9 +41,7 @@ class TransactionTableRow extends HookConsumerWidget {
           // Add what you want to do on tap
         },
         child: Row(
-            mainAxisAlignment: isDesktop
-                ? MainAxisAlignment.spaceEvenly
-                : MainAxisAlignment.start,
+            mainAxisAlignment: isDesktop ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
@@ -116,8 +111,7 @@ class TransactionTableRow extends HookConsumerWidget {
                   width: isTablet ? 110 : 150,
                   child: TransactionColumnText(
                     isTransactionTable: false,
-                    textTop:
-                        '${transaction.transactionFee} ${Strings.feeAcronym}',
+                    textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
                     textBottom: "",
                     isBottomTextRequired: false,
                   ),
@@ -125,9 +119,7 @@ class TransactionTableRow extends HookConsumerWidget {
               if (!isMobile)
                 SizedBox(
                     width: isTablet ? 85 : 300,
-                    child: StatusButton(
-                        isTransactionTable: true,
-                        status: transaction.status.string)),
+                    child: StatusButton(isTransactionTable: true, status: transaction.status.string)),
             ]));
   }
 }
@@ -180,9 +172,7 @@ class RowDataSource extends DataTableSource {
               },
               child: TransactionColumnText(
                 isTransactionTable: true,
-                textTop: isTablet
-                    ? row.transactionId.substring(0, 9)
-                    : row.transactionId.substring(0, 38),
+                textTop: isTablet ? row.transactionId.substring(0, 9) : row.transactionId.substring(0, 38),
                 textBottom: "49 ${Strings.secAgo}",
               ),
             )),
@@ -198,17 +188,14 @@ class RowDataSource extends DataTableSource {
               isBottomTextRequired: false,
             )),
             const DataCell(TransactionColumnText(
-                isTransactionTable: true,
-                textTop: '3 ${Strings.topl}',
-                textBottom: '44 ${Strings.bobs}')),
+                isTransactionTable: true, textTop: '3 ${Strings.topl}', textBottom: '44 ${Strings.bobs}')),
             DataCell(TransactionColumnText(
               isTransactionTable: true,
               textTop: '${row.transactionFee} ${Strings.feeAcronym}',
               textBottom: "",
               isBottomTextRequired: false,
             )),
-            DataCell(StatusButton(
-                isTransactionTable: true, status: row.status.string)),
+            DataCell(StatusButton(isTransactionTable: true, status: row.status.string)),
           ]);
     } else {
       return null;

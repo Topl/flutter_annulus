@@ -11,16 +11,13 @@ class ChartSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chartTimeFrame =
-        TimeFrame.values.map((e) => e.name.toUpperCase()).toList();
+    final chartTimeFrame = TimeFrame.values.map((e) => e.name.toUpperCase()).toList();
     final selectedTimeFrame = ref.watch(timeFrameProvider).name.toUpperCase();
 
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF220862), Color(0xFF7040EC)]),
+            begin: Alignment.bottomLeft, end: Alignment.bottomRight, colors: [Color(0xFF220862), Color(0xFF7040EC)]),
         borderRadius: BorderRadius.circular(10.0),
       ),
       padding: const EdgeInsets.all(30.0),

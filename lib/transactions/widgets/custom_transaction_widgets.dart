@@ -14,11 +14,7 @@ import 'package:flutter/services.dart';
 
 /// Custom Status Button Widget
 class StatusButton extends ConsumerWidget {
-  const StatusButton(
-      {super.key,
-      this.status = "pending",
-      this.hideArrowIcon = true,
-      this.isTransactionTable = true});
+  const StatusButton({super.key, this.status = "pending", this.hideArrowIcon = true, this.isTransactionTable = true});
 
   final String status;
   final bool hideArrowIcon;
@@ -53,10 +49,7 @@ class StatusButton extends ConsumerWidget {
 
     return Padding(
       padding: EdgeInsets.only(
-          left: hideArrowIcon && !isTablet && !isTransactionTable ? 40.0 : 0,
-          bottom: 16,
-          right: 40,
-          top: 16),
+          left: hideArrowIcon && !isTablet && !isTransactionTable ? 40.0 : 0, bottom: 16, right: 40, top: 16),
       child: Row(
         children: [
           SizedBox(
@@ -154,10 +147,7 @@ class TransactionColumnText extends ConsumerWidget {
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     return Padding(
-      padding: EdgeInsets.only(
-          left: isMobile || isTablet && isTransactionTable ? 0 : 40.0,
-          bottom: 16,
-          top: 16),
+      padding: EdgeInsets.only(left: isMobile || isTablet && isTransactionTable ? 0 : 40.0, bottom: 16, top: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -192,11 +182,7 @@ class CustomContainer extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     return Container(
-      margin: EdgeInsets.only(
-          top: 20.0,
-          bottom: 20.0,
-          left: isMobile ? 20.0 : 40.0,
-          right: isMobile ? 20.0 : 40.0),
+      margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 20.0 : 40.0, right: isMobile ? 20.0 : 40.0),
       padding: const EdgeInsets.only(
         top: 20.0,
         bottom: 30.0,
@@ -230,9 +216,7 @@ class CustomStatusWidget extends StatelessWidget {
 // ResponsiveColumn
 
     return ResponsiveRowColumn(
-        layout: isMobile
-            ? ResponsiveRowColumnType.COLUMN
-            : ResponsiveRowColumnType.ROW,
+        layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
         children: [
           ResponsiveRowColumnItem(
               child: isMobile
@@ -288,8 +272,7 @@ class CustomResponsiveRowColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
-    final layout =
-        isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW;
+    final layout = isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW;
 
     return ResponsiveRowColumn(
       layout: layout,
@@ -297,9 +280,7 @@ class CustomResponsiveRowColumn extends StatelessWidget {
         return ResponsiveRowColumnItem(
           rowFlex: isMobile ? 3 : 2,
           child: Padding(
-            padding: isMobile
-                ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10)
-                : EdgeInsets.zero,
+            padding: isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10) : EdgeInsets.zero,
             child: child,
           ),
         );
@@ -313,11 +294,7 @@ class CustomRowWithText extends StatelessWidget {
   final String rightText;
   final String leftText;
   final bool hasIcon;
-  const CustomRowWithText(
-      {Key? key,
-      required this.leftText,
-      required this.rightText,
-      this.hasIcon = false})
+  const CustomRowWithText({Key? key, required this.leftText, required this.rightText, this.hasIcon = false})
       : super(key: key);
 
   @override
@@ -338,10 +315,7 @@ class CustomRowWithText extends StatelessWidget {
           children: [
             CustomTextRight(desc: rightText),
             Padding(
-                padding: !isMobile
-                    ? const EdgeInsets.only(
-                        top: 0, bottom: 0, left: 10, right: 0)
-                    : EdgeInsets.zero,
+                padding: !isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 0) : EdgeInsets.zero,
                 child: hasIcon
                     ? GestureDetector(
                         onTap: () {
@@ -395,10 +369,7 @@ class CustomColumnWithText extends StatelessWidget {
           children: [
             CustomTextRight(desc: rightText),
             Padding(
-                padding: isMobile
-                    ? const EdgeInsets.only(
-                        top: 0, bottom: 0, left: 10, right: 0)
-                    : EdgeInsets.zero,
+                padding: isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 0) : EdgeInsets.zero,
                 child: hasIcon ? CopyToClipboard(rightText: rightText) : null),
           ],
         ),
@@ -421,9 +392,7 @@ class CustomPadding extends StatelessWidget {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
     return Padding(
-      padding: isMobile
-          ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10)
-          : EdgeInsets.zero,
+      padding: isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10) : EdgeInsets.zero,
       child: child,
     );
   }

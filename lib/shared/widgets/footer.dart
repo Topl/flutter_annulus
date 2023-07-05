@@ -96,8 +96,7 @@ class Footer extends HookConsumerWidget {
                   Text(
                     Strings.footerColumn5Header,
                     style: TextStyle(
-                        color: getSelectedColor(
-                            colorTheme, 0xFF282A2C, 0xFFC0C4C4),
+                        color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFC0C4C4),
                         fontSize: 16,
                         fontFamily: 'Rational Display',
                         fontWeight: FontWeight.w600),
@@ -115,10 +114,8 @@ class Footer extends HookConsumerWidget {
                             controller: TextEditingController(text: ''),
                             decoration: const InputDecoration(
                                 border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFE2E3E3), width: 1)),
+                                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                                    borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
                                 hintText: Strings.email),
                           ),
                         ),
@@ -131,14 +128,12 @@ class Footer extends HookConsumerWidget {
                         width: 102,
                         child: TextButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    getSelectedColor(
-                                        colorTheme, 0xFFE2E3E3, 0xFF434648))),
+                                backgroundColor:
+                                    MaterialStateProperty.all(getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648))),
                             onPressed: null,
                             child: Text(Strings.subscribe,
                                 style: TextStyle(
-                                    color: getSelectedColor(
-                                        colorTheme, 0xFF000000, 0xFFFEFEFE),
+                                    color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
                                     fontSize: 14,
                                     fontFamily: 'Rational Display'))),
                       )
@@ -200,9 +195,7 @@ class Footer extends HookConsumerWidget {
                   width: 24,
                 ),
                 SvgPicture.asset(
-                  colorTheme == ThemeMode.light
-                      ? 'images/logo.svg'
-                      : 'images/logo_dark.svg',
+                  colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
                   width: 32,
                   height: 20,
                 ),
@@ -260,16 +253,14 @@ class RowIconsFooter extends HookConsumerWidget {
                     width: 42,
                     height: 40,
                     decoration: BoxDecoration(
-                      color:
-                          getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
+                      color: getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: IconButton(
                       onPressed: null,
                       icon: SvgPicture.asset(
                         svgIcon,
-                        color: getSelectedColor(
-                            colorTheme, 0xFF535757, 0xFFC0C4C4),
+                        color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                       ),
                     ),
                   ),
@@ -319,8 +310,7 @@ class FooterColumn extends HookConsumerWidget {
                     Text(
                       text,
                       style: TextStyle(
-                          color: getSelectedColor(
-                              colorTheme, 0xFF535757, 0xFFC0C4C4),
+                          color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                           fontSize: 14,
                           fontFamily: Strings.rationalDisplayFont),
                     ),

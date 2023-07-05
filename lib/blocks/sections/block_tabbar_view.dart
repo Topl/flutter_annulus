@@ -27,14 +27,12 @@ class BlockTabBarView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-    final AsyncValue<List<Transaction>> transactionsInfo =
-        ref.watch(transactionsProvider);
+    final AsyncValue<List<Transaction>> transactionsInfo = ref.watch(transactionsProvider);
 
     return TabBarView(
       children: [
         Container(
-          padding:
-              isMobile ? const EdgeInsets.all(2.0) : const EdgeInsets.all(0),
+          padding: isMobile ? const EdgeInsets.all(2.0) : const EdgeInsets.all(0),
           decoration: BoxDecoration(
             color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
           ),
@@ -47,23 +45,17 @@ class BlockTabBarView extends HookConsumerWidget {
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(
-                      width: 200, child: CustomTextLeft(desc: Strings.blockId)),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: Strings.blockId)),
                   const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(
-                      desc:
-                          block!.blockId.substring(0, Numbers.textLength - 3)),
+                  CustomTextRight(desc: block!.blockId.substring(0, Numbers.textLength - 3)),
                 ],
               ),
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(
-                      width: 200,
-                      child: Expanded(
-                          child: CustomTextLeft(desc: Strings.status))),
+                  const SizedBox(width: 200, child: Expanded(child: CustomTextLeft(desc: Strings.status))),
                   SizedBox(width: !isMobile ? 24 : 0),
                   const Expanded(
                     child: StatusButton(
@@ -76,8 +68,7 @@ class BlockTabBarView extends HookConsumerWidget {
               const Row(
                 children: [
                   Spacing(),
-                  SizedBox(
-                      width: 200, child: CustomTextLeft(desc: Strings.time)),
+                  SizedBox(width: 200, child: CustomTextLeft(desc: Strings.time)),
                   SizedBox(
                     width: 24,
                   ),
@@ -87,8 +78,7 @@ class BlockTabBarView extends HookConsumerWidget {
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(
-                      width: 200, child: CustomTextLeft(desc: Strings.epoch)),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: Strings.epoch)),
                   const SizedBox(
                     width: 24,
                   ),
@@ -98,8 +88,7 @@ class BlockTabBarView extends HookConsumerWidget {
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(
-                      width: 200, child: CustomTextLeft(desc: Strings.header)),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: Strings.header)),
                   const SizedBox(
                     width: 24,
                   ),
@@ -123,8 +112,7 @@ class BlockTabBarView extends HookConsumerWidget {
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(
-                      width: 200, child: CustomTextLeft(desc: Strings.id)),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: Strings.id)),
                   const SizedBox(
                     width: 24,
                   ),
@@ -137,9 +125,7 @@ class BlockTabBarView extends HookConsumerWidget {
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(
-                      width: 200,
-                      child: CustomTextLeft(desc: Strings.timeStamp)),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: Strings.timeStamp)),
                   const SizedBox(
                     width: 24,
                   ),
@@ -149,8 +135,7 @@ class BlockTabBarView extends HookConsumerWidget {
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(
-                      width: 200, child: CustomTextLeft(desc: Strings.height)),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: Strings.height)),
                   const SizedBox(
                     width: 24,
                   ),
@@ -160,8 +145,7 @@ class BlockTabBarView extends HookConsumerWidget {
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(
-                      width: 200, child: CustomTextLeft(desc: Strings.size)),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: Strings.size)),
                   const SizedBox(
                     width: 24,
                   ),
@@ -171,8 +155,7 @@ class BlockTabBarView extends HookConsumerWidget {
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(
-                      width: 200, child: CustomTextLeft(desc: Strings.slot)),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: Strings.slot)),
                   const SizedBox(
                     width: 24,
                   ),
@@ -182,10 +165,7 @@ class BlockTabBarView extends HookConsumerWidget {
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(
-                      width: 200,
-                      child:
-                          CustomTextLeft(desc: Strings.numberOfTransactions)),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: Strings.numberOfTransactions)),
                   const SizedBox(
                     width: 24,
                   ),
@@ -202,8 +182,7 @@ class BlockTabBarView extends HookConsumerWidget {
             padding: const EdgeInsets.only(top: 40),
             child: transactionsInfo.when(
                 data: (data) {
-                  final source = TableDataSource(data, context,
-                      getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
+                  final source = TableDataSource(data, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
                   return SizedBox(
                     width: 100,
                     child: PaginatedDataTable(
@@ -222,16 +201,14 @@ class BlockTabBarView extends HookConsumerWidget {
                           label: Padding(
                             padding: EdgeInsets.only(left: 40.0),
                             child: SizedBox(
-                              child: TableHeaderText(
-                                  name: Strings.tableHeaderTxnHashId),
+                              child: TableHeaderText(name: Strings.tableHeaderTxnHashId),
                             ),
                           ),
                         ),
                         DataColumn(
                             label: Padding(
                           padding: EdgeInsets.only(left: 40.0),
-                          child:
-                              TableHeaderText(name: Strings.tableHeaderBlock),
+                          child: TableHeaderText(name: Strings.tableHeaderBlock),
                         )),
                         DataColumn(
                             label: Padding(
@@ -285,8 +262,7 @@ class TableDataSource extends DataTableSource {
               textBottom: '${Strings.slot}: ${row.block.slot}',
             )),
             DataCell(TransactionColumnText(
-                textTop: '${row.amount} ${Strings.topl}',
-                textBottom: '${row.quantity} ${Strings.bobs}')),
+                textTop: '${row.amount} ${Strings.topl}', textBottom: '${row.quantity} ${Strings.bobs}')),
             DataCell(TransactionColumnText(
               textTop: '${row.transactionFee} ${Strings.feeAcronym}',
               textBottom: "",
