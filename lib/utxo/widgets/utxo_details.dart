@@ -88,7 +88,6 @@ class UTxODetailsPage extends HookConsumerWidget {
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: isMobile ? 3 : 2,
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
@@ -108,16 +107,14 @@ class UTxODetailsPage extends HookConsumerWidget {
                           const CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
                                   child: CustomPadding(
-                                    child: CustomStatusWidget(status: Strings.statusConfirmed),
-                                  )),
+                                child: CustomStatusWidget(status: Strings.statusConfirmed),
+                              )),
                             ],
                           ),
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
@@ -134,7 +131,6 @@ class UTxODetailsPage extends HookConsumerWidget {
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
@@ -152,7 +148,6 @@ class UTxODetailsPage extends HookConsumerWidget {
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
@@ -177,7 +172,6 @@ class UTxODetailsPage extends HookConsumerWidget {
                       CustomResponsiveRowColumn(
                         children: [
                           ResponsiveRowColumnItem(
-                              rowFlex: 1,
                               child: CustomPadding(
                                   child: isMobile
                                       ? const CustomColumnWithText(leftText: Strings.inputAmount, rightText: '5.5 TOPL')
@@ -190,7 +184,6 @@ class UTxODetailsPage extends HookConsumerWidget {
                       CustomResponsiveRowColumn(
                         children: [
                           ResponsiveRowColumnItem(
-                              rowFlex: 1,
                               child: CustomPadding(
                                   child: isMobile
                                       ? const CustomColumnWithText(leftText: Strings.inputAmount, rightText: '5.5 TOPL')
@@ -206,7 +199,6 @@ class UTxODetailsPage extends HookConsumerWidget {
                         CustomResponsiveRowColumn(
                           children: [
                             ResponsiveRowColumnItem(
-                                rowFlex: 1,
                                 child: CustomPadding(
                                     child: isMobile
                                         ? const CustomColumnWithText(
@@ -220,7 +212,6 @@ class UTxODetailsPage extends HookConsumerWidget {
                         CustomResponsiveRowColumn(
                           children: [
                             ResponsiveRowColumnItem(
-                                rowFlex: 1,
                                 child: CustomPadding(
                                     child: isMobile
                                         ? const CustomColumnWithText(
@@ -234,7 +225,6 @@ class UTxODetailsPage extends HookConsumerWidget {
                         CustomResponsiveRowColumn(
                           children: [
                             ResponsiveRowColumnItem(
-                                rowFlex: 1,
                                 child: CustomPadding(
                                     child: isMobile
                                         ? const CustomColumnWithText(leftText: Strings.feeAmount, rightText: '0.1 TOPL')
