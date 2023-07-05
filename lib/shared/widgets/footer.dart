@@ -296,7 +296,10 @@ class FooterColumn extends HookConsumerWidget {
         Text(
           footerTitle,
           style: const TextStyle(
-              color: Color(0xFF858E8E), fontSize: 16, fontFamily: 'Rational Display', fontWeight: FontWeight.w600),
+              color: Color(0xFF858E8E),
+              fontSize: 16,
+              fontFamily: Strings.rationalDisplayFont,
+              fontWeight: FontWeight.w600),
         ),
         const SizedBox(
           height: 16,
@@ -309,7 +312,7 @@ class FooterColumn extends HookConsumerWidget {
                       style: TextStyle(
                           color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                           fontSize: 14,
-                          fontFamily: 'Rational Display'),
+                          fontFamily: Strings.rationalDisplayFont),
                     ),
                     const SizedBox(
                       height: 16,

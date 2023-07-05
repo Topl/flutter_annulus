@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_mobile_details.dart';
 import 'package:flutter_annulus/blocks/sections/block_tabbar_view.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -34,7 +35,7 @@ class BlockDetailsDrawer extends HookConsumerWidget {
                 title: Padding(
                   padding: isMobile ? const EdgeInsets.only(left: 2.0, right: 16) : const EdgeInsets.all(40.0),
                   child: Text(
-                    'Block Details',
+                    Strings.blockDetails,
                     style: headlineLarge(context),
                   ),
                 ),
@@ -66,13 +67,13 @@ class BlockDetailsDrawer extends HookConsumerWidget {
                               ),
                             ),
                             child: const Tab(
-                              child: Text('Summary'),
+                              child: Text(Strings.summary),
                             ),
                           ),
                           const SizedBox(
                             width: 200.0,
                             height: 40.0,
-                            child: Tab(text: 'Transactions'),
+                            child: Tab(text: Strings.transactions),
                           ),
                         ],
                       ),
@@ -81,7 +82,11 @@ class BlockDetailsDrawer extends HookConsumerWidget {
                 ),
               )
             : null,
-        body: isMobile ? const BlockTabBarMobileView() : const BlockTabBarView(),
+        body: isMobile
+            ? const BlockTabBarMobileView()
+            : BlockTabBarView(
+                block: block,
+              ),
       ),
     );
   }

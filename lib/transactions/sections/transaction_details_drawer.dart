@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
@@ -32,7 +33,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(left: 60),
               child: Text(
-                'Transaction Details',
+                Strings.transactionDetailsHeader,
                 style: headlineLarge(context),
               ),
             ),
@@ -42,7 +43,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Txn Hash/ID')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: Strings.transactionHash)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -52,14 +53,14 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 )
               ],
             ),
-            Row(
+            const Row(
               children: [
-                const Spacing(),
-                SizedBox(width: 172, child: CustomTextLeft(desc: transaction!.status.name)),
-                const SizedBox(
+                Spacing(),
+                SizedBox(width: 172, child: CustomTextLeft(desc: Strings.status)),
+                SizedBox(
                   width: 24,
                 ),
-                const StatusButton(
+                StatusButton(
                   status: 'Confirmed',
                   hideArrowIcon: false,
                 )
@@ -68,7 +69,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Block')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: Strings.block)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -78,7 +79,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Broadcast Timestamp')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: Strings.broadcastTimestamp)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -88,7 +89,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Confirmed Timestamp')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: Strings.confirmedTimestamp)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -112,7 +113,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Type')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: Strings.type)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -122,7 +123,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Amount')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: Strings.amount)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -132,7 +133,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'Txn Fee')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: Strings.txnFee)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -142,7 +143,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'From')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: Strings.fromAddress)),
                 const SizedBox(
                   width: 24,
                 ),
@@ -152,7 +153,7 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
             Row(
               children: [
                 const Spacing(),
-                const SizedBox(width: 172, child: CustomTextLeft(desc: 'To')),
+                const SizedBox(width: 172, child: CustomTextLeft(desc: Strings.toAddress)),
                 const SizedBox(
                   width: 24,
                 ),

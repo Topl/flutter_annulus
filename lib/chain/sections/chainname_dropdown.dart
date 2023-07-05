@@ -296,7 +296,7 @@ class _DesktopDropdown extends StatelessWidget {
                     children: [
                       Text(
                         chain.name,
-                        style: bodySmall(context),
+                        style: titleMedium(context),
                       ),
                     ],
                   ))
