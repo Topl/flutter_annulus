@@ -56,7 +56,8 @@ class Transactions extends HookConsumerWidget {
             SizedBox(
               width: double.infinity,
               child: DataTable(
-                columnSpacing: isTablet ? 10 : null,
+                horizontalMargin: isTablet ? 1.0 : null,
+                columnSpacing: isTablet ? 1 : 0.5,
                 border: TableBorder.symmetric(
                   inside: BorderSide(
                     color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
