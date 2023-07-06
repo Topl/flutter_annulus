@@ -2,11 +2,13 @@ import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/chain/utils/chain_utils.dart';
-import 'package:flutter_annulus/genus/providers/genus_provider.dart';
+import 'package:flutter_annulus/shared/providers/genus_provider.dart';
+import 'package:flutter_annulus/shared/providers/node_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:topl_common/genus/services/node_grpc.dart';
 import 'package:topl_common/genus/services/transaction_grpc.dart';
 import 'package:topl_common/proto/consensus/models/block_header.pb.dart';
-import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
+import 'package:topl_common/proto/node/services/bifrost_rpc.pbgrpc.dart';
 
 final last10BlockHeadersProvider = FutureProvider<List<BlockHeader>>((ref) async {
   final selectedChain = ref.watch(selectedChainProvider);
@@ -47,11 +49,13 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   final Ref ref;
 
   final GenusGRPCService genusClient;
+  final NodeGRPCService nodeClient;
 
   ChainNotifier(
     this.ref,
     this.selectedChain,
   )   : genusClient = ref.read(genusProvider(selectedChain)),
+        nodeClient = ref.read(nodeProvider(selectedChain)),
         super(
           const AsyncLoading(),
         ) {
@@ -67,25 +71,7 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   Future<Chain> getSelectedChain({bool setState = false}) async {
     if (setState) state = const AsyncLoading();
 
-    final int activeStakes = await _getActiveStakes();
-    final int inactiveStakes = await _getInactiveStakes();
-    final int registeredStakes = activeStakes + inactiveStakes;
-
-    final Chain chain = Chain(
-      dataThroughput: await _getDataThroughPut(),
-      averageTransactionFee: await _getAverageTransactionFee(),
-      uniqueActiveAddresses: await _getUniqueActiveAddresses(),
-      eon: await _getEon(),
-      era: await _getEra(),
-      epoch: await _getEpoch(),
-      totalTransactionsInEpoch: await _getTotalTransactionsInEpoch(),
-      height: await _getHeight(),
-      averageBlockTime: await _getAverageBlockTime(),
-      totalStake: activeStakes / registeredStakes,
-      registeredStakes: registeredStakes,
-      activeStakes: await _getActiveStakes(),
-      inactiveStakes: await _getInactiveStakes(),
-    );
+    final Chain chain = selectedChain == Chains.mock ? getMockChain() : await _getLiveChain();
 
     // Adding delay here to simulate API call
     if (setState) {
@@ -95,128 +81,69 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
     return chain;
   }
 
-  /// TODO: This probably can be simplified to reduce calls by using the blocks already in the block proovider
-  /// QQQQ How do you actually calculate?
-  /// Add the block size of each block and then divide by the difference in time between the first and last block?
-  Future<double> _getDataThroughPut() async {
-    if (selectedChain == Chains.mock) {
-      return getMockChain().dataThroughput;
-    } else {
-      final List<BlockHeader> last10Blocks = await ref.read(last10BlockHeadersProvider.future);
+  Future<Chain> _getLiveChain() async {
+    final FetchEpochDataRes chainData = await nodeClient.fetchEpochData(epoch: 1);
 
-      final List<double> averageDataThroughPut = [];
+    //////// Data Throughput ////////
+    final int dataBytes = chainData.epochData.dataBytes.toInt();
+    print('QQQQ dataBytes: $dataBytes');
 
-      last10Blocks.forEach((blockHeader) {
-        final timeStamp = blockHeader.timestamp;
-        return averageDataThroughPut.add(10);
-      });
+    final int startTimestamp = chainData.epochData.startTimestamp.toInt();
+    print('QQQQ startTimestamp: $startTimestamp');
 
-      return averageDataThroughPut.reduce((a, b) => a + b) / averageDataThroughPut.length;
-    }
-  }
+    final int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+    print('QQQQ currentTimestamp: $currentTimestamp');
 
-  /// TODO: This probably can be simplified to reduce calls by using the transactions already in the transaction proovider
-  Future<double> _getAverageTransactionFee() async {
-    if (selectedChain == Chains.mock) {
-      return getMockChain().averageTransactionFee;
-    } else {
-      /// QQQQ TODO: Implement
-      /// How do you get the most recent transactions?
-      Future<double?> _getSingleAverageTransactionFee() async {}
+    final double dataThroughput = dataBytes / ((currentTimestamp - startTimestamp) / 1000);
+    print('QQQQ dataThroughput: $dataThroughput');
 
-      const int amountOfTransactionsToCheck = 10;
+    //////// Average Transaction fee ////////
+    final int totalTransactionsInEpoch = chainData.epochData.transactionCount.toInt();
+    print('QQQQ totalTransactionsInEpoch: $totalTransactionsInEpoch');
 
-      final List<double> averageTransactionFee = [];
+    final totalTransactionReward = chainData.epochData.totalTransactionReward;
+    print('QQQQ totalTransactionReward: $totalTransactionReward');
 
-      for (int i = 0; i < amountOfTransactionsToCheck; i++) {
-        final transactionFee = await _getSingleAverageTransactionFee();
+    final double averageTransactionFee = int.parse(totalTransactionReward.toString()) / totalTransactionsInEpoch;
+    print('QQQQ averageTransactionFee: $averageTransactionFee');
 
-        if (transactionFee != null) {
-          averageTransactionFee.add(transactionFee);
-        }
-      }
+    //////// Others ////////
+    final int eon = chainData.epochData.eon.toInt();
+    print('QQQQ eon: $eon');
 
-      return averageTransactionFee.reduce((a, b) => a + b) / averageTransactionFee.length;
-    }
-  }
+    final int era = chainData.epochData.era.toInt();
+    print('QQQQ era: $era');
 
-  /// TODO: Implement
-  /// QQQQ is this implemented?
-  Future<int> _getUniqueActiveAddresses() async {
-    return getMockChain().uniqueActiveAddresses;
-  }
+    final int epoch = chainData.epochData.epoch.toInt();
+    print('QQQQ epoch: $epoch');
 
-  /// TODO: Implement
-  /// QQQQ is this implemented?
-  Future<int> _getEon() async {
-    return getMockChain().eon;
-  }
+    final int endHeight = chainData.epochData.endHeight.toInt();
+    print('QQQQ endHeight: $endHeight');
 
-  /// TODO: Implement
-  /// QQQQ is this implemented?
-  Future<int> _getEra() async {
-    return getMockChain().era;
-  }
+    final activeStakes = int.parse(chainData.epochData.activeStake.toString());
+    print('QQQQ activeStakes $activeStakes');
 
-  /// TODO: Implement
-  Future<int> _getEpoch() async {
-    if (selectedChain == Chains.mock) {
-      return getMockChain().epoch;
-    } else {
-      final BlockResponse blockAtHeight1 = await genusClient.getBlockByHeight(height: 1);
-      final BlockHeader blockHeader = blockAtHeight1.block.header;
-      final int timeStamp = blockHeader.timestamp.toInt();
+    final inactiveStakes = int.parse(chainData.epochData.inactiveStake.toString());
+    print('QQQQ inactiveStakes $inactiveStakes');
 
-      /// QQQQ how do I get slots in node config
-      return getMockChain().epoch;
-    }
-  }
+    final totalStakes = activeStakes + inactiveStakes;
 
-  /// TODO: Implement
-  Future<int> _getTotalTransactionsInEpoch() async {
-    return getMockChain().totalTransactionsInEpoch;
-  }
-
-  Future<int> _getHeight() async {
-    if (selectedChain == Chains.mock) return getMockChain().height;
-    final List<BlockHeader> blocks = await ref.read(last10BlockHeadersProvider.future);
-
-    final height = blocks[0].height;
-
-    return height.toInt();
-  }
-
-  /// QQQQ question. Is the timestamp in the block header in milliseconds from epoch?
-  Future<int> _getAverageBlockTime() async {
-    if (selectedChain == Chains.mock) {
-      return getMockChain().averageBlockTime;
-    } else {
-      final List<BlockHeader> last10Blocks = await ref.read(last10BlockHeadersProvider.future);
-
-      final List<int> blockTimes = [];
-
-      for (int i = 0; i < last10Blocks.length - 1; i++) {
-        final currentBlock = last10Blocks[i];
-        final previousBlock = last10Blocks[i + 1];
-
-        final blockTime = currentBlock.timestamp.toInt() - previousBlock.timestamp.toInt();
-
-        blockTimes.add(blockTime);
-      }
-
-      return (blockTimes.reduce((a, b) => a + b) / blockTimes.length).round();
-    }
-  }
-
-  /// TODO: Implement
-  /// QQQQ is this implemented?
-  Future<int> _getActiveStakes() async {
-    return getMockChain().activeStakes;
-  }
-
-  /// TODO: Implement
-  /// QQQQ is this implemented?
-  Future<int> _getInactiveStakes() async {
-    return getMockChain().inactiveStakes;
+    final Chain chain = Chain(
+      dataThroughput: dataThroughput,
+      averageTransactionFee: averageTransactionFee,
+      uniqueActiveAddresses: 0,
+      eon: eon,
+      era: era,
+      epoch: epoch,
+      totalTransactionsInEpoch: totalTransactionsInEpoch,
+      height: endHeight,
+      // QQQQ implement this
+      averageBlockTime: 0,
+      totalStake: activeStakes / totalStakes,
+      registeredStakes: totalStakes,
+      activeStakes: activeStakes,
+      inactiveStakes: inactiveStakes,
+    );
+    return chain;
   }
 }
