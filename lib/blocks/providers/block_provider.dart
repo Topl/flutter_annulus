@@ -2,7 +2,7 @@ import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
-import 'package:flutter_annulus/genus/providers/genus_provider.dart';
+import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<List<Block>>>((ref) {
