@@ -6,21 +6,6 @@ ThemeData lightTheme({
 }) {
   final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
-  /// This is used to check if screen is zoomed in
-  double zoomFactor = MediaQuery.of(context).devicePixelRatio;
-  double titleFontSize = 10;
-
-  /// This checks if screen is 100% zoomed in
-  if (zoomFactor >= 2) {
-    titleFontSize = 9;
-
-    /// This checks if screen is 80% zoomed in
-  } else if (zoomFactor == 1.600000023841858) {
-    titleFontSize = 8;
-  } else {
-    titleFontSize = 10;
-  }
-
   const Color textColor = Color(0xFF282A2C);
   const Color textColor2 = Color(0xFF000000);
   const Color altTextColor = Color(0xFF858E8E);
@@ -46,8 +31,6 @@ ThemeData lightTheme({
       textColor2: textColor2,
       altTextColor: altTextColor,
       altTextColor2: altTextColor2,
-      zoomFactor: zoomFactor,
-      titleFontSize: titleFontSize,
     ),
   );
 }
@@ -80,8 +63,6 @@ ThemeData darkTheme({
       textColor2: textColor2,
       altTextColor: altTextColor,
       altTextColor2: altTextColor2,
-      zoomFactor: 1,
-      titleFontSize: 16,
     ),
   );
 }
@@ -93,8 +74,6 @@ TextTheme _textTheme({
   required Color textColor2,
   required Color altTextColor,
   required Color altTextColor2,
-  required double zoomFactor,
-  required double titleFontSize,
 }) {
   return ThemeData().textTheme.copyWith(
         /// Headline
@@ -143,7 +122,7 @@ TextTheme _textTheme({
         bodySmall: TextStyle(
           color: altTextColor,
           fontWeight: FontWeight.w400,
-          fontSize: titleFontSize,
+          fontSize: 10,
           fontFamily: 'Rational Display Light',
           fontStyle: FontStyle.normal,
         ),

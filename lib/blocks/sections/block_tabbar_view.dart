@@ -55,7 +55,7 @@ class BlockTabBarView extends HookConsumerWidget {
               Row(
                 children: [
                   const Spacing(),
-                  const SizedBox(width: 200, child: Expanded(child: CustomTextLeft(desc: Strings.status))),
+                  const SizedBox(width: 200, child: CustomTextLeft(desc: Strings.status)),
                   SizedBox(width: !isMobile ? 24 : 0),
                   const Expanded(
                     child: StatusButton(
@@ -92,7 +92,7 @@ class BlockTabBarView extends HookConsumerWidget {
                   const SizedBox(
                     width: 24,
                   ),
-                  Expanded(child: CustomTextRight(desc: block!.header))
+                  Expanded(child: CustomTextRight(desc: block!.header.substring(0, Numbers.textLength - 3)))
                 ],
               ),
               const SizedBox(

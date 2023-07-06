@@ -58,9 +58,10 @@ class TransactionDetailsPage extends HookConsumerWidget {
                           padding: EdgeInsets.only(left: isMobile ? 6 : 30),
                           child: TextButton(
                               onPressed: () {
-                                final prevUrl = context.vRouter.previousUrl;
-                                if (prevUrl != null) {
-                                  context.vRouter.to(prevUrl);
+                                if (context.vRouter.previousUrl != null) {
+                                  context.vRouter.to(context.vRouter.previousUrl!);
+                                } else {
+                                  context.vRouter.to('/');
                                 }
                               },
                               child: Row(
@@ -100,7 +101,6 @@ class TransactionDetailsPage extends HookConsumerWidget {
                               CustomResponsiveRowColumn(
                                 children: [
                                   ResponsiveRowColumnItem(
-                                      rowFlex: isMobile ? 3 : 2,
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
@@ -122,16 +122,14 @@ class TransactionDetailsPage extends HookConsumerWidget {
                               CustomResponsiveRowColumn(
                                 children: [
                                   ResponsiveRowColumnItem(
-                                      rowFlex: 1,
                                       child: CustomPadding(
-                                        child: CustomStatusWidget(status: transaction.status.name),
-                                      )),
+                                    child: CustomStatusWidget(status: transaction.status.name),
+                                  )),
                                 ],
                               ),
                               CustomResponsiveRowColumn(
                                 children: [
                                   ResponsiveRowColumnItem(
-                                      rowFlex: 1,
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
@@ -146,7 +144,6 @@ class TransactionDetailsPage extends HookConsumerWidget {
                               CustomResponsiveRowColumn(
                                 children: [
                                   ResponsiveRowColumnItem(
-                                      rowFlex: 1,
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
@@ -162,7 +159,6 @@ class TransactionDetailsPage extends HookConsumerWidget {
                               CustomResponsiveRowColumn(
                                 children: [
                                   ResponsiveRowColumnItem(
-                                      rowFlex: 1,
                                       child: CustomPadding(
                                           child: isMobile
                                               ? CustomColumnWithText(
@@ -185,7 +181,6 @@ class TransactionDetailsPage extends HookConsumerWidget {
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
@@ -200,7 +195,6 @@ class TransactionDetailsPage extends HookConsumerWidget {
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
@@ -214,7 +208,6 @@ class TransactionDetailsPage extends HookConsumerWidget {
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
@@ -229,7 +222,6 @@ class TransactionDetailsPage extends HookConsumerWidget {
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
@@ -248,7 +240,6 @@ class TransactionDetailsPage extends HookConsumerWidget {
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(
@@ -267,7 +258,6 @@ class TransactionDetailsPage extends HookConsumerWidget {
                           CustomResponsiveRowColumn(
                             children: [
                               ResponsiveRowColumnItem(
-                                  rowFlex: 1,
                                   child: CustomPadding(
                                       child: isMobile
                                           ? CustomColumnWithText(

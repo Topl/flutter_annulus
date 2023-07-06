@@ -8,6 +8,7 @@ import 'package:vrouter/vrouter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../shared/constants/strings.dart';
+import '../../shared/constants/ui.dart';
 import '../../shared/utils/theme_color.dart';
 import '../models/transaction.dart';
 import '../widgets/custom_transaction_widgets.dart';
@@ -55,7 +56,8 @@ class Transactions extends HookConsumerWidget {
             SizedBox(
               width: double.infinity,
               child: DataTable(
-                columnSpacing: isTablet ? 10 : null,
+                horizontalMargin: isTablet ? 1.0 : null,
+                columnSpacing: isTablet ? 1 : 0.5,
                 border: TableBorder.symmetric(
                   inside: BorderSide(
                     color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
@@ -87,27 +89,28 @@ class Transactions extends HookConsumerWidget {
                     .sublist(0, 3)
                     .map(
                       (transaction) => DataRow(
+                        onSelectChanged: (value) {
+                          //handles on click
+                          if (isDesktop) {
+                            showModalSideSheet(
+                              context: context,
+                              ignoreAppBar: false,
+                              width: 640,
+                              barrierColor: Colors.white.withOpacity(barrierOpacity),
+                              barrierDismissible: true,
+                              body: TransactionDetailsDrawer(
+                                transaction: transaction,
+                              ),
+                            );
+                          } else {
+                            context.vRouter.to('/transactions_details/');
+                          }
+                        },
                         cells: [
                           DataCell(
                             Padding(
                               padding: EdgeInsets.only(top: isDesktop ? 14.0 : 0.0),
                               child: GestureDetector(
-                                onTap: () {
-                                  if (isDesktop) {
-                                    showModalSideSheet(
-                                      context: context,
-                                      ignoreAppBar: false,
-                                      width: 640,
-                                      barrierColor: Colors.white.withOpacity(0.64),
-                                      barrierDismissible: true,
-                                      body: TransactionDetailsDrawer(
-                                        transaction: transaction,
-                                      ),
-                                    );
-                                  } else {
-                                    context.vRouter.to('/transactions_details/');
-                                  }
-                                },
                                 child: TransactionColumnText(
                                   textTop: transaction.transactionId
                                       .replaceRange(isTablet ? 7 : 16, transaction.transactionId.length, "..."),
