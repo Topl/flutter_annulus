@@ -47,6 +47,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                 length: 3,
                 child: SingleChildScrollView(
                   child: Container(
+                    height: MediaQuery.of(context).size.width == 1024 ? MediaQuery.of(context).size.height - 300 : null,
                     decoration: BoxDecoration(
                       color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                     ),
