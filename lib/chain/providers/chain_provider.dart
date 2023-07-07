@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
@@ -82,68 +84,103 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   }
 
   Future<Chain> _getLiveChain() async {
-    final FetchEpochDataRes chainData = await nodeClient.fetchEpochData(epoch: 1);
+    try {
+      final FetchEpochDataRes chainData = await nodeClient.fetchEpochData(epoch: 1);
 
-    //////// Data Throughput ////////
-    final int dataBytes = chainData.epochData.dataBytes.toInt();
-    print('QQQQ dataBytes: $dataBytes');
+      //////// Data Throughput ////////
+      final int dataBytes = chainData.epochData.dataBytes.toInt();
+      print('QQQQ dataBytes: $dataBytes');
 
-    final int startTimestamp = chainData.epochData.startTimestamp.toInt();
-    print('QQQQ startTimestamp: $startTimestamp');
+      final int startTimestamp = chainData.epochData.startTimestamp.toInt();
+      print('QQQQ startTimestamp: $startTimestamp');
 
-    final int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
-    print('QQQQ currentTimestamp: $currentTimestamp');
+      final int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+      print('QQQQ currentTimestamp: $currentTimestamp');
 
-    final double dataThroughput = dataBytes / ((currentTimestamp - startTimestamp) / 1000);
-    print('QQQQ dataThroughput: $dataThroughput');
+      final double dataThroughput = dataBytes / ((currentTimestamp - startTimestamp) / 1000);
+      print('QQQQ dataThroughput: $dataThroughput');
 
-    //////// Average Transaction fee ////////
-    final int totalTransactionsInEpoch = chainData.epochData.transactionCount.toInt();
-    print('QQQQ totalTransactionsInEpoch: $totalTransactionsInEpoch');
+      //////// Average Transaction fee ////////
+      /// TODO, totalTransactionReward is returning no data, might need to update implementation
+      final int totalTransactionsInEpoch = chainData.epochData.transactionCount.toInt();
+      final totalTransactionReward = chainData.epochData.totalTransactionReward;
+      final buffer = totalTransactionReward.writeToBuffer();
 
-    final totalTransactionReward = chainData.epochData.totalTransactionReward;
-    print('QQQQ totalTransactionReward: $totalTransactionReward');
+      final data = Int8List.fromList(totalTransactionReward.value).buffer.asByteData();
+      BigInt _bigInt = BigInt.zero;
 
-    final double averageTransactionFee = int.parse(totalTransactionReward.toString()) / totalTransactionsInEpoch;
-    print('QQQQ averageTransactionFee: $averageTransactionFee');
+      for (var i = 0; i < data.lengthInBytes; i++) {
+        _bigInt = (_bigInt << 8) | BigInt.from(data.getUint8(i));
+      }
 
-    //////// Others ////////
-    final int eon = chainData.epochData.eon.toInt();
-    print('QQQQ eon: $eon');
+      print('QQQQ _bigInt: $_bigInt');
 
-    final int era = chainData.epochData.era.toInt();
-    print('QQQQ era: $era');
+      int decimalValue = ByteData.view(buffer.buffer).getInt16(0);
+      print('QQQQ $decimalValue');
 
-    final int epoch = chainData.epochData.epoch.toInt();
-    print('QQQQ epoch: $epoch');
+      int decimalValueq = 0;
+      for (int i = 0; i < buffer.length; i++) {
+        decimalValueq = decimalValueq << 8; // shift everything one byte to the left
+        decimalValueq = decimalValueq | buffer[i]; // bitwise or operation
+      }
 
-    final int endHeight = chainData.epochData.endHeight.toInt();
-    print('QQQQ endHeight: $endHeight');
+      print('QQQQ decimalValueq $decimalValueq');
 
-    final activeStakes = int.parse(chainData.epochData.activeStake.toString());
-    print('QQQQ activeStakes $activeStakes');
+      final value = totalTransactionReward.value;
 
-    final inactiveStakes = int.parse(chainData.epochData.inactiveStake.toString());
-    print('QQQQ inactiveStakes $inactiveStakes');
+      final double averageTransactionFee = value[0] / totalTransactionsInEpoch;
+      print('QQQQ averageTransactionFee: $averageTransactionFee');
 
-    final totalStakes = activeStakes + inactiveStakes;
+      //////// Others ////////
+      final int eon = chainData.epochData.eon.toInt();
+      print('QQQQ eon: $eon');
 
-    final Chain chain = Chain(
-      dataThroughput: dataThroughput,
-      averageTransactionFee: averageTransactionFee,
-      uniqueActiveAddresses: 0,
-      eon: eon,
-      era: era,
-      epoch: epoch,
-      totalTransactionsInEpoch: totalTransactionsInEpoch,
-      height: endHeight,
-      // QQQQ implement this
-      averageBlockTime: 0,
-      totalStake: activeStakes / totalStakes,
-      registeredStakes: totalStakes,
-      activeStakes: activeStakes,
-      inactiveStakes: inactiveStakes,
-    );
-    return chain;
+      final int era = chainData.epochData.era.toInt();
+      print('QQQQ era: $era');
+
+      final int epoch = chainData.epochData.epoch.toInt();
+      print('QQQQ epoch: $epoch');
+
+      final int endHeight = chainData.epochData.endHeight.toInt();
+      print('QQQQ endHeight: $endHeight');
+
+      print('QQQQ activeStakes ${chainData.epochData.activeStake}');
+      final q1 = chainData.epochData.activeStake.value;
+      Int8List q2 = Int8List.fromList(q1);
+      ByteData q3 = ByteData.view(q2.buffer);
+
+      print('QQQQ q3 $q3');
+      print('QQQQ q3 ${q3.getInt16(0)}');
+      print('QQQQ q2 $q2');
+      final activeStakes = int.parse(chainData.epochData.activeStake.toString());
+      print('QQQQ activeStakes $activeStakes');
+
+      final inactiveStakes = int.parse(chainData.epochData.inactiveStake.toString());
+      print('QQQQ inactiveStakes $inactiveStakes');
+
+      final totalStakes = activeStakes + inactiveStakes;
+
+      final Chain chain = Chain(
+        dataThroughput: dataThroughput,
+        averageTransactionFee: averageTransactionFee,
+        uniqueActiveAddresses: 0,
+        eon: eon,
+        era: era,
+        epoch: epoch,
+        totalTransactionsInEpoch: totalTransactionsInEpoch,
+        height: endHeight,
+        // QQQQ implement this
+        averageBlockTime: 0,
+        totalStake: activeStakes / totalStakes,
+        registeredStakes: totalStakes,
+        activeStakes: activeStakes,
+        inactiveStakes: inactiveStakes,
+      );
+      return chain;
+    } catch (e) {
+      print('QQQQ error: $e');
+
+      throw ('Error retrieving chain data $e');
+    }
   }
 }
