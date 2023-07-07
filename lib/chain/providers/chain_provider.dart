@@ -93,7 +93,8 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
 
       final int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
-      final double dataThroughput = dataBytes / ((currentTimestamp - startTimestamp) / 1000);
+      final double dataThroughput =
+          double.parse((dataBytes / ((currentTimestamp - startTimestamp) / 1000)).toStringAsFixed(2));
 
       //////// Average Transaction fee ////////
       final int totalTransactionsInEpoch = chainData.epochData.transactionCount.toInt();
