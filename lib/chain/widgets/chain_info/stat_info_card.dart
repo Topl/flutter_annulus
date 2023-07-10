@@ -57,9 +57,9 @@ class StatInfoCard extends ConsumerWidget {
             ),
           ],
         ),
-        if (isTablet) const SizedBox(width: 20),
+        if (isTablet) const Expanded(child: SizedBox(width: 20)),
         Container(
-          margin: const EdgeInsets.only(left: 10),
+          margin: const EdgeInsets.only(left: 8),
           child: CustomTooltip(
             tooltipText: tooltipText,
             child: const Icon(

@@ -35,7 +35,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final AsyncValue<List<Transaction>> transactionsInfo = ref.watch(transactionsProvider);
-
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -50,176 +50,184 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                 content: Column(
                   children: [
                     Container(
+                      height: isTablet ? MediaQuery.of(context).size.height - 280 : null,
+                      decoration: BoxDecoration(
+                        color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                      ),
                       alignment: Alignment.centerLeft,
                       child: SingleChildScrollView(
-                          child: Column(
-                        children: [
-                          Column(
-                            children: [
-                              CustomTabBar(colorTheme: colorTheme),
-                              SingleChildScrollView(
-                                child: CustomContainer(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomResponsiveRowColumn(children: [
-                                      ResponsiveRowColumnItem(
-                                        child: CustomPadding(
-                                          child: isMobile
-                                              ? const CustomColumnWithText(
-                                                  leftText: Strings.blockId,
-                                                  rightText: "242218",
-                                                  hasIcon: true,
-                                                )
-                                              : const CustomRowWithText(
-                                                  leftText: Strings.blockId,
-                                                  rightText: "242218",
-                                                  hasIcon: true,
-                                                ),
+                          child: SizedBox(
+                        height:
+                            MediaQuery.of(context).size.width == 1024 ? MediaQuery.of(context).size.height - 300 : null,
+                        child: Column(
+                          children: [
+                            Column(
+                              children: [
+                                CustomTabBar(colorTheme: colorTheme),
+                                SingleChildScrollView(
+                                  child: CustomContainer(
+                                      child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomResponsiveRowColumn(children: [
+                                        ResponsiveRowColumnItem(
+                                          child: CustomPadding(
+                                            child: isMobile
+                                                ? const CustomColumnWithText(
+                                                    leftText: Strings.blockId,
+                                                    rightText: "242218",
+                                                    hasIcon: true,
+                                                  )
+                                                : const CustomRowWithText(
+                                                    leftText: Strings.blockId,
+                                                    rightText: "242218",
+                                                    hasIcon: true,
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                                    const CustomResponsiveRowColumn(children: [
-                                      ResponsiveRowColumnItem(
-                                        child: CustomPadding(child: CustomStatusWidget(status: "Confirmed")),
-                                      ),
-                                    ]),
-                                    CustomResponsiveRowColumn(children: [
-                                      ResponsiveRowColumnItem(
-                                        child: CustomPadding(
-                                          child: isMobile
-                                              ? const CustomColumnWithText(
-                                                  leftText: Strings.time,
-                                                  rightText: "12 sec ago",
-                                                )
-                                              : const CustomRowWithText(
-                                                  leftText: Strings.time,
-                                                  rightText: "12 sec ago",
-                                                ),
+                                      ]),
+                                      const CustomResponsiveRowColumn(children: [
+                                        ResponsiveRowColumnItem(
+                                          child: CustomPadding(child: CustomStatusWidget(status: "Confirmed")),
                                         ),
-                                      ),
-                                    ]),
-                                    CustomResponsiveRowColumn(children: [
-                                      ResponsiveRowColumnItem(
-                                        child: CustomPadding(
-                                          child: isMobile
-                                              ? const CustomColumnWithText(
-                                                  leftText: Strings.epoch,
-                                                  rightText: "EP100",
-                                                )
-                                              : const CustomRowWithText(
-                                                  leftText: Strings.epoch,
-                                                  rightText: "EP100",
-                                                ),
+                                      ]),
+                                      CustomResponsiveRowColumn(children: [
+                                        ResponsiveRowColumnItem(
+                                          child: CustomPadding(
+                                            child: isMobile
+                                                ? const CustomColumnWithText(
+                                                    leftText: Strings.time,
+                                                    rightText: "12 sec ago",
+                                                  )
+                                                : const CustomRowWithText(
+                                                    leftText: Strings.time,
+                                                    rightText: "12 sec ago",
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                                  ],
-                                )),
-                              ),
-                              SingleChildScrollView(
-                                child: CustomContainer(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomResponsiveRowColumn(children: [
-                                      ResponsiveRowColumnItem(
-                                        child: CustomPadding(
-                                          child: isMobile
-                                              ? const CustomColumnWithText(
-                                                  leftText: Strings.blockId,
-                                                  rightText: "0x736e345d784cf4c9",
-                                                  hasIcon: true,
-                                                )
-                                              : const CustomRowWithText(
-                                                  leftText: Strings.blockId,
-                                                  rightText: "0x736e345d784cf4c9",
-                                                  hasIcon: true,
-                                                ),
+                                      ]),
+                                      CustomResponsiveRowColumn(children: [
+                                        ResponsiveRowColumnItem(
+                                          child: CustomPadding(
+                                            child: isMobile
+                                                ? const CustomColumnWithText(
+                                                    leftText: Strings.epoch,
+                                                    rightText: "EP100",
+                                                  )
+                                                : const CustomRowWithText(
+                                                    leftText: Strings.epoch,
+                                                    rightText: "EP100",
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                                    CustomResponsiveRowColumn(children: [
-                                      ResponsiveRowColumnItem(
-                                        child: CustomPadding(
-                                          child: isMobile
-                                              ? const CustomColumnWithText(
-                                                  leftText: Strings.timeStamp,
-                                                  rightText: "UTC 16:32:01",
-                                                )
-                                              : const CustomRowWithText(
-                                                  leftText: Strings.timeStamp,
-                                                  rightText: "UTC 16:32:01",
-                                                ),
+                                      ]),
+                                    ],
+                                  )),
+                                ),
+                                SingleChildScrollView(
+                                  child: CustomContainer(
+                                      child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomResponsiveRowColumn(children: [
+                                        ResponsiveRowColumnItem(
+                                          child: CustomPadding(
+                                            child: isMobile
+                                                ? const CustomColumnWithText(
+                                                    leftText: Strings.blockId,
+                                                    rightText: "0x736e345d784cf4c9",
+                                                    hasIcon: true,
+                                                  )
+                                                : const CustomRowWithText(
+                                                    leftText: Strings.blockId,
+                                                    rightText: "0x736e345d784cf4c9",
+                                                    hasIcon: true,
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                                    CustomResponsiveRowColumn(children: [
-                                      ResponsiveRowColumnItem(
-                                        child: CustomPadding(
-                                          child: isMobile
-                                              ? const CustomColumnWithText(
-                                                  leftText: Strings.height,
-                                                  rightText: "17321",
-                                                )
-                                              : const CustomRowWithText(
-                                                  leftText: Strings.height,
-                                                  rightText: "17321",
-                                                ),
+                                      ]),
+                                      CustomResponsiveRowColumn(children: [
+                                        ResponsiveRowColumnItem(
+                                          child: CustomPadding(
+                                            child: isMobile
+                                                ? const CustomColumnWithText(
+                                                    leftText: Strings.timeStamp,
+                                                    rightText: "UTC 16:32:01",
+                                                  )
+                                                : const CustomRowWithText(
+                                                    leftText: Strings.timeStamp,
+                                                    rightText: "UTC 16:32:01",
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                                    CustomResponsiveRowColumn(children: [
-                                      ResponsiveRowColumnItem(
-                                        child: CustomPadding(
-                                          child: isMobile
-                                              ? const CustomColumnWithText(
-                                                  leftText: Strings.size,
-                                                  rightText: "h1000",
-                                                )
-                                              : const CustomRowWithText(
-                                                  leftText: Strings.size,
-                                                  rightText: "h1000",
-                                                ),
+                                      ]),
+                                      CustomResponsiveRowColumn(children: [
+                                        ResponsiveRowColumnItem(
+                                          child: CustomPadding(
+                                            child: isMobile
+                                                ? const CustomColumnWithText(
+                                                    leftText: Strings.height,
+                                                    rightText: "17321",
+                                                  )
+                                                : const CustomRowWithText(
+                                                    leftText: Strings.height,
+                                                    rightText: "17321",
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                                    CustomResponsiveRowColumn(children: [
-                                      ResponsiveRowColumnItem(
-                                        child: CustomPadding(
-                                          child: isMobile
-                                              ? const CustomColumnWithText(
-                                                  leftText: Strings.slot,
-                                                  rightText: "12556",
-                                                )
-                                              : const CustomRowWithText(
-                                                  leftText: Strings.slot,
-                                                  rightText: "12556",
-                                                ),
+                                      ]),
+                                      CustomResponsiveRowColumn(children: [
+                                        ResponsiveRowColumnItem(
+                                          child: CustomPadding(
+                                            child: isMobile
+                                                ? const CustomColumnWithText(
+                                                    leftText: Strings.size,
+                                                    rightText: "h1000",
+                                                  )
+                                                : const CustomRowWithText(
+                                                    leftText: Strings.size,
+                                                    rightText: "h1000",
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                                    CustomResponsiveRowColumn(children: [
-                                      ResponsiveRowColumnItem(
-                                        child: CustomPadding(
-                                          child: isMobile
-                                              ? const CustomColumnWithText(
-                                                  leftText: Strings.numberOfTransactions,
-                                                  rightText: "131",
-                                                )
-                                              : const CustomRowWithText(
-                                                  leftText: Strings.numberOfTransactions,
-                                                  rightText: "131",
-                                                ),
+                                      ]),
+                                      CustomResponsiveRowColumn(children: [
+                                        ResponsiveRowColumnItem(
+                                          child: CustomPadding(
+                                            child: isMobile
+                                                ? const CustomColumnWithText(
+                                                    leftText: Strings.slot,
+                                                    rightText: "12556",
+                                                  )
+                                                : const CustomRowWithText(
+                                                    leftText: Strings.slot,
+                                                    rightText: "12556",
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                                  ],
-                                )),
-                              ),
-                            ],
-                          ),
-                        ],
+                                      ]),
+                                      CustomResponsiveRowColumn(children: [
+                                        ResponsiveRowColumnItem(
+                                          child: CustomPadding(
+                                            child: isMobile
+                                                ? const CustomColumnWithText(
+                                                    leftText: Strings.numberOfTransactions,
+                                                    rightText: "131",
+                                                  )
+                                                : const CustomRowWithText(
+                                                    leftText: Strings.numberOfTransactions,
+                                                    rightText: "131",
+                                                  ),
+                                          ),
+                                        ),
+                                      ]),
+                                    ],
+                                  )),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       )),
                     ),
                   ],
@@ -232,6 +240,9 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                   onDropdownChanged: (String value) {},
                 ),
                 content: Container(
+                  height: MediaQuery.of(context).size.width == 1024 || MediaQuery.of(context).size.width == 768
+                      ? MediaQuery.of(context).size.height - 300
+                      : null,
                   decoration: BoxDecoration(
                     color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                   ),
