@@ -72,7 +72,7 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
   /// Typically the return value is a list of one item,
   /// but it can be more than one item if multiple results are found
   /// IE. An ID returns both a block and a transaction
-  Future<List<SearchResult>> searchById(int id) async {
+  Future<List<SearchResult>> searchById(String id) async {
     final BlockResult? block = await _searchForBlockById(id);
     final TransactionResult? transaction = await _searchForTransactionById(id);
     final UTxOResult? utxo = await _searchForUTxOById(id);
@@ -87,11 +87,12 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     return result;
   }
 
-  Future<BlockResult?> _searchForBlockById(int id) async {
+  Future<BlockResult?> _searchForBlockById(String id) async {
     try {
       if (!ref.read(mockStateProvider)) {
         final Chains selectedChain = ref.read(selectedChainProvider);
-        final BlockResponse blockResponse = await ref.read(genusProvider(selectedChain)).getBlockById(blockId: id);
+        final BlockResponse blockResponse =
+            await ref.read(genusProvider(selectedChain)).getBlockById(blockIdString: id);
         return BlockResult(blockResponse.toBlock());
       } else {
         return Future.delayed(const Duration(milliseconds: 250), () {
@@ -111,12 +112,12 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     }
   }
 
-  Future<TransactionResult?> _searchForTransactionById(int id) async {
+  Future<TransactionResult?> _searchForTransactionById(String id) async {
     try {
       if (!ref.read(mockStateProvider)) {
         final Chains selectedChain = ref.read(selectedChainProvider);
         final TransactionResponse response =
-            await ref.read(genusProvider(selectedChain)).getTransactionById(transactionId: id);
+            await ref.read(genusProvider(selectedChain)).getTransactionById(transactionIdString: id);
 
         return TransactionResult(response.toTransaction());
       } else {
@@ -138,7 +139,7 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
   }
 
   // TODO: Are we sure that the id is a int?
-  Future<UTxOResult?> _searchForUTxOById(int id) async {
+  Future<UTxOResult?> _searchForUTxOById(String id) async {
     try {
       final UTxO utxo = await ref.read(utxoByIdProvider(
         id.toString(),
