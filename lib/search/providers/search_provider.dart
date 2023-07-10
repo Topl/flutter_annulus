@@ -91,7 +91,8 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     try {
       if (!ref.read(mockStateProvider)) {
         final Chains selectedChain = ref.read(selectedChainProvider);
-        final BlockResponse blockResponse = await ref.read(genusProvider(selectedChain)).getBlockById(blockId: id);
+        final BlockResponse blockResponse =
+            await ref.read(genusProvider(selectedChain)).getBlockById(blockIdString: id.toString());
         return BlockResult(blockResponse.toBlock());
       } else {
         return Future.delayed(const Duration(milliseconds: 250), () {
@@ -116,7 +117,7 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
       if (!ref.read(mockStateProvider)) {
         final Chains selectedChain = ref.read(selectedChainProvider);
         final TransactionResponse response =
-            await ref.read(genusProvider(selectedChain)).getTransactionById(transactionId: id);
+            await ref.read(genusProvider(selectedChain)).getTransactionById(transactionIdString: id.toString());
 
         return TransactionResult(response.toTransaction());
       } else {

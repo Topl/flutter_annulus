@@ -195,7 +195,7 @@ class Footer extends HookConsumerWidget {
                   width: 24,
                 ),
                 SvgPicture.asset(
-                  colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+                  colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',
                   width: 32,
                   height: 20,
                 ),

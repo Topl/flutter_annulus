@@ -34,7 +34,7 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
     return transactionsInfo.when(
         data: (transactions) => CustomLayout(
               header: Header(
-                logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+                logoAsset: colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',
                 onSearch: () {},
                 onDropdownChanged: (String value) {},
               ),
