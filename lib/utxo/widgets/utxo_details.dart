@@ -30,7 +30,7 @@ class UTxODetailsPage extends HookConsumerWidget {
 
     return CustomLayout(
         header: Header(
-          logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+          logoAsset: colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',
           onSearch: () {},
           onDropdownChanged: (String value) {},
         ),
@@ -38,6 +38,7 @@ class UTxODetailsPage extends HookConsumerWidget {
             length: 3,
             child: SingleChildScrollView(
               child: Container(
+                height: MediaQuery.of(context).size.width == 1024 ? MediaQuery.of(context).size.height - 300 : null,
                 decoration: BoxDecoration(
                   color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                 ),

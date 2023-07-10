@@ -79,7 +79,7 @@ class CustomSearchBar extends HookConsumerWidget {
 
     // Performs a search by calling `searchNotifier.searchById` with the given ID,
     // processes the results, and updates relevant values and lists.
-    Future<void> performSearch(int id) async {
+    Future<void> performSearch(String id) async {
       final searchResults = await searchNotifier.searchById(id);
       if (searchResults.isNotEmpty) {
         final transactions = [];
@@ -114,7 +114,7 @@ class CustomSearchBar extends HookConsumerWidget {
     }
 
     /// Runs the search debouncer with the given ID and prints the results.
-    Future<void> searchByIdAndPrintResults(int id) async {
+    Future<void> searchByIdAndPrintResults(String id) async {
       searchDebouncer.run(() => performSearch(id));
     }
 
@@ -226,10 +226,9 @@ class CustomSearchBar extends HookConsumerWidget {
               onSubmitted: (query) => onSearch(),
               onChanged: (value) {
                 showSuggestions.value = value.isNotEmpty;
-                final valueId = int.tryParse(value);
 
-                if (valueId != null) {
-                  searchByIdAndPrintResults(valueId);
+                if (value.isNotEmpty) {
+                  searchByIdAndPrintResults(value);
                 }
                 showOverlay();
               },
