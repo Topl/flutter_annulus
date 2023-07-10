@@ -35,7 +35,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final AsyncValue<List<Transaction>> transactionsInfo = ref.watch(transactionsProvider);
-
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -50,6 +50,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                 content: Column(
                   children: [
                     Container(
+                      height: isTablet ? MediaQuery.of(context).size.height - 280 : null,
                       decoration: BoxDecoration(
                         color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                       ),

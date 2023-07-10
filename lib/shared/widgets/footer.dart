@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import '../constants/strings.dart';
 import '../providers/app_theme_provider.dart';
 import '../utils/theme_color.dart';
+import 'custom_shared.dart';
 
 /// Footer Widget
 class Footer extends HookConsumerWidget {
@@ -160,7 +162,11 @@ class Footer extends HookConsumerWidget {
         const SizedBox(
           height: 20,
         ),
-        if (!isDesktop) ResponsiveFooter(colorTheme: colorTheme),
+        if (!isDesktop)
+          ResponsiveFooter(
+            colorTheme: colorTheme,
+            rowIcons: const RowIcons(),
+          ),
         if (!isDesktop)
           const SizedBox(
             height: 20,
@@ -219,122 +225,6 @@ class Footer extends HookConsumerWidget {
         const SizedBox(
           height: 20,
         )
-      ],
-    );
-  }
-}
-
-class ResponsiveFooter extends StatelessWidget {
-  const ResponsiveFooter({
-    Key? key,
-    required this.colorTheme,
-  }) : super(key: key);
-
-  final ThemeMode colorTheme;
-
-  @override
-  Widget build(BuildContext context) {
-    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-
-    return ResponsiveRowColumn(
-      layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
-          ? ResponsiveRowColumnType.COLUMN
-          : ResponsiveRowColumnType.ROW,
-      children: [
-        ResponsiveRowColumnItem(
-          rowFlex: 1,
-          child: isMobile
-              ? Column(
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.all(0), width: 800, child: FooterContent(colorTheme: colorTheme)),
-                    const SizedBox(height: 30),
-                    const SizedBox(width: 300, child: RowIcons()),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FooterContent(colorTheme: colorTheme),
-                    Container(padding: const EdgeInsets.only(right: 35), child: const RowIcons()),
-                  ],
-                ),
-        ),
-      ],
-    );
-  }
-}
-
-class FooterContent extends StatelessWidget {
-  const FooterContent({
-    super.key,
-    required this.colorTheme,
-  });
-
-  final ThemeMode colorTheme;
-
-  @override
-  Widget build(BuildContext context) {
-    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(right: isTablet ? 60.0 : 100.0, top: isTablet ? 40 : 0),
-          child: Text(
-            Strings.footerColumn5Header,
-            style: TextStyle(
-              color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFC0C4C4),
-              fontSize: 16,
-              fontFamily: Strings.rationalDisplayFont,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-        const SizedBox(height: 14),
-        Padding(
-          padding: const EdgeInsets.only(left: 40, top: 5),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 202,
-                height: 40,
-                child: TextField(
-                  controller: TextEditingController(text: ''),
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1),
-                    ),
-                    hintText: Strings.email,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              SizedBox(
-                height: 40,
-                width: 102,
-                child: TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
-                    ),
-                  ),
-                  onPressed: null,
-                  child: Text(
-                    Strings.subscribe,
-                    style: TextStyle(
-                      color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
-                      fontSize: 14,
-                      fontFamily: Strings.rationalDisplayFont,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }
