@@ -53,7 +53,7 @@ class ChainInfo extends HookConsumerWidget {
                     ResponsiveRowColumnItem(
                       rowFlex: 1,
                       child: TopStatWithIcon(
-                          iconString: 'images/speedometer.svg',
+                          iconString: 'assets/icons/speedometer.svg',
                           titleString: "Data Throughput",
                           statAmount: chain.dataThroughput.toString(),
                           statSymbol: " kbps",
@@ -77,7 +77,7 @@ class ChainInfo extends HookConsumerWidget {
                     ResponsiveRowColumnItem(
                       rowFlex: 1,
                       child: TopStatWithIcon(
-                        iconString: 'images/coin.svg',
+                        iconString: 'assets/icons/coin.svg',
                         titleString: "Average Transaction Fees",
                         statAmount: chain.averageTransactionFee.toString(),
                         statSymbol: " LVL",

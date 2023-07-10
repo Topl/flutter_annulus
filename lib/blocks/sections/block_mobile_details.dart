@@ -43,7 +43,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
           children: [
             CustomLayout(
                 header: Header(
-                  logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+                  logoAsset: colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',
                   onSearch: () {},
                   onDropdownChanged: (String value) {},
                 ),
@@ -235,7 +235,7 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                 footer: Container(color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C), child: const Footer())),
             CustomLayout(
                 header: Header(
-                  logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+                  logoAsset: colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',
                   onSearch: () {},
                   onDropdownChanged: (String value) {},
                 ),
