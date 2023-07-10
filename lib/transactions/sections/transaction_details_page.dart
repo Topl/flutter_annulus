@@ -30,6 +30,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     final transactionNotifier = ref.watch(transactionsProvider.notifier);
     final AsyncValue<Transaction> asyncTransaction =
@@ -47,6 +48,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                 length: 3,
                 child: SingleChildScrollView(
                   child: Container(
+                    height: isTablet ? MediaQuery.of(context).size.height - 280 : null,
                     decoration: BoxDecoration(
                       color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                     ),

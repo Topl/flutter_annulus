@@ -29,6 +29,7 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
   Widget build(BuildContext context) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+    final isBiggerTablet = MediaQuery.of(context).size.width == 1024;
     final colorTheme = ref.watch(appThemeColorProvider);
     final AsyncValue<List<Transaction>> transactionsInfo = ref.watch(transactionsProvider);
     return transactionsInfo.when(
@@ -75,6 +76,7 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                         Container(
                             margin: EdgeInsets.only(
                                 left: isMobile ? 16.0 : 40.0, right: isMobile ? 0 : 40.0, top: 8.0, bottom: 80.0),
+                            height: isTablet ? MediaQuery.of(context).size.height - 435 : null,
                             child: SingleChildScrollView(
                               child: Theme(
                                 data: Theme.of(context).copyWith(
@@ -83,7 +85,11 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                                 child: PaginatedDataTable(
                                   showCheckboxColumn: false,
                                   headingRowHeight: 50,
-                                  columnSpacing: isTablet ? 34 : 40,
+                                  columnSpacing: isBiggerTablet
+                                      ? 70
+                                      : isTablet
+                                          ? 24
+                                          : 35,
                                   arrowHeadColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                                   source: RowDataSource(
                                       transactions, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C)),

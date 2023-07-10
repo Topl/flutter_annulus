@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/models/time_frame.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 
 import '../providers/chart_provider.dart';
 import 'chart_options_dropdown.dart';
@@ -67,27 +68,36 @@ class ChartTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 17),
-      width: 45,
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll<Color>(
-            clicked ? const Color(0xFF7040EC) : Colors.transparent,
-          ),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+    final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
+
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.only(
+            right: isMobile
+                ? 1
+                : isTablet
+                    ? 18
+                    : 17),
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll<Color>(
+              clicked ? const Color(0xFF7040EC) : Colors.transparent,
+            ),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            padding: const MaterialStatePropertyAll<EdgeInsets>(
+              EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
             ),
           ),
-          padding: const MaterialStatePropertyAll<EdgeInsets>(
-            EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
+          onPressed: onPressed,
+          child: Text(
+            text.toString(),
+            style: const TextStyle(color: Colors.white, fontSize: 12),
           ),
-        ),
-        onPressed: onPressed,
-        child: Text(
-          text.toString(),
-          style: const TextStyle(color: Colors.white, fontSize: 12),
         ),
       ),
     );

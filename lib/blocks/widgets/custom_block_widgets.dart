@@ -3,13 +3,15 @@ import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';
 
+import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/theme.dart';
 
 /// This is a custom widget that shows toggle buttons for the block details
-class CustomTabBar extends StatelessWidget {
+class CustomTabBar extends HookConsumerWidget {
   const CustomTabBar({
     super.key,
     required this.colorTheme,
@@ -18,8 +20,9 @@ class CustomTabBar extends StatelessWidget {
   final ThemeMode colorTheme;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+    final colorMode = ref.watch(appThemeColorProvider);
 
     return Column(
       children: [
@@ -58,12 +61,12 @@ class CustomTabBar extends StatelessWidget {
           child: SizedBox(
             child: TabBar(
               unselectedLabelColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFF858E8E),
-              labelColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFF434648),
+              labelColor: getSelectedColor(colorMode, 0xFF282A2C, 0xFF858E8E),
               labelStyle: labelLarge(context),
               indicatorSize: TabBarIndicatorSize.label,
               indicator: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFFFEFEFE),
+                color: getSelectedColor(colorMode, 0xFFE7E8E8, 0xFF434648),
               ),
               padding: EdgeInsets.only(right: isTablet ? 400.0 : 100.0, top: 20.0),
               tabs: [

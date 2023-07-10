@@ -56,8 +56,8 @@ class Transactions extends HookConsumerWidget {
             SizedBox(
               width: double.infinity,
               child: DataTable(
-                horizontalMargin: isTablet ? 1.0 : null,
-                columnSpacing: isTablet ? 1 : 0.5,
+                horizontalMargin: 0,
+                columnSpacing: 0,
                 border: TableBorder.symmetric(
                   inside: BorderSide(
                     color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
@@ -69,14 +69,17 @@ class Transactions extends HookConsumerWidget {
                     .map(
                       (columnHeader) => DataColumn(
                         label: Padding(
-                          padding: EdgeInsets.only(left: isMobile ? 0 : 40.0, bottom: 16, top: 16),
+                          padding: EdgeInsets.only(
+                              left: isMobile
+                                  ? 0
+                                  : isTablet
+                                      ? 25.0
+                                      : 40.0,
+                              bottom: 16,
+                              top: 16),
                           child: Text(
                             columnHeader,
-                            style: TextStyle(
-                              color: getSelectedColor(colorTheme, 0xFF4B4B4B, 0xFFE7E8E8),
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: labelLarge(context),
                           ),
                         ),
                       ),
@@ -107,19 +110,17 @@ class Transactions extends HookConsumerWidget {
                           }
                         },
                         cells: [
-                          DataCell(
-                            Padding(
-                              padding: EdgeInsets.only(top: isDesktop ? 14.0 : 0.0),
-                              child: GestureDetector(
-                                child: TransactionColumnText(
-                                  textTop: transaction.transactionId
-                                      .replaceRange(isTablet ? 7 : 16, transaction.transactionId.length, "..."),
-                                  textBottom: "49 ${Strings.secAgo}",
-                                ),
-                              ),
+                          DataCell(Container(
+                            transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
+                            padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
+                            child: TransactionColumnText(
+                              textTop: transaction.transactionId
+                                  .replaceRange(isTablet ? 7 : 16, transaction.transactionId.length, "..."),
+                              textBottom: "49 ${Strings.secAgo}",
                             ),
-                          ),
-                          DataCell(Padding(
+                          )),
+                          DataCell(Container(
+                            transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
                             padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
                             child: TransactionColumnText(
                               textTop: '${Strings.height}: ${transaction.block.height}',
@@ -127,8 +128,9 @@ class Transactions extends HookConsumerWidget {
                             ),
                           )),
                           if (!isMobile)
-                            DataCell(Padding(
-                              padding: EdgeInsets.only(top: isDesktop ? 25.0 : 20.0),
+                            DataCell(Container(
+                              transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
+                              padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
                               child: TransactionColumnText(
                                 textTop: transaction.transactionType.string,
                                 textBottom: "",
@@ -136,7 +138,8 @@ class Transactions extends HookConsumerWidget {
                               ),
                             )),
                           if (!isMobile)
-                            DataCell(Padding(
+                            DataCell(Container(
+                              transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
                               padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
                               child: TransactionColumnText(
                                 textTop: '${transaction.quantity} ${Strings.topl}',
@@ -145,8 +148,9 @@ class Transactions extends HookConsumerWidget {
                             )),
                           if (!isMobile)
                             DataCell(
-                              Padding(
-                                padding: EdgeInsets.only(top: isDesktop ? 25.0 : 10.0),
+                              Container(
+                                transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
+                                padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
                                 child: TransactionColumnText(
                                   textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
                                   textBottom: "",
@@ -155,9 +159,12 @@ class Transactions extends HookConsumerWidget {
                               ),
                             ),
                           if (!isMobile)
-                            DataCell(
-                              StatusButton(status: transaction.status.string),
-                            ),
+                            DataCell(Padding(
+                              padding: EdgeInsets.only(
+                                left: isTablet ? 30 : 0,
+                              ),
+                              child: StatusButton(status: transaction.status.string),
+                            )),
                         ],
                       ),
                     )

@@ -49,12 +49,12 @@ class BlockDetailsDrawer extends HookConsumerWidget {
                       width: MediaQuery.of(context).size.width / 4.5,
                       child: TabBar(
                         unselectedLabelColor: getSelectedColor(colorMode, 0xFF282A2C, 0xFF858E8E),
-                        labelColor: getSelectedColor(colorMode, 0xFF282A2C, 0xFF434648),
+                        labelColor: getSelectedColor(colorMode, 0xFF282A2C, 0xFF858E8E),
                         labelStyle: labelLarge(context),
                         indicatorSize: TabBarIndicatorSize.label,
                         indicator: BoxDecoration(
                           borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                          color: getSelectedColor(colorMode, 0xFFE7E8E8, 0xFFFEFEFE),
+                          color: getSelectedColor(colorMode, 0xFFE7E8E8, 0xFF434648),
                         ),
                         padding: const EdgeInsets.only(left: 30.0, top: 8.0),
                         tabs: [
