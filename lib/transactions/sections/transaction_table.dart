@@ -3,6 +3,7 @@ import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_row_item.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:vrouter/vrouter.dart';
 import '../../shared/constants/strings.dart';
 import '../../shared/providers/app_theme_provider.dart';
@@ -26,12 +27,15 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
   var _rowsPerPage = 5; //PaginatedDataTable.defaultRowsPerPage;
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+    final isBiggerTablet = MediaQuery.of(context).size.width == 1024;
     final colorTheme = ref.watch(appThemeColorProvider);
     final AsyncValue<List<Transaction>> transactionsInfo = ref.watch(transactionsProvider);
     return transactionsInfo.when(
         data: (transactions) => CustomLayout(
               header: Header(
-                logoAsset: colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+                logoAsset: colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',
                 onSearch: () {},
                 onDropdownChanged: (String value) {},
               ),
@@ -42,7 +46,8 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                     Wrap(
                       children: [
                         Padding(
-                            padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 40.0, bottom: 8.0),
+                            padding:
+                                EdgeInsets.only(left: isMobile ? 14 : 40.0, right: isMobile ? 0 : 40.0, bottom: 8.0),
                             child: SizedBox(
                               width: 100.0,
                               height: 50.0,
@@ -62,20 +67,29 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                                         width: 8,
                                       ),
                                       Text(
-                                        "Back",
+                                        Strings.backText,
                                         style: bodyMedium(context),
                                       ),
                                     ],
                                   )),
                             )),
                         Container(
-                            margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 8.0, bottom: 80.0),
+                            margin: EdgeInsets.only(
+                                left: isMobile ? 16.0 : 40.0, right: isMobile ? 0 : 40.0, top: 8.0, bottom: 80.0),
+                            height: isTablet ? MediaQuery.of(context).size.height - 435 : null,
                             child: SingleChildScrollView(
                               child: Theme(
                                 data: Theme.of(context).copyWith(
                                   cardColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                                 ),
                                 child: PaginatedDataTable(
+                                  showCheckboxColumn: false,
+                                  headingRowHeight: 50,
+                                  columnSpacing: isBiggerTablet
+                                      ? 70
+                                      : isTablet
+                                          ? 24
+                                          : 35,
                                   arrowHeadColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                                   source: RowDataSource(
                                       transactions, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C)),
@@ -108,39 +122,39 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                                       }
                                     });
                                   },
-                                  columns: const [
+                                  columns: [
                                     DataColumn(
                                       label: Padding(
-                                        padding: EdgeInsets.only(left: 40.0),
-                                        child: SizedBox(
+                                        padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
+                                        child: const SizedBox(
                                           child: TableHeaderText(name: Strings.tableHeaderTxnHashId),
                                         ),
                                       ),
                                     ),
                                     DataColumn(
                                         label: Padding(
-                                      padding: EdgeInsets.only(left: 40.0),
-                                      child: TableHeaderText(name: Strings.tableHeaderBlock),
+                                      padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
+                                      child: const TableHeaderText(name: Strings.tableHeaderBlock),
                                     )),
                                     DataColumn(
                                         label: Padding(
-                                      padding: EdgeInsets.only(left: 40.0),
-                                      child: TableHeaderText(name: Strings.tableHeaderType),
+                                      padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
+                                      child: const TableHeaderText(name: Strings.tableHeaderType),
                                     )),
                                     DataColumn(
                                         label: Padding(
-                                      padding: EdgeInsets.only(left: 40.0),
-                                      child: TableHeaderText(name: Strings.tableHeaderSummary),
+                                      padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
+                                      child: const TableHeaderText(name: Strings.tableHeaderSummary),
                                     )),
                                     DataColumn(
                                         label: Padding(
-                                      padding: EdgeInsets.only(left: 40.0),
-                                      child: TableHeaderText(name: Strings.tableHeaderFee),
+                                      padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
+                                      child: const TableHeaderText(name: Strings.tableHeaderFee),
                                     )),
                                     DataColumn(
                                         label: Padding(
-                                      padding: EdgeInsets.only(left: 40.0),
-                                      child: TableHeaderText(name: Strings.tableHeaderStatus),
+                                      padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
+                                      child: const TableHeaderText(name: Strings.tableHeaderStatus),
                                     )),
                                   ],
                                 ),

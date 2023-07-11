@@ -2,7 +2,7 @@ import 'package:flutter_annulus/blocks/utils/extensions.dart';
 import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
-import 'package:flutter_annulus/genus/providers/genus_provider.dart';
+import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/search/models/search_result.dart';
 import 'package:flutter_annulus/shared/models/logger.dart';
 import 'package:flutter_annulus/shared/providers/logger_provider.dart';
@@ -74,12 +74,10 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
   /// Typically the return value is a list of one item,
   /// but it can be more than one item if multiple results are found
   /// IE. An ID returns both a block and a transaction
-  Future<List<SearchResult>> searchById(int id) async {
-    final idString = id.toString();
-    final BlockResult? block = await _searchForBlockById(idString);
-    final TransactionResult? transaction =
-        await _searchForTransactionById(idString);
-    final UTxOResult? utxo = await _searchForUTxOById(idString);
+  Future<List<SearchResult>> searchById(String id) async {
+    final BlockResult? block = await _searchForBlockById(id);
+    final TransactionResult? transaction = await _searchForTransactionById(id);
+    final UTxOResult? utxo = await _searchForUTxOById(id);
 
     if (block == null && transaction == null && utxo == null) {
       state = AsyncError('No results found', StackTrace.current);
@@ -99,9 +97,8 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     try {
       if (!ref.read(mockStateProvider)) {
         final Chains selectedChain = ref.read(selectedChainProvider);
-        final BlockResponse blockResponse = await ref
-            .read(genusProvider(selectedChain))
-            .getBlockById(blockIdString: id);
+        final BlockResponse blockResponse =
+            await ref.read(genusProvider(selectedChain)).getBlockById(blockIdString: id);
         return BlockResult(blockResponse.toBlock());
       } else {
         return Future.delayed(const Duration(milliseconds: 250), () {
@@ -125,9 +122,9 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     try {
       if (!ref.read(mockStateProvider)) {
         final Chains selectedChain = ref.read(selectedChainProvider);
-        final TransactionResponse response = await ref
-            .read(genusProvider(selectedChain))
-            .getTransactionById(transactionIdString: id);
+
+        final TransactionResponse response =
+            await ref.read(genusProvider(selectedChain)).getTransactionById(transactionIdString: id);
 
         return TransactionResult(response.toTransaction());
       } else {

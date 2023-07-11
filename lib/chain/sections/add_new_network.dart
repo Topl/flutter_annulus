@@ -45,8 +45,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Add New Network',
-                style: headlineLarge(context)),
+            Text('Add New Network', style: headlineLarge(context)),
             const SizedBox(
               height: 48,
             ),

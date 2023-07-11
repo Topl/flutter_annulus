@@ -7,13 +7,12 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../shared/constants/strings.dart';
+import '../../shared/constants/ui.dart';
 import '../widgets/custom_transaction_widgets.dart';
 
 /// A widget to display the list of transactions.
 class TransactionTableRow extends HookConsumerWidget {
-  const TransactionTableRow(
-      {Key? key, required this.transactions, this.count = 0})
-      : super(key: key);
+  const TransactionTableRow({Key? key, required this.transactions, this.count = 0}) : super(key: key);
   final int count;
   final List<Transaction> transactions;
 
@@ -23,82 +22,106 @@ class TransactionTableRow extends HookConsumerWidget {
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
-    final isResponsive =
-        ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
+    final isResponsive = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
 
     return GestureDetector(
-      onTap: () {
-        if (isDesktop) {
-          showModalSideSheet(
-              context: context,
-              ignoreAppBar: false,
-              width: 640,
-              barrierColor: Colors.white.withOpacity(0.64),
-              barrierDismissible: true,
-              body: TransactionDetailsDrawer(
-                transaction: transaction,
-              ));
-        } else {
-          context.vRouter.to('/transactions_details/');
-        }
-        // Add what you want to do on tap
-      },
-      child: Expanded(
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SizedBox(
-          width: isTablet
-              ? 130
-              : isMobile
-                  ? 170
-                  : 300,
-          child: TransactionColumnText(
-            textTop: transaction.transactionId.replaceRange(
-                isTablet ? 7 : 16, transaction.transactionId.length, "..."),
-            textBottom: "49 ${Strings.secAgo}",
-          ),
-        ),
-        if (isMobile)
-          const SizedBox(
-            width: 30,
-          ),
-        SizedBox(
-          width: isResponsive ? 100 : 200,
-          child: TransactionColumnText(
-            textTop: '${Strings.height}: ${transaction.block.height}',
-            textBottom: '${Strings.slot}: ${transaction.block.slot}',
-          ),
-        ),
-        if (!isMobile)
-          SizedBox(
-            width: isTablet ? 110 : 200,
-            child: TransactionColumnText(
-              textTop: transaction.transactionType.string,
-              textBottom: "",
-              isBottomTextRequired: false,
-            ),
-          ),
-        if (!isMobile)
-          SizedBox(
-            width: isTablet ? 90 : 200,
-            child: TransactionColumnText(
-                textTop: '${transaction.quantity} ${Strings.topl}',
-                textBottom: '${transaction.amount} ${Strings.bobs}'),
-          ),
-        if (!isMobile)
-          SizedBox(
-            width: isTablet ? 70 : 150,
-            child: TransactionColumnText(
-              textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
-              textBottom: "",
-              isBottomTextRequired: false,
-            ),
-          ),
-        if (!isMobile)
-          SizedBox(
-              width: isTablet ? 85 : 300,
-              child: StatusButton(status: transaction.status.string)),
-      ])),
-    );
+        onTap: () {
+          if (isDesktop) {
+            showModalSideSheet(
+                context: context,
+                ignoreAppBar: false,
+                width: 640,
+                barrierColor: Colors.white.withOpacity(barrierOpacity),
+                barrierDismissible: true,
+                body: TransactionDetailsDrawer(
+                  transaction: transaction,
+                ));
+          } else {
+            context.vRouter.to('/transactions_details/');
+          }
+          // Add what you want to do on tap
+        },
+        child: Row(
+            mainAxisAlignment: isDesktop ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: isTablet
+                    ? 130
+                    : isMobile
+                        ? 170
+                        : 450,
+                child: TransactionColumnText(
+                  isTransactionTable: false,
+                  textTop: transaction.transactionId.replaceRange(
+                      isTablet
+                          ? 7
+                          : isDesktop
+                              ? 38
+                              : 16,
+                      transaction.transactionId.length,
+                      "..."),
+                  textBottom: "49 ${Strings.secAgo}",
+                  isSmallFont: true,
+                ),
+              ),
+              if (isMobile)
+                const SizedBox(
+                  width: 30,
+                ),
+              SizedBox(
+                width: isResponsive
+                    ? 100
+                    : isDesktop
+                        ? 150
+                        : 200,
+                child: TransactionColumnText(
+                  isTransactionTable: false,
+                  textTop: '${Strings.height}: ${transaction.block.height}',
+                  textBottom: '${Strings.slot}: ${transaction.block.slot}',
+                ),
+              ),
+              if (!isMobile)
+                SizedBox(
+                  width: isTablet
+                      ? 110
+                      : isDesktop
+                          ? 150
+                          : 200,
+                  child: TransactionColumnText(
+                    isTransactionTable: false,
+                    textTop: transaction.transactionType.string,
+                    textBottom: "",
+                    isBottomTextRequired: false,
+                  ),
+                ),
+              if (!isMobile)
+                SizedBox(
+                  width: isTablet
+                      ? 90
+                      : isDesktop
+                          ? 150
+                          : 200,
+                  child: TransactionColumnText(
+                      isTransactionTable: false,
+                      textTop: '${transaction.quantity} ${Strings.topl}',
+                      textBottom: '${transaction.amount} ${Strings.bobs}'),
+                ),
+              if (!isMobile)
+                SizedBox(
+                  width: isTablet ? 110 : 150,
+                  child: TransactionColumnText(
+                    isTransactionTable: false,
+                    textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
+                    textBottom: "",
+                    isBottomTextRequired: false,
+                  ),
+                ),
+              if (!isMobile)
+                SizedBox(
+                    width: isTablet ? 85 : 300,
+                    child: StatusButton(isTransactionTable: true, status: transaction.status.string)),
+            ]));
   }
 }
 
@@ -113,64 +136,56 @@ class RowDataSource extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     final row = data[index];
-    print('row $row');
     if (index < data.length) {
       return DataRow(
           color: MaterialStateProperty.all(clr),
-          onLongPress: () {
-            showModalSideSheet(
-                context: context,
-                ignoreAppBar: false,
-                width: 640,
-                barrierColor: Colors.white.withOpacity(0.64),
-                // with blur,
-                barrierDismissible: true,
-                body: TransactionDetailsDrawer(transaction: row));
-            // Add what you want to do on tap
+          onSelectChanged: (value) {
+            if (isDesktop) {
+              showModalSideSheet(
+                  context: context,
+                  ignoreAppBar: true,
+                  width: 640,
+                  barrierColor: Colors.white.withOpacity(barrierOpacity),
+                  // with blur,
+                  barrierDismissible: true,
+                  body: TransactionDetailsDrawer(
+                    transaction: row,
+                  ));
+            } else {
+              context.vRouter.to('/transactions_details/');
+            }
           },
           cells: <DataCell>[
             DataCell(GestureDetector(
-              onTap: () {
-                isDesktop
-                    ? showModalSideSheet(
-                        context: context,
-                        ignoreAppBar: true,
-                        width: 640,
-                        barrierColor: Colors.white.withOpacity(0.64),
-                        // with blur,
-                        barrierDismissible: true,
-                        body: TransactionDetailsDrawer(
-                          transaction: row,
-                        ))
-                    : context.vRouter.to(
-                        '/transactions_details/',
-                      );
-              },
               child: TransactionColumnText(
-                textTop: row.transactionId,
+                isTransactionTable: true,
+                textTop: isTablet ? row.transactionId.substring(0, 9) : row.transactionId.substring(0, 38),
                 textBottom: "49 ${Strings.secAgo}",
               ),
             )),
             DataCell(TransactionColumnText(
+              isTransactionTable: true,
               textTop: '${Strings.height}: ${row.block.height}',
               textBottom: '${Strings.slot}: ${row.block.slot}',
             )),
             DataCell(TransactionColumnText(
+              isTransactionTable: true,
               textTop: row.transactionType.string,
               textBottom: "",
               isBottomTextRequired: false,
             )),
             const DataCell(TransactionColumnText(
-                textTop: '3 ${Strings.topl}',
-                textBottom: '44 ${Strings.bobs}')),
+                isTransactionTable: true, textTop: '3 ${Strings.topl}', textBottom: '44 ${Strings.bobs}')),
             DataCell(TransactionColumnText(
+              isTransactionTable: true,
               textTop: '${row.transactionFee} ${Strings.feeAcronym}',
               textBottom: "",
               isBottomTextRequired: false,
             )),
-            DataCell(StatusButton(status: row.status.string)),
+            DataCell(StatusButton(isTransactionTable: true, status: row.status.string)),
           ]);
     } else {
       return null;

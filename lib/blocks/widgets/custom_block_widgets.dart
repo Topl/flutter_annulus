@@ -1,15 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';
 
+import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/theme.dart';
 
 /// This is a custom widget that shows toggle buttons for the block details
-class CustomTabBar extends StatelessWidget {
+class CustomTabBar extends HookConsumerWidget {
   const CustomTabBar({
     super.key,
     required this.colorTheme,
@@ -18,32 +20,33 @@ class CustomTabBar extends StatelessWidget {
   final ThemeMode colorTheme;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+    final colorMode = ref.watch(appThemeColorProvider);
+
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 16),
+          padding: EdgeInsets.only(left: isTablet ? 35 : 16),
           child: TextButton(
               onPressed: () {
                 context.vRouter.to('/');
               },
               child: Row(
                 children: [
-                  Icon(Icons.arrow_back,
-                      color:
-                          getSelectedColor(colorTheme, 0xFF535757, 0xFFAFB6B6)),
+                  Icon(Icons.arrow_back, color: getSelectedColor(colorTheme, 0xFF535757, 0xFFAFB6B6)),
                   const SizedBox(
                     width: 8,
                   ),
                   Text(
-                    "Back",
+                    Strings.backText,
                     style: bodyMedium(context),
                   ),
                 ],
               )),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 25.0, top: 20.0),
+          padding: EdgeInsets.only(left: isTablet ? 45.0 : 25.0, top: 20.0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -57,16 +60,15 @@ class CustomTabBar extends StatelessWidget {
           preferredSize: const Size.fromHeight(40.0),
           child: SizedBox(
             child: TabBar(
-              unselectedLabelColor:
-                  getSelectedColor(colorTheme, 0xFF282A2C, 0xFF858E8E),
-              labelColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFF434648),
+              unselectedLabelColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFF858E8E),
+              labelColor: getSelectedColor(colorMode, 0xFF282A2C, 0xFF858E8E),
               labelStyle: labelLarge(context),
               indicatorSize: TabBarIndicatorSize.label,
               indicator: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFFFEFEFE),
+                color: getSelectedColor(colorMode, 0xFFE7E8E8, 0xFF434648),
               ),
-              padding: const EdgeInsets.only(right: 100.0, top: 20.0),
+              padding: EdgeInsets.only(right: isTablet ? 400.0 : 100.0, top: 20.0),
               tabs: [
                 Container(
                   width: 100.0,
@@ -77,13 +79,13 @@ class CustomTabBar extends StatelessWidget {
                     ),
                   ),
                   child: const Tab(
-                    child: Text('Summary'),
+                    child: Text(Strings.summary),
                   ),
                 ),
                 const SizedBox(
                   width: 200.0,
                   height: 40.0,
-                  child: Tab(text: 'Transactions'),
+                  child: Tab(text: Strings.transactions),
                 ),
               ],
             ),
@@ -130,8 +132,7 @@ class CustomPaginatedTable extends StatelessWidget {
                     label: Padding(
                       padding: EdgeInsets.only(right: 60.0),
                       child: SizedBox(
-                        child:
-                            TableHeaderText(name: Strings.tableHeaderTxnHashId),
+                        child: TableHeaderText(name: Strings.tableHeaderTxnHashId),
                       ),
                     ),
                   ),
@@ -188,8 +189,7 @@ class TableDataSource extends DataTableSource {
               textBottom: '${Strings.slot}: ${row.block.slot}',
             )),
             DataCell(TransactionColumnText(
-                textTop: '${row.amount} ${Strings.topl}',
-                textBottom: '${row.quantity} ${Strings.bobs}')),
+                textTop: '${row.amount} ${Strings.topl}', textBottom: '${row.quantity} ${Strings.bobs}')),
             DataCell(TransactionColumnText(
               textTop: '${row.transactionFee} ${Strings.feeAcronym}',
               textBottom: "",
