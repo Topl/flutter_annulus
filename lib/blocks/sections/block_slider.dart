@@ -241,36 +241,6 @@ class CustomTextButton extends ConsumerWidget {
   }
 }
 
-/// Widget for the visible block view
-class VisibleBlockView extends StatelessWidget {
-  const VisibleBlockView({
-    super.key,
-    required this.n1,
-    required this.n2,
-    required this.n3,
-    required this.n4,
-    required this.n5,
-    required this.blocks,
-  });
-
-  final int n1;
-  final int n2;
-  final int n3;
-  final int n4;
-  final int n5;
-  final List<Block> blocks;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-        children: [n1, n2, n3, n4, n5].map((idx) {
-      return BlockView(
-        block: blocks[idx],
-      );
-    }).toList());
-  }
-}
-
 /// widget for Mobile Block
 class MobileBlockViewSlider extends StatelessWidget {
   final CarouselController controller;
@@ -307,28 +277,72 @@ class CustomCarousel extends StatelessWidget {
   final List<Block> blocks;
   final CarouselController controller;
 
+  double calculateRatio({
+    required double screenWidth,
+    required double width1,
+    required double ratio1,
+    required double width2,
+    required double ratio2,
+  }) {
+    // Calculate the slope and y-intercept
+    double slope = (ratio2 - ratio1) / (width2 - width1);
+    double yIntercept = ratio1 - (slope * width1);
+
+    // Calculate the ratio for the given screenWidth
+    double ratio = (slope * screenWidth) + yIntercept;
+
+    return ratio;
+  }
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    double getViewPortFraction(double screenWidth) {
+      // return 0.25;
+
+      if (screenWidth >= 3000) {
+        return 0.1;
+      } else if (ResponsiveBreakpoints.of(context).isTablet) {
+        return calculateRatio(
+          screenWidth: screenWidth,
+          width1: 551,
+          ratio1: 1,
+          width2: 1023,
+          ratio2: 0.45,
+        );
+      } else if (ResponsiveBreakpoints.of(context).isMobile) {
+        return calculateRatio(
+          screenWidth: screenWidth,
+          width1: 400,
+          ratio1: 0.7,
+          width2: 550,
+          ratio2: 0.55,
+        );
+      } else if (screenWidth <= 2000) {
+        return calculateRatio(
+          screenWidth: screenWidth,
+          width1: 1025,
+          ratio1: 0.45,
+          width2: 2000,
+          ratio2: 0.18,
+        );
+      } else {
+        return calculateRatio(
+          screenWidth: screenWidth,
+          width1: 1025,
+          ratio1: 0.4,
+          width2: 2999,
+          ratio2: 0.09,
+        );
+      }
+    }
+
     return CarouselSlider.builder(
-      itemBuilder: (context, index, realIdx) {
-        final int first = index * 2;
-        final int second = first + 1;
-        final int third = second + 1;
-        final int fourth = third + 1;
-        final int firth = fourth + 1;
+      itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
         return blocks.isNotEmpty
-            ? Wrap(
-                direction: Axis.vertical,
-                children: <Widget>[
-                  VisibleBlockView(
-                    n1: first,
-                    n2: second,
-                    n3: third,
-                    n4: fourth,
-                    n5: firth,
-                    blocks: blocks,
-                  ),
-                ],
+            ? BlockView(
+                block: blocks[itemIndex],
               )
             : SizedBox(
                 height: 0,
@@ -343,14 +357,14 @@ class CustomCarousel extends StatelessWidget {
                 ),
               );
       },
-      itemCount: (blocks.length / 3).round(),
+      itemCount: blocks.length,
       options: CarouselOptions(
-        aspectRatio: 0.6,
+        // aspectRatio: 344 / 240,
         initialPage: 0,
+        enableInfiniteScroll: false,
         padEnds: false,
-        enlargeCenterPage: true,
         animateToClosest: true,
-        viewportFraction: 1,
+        viewportFraction: getViewPortFraction(screenWidth),
         height: 360,
       ),
       carouselController: controller,
