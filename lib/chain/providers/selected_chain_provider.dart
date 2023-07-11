@@ -5,5 +5,5 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// Currently [Chains] is an enum because it is convenient to predefine chains
 /// But [Chains] will need some additional info such as rpc ip and port
 final selectedChainProvider = StateProvider<Chains>((ref) {
-  return Chains.private_network;
+  return Chains.mock;
 });

@@ -117,6 +117,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
                         child: CustomTextButton(
                           controller: _controller,
                           text: '←',
+                          isPrevious: true,
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -153,6 +154,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
                             CustomTextButton(
                               controller: _controller,
                               text: '←',
+                              isPrevious: true,
                             ),
                             const SizedBox(width: 10),
                             CustomTextButton(
@@ -201,10 +203,12 @@ class CustomTextButton extends ConsumerWidget {
     super.key,
     required CarouselController controller,
     required this.text,
+    this.isPrevious = false,
   }) : _controller = controller;
 
   final String text;
   final CarouselController _controller;
+  final bool isPrevious;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -226,8 +230,13 @@ class CustomTextButton extends ConsumerWidget {
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          onPressed: () => {_controller.previousPage()},
-          child: Text(text, style: titleMedium(context)),
+          onPressed: () => {
+            isPrevious ? _controller.previousPage() : _controller.nextPage(),
+          },
+          child: Text(
+            text,
+            style: titleMedium(context),
+          ),
         ));
   }
 }
