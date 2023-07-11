@@ -31,8 +31,8 @@ class TransactionDetailsPage extends HookConsumerWidget {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
     final transactionNotifier = ref.watch(transactionsProvider.notifier);
-    final AsyncValue<Transaction> asyncTransaction = transactionNotifier
-        .getSingleTransaction(transactionIdString: transactionId);
+    final AsyncValue<Transaction> asyncTransaction =
+        ref.read(getTransactionByIdProvider(transactionId));
 
     return asyncTransaction.when(
       data: (transaction) {

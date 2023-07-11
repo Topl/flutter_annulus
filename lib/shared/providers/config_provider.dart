@@ -8,8 +8,6 @@ final configProvider = StreamProvider<FetchNodeConfigRes>((ref) async* {
   final nodeClient = ref.read(nodeProvider(selectedChain));
   final configStream = nodeClient.fetchNodeConfig();
 
-  // ref.onDispose(socket.close);
-
   await for (var value in configStream) {
     yield value;
   }
