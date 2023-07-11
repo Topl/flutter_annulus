@@ -1,68 +1,63 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
-import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/genus/providers/genus_provider.dart';
+import 'package:flutter_annulus/shared/utils/get_chain_id.dart';
+import 'package:flutter_annulus/config/providers/config_provider.dart';
+import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<List<Block>>>((ref) {
+final blockProvider =
+    StateNotifierProvider<BlockNotifier, AsyncValue<List<Block>>>((ref) {
   /// Notes:
   /// We'll need to watch for the selectedChain here since we will need to know which
   /// instance of Genus to target
   final selectedChain = ref.watch(selectedChainProvider);
+  final config = ref.watch(configProvider.future);
 
   return BlockNotifier(
     ref,
     selectedChain,
+    config,
   );
 });
 
 class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   final Chains selectedChain;
   final Ref ref;
+  final Future<FetchNodeConfigRes> config;
   BlockNotifier(
     this.ref,
     this.selectedChain,
+    this.config,
   ) : super(
           const AsyncLoading(),
         ) {
     getLatestBlocks(setState: true);
   }
 
-  /// TODO: Determine how to use GRPC and GRPC Web
-  /// TODO: Determine how IDs should be represented to user
-  /// TODO: Determine what to do for epoch
-  /// TODO: Determine how size is computed
-  /// TODO: Determine how to sync more blocks
-  /// TODO: Determine what to do with withdrawal number
-  /// TODO: update method so that multiple latest blocks are fetched (when this is ready)
-  /// TODO: Remove blockId or header field
-  ///
   /// It takes a bool [setState]
   ///
   /// If [setState] is true, it will update the state of the provider
   /// If [setState] is false, it will not update the state of the provider
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
-    // TODO: Re-implement
-    // final genusClient = ref.read(genusProvider(tempChain));
+    final genusClient = ref.read(genusProvider(selectedChain));
 
     if (setState) state = const AsyncLoading();
 
     final List<Block> blocks = [];
     const pageLimit = 10;
-
-    // var blockRes = await genusClient.getBlockByDepth(depth: 0);
-    // print('height: ${blockRes.block.header.height}');
+    final presentConfig = await config;
 
     for (int i = 0; i < pageLimit; i++) {
-      // TODO: Re-implement
-      // var blockRes = await genusClient.getBlockByDepth(depth: i);
+      var blockRes = await genusClient.getBlockByDepth(depth: i);
 
       final iString = i.toString();
       blocks.add(
         Block(
-          header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
-          epoch: 243827 - i,
+          header: getChainId(blockRes.block.header.headerId.value),
+          epoch: blockRes.block.header.slot.toInt() ~/
+              presentConfig.config.epochLength.toInt(),
           size: 5432.2,
           height: blockRes.block.header.height.toInt(),
           slot: blockRes.block.header.slot.toInt(),
@@ -96,7 +91,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
     return state.when(
       data: (data) =>
           AsyncData(data.firstWhere((element) => element.header == header)),
-      data: (data) => AsyncData(data.firstWhere((element) => element.blockId == blockId)),
       error: (error, stakeTrace) => AsyncError(error, stakeTrace),
       loading: () => const AsyncLoading(),
     );
@@ -109,14 +103,15 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   Future<Block> getBlockByHeight({
     required int height,
   }) async {
-    const tempChain = Chains.private_network;
-    final genusClient = ref.read(genusProvider(tempChain));
+    final genusClient = ref.read(genusProvider(selectedChain));
 
     var blockRes = await genusClient.getBlockByHeight(height: height);
+    final presentConfig = await config;
 
     return Block(
-      header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
-      epoch: 243827,
+      header: getChainId(blockRes.block.header.headerId.value),
+      epoch: blockRes.block.header.slot.toInt() ~/
+          presentConfig.config.epochLength.toInt(),
       size: 5432.2,
       height: blockRes.block.header.height.toInt(),
       slot: blockRes.block.header.slot.toInt(),
@@ -132,14 +127,15 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   Future<Block> getBlockByDepth({
     required int depth,
   }) async {
-    const tempChain = Chains.private_network;
-    final genusClient = ref.read(genusProvider(tempChain));
+    final genusClient = ref.read(genusProvider(selectedChain));
 
     var blockRes = await genusClient.getBlockByDepth(depth: depth);
+    final presentConfig = await config;
 
     return Block(
-      header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
-      epoch: 243827,
+      header: getChainId(blockRes.block.header.headerId.value),
+      epoch: blockRes.block.header.slot.toInt() ~/
+          presentConfig.config.epochLength.toInt(),
       size: 5432.2,
       height: blockRes.block.header.height.toInt(),
       slot: blockRes.block.header.slot.toInt(),

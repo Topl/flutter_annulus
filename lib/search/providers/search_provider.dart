@@ -47,7 +47,9 @@ import 'package:topl_common/proto/genus/genus_rpc.pbgrpc.dart';
 ///   },
 ///  );
 /// ```
-final searchProvider = StateNotifierProvider<SearchNotifier, AsyncValue<List<SearchResult>>>((ref) {
+final searchProvider =
+    StateNotifierProvider<SearchNotifier, AsyncValue<List<SearchResult>>>(
+        (ref) {
   return SearchNotifier(ref);
 });
 
@@ -73,25 +75,33 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
   /// but it can be more than one item if multiple results are found
   /// IE. An ID returns both a block and a transaction
   Future<List<SearchResult>> searchById(int id) async {
-    final BlockResult? block = await _searchForBlockById(id);
-    final TransactionResult? transaction = await _searchForTransactionById(id);
-    final UTxOResult? utxo = await _searchForUTxOById(id);
+    final idString = id.toString();
+    final BlockResult? block = await _searchForBlockById(idString);
+    final TransactionResult? transaction =
+        await _searchForTransactionById(idString);
+    final UTxOResult? utxo = await _searchForUTxOById(idString);
 
     if (block == null && transaction == null && utxo == null) {
       state = AsyncError('No results found', StackTrace.current);
       return [];
     }
 
-    final result = [if (block != null) block, if (transaction != null) transaction, if (utxo != null) utxo];
+    final result = [
+      if (block != null) block,
+      if (transaction != null) transaction,
+      if (utxo != null) utxo
+    ];
     state = AsyncData(result);
     return result;
   }
 
-  Future<BlockResult?> _searchForBlockById(int id) async {
+  Future<BlockResult?> _searchForBlockById(String id) async {
     try {
       if (!ref.read(mockStateProvider)) {
         final Chains selectedChain = ref.read(selectedChainProvider);
-        final BlockResponse blockResponse = await ref.read(genusProvider(selectedChain)).getBlockById(blockId: id);
+        final BlockResponse blockResponse = await ref
+            .read(genusProvider(selectedChain))
+            .getBlockById(blockIdString: id);
         return BlockResult(blockResponse.toBlock());
       } else {
         return Future.delayed(const Duration(milliseconds: 250), () {
@@ -111,12 +121,13 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     }
   }
 
-  Future<TransactionResult?> _searchForTransactionById(int id) async {
+  Future<TransactionResult?> _searchForTransactionById(String id) async {
     try {
       if (!ref.read(mockStateProvider)) {
         final Chains selectedChain = ref.read(selectedChainProvider);
-        final TransactionResponse response =
-            await ref.read(genusProvider(selectedChain)).getTransactionById(transactionId: id);
+        final TransactionResponse response = await ref
+            .read(genusProvider(selectedChain))
+            .getTransactionById(transactionIdString: id);
 
         return TransactionResult(response.toTransaction());
       } else {
@@ -138,10 +149,10 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
   }
 
   // TODO: Are we sure that the id is a int?
-  Future<UTxOResult?> _searchForUTxOById(int id) async {
+  Future<UTxOResult?> _searchForUTxOById(String id) async {
     try {
       final UTxO utxo = await ref.read(utxoByIdProvider(
-        id.toString(),
+        id,
       ).future);
 
       return UTxOResult(utxo);
