@@ -1,7 +1,7 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
-import 'package:flutter_annulus/genus/providers/genus_provider.dart';
+import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/utils/get_chain_id.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';

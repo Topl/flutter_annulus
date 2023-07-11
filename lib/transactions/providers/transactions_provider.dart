@@ -3,7 +3,7 @@ import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
-import 'package:flutter_annulus/genus/providers/genus_provider.dart';
+import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
 import 'package:flutter_annulus/shared/utils/get_chain_id.dart';
