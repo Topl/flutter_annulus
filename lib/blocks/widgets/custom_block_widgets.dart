@@ -102,10 +102,12 @@ class CustomPaginatedTable extends StatelessWidget {
     super.key,
     required this.source,
     required int rowsPerPage,
+    required this.colorMode,
   }) : _rowsPerPage = rowsPerPage;
 
   final TableDataSource source;
   final int _rowsPerPage;
+  final ThemeMode colorMode;
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +117,9 @@ class CustomPaginatedTable extends StatelessWidget {
         width: double.infinity,
         child: SingleChildScrollView(
           child: Theme(
-              data: Theme.of(context).copyWith(),
+              data: Theme.of(context).copyWith(
+                cardColor: getSelectedColor(colorMode, 0xFFFEFEFE, 0xFF282A2C),
+              ),
               child: PaginatedDataTable(
                 source: source,
                 showFirstLastButtons: true,

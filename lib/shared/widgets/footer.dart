@@ -1,3 +1,4 @@
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/svg.dart';
@@ -239,12 +240,11 @@ class RowIcons extends StatelessWidget {
   Widget build(BuildContext context) {
     return const RowIconsFooter(
       svgIcons: [
-        'assets/icons/linkedin.svg',
-        'assets/icons/github.svg',
-        'assets/icons/instagram.svg',
-        'assets/icons/facebook.svg',
-        'assets/icons/medium.svg',
-        'assets/icons/twitter.svg',
+        {'icon': 'assets/icons/linkedin.svg', 'url': 'https://www.linkedin.com/company/topl/'},
+        {'icon': 'assets/icons/github.svg', 'url': 'https://github.com/Topl'},
+        {'icon': 'assets/icons/instagram.svg', 'url': 'https://www.instagram.com/topl_protocol/'},
+        {'icon': 'assets/icons/medium.svg', 'url': 'https://medium.com/topl-blog'},
+        {'icon': 'assets/icons/twitter.svg', 'url': 'https://twitter.com/topl_protocol'}
       ],
     );
   }
@@ -274,7 +274,7 @@ class RowIconsFooter extends HookConsumerWidget {
     required this.svgIcons,
   });
 
-  final List<String> svgIcons;
+  final List<Map> svgIcons;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -295,9 +295,12 @@ class RowIconsFooter extends HookConsumerWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: IconButton(
-                      onPressed: null,
+                      onPressed: () {
+                        //TODO: P.S line only applicable to web version
+                        html.window.open(svgIcon['url'], "");
+                      },
                       icon: SvgPicture.asset(
-                        svgIcon,
+                        svgIcon['icon'],
                         color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                       ),
                     ),
