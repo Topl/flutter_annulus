@@ -75,10 +75,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
       );
     }
 
-    blocks.forEach((element) {
-      print('QQQQ blocks ${element.height}');
-    });
-
     // Adding delay here to simulate API call
     if (setState) {
       Future.delayed(
