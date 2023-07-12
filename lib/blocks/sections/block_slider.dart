@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -276,23 +277,6 @@ class CustomCarousel extends StatelessWidget {
 
   final List<Block> blocks;
   final CarouselController controller;
-
-  double calculateRatio({
-    required double screenWidth,
-    required double width1,
-    required double ratio1,
-    required double width2,
-    required double ratio2,
-  }) {
-    // Calculate the slope and y-intercept
-    double slope = (ratio2 - ratio1) / (width2 - width1);
-    double yIntercept = ratio1 - (slope * width1);
-
-    // Calculate the ratio for the given screenWidth
-    double ratio = (slope * screenWidth) + yIntercept;
-
-    return ratio;
-  }
 
   @override
   Widget build(BuildContext context) {
