@@ -7,6 +7,25 @@ import 'package:flutter_annulus/shared/providers/config_provider.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// Returns a block at the index
+///
+/// IMPORTANT: Only use this provider AFTER the blockProvider has been initialized
+/// Ex.
+/// ```
+/// final blockProvider = ref.watch(blockProvider);
+/// blockProvider.when(
+///   data: (data) {
+///    // Use data here
+///    ref.watch(blockStateAtIndexProvider(index));
+///    ...
+///   },
+///   ...
+///   );
+/// ```
+final blockStateAtIndexProvider = FutureProvider.family<Block, int>((ref, index) async {
+  return ref.watch(blockProvider.notifier).getBlockFromStateAtIndex(index);
+});
+
 final getBlockByDepthProvider = FutureProvider.family<Block, int>((ref, depth) async {
   final selectedChain = ref.watch(selectedChainProvider);
   final genusClient = ref.read(genusProvider(selectedChain));
@@ -137,5 +156,28 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
     }
 
     return blocks;
+  }
+
+  /// This method is used to get a block at a specific index
+  /// If the block is not in the state, it will fetch the block from Genus
+  /// It takes an [index] as a parameter
+  ///
+  /// It returns a [Future<Block>]
+  Future<Block> getBlockFromStateAtIndex(int index) async {
+    final blocks = state.asData?.value;
+
+    if (blocks == null) {
+      throw Exception('Error in blockProvider: blocks are null');
+    }
+
+    // If the index is less than the length of the list, return the block at that index
+    if (index <= blocks.length) {
+      return blocks[index];
+    } else {
+      // Get last block in list height
+      // Get the next block by height from Genus
+      // Add that block to state's list
+      // Return that block
+    }
   }
 }
