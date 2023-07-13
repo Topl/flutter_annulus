@@ -123,14 +123,17 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
 
     if (setState) state = const AsyncLoading();
 
+    //futures
     final List<Block> blocks = [];
     const pageLimit = 10;
     final presentConfig = await config;
-
+    List<Future> futures = [];
     for (int i = 0; i < pageLimit; i++) {
-      var blockRes = await genusClient.getBlockByDepth(depth: i);
+      futures.add(genusClient.getBlockByDepth(depth: i));
+    }
 
-      final iString = i.toString();
+    final blockResponses = await Future.wait(futures);
+    blockResponses.asMap().forEach((i, blockRes) {
       blocks.add(
         Block(
           header: getChainId(blockRes.block.header.headerId.value),
@@ -142,7 +145,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
           transactionNumber: blockRes.block.fullBody.transactions.length,
         ),
       );
-    }
+    });
 
     // Adding delay here to simulate API call
     if (setState) {
@@ -174,10 +177,26 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
     if (index <= blocks.length) {
       return blocks[index];
     } else {
-      // Get last block in list height
       // Get the next block by height from Genus
+      final genusClient = ref.read(genusProvider(selectedChain));
+      int latestHeight = blocks[blocks.length - 1].height;
+      final blockRes = await genusClient.getBlockByHeight(height: latestHeight - 1);
+      final presentConfig = await config;
       // Add that block to state's list
+      var newBlock = Block(
+        header: getChainId(blockRes.block.header.headerId.value),
+        epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
+        size: 5432.2,
+        height: blockRes.block.header.height.toInt(),
+        slot: blockRes.block.header.slot.toInt(),
+        timestamp: blockRes.block.header.timestamp.toInt(),
+        transactionNumber: blockRes.block.fullBody.transactions.length,
+      );
+      blocks.add(newBlock);
+      state = AsyncData([...blocks]);
+
       // Return that block
+      return newBlock;
     }
   }
 }
