@@ -30,8 +30,11 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
     final isBiggerTablet = MediaQuery.of(context).size.width == 1024;
+    final isBiggerScreen = MediaQuery.of(context).size.width == 1920;
+
     final colorTheme = ref.watch(appThemeColorProvider);
     final AsyncValue<List<Transaction>> transactionsInfo = ref.watch(transactionsProvider);
+
     return transactionsInfo.when(
         data: (transactions) => CustomLayout(
               header: Header(
@@ -89,7 +92,9 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                                       ? 70
                                       : isTablet
                                           ? 24
-                                          : 35,
+                                          : isBiggerScreen
+                                              ? 133
+                                              : 35,
                                   arrowHeadColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                                   source: RowDataSource(
                                       transactions, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C)),
@@ -151,10 +156,10 @@ class _TransactionTableScreenState extends ConsumerState<TransactionTableScreen>
                                       padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
                                       child: const TableHeaderText(name: Strings.tableHeaderFee),
                                     )),
-                                    DataColumn(
+                                    const DataColumn(
                                         label: Padding(
-                                      padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
-                                      child: const TableHeaderText(name: Strings.tableHeaderStatus),
+                                      padding: EdgeInsets.only(left: 2.0),
+                                      child: TableHeaderText(name: Strings.tableHeaderStatus),
                                     )),
                                   ],
                                 ),
