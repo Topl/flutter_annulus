@@ -49,7 +49,7 @@ class BlockTabBarView extends HookConsumerWidget {
                   const SizedBox(
                     width: 24,
                   ),
-                  CustomTextRight(desc: block!.blockId.substring(0, Numbers.textLength - 3)),
+                  CustomTextRight(desc: block!.header.substring(0, Numbers.textLength - 3)),
                 ],
               ),
               Row(

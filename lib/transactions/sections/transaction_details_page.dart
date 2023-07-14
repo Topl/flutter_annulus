@@ -34,7 +34,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
 
     final transactionNotifier = ref.watch(transactionsProvider.notifier);
     final AsyncValue<Transaction> asyncTransaction =
-        transactionNotifier.getSingleTransaction(transactionId: transactionId);
+        ref.read(getTransactionByIdProvider(transactionId));
 
     return asyncTransaction.when(
       data: (transaction) {
