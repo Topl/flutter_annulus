@@ -1,4 +1,3 @@
-import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
@@ -6,7 +5,7 @@ import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
-import 'package:flutter_annulus/shared/utils/get_chain_id.dart';
+import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../blocks/models/block.dart';
 
@@ -24,7 +23,7 @@ final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((r
   );
 
   var block = Block(
-    header: getChainId(blockRes.block.header.headerId.value),
+    header: decodeId(blockRes.block.header.headerId.value),
     epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
     size: 5432.2,
     height: blockRes.block.header.height.toInt(),
@@ -38,7 +37,7 @@ final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((r
       .reduce((value, element) => value + element);
 
   var transaction = Transaction(
-      transactionId: getChainId(transactionRes.transactionReceipt.transaction.transactionId.value),
+      transactionId: decodeId(transactionRes.transactionReceipt.transaction.transactionId.value),
       status: TransactionStatus.confirmed,
       block: block,
       broadcastTimestamp: transactionRes.transactionReceipt.transaction.datum.event.schedule.timestamp.toInt(),
@@ -46,8 +45,8 @@ final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((r
       transactionType: TransactionType.transfer,
       amount: txAmount.toDouble(),
       transactionFee: 10,
-      senderAddress: getChainId(transactionRes.transactionReceipt.transaction.inputs[0].address.id.value),
-      receiverAddress: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      senderAddress: decodeId(transactionRes.transactionReceipt.transaction.inputs[0].address.id.value),
+      receiverAddress: decodeId(transactionRes.transactionReceipt.transaction.outputs[0].address.id.value),
       transactionSize: 10,
       proposition: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
       quantity: 10,
@@ -66,11 +65,12 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
   final config = ref.read(configProvider.future);
   final presentConfig = await config;
 
+  //check that fullBody is not empty
   if (blockRes.block.fullBody.hasField(1)) {
     int transactionCount = blockRes.block.fullBody.transactions.length;
 
     var latestBlock = Block(
-      header: getChainId(blockRes.block.header.headerId.value),
+      header: decodeId(blockRes.block.header.headerId.value),
       epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
       size: 5432.2,
       height: blockRes.block.header.height.toInt(),
@@ -90,7 +90,7 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
 
       transactions.add(
         Transaction(
-          transactionId: getChainId(blockRes.block.fullBody.transactions[0].transactionId.value),
+          transactionId: decodeId(blockRes.block.fullBody.transactions[0].transactionId.value),
           status: TransactionStatus.pending,
           block: latestBlock,
           broadcastTimestamp: latestBlock.timestamp,
@@ -98,8 +98,8 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
           transactionType: TransactionType.transfer,
           amount: txAmount.toDouble(),
           transactionFee: iDouble,
-          senderAddress: getChainId(blockRes.block.fullBody.transactions[0].inputs[0].address.id.value),
-          receiverAddress: iString,
+          senderAddress: decodeId(blockRes.block.fullBody.transactions[0].inputs[0].address.id.value),
+          receiverAddress: decodeId(blockRes.block.fullBody.transactions[0].outputs[0].address.id.value),
           transactionSize: i,
           proposition: iString,
           quantity: i,
@@ -147,6 +147,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
 
     //TODO: figure out a better way since a ton of empty blocks means this is taking too long
     var latestBlockRes = await genusClient.getBlockByDepth(depth: depth);
+    //check that block has transactions
     while (!latestBlockRes.block.fullBody.hasField(1)) {
       depth++;
       latestBlockRes = await genusClient.getBlockByDepth(depth: depth);
@@ -157,7 +158,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
     int transactionCount = latestBlockRes.block.fullBody.transactions.length;
 
     var latestBlock = Block(
-      header: getChainId(latestBlockRes.block.header.headerId.value),
+      header: decodeId(latestBlockRes.block.header.headerId.value),
       epoch: latestBlockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
       size: 5432.2,
       height: latestBlockRes.block.header.height.toInt(),
@@ -177,7 +178,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
 
       transactions.add(
         Transaction(
-          transactionId: getChainId(latestBlockRes.block.fullBody.transactions[0].transactionId.value),
+          transactionId: decodeId(latestBlockRes.block.fullBody.transactions[0].transactionId.value),
           status: TransactionStatus.pending,
           block: latestBlock,
           broadcastTimestamp: latestBlock.timestamp,
@@ -185,8 +186,8 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
           transactionType: TransactionType.transfer,
           amount: txAmount.toDouble(),
           transactionFee: iDouble,
-          senderAddress: getChainId(latestBlockRes.block.fullBody.transactions[0].inputs[0].address.id.value),
-          receiverAddress: iString,
+          senderAddress: decodeId(latestBlockRes.block.fullBody.transactions[0].inputs[0].address.id.value),
+          receiverAddress: decodeId(latestBlockRes.block.fullBody.transactions[0].outputs[0].address.id.value),
           transactionSize: i,
           proposition: iString,
           quantity: i,

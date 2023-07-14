@@ -2,7 +2,7 @@ import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
-import 'package:flutter_annulus/shared/utils/get_chain_id.dart';
+import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -36,7 +36,7 @@ final getBlockByDepthProvider = FutureProvider.family<Block, int>((ref, depth) a
   var blockRes = await genusClient.getBlockByDepth(depth: depth);
 
   return Block(
-    header: getChainId(blockRes.block.header.headerId.value),
+    header: decodeId(blockRes.block.header.headerId.value),
     epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
     size: 5432.2,
     height: blockRes.block.header.height.toInt(),
@@ -56,7 +56,7 @@ final getBlockByHeightProvider = FutureProvider.family<Block, int>((ref, height)
   var blockRes = await genusClient.getBlockByHeight(height: height);
 
   return Block(
-    header: getChainId(blockRes.block.header.headerId.value),
+    header: decodeId(blockRes.block.header.headerId.value),
     epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
     size: 5432.2,
     height: blockRes.block.header.height.toInt(),
@@ -76,7 +76,7 @@ final getBlockByIdProvider = FutureProvider.family<Block, String>((ref, header) 
   var blockRes = await genusClient.getBlockById(blockIdString: header);
 
   return Block(
-    header: getChainId(blockRes.block.header.headerId.value),
+    header: decodeId(blockRes.block.header.headerId.value),
     epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
     size: 5432.2,
     height: blockRes.block.header.height.toInt(),
@@ -137,7 +137,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
       blockResponses.asMap().forEach((i, blockRes) {
         blocks.add(
           Block(
-            header: getChainId(blockRes.block.header.headerId.value),
+            header: decodeId(blockRes.block.header.headerId.value),
             epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
             size: 5432.2,
             height: blockRes.block.header.height.toInt(),
@@ -188,7 +188,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
       final presentConfig = await config;
       // Add that block to state's list
       var newBlock = Block(
-        header: getChainId(blockRes.block.header.headerId.value),
+        header: decodeId(blockRes.block.header.headerId.value),
         epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
         size: 5432.2,
         height: blockRes.block.header.height.toInt(),
