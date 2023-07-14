@@ -268,7 +268,7 @@ class MobileBlockViewSlider extends StatelessWidget {
 }
 
 /// Reusable carousel custom widget
-class CustomCarousel extends StatelessWidget {
+class CustomCarousel extends HookConsumerWidget {
   const CustomCarousel({
     super.key,
     required this.blocks,
@@ -279,12 +279,10 @@ class CustomCarousel extends StatelessWidget {
   final CarouselController controller;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     double screenWidth = MediaQuery.of(context).size.width;
 
     double getViewPortFraction(double screenWidth) {
-      // return 0.25;
-
       if (screenWidth >= 3000) {
         return 0.1;
       } else if (ResponsiveBreakpoints.of(context).isTablet) {
@@ -324,26 +322,28 @@ class CustomCarousel extends StatelessWidget {
 
     return CarouselSlider.builder(
       itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
-        return blocks.isNotEmpty
-            ? BlockView(
-                block: blocks[itemIndex],
-              )
-            : SizedBox(
-                height: 0,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      "No blocks loaded",
-                      style: bodyMedium(context),
-                    ),
-                  ),
+        if (blocks.isNotEmpty) {
+          final AsyncValue<Block> block = ref.watch(blockStateAtIndexProvider(itemIndex));
+          return BlockView(
+            asyncBlock: block,
+          );
+        } else {
+          return SizedBox(
+            height: 0,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "No blocks loaded",
+                  style: bodyMedium(context),
                 ),
-              );
+              ),
+            ),
+          );
+        }
       },
       itemCount: blocks.length,
       options: CarouselOptions(
-        // aspectRatio: 344 / 240,
         initialPage: 0,
         enableInfiniteScroll: false,
         padEnds: false,
