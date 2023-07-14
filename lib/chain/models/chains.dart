@@ -1,8 +1,8 @@
 enum Chains {
   topl_mainnet(
     name: 'Toplnet',
-    host: 'mainnet.topl.network',
-    port: 50051,
+    host: 'mainnet.topl.co',
+    port: 443,
   ),
   valhalla_testnet(
     name: 'Valhalla',
