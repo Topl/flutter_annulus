@@ -119,46 +119,50 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   /// If [setState] is true, it will update the state of the provider
   /// If [setState] is false, it will not update the state of the provider
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
-    final genusClient = ref.read(genusProvider(selectedChain));
+    try {
+      final genusClient = ref.read(genusProvider(selectedChain));
 
-    if (setState) state = const AsyncLoading();
+      if (setState) state = const AsyncLoading();
 
-    //futures
-    final List<Block> blocks = [];
-    const pageLimit = 10;
-    final presentConfig = await config;
-    List<Future> futures = [];
-    for (int i = 0; i < pageLimit; i++) {
-      futures.add(genusClient.getBlockByDepth(depth: i));
+      //futures
+      final List<Block> blocks = [];
+      const pageLimit = 10;
+      final presentConfig = await config;
+      List<Future> futures = [];
+      for (int i = 0; i < pageLimit; i++) {
+        futures.add(genusClient.getBlockByDepth(depth: i));
+      }
+
+      final blockResponses = await Future.wait(futures);
+      blockResponses.asMap().forEach((i, blockRes) {
+        blocks.add(
+          Block(
+            header: decodeId(blockRes.block.header.headerId.value),
+            epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
+            size: 5432.2,
+            height: blockRes.block.header.height.toInt(),
+            slot: blockRes.block.header.slot.toInt(),
+            timestamp: blockRes.block.header.timestamp.toInt(),
+            transactionNumber: blockRes.block.fullBody.transactions.length,
+          ),
+        );
+      });
+
+      // Adding delay here to simulate API call
+      if (setState) {
+        Future.delayed(
+          const Duration(seconds: 1),
+          () {
+            // Do API call here
+            state = AsyncData(blocks);
+          },
+        );
+      }
+
+      return blocks;
+    } catch (e) {
+      throw Exception('Error in blockProvider: $e');
     }
-
-    final blockResponses = await Future.wait(futures);
-    blockResponses.asMap().forEach((i, blockRes) {
-      blocks.add(
-        Block(
-          header: decodeId(blockRes.block.header.headerId.value),
-          epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-          size: 5432.2,
-          height: blockRes.block.header.height.toInt(),
-          slot: blockRes.block.header.slot.toInt(),
-          timestamp: blockRes.block.header.timestamp.toInt(),
-          transactionNumber: blockRes.block.fullBody.transactions.length,
-        ),
-      );
-    });
-
-    // Adding delay here to simulate API call
-    if (setState) {
-      Future.delayed(
-        const Duration(seconds: 1),
-        () {
-          // Do API call here
-          state = AsyncData(blocks);
-        },
-      );
-    }
-
-    return blocks;
   }
 
   /// This method is used to get a block at a specific index
@@ -174,7 +178,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
     }
 
     // If the index is less than the length of the list, return the block at that index
-    if (index <= blocks.length) {
+    if (index < blocks.length) {
       return blocks[index];
     } else {
       // Get the next block by height from Genus
