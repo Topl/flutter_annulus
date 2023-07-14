@@ -1,79 +1,151 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
-import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
+import 'package:flutter_annulus/shared/utils/get_chain_id.dart';
+import 'package:flutter_annulus/shared/providers/config_provider.dart';
+import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+/// Returns a block at the index
+///
+/// IMPORTANT: Only use this provider AFTER the blockProvider has been initialized
+/// Ex.
+/// ```
+/// final blockProvider = ref.watch(blockProvider);
+/// blockProvider.when(
+///   data: (data) {
+///    // Use data here
+///    ref.watch(blockStateAtIndexProvider(index));
+///    ...
+///   },
+///   ...
+///   );
+/// ```
+final blockStateAtIndexProvider = FutureProvider.family<Block, int>((ref, index) async {
+  return ref.watch(blockProvider.notifier).getBlockFromStateAtIndex(index);
+});
+
+final getBlockByDepthProvider = FutureProvider.family<Block, int>((ref, depth) async {
+  final selectedChain = ref.watch(selectedChainProvider);
+  final genusClient = ref.read(genusProvider(selectedChain));
+
+  final config = ref.read(configProvider.future);
+  final presentConfig = await config;
+
+  var blockRes = await genusClient.getBlockByDepth(depth: depth);
+
+  return Block(
+    header: getChainId(blockRes.block.header.headerId.value),
+    epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
+    size: 5432.2,
+    height: blockRes.block.header.height.toInt(),
+    slot: blockRes.block.header.slot.toInt(),
+    timestamp: blockRes.block.header.timestamp.toInt(),
+    transactionNumber: blockRes.block.fullBody.transactions.length,
+  );
+});
+
+final getBlockByHeightProvider = FutureProvider.family<Block, int>((ref, height) async {
+  final selectedChain = ref.watch(selectedChainProvider);
+  final genusClient = ref.read(genusProvider(selectedChain));
+
+  final config = ref.read(configProvider.future);
+  final presentConfig = await config;
+
+  var blockRes = await genusClient.getBlockByHeight(height: height);
+
+  return Block(
+    header: getChainId(blockRes.block.header.headerId.value),
+    epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
+    size: 5432.2,
+    height: blockRes.block.header.height.toInt(),
+    slot: blockRes.block.header.slot.toInt(),
+    timestamp: blockRes.block.header.timestamp.toInt(),
+    transactionNumber: blockRes.block.fullBody.transactions.length,
+  );
+});
+
+final getBlockByIdProvider = FutureProvider.family<Block, String>((ref, header) async {
+  final selectedChain = ref.watch(selectedChainProvider);
+  final genusClient = ref.read(genusProvider(selectedChain));
+
+  final config = ref.read(configProvider.future);
+  final presentConfig = await config;
+
+  var blockRes = await genusClient.getBlockById(blockIdString: header);
+
+  return Block(
+    header: getChainId(blockRes.block.header.headerId.value),
+    epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
+    size: 5432.2,
+    height: blockRes.block.header.height.toInt(),
+    slot: blockRes.block.header.slot.toInt(),
+    timestamp: blockRes.block.header.timestamp.toInt(),
+    transactionNumber: blockRes.block.fullBody.transactions.length,
+  );
+});
 
 final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<List<Block>>>((ref) {
   /// Notes:
   /// We'll need to watch for the selectedChain here since we will need to know which
   /// instance of Genus to target
   final selectedChain = ref.watch(selectedChainProvider);
+  final config = ref.watch(configProvider.future);
 
   return BlockNotifier(
     ref,
     selectedChain,
+    config,
   );
 });
 
 class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   final Chains selectedChain;
   final Ref ref;
+  final Future<FetchNodeConfigRes> config;
   BlockNotifier(
     this.ref,
     this.selectedChain,
+    this.config,
   ) : super(
           const AsyncLoading(),
         ) {
     getLatestBlocks(setState: true);
   }
 
-  /// TODO: Determine how to use GRPC and GRPC Web
-  /// TODO: Determine how IDs should be represented to user
-  /// TODO: Determine what to do for epoch
-  /// TODO: Determine how size is computed
-  /// TODO: Determine how to sync more blocks
-  /// TODO: Determine what to do with withdrawal number
-  /// TODO: update method so that multiple latest blocks are fetched (when this is ready)
-  /// TODO: Remove blockId or header field
-  ///
   /// It takes a bool [setState]
   ///
   /// If [setState] is true, it will update the state of the provider
   /// If [setState] is false, it will not update the state of the provider
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
-    // TODO: Re-implement
-    // final genusClient = ref.read(genusProvider(tempChain));
+    final genusClient = ref.read(genusProvider(selectedChain));
 
     if (setState) state = const AsyncLoading();
 
+    //futures
     final List<Block> blocks = [];
-    const chainHeight = 5932;
     const pageLimit = 10;
-
-    // var blockRes = await genusClient.getBlockByDepth(depth: 0);
-    // print('height: ${blockRes.block.header.height}');
-
+    final presentConfig = await config;
+    List<Future> futures = [];
     for (int i = 0; i < pageLimit; i++) {
-      // TODO: Re-implement
-      // var blockRes = await genusClient.getBlockByDepth(depth: i);
+      futures.add(genusClient.getBlockByDepth(depth: i));
+    }
 
-      final iString = i.toString();
+    final blockResponses = await Future.wait(futures);
+    blockResponses.asMap().forEach((i, blockRes) {
       blocks.add(
         Block(
-          blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w$iString",
-          header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu$iString",
-          epoch: 243827 - i,
+          header: getChainId(blockRes.block.header.headerId.value),
+          epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
           size: 5432.2,
-          height: getMockBlock().height + i,
-          slot: getMockBlock().slot + i,
-          timestamp: getMockBlock().timestamp,
-          transactionNumber: getMockBlock().transactionNumber,
-          withdrawalNumber: 127,
+          height: blockRes.block.header.height.toInt(),
+          slot: blockRes.block.header.slot.toInt(),
+          timestamp: blockRes.block.header.timestamp.toInt(),
+          transactionNumber: blockRes.block.fullBody.transactions.length,
         ),
       );
-    }
+    });
 
     // Adding delay here to simulate API call
     if (setState) {
@@ -89,42 +161,42 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
     return blocks;
   }
 
-  /// This method is used to get a block by ID
+  /// This method is used to get a block at a specific index
+  /// If the block is not in the state, it will fetch the block from Genus
+  /// It takes an [index] as a parameter
   ///
-  /// It takes a [blockId] as a parameter
-  /// and returns a [AsyncValue<Block>]
-  AsyncValue<Block> getBlockById({
-    required String blockId,
-  }) {
-    return state.when(
-      data: (data) => AsyncData(data.firstWhere((element) => element.blockId == blockId)),
-      error: (error, stakeTrace) => AsyncError(error, stakeTrace),
-      loading: () => const AsyncLoading(),
-    );
-  }
+  /// It returns a [Future<Block>]
+  Future<Block> getBlockFromStateAtIndex(int index) async {
+    final blocks = state.asData?.value;
 
-  /// This method is used to get a block by height
-  ///
-  /// It takes a [height] as a parameter
-  /// and returns a [AsyncValue<Block>]
-  Future<Block> getBlockByHeight({
-    required int height,
-  }) async {
-    const tempChain = Chains.private_network;
-    final genusClient = ref.read(genusProvider(tempChain));
+    if (blocks == null) {
+      throw Exception('Error in blockProvider: blocks are null');
+    }
 
-    var blockRes = await genusClient.getBlockByHeight(height: height);
+    // If the index is less than the length of the list, return the block at that index
+    if (index <= blocks.length) {
+      return blocks[index];
+    } else {
+      // Get the next block by height from Genus
+      final genusClient = ref.read(genusProvider(selectedChain));
+      int latestHeight = blocks[blocks.length - 1].height;
+      final blockRes = await genusClient.getBlockByHeight(height: latestHeight - 1);
+      final presentConfig = await config;
+      // Add that block to state's list
+      var newBlock = Block(
+        header: getChainId(blockRes.block.header.headerId.value),
+        epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
+        size: 5432.2,
+        height: blockRes.block.header.height.toInt(),
+        slot: blockRes.block.header.slot.toInt(),
+        timestamp: blockRes.block.header.timestamp.toInt(),
+        transactionNumber: blockRes.block.fullBody.transactions.length,
+      );
+      blocks.add(newBlock);
+      state = AsyncData([...blocks]);
 
-    return Block(
-      blockId: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
-      header: "vytVMYVjgHDHAc7AwA2Qu7JE3gPHddaTPbFWvqb2gZu",
-      epoch: 243827,
-      size: 5432.2,
-      height: blockRes.block.header.height.toInt(),
-      slot: blockRes.block.header.slot.toInt(),
-      timestamp: blockRes.block.header.timestamp.toInt(),
-      transactionNumber: blockRes.block.fullBody.transactions.length,
-      withdrawalNumber: 127,
-    );
+      // Return that block
+      return newBlock;
+    }
   }
 }
