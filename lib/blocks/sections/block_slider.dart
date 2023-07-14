@@ -28,7 +28,6 @@ class BlockViewSlider extends HookConsumerWidget {
 
     return blocksInfo.when(
       data: (blocks) {
-        print('QQQQ blocks $blocks');
         return SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 0 : 40.0, right: isMobile ? 0 : 40.0),

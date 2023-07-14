@@ -120,7 +120,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   /// If [setState] is true, it will update the state of the provider
   /// If [setState] is false, it will not update the state of the provider
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
-    print('QQQQ getLatestBlocks $selectedChain');
     if (selectedChain == Chains.mock) {
       final blocks = List.generate(100, (index) => getMockBlock());
       if (setState) state = AsyncData(blocks);
