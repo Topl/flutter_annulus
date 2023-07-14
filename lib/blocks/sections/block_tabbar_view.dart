@@ -184,45 +184,51 @@ class BlockTabBarView extends HookConsumerWidget {
                 data: (data) {
                   final source = TableDataSource(data, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
                   return SizedBox(
-                    width: 100,
-                    child: PaginatedDataTable(
-                      source: source,
-                      showFirstLastButtons: true,
-                      rowsPerPage: _rowsPerPage,
-                      dataRowHeight: 80,
-                      columnSpacing: 0,
-                      availableRowsPerPage: const [1, 5, 10, 50],
-                      onRowsPerPageChanged: (newRowsPerPage) {
-                        if (newRowsPerPage != null) {}
-                      },
-                      onPageChanged: (int? n) {},
-                      columns: const [
-                        DataColumn(
-                          label: Padding(
-                            padding: EdgeInsets.only(left: 40.0),
-                            child: SizedBox(
-                              child: TableHeaderText(name: Strings.tableHeaderTxnHashId),
-                            ),
+                      width: 100,
+                      child: SingleChildScrollView(
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            cardColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+                          ),
+                          child: PaginatedDataTable(
+                            source: source,
+                            showFirstLastButtons: true,
+                            rowsPerPage: _rowsPerPage,
+                            dataRowHeight: 80,
+                            columnSpacing: 0,
+                            availableRowsPerPage: const [1, 5, 10, 50],
+                            onRowsPerPageChanged: (newRowsPerPage) {
+                              if (newRowsPerPage != null) {}
+                            },
+                            onPageChanged: (int? n) {},
+                            columns: const [
+                              DataColumn(
+                                label: Padding(
+                                  padding: EdgeInsets.only(left: 40.0),
+                                  child: SizedBox(
+                                    child: TableHeaderText(name: Strings.tableHeaderTxnHashId),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                  label: Padding(
+                                padding: EdgeInsets.only(left: 40.0),
+                                child: TableHeaderText(name: Strings.tableHeaderBlock),
+                              )),
+                              DataColumn(
+                                  label: Padding(
+                                padding: EdgeInsets.only(left: 40.0),
+                                child: TableHeaderText(name: Strings.tableHeaderType),
+                              )),
+                              DataColumn(
+                                  label: Padding(
+                                padding: EdgeInsets.only(left: 40.0),
+                                child: TableHeaderText(name: Strings.tableHeaderFee),
+                              )),
+                            ],
                           ),
                         ),
-                        DataColumn(
-                            label: Padding(
-                          padding: EdgeInsets.only(left: 40.0),
-                          child: TableHeaderText(name: Strings.tableHeaderBlock),
-                        )),
-                        DataColumn(
-                            label: Padding(
-                          padding: EdgeInsets.only(left: 40.0),
-                          child: TableHeaderText(name: Strings.tableHeaderType),
-                        )),
-                        DataColumn(
-                            label: Padding(
-                          padding: EdgeInsets.only(left: 40.0),
-                          child: TableHeaderText(name: Strings.tableHeaderFee),
-                        )),
-                      ],
-                    ),
-                  );
+                      ));
                 },
                 loading: () => const Center(
                       child: CircularProgressIndicator(),

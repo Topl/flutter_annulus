@@ -160,8 +160,8 @@ class Transactions extends HookConsumerWidget {
                             ),
                           if (!isMobile)
                             DataCell(Padding(
-                              padding: EdgeInsets.only(
-                                left: isTablet ? 30 : 0,
+                              padding: const EdgeInsets.only(
+                                left: 30,
                               ),
                               child: StatusButton(status: transaction.status.string),
                             )),

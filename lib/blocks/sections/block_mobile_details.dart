@@ -253,7 +253,11 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                           data: (data) {
                             final source =
                                 TableDataSource(data, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
-                            return CustomPaginatedTable(source: source, rowsPerPage: _rowsPerPage);
+                            return CustomPaginatedTable(
+                              source: source,
+                              rowsPerPage: _rowsPerPage,
+                              colorMode: colorTheme,
+                            );
                           },
                           loading: () => const Center(
                                 child: CircularProgressIndicator(),
