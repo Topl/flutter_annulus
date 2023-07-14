@@ -40,8 +40,12 @@ class BlockView extends ConsumerWidget {
         ),
       ),
       child: asyncBlock.when(
-        error: (error, stackTrace) => Text('Error'),
-        loading: () => Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) {
+          return const Center(
+            child: Text('Error'),
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
         data: (Block block) {
           return TextButton(
               onPressed: () {

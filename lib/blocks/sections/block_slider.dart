@@ -342,7 +342,7 @@ class CustomCarousel extends HookConsumerWidget {
           );
         }
       },
-      itemCount: blocks.length,
+      itemCount: 100,
       options: CarouselOptions(
         initialPage: 0,
         enableInfiniteScroll: false,
