@@ -1,4 +1,5 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
@@ -119,6 +120,12 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   /// If [setState] is true, it will update the state of the provider
   /// If [setState] is false, it will not update the state of the provider
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
+    print('QQQQ getLatestBlocks $selectedChain');
+    if (selectedChain == Chains.mock) {
+      final blocks = List.generate(100, (index) => getMockBlock());
+      if (setState) state = AsyncData(blocks);
+      return blocks;
+    }
     try {
       final genusClient = ref.read(genusProvider(selectedChain));
 
