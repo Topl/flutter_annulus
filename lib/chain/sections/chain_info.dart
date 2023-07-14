@@ -28,16 +28,12 @@ class ChainInfo extends HookConsumerWidget {
       data: (chain) => Container(
         margin: isMobile ? null : EdgeInsets.only(right: isTablet ? 5 : 40),
         decoration: BoxDecoration(
-          color: colorTheme == ThemeMode.light
-              ? Colors.white
-              : const Color(0xFF282A2C),
+          color: colorTheme == ThemeMode.light ? Colors.white : const Color(0xFF282A2C),
           borderRadius: BorderRadius.circular(10.0),
           border: isMobile
               ? null
               : Border.all(
-                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                  style: BorderStyle.solid,
-                  width: 1.0),
+                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B), style: BorderStyle.solid, width: 1.0),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -45,22 +41,19 @@ class ChainInfo extends HookConsumerWidget {
             //Top Metrics
             SizedBox(
               child: Container(
-                padding: isMobile
-                    ? const EdgeInsets.all(5.0)
-                    : const EdgeInsets.all(20.0),
+                padding: isMobile ? const EdgeInsets.all(5.0) : const EdgeInsets.all(20.0),
                 margin: isMobile ? const EdgeInsets.only(bottom: 10.0) : null,
                 child: ResponsiveRowColumn(
-                  layout:
-                      ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
-                          ? ResponsiveRowColumnType.COLUMN
-                          : ResponsiveRowColumnType.ROW,
+                  layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
+                      ? ResponsiveRowColumnType.COLUMN
+                      : ResponsiveRowColumnType.ROW,
                   columnSpacing: 20.0,
                   // rowSpacing: 60.0,
                   children: [
                     ResponsiveRowColumnItem(
                       rowFlex: 1,
                       child: TopStatWithIcon(
-                          iconString: 'images/speedometer.svg',
+                          iconString: 'assets/icons/speedometer.svg',
                           titleString: "Data Throughput",
                           statAmount: chain.dataThroughput.toString(),
                           statSymbol: " kbps",
@@ -69,8 +62,7 @@ class ChainInfo extends HookConsumerWidget {
                     ResponsiveRowColumnItem(
                       child: isMobile
                           ? Divider(
-                              color: getSelectedColor(
-                                  colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                              color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                               indent: 20,
                               endIndent: 20,
                               height: 1,
@@ -79,14 +71,13 @@ class ChainInfo extends HookConsumerWidget {
                               indent: 20,
                               endIndent: 20,
                               thickness: 1,
-                              color: getSelectedColor(
-                                  colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                              color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                             ),
                     ),
                     ResponsiveRowColumnItem(
                       rowFlex: 1,
                       child: TopStatWithIcon(
-                        iconString: 'images/coin.svg',
+                        iconString: 'assets/icons/coin.svg',
                         titleString: "Average Transaction Fees",
                         statAmount: chain.averageTransactionFee.toString(),
                         statSymbol: " LVL",
@@ -105,20 +96,16 @@ class ChainInfo extends HookConsumerWidget {
             //Bottom Metrics
             SizedBox(
               child: ResponsiveRowColumn(
-                layout:
-                    ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
-                        ? ResponsiveRowColumnType.COLUMN
-                        : ResponsiveRowColumnType.ROW,
+                layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
+                    ? ResponsiveRowColumnType.COLUMN
+                    : ResponsiveRowColumnType.ROW,
                 children: [
                   ResponsiveRowColumnItem(
                     rowFlex: 1,
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: isMobile ? 20.0 : 32.0,
-                          horizontal: isMobile ? 25 : 20.0),
+                      padding: EdgeInsets.symmetric(vertical: isMobile ? 20.0 : 32.0, horizontal: isMobile ? 25 : 20.0),
                       child: ResponsiveRowColumn(
-                        layout: ResponsiveBreakpoints.of(context)
-                                .smallerOrEqualTo(MOBILE)
+                        layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
                             ? ResponsiveRowColumnType.ROW
                             : ResponsiveRowColumnType.COLUMN,
                         rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,8 +118,7 @@ class ChainInfo extends HookConsumerWidget {
                               child: Row(
                                 children: [
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Eon",
@@ -170,8 +156,7 @@ class ChainInfo extends HookConsumerWidget {
                                         height: 40,
                                         child: VerticalDivider(
                                           thickness: 1,
-                                          color: getSelectedColor(colorTheme,
-                                              0xFFE7E8E8, 0xFF4B4B4B),
+                                          color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                                         ),
                                       )
                                     : const SizedBox(),
@@ -217,8 +202,7 @@ class ChainInfo extends HookConsumerWidget {
                     rowColumn: true,
                     child: isMobile
                         ? Divider(
-                            color: getSelectedColor(
-                                colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                             indent: 0,
                             height: 1,
                             endIndent: 0,
@@ -229,25 +213,20 @@ class ChainInfo extends HookConsumerWidget {
                                 indent: 0,
                                 endIndent: 0,
                                 thickness: 1,
-                                color: getSelectedColor(
-                                    colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                                color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                                 width: 1),
                           ),
                   ),
                   ResponsiveRowColumnItem(
                     rowFlex: 6,
                     child: Column(
-                      crossAxisAlignment: !isMobile
-                          ? CrossAxisAlignment.start
-                          : CrossAxisAlignment.center,
+                      crossAxisAlignment: !isMobile ? CrossAxisAlignment.start : CrossAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: isMobile ? 20.0 : 32.0,
-                              horizontal: isMobile ? 20 : 20.0),
+                          padding:
+                              EdgeInsets.symmetric(vertical: isMobile ? 20.0 : 32.0, horizontal: isMobile ? 20 : 20.0),
                           child: ResponsiveRowColumn(
-                            layout: ResponsiveBreakpoints.of(context)
-                                    .smallerOrEqualTo(MOBILE)
+                            layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
                                 ? ResponsiveRowColumnType.COLUMN
                                 : ResponsiveRowColumnType.ROW,
                             columnSpacing: 10.0,
@@ -264,12 +243,10 @@ class ChainInfo extends HookConsumerWidget {
                               ResponsiveRowColumnItem(
                                 rowFlex: 1,
                                 child: StatInfoCard(
-                                    statString: chain.totalTransactionsInEpoch
-                                        .toString(),
+                                    statString: chain.totalTransactionsInEpoch.toString(),
                                     statSymbol: "Txs",
                                     firstItem: isMobile,
-                                    tooltipText:
-                                        Strings.totalTransactionTooltipText),
+                                    tooltipText: Strings.totalTransactionTooltipText),
                               ),
                               ResponsiveRowColumnItem(
                                 rowFlex: 1,
@@ -286,8 +263,7 @@ class ChainInfo extends HookConsumerWidget {
                                   statString: chain.averageBlockTime.toString(),
                                   statSymbol: "Avg Block Time",
                                   firstItem: isMobile,
-                                  tooltipText:
-                                      Strings.averageBlockTimeTooltipText,
+                                  tooltipText: Strings.averageBlockTimeTooltipText,
                                 ),
                               ),
                             ],
@@ -298,19 +274,16 @@ class ChainInfo extends HookConsumerWidget {
                           child: Divider(
                             thickness: 1,
                             height: 1,
-                            color: getSelectedColor(
-                                colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                             indent: 0,
                             endIndent: 0,
                           ),
                         ),
                         Container(
                           padding: EdgeInsets.symmetric(
-                              vertical: isMobile ? 20.0 : 32.0,
-                              horizontal: isMobile ? 20.0 : 20.0),
+                              vertical: isMobile ? 20.0 : 32.0, horizontal: isMobile ? 20.0 : 20.0),
                           child: ResponsiveRowColumn(
-                            layout: ResponsiveBreakpoints.of(context)
-                                    .smallerOrEqualTo(MOBILE)
+                            layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
                                 ? ResponsiveRowColumnType.COLUMN
                                 : ResponsiveRowColumnType.ROW,
                             columnSpacing: 10.0,
@@ -330,15 +303,13 @@ class ChainInfo extends HookConsumerWidget {
                                   statString: chain.registeredStakes.toString(),
                                   statSymbol: "Registered\nStakes",
                                   firstItem: isMobile,
-                                  tooltipText:
-                                      Strings.registeredStakesTooltipText,
+                                  tooltipText: Strings.registeredStakesTooltipText,
                                 ),
                               ),
                               ResponsiveRowColumnItem(
                                 rowFlex: 1,
                                 child: StatInfoCard(
-                                  statString:
-                                      '${chain.activeStakes.toString()}%',
+                                  statString: '${chain.activeStakes.toString()}%',
                                   statSymbol: "Active\nStakes",
                                   firstItem: isMobile,
                                   tooltipText: Strings.activeStakesTooltipText,
@@ -347,8 +318,7 @@ class ChainInfo extends HookConsumerWidget {
                               ResponsiveRowColumnItem(
                                 rowFlex: 1,
                                 child: StatInfoCard(
-                                  statString:
-                                      '${chain.inactiveStakes.toString()}%',
+                                  statString: '${chain.inactiveStakes.toString()}%',
                                   statSymbol: "Inactive\nStakes",
                                   firstItem: isMobile,
                                   tooltipText: Strings.invalidStakesTooltipText,
@@ -366,8 +336,7 @@ class ChainInfo extends HookConsumerWidget {
           ],
         ),
       ),
-      error: (error, stack) =>
-          const Text('Oops, something unexpected happened'),
+      error: (error, stack) => const Text('Oops, something unexpected happened'),
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),

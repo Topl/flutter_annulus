@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -28,22 +29,14 @@ class BlockViewSlider extends HookConsumerWidget {
     return blocksInfo.when(
       data: (blocks) => SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(
-              top: 20.0,
-              bottom: 20.0,
-              left: isMobile ? 0 : 40.0,
-              right: isMobile ? 0 : 40.0),
-          padding: isDesktop || isTablet
-              ? const EdgeInsets.only(
-                  top: 20.0, bottom: 30.0, left: 0.0, right: 0.0)
-              : null,
+          margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 0 : 40.0, right: isMobile ? 0 : 40.0),
+          padding: isDesktop || isTablet ? const EdgeInsets.only(top: 20.0, bottom: 30.0, left: 0.0, right: 0.0) : null,
           decoration: isDesktop || isTablet
               ? BoxDecoration(
                   color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(
-                      color:
-                          getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
                       style: BorderStyle.solid,
                       width: 1.0),
                 )
@@ -51,9 +44,7 @@ class BlockViewSlider extends HookConsumerWidget {
           child: Wrap(
             children: <Widget>[
               ResponsiveRowColumn(
-                layout: isMobile
-                    ? ResponsiveRowColumnType.COLUMN
-                    : ResponsiveRowColumnType.ROW,
+                layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
                 children: [
                   ResponsiveRowColumnItem(
                     rowFlex: isMobile ? 12 : 1,
@@ -70,10 +61,8 @@ class BlockViewSlider extends HookConsumerWidget {
                               BlockPlaceHolder(controller: _controller),
                               Expanded(
                                 child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  child: CustomCarousel(
-                                      blocks: blocks, controller: _controller),
+                                  width: MediaQuery.of(context).size.width * 0.7,
+                                  child: CustomCarousel(blocks: blocks, controller: _controller),
                                 ),
                               ),
                             ],
@@ -85,8 +74,7 @@ class BlockViewSlider extends HookConsumerWidget {
           ),
         ),
       ),
-      error: (error, stack) =>
-          const Text('Oops, something unexpected happened'),
+      error: (error, stack) => const Text('Oops, something unexpected happened'),
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
@@ -109,9 +97,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
     return SizedBox(
       width: isMobile ? 400 : 240,
       child: ResponsiveRowColumn(
-        layout: isMobile
-            ? ResponsiveRowColumnType.COLUMN
-            : ResponsiveRowColumnType.ROW,
+        layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
         children: [
           if (!isMobile)
             ResponsiveRowColumnItem(
@@ -132,6 +118,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
                         child: CustomTextButton(
                           controller: _controller,
                           text: '←',
+                          isPrevious: true,
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -161,14 +148,14 @@ class BlockPlaceHolder extends HookConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(Strings.latestBlocks,
-                            style: headlineLarge(context)),
+                        Text(Strings.latestBlocks, style: headlineLarge(context)),
                         const SizedBox(width: 10),
                         Row(
                           children: [
                             CustomTextButton(
                               controller: _controller,
                               text: '←',
+                              isPrevious: true,
                             ),
                             const SizedBox(width: 10),
                             CustomTextButton(
@@ -217,10 +204,12 @@ class CustomTextButton extends ConsumerWidget {
     super.key,
     required CarouselController controller,
     required this.text,
+    this.isPrevious = false,
   }) : _controller = controller;
 
   final String text;
   final CarouselController _controller;
+  final bool isPrevious;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -237,45 +226,19 @@ class CustomTextButton extends ConsumerWidget {
           style: TextButton.styleFrom(
             fixedSize: isMobile ? const Size(46, 46) : const Size(56, 56),
             textStyle: titleMedium(context),
-            backgroundColor:
-                getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
+            backgroundColor: getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          onPressed: () => {_controller.previousPage()},
-          child: Text(text, style: titleMedium(context)),
+          onPressed: () => {
+            isPrevious ? _controller.previousPage() : _controller.nextPage(),
+          },
+          child: Text(
+            text,
+            style: titleMedium(context),
+          ),
         ));
-  }
-}
-
-/// Widget for the visible block view
-class VisibleBlockView extends StatelessWidget {
-  const VisibleBlockView({
-    super.key,
-    required this.n1,
-    required this.n2,
-    required this.n3,
-    required this.n4,
-    required this.n5,
-    required this.blocks,
-  });
-
-  final int n1;
-  final int n2;
-  final int n3;
-  final int n4;
-  final int n5;
-  final List<Block> blocks;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-        children: [n1, n2, n3, n4, n5].map((idx) {
-      return BlockView(
-        block: blocks[idx],
-      );
-    }).toList());
   }
 }
 
@@ -305,7 +268,7 @@ class MobileBlockViewSlider extends StatelessWidget {
 }
 
 /// Reusable carousel custom widget
-class CustomCarousel extends StatelessWidget {
+class CustomCarousel extends HookConsumerWidget {
   const CustomCarousel({
     super.key,
     required this.blocks,
@@ -316,49 +279,76 @@ class CustomCarousel extends StatelessWidget {
   final CarouselController controller;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    double getViewPortFraction(double screenWidth) {
+      if (screenWidth >= 3000) {
+        return 0.1;
+      } else if (ResponsiveBreakpoints.of(context).isTablet) {
+        return calculateRatio(
+          screenWidth: screenWidth,
+          width1: 551,
+          ratio1: 1,
+          width2: 1023,
+          ratio2: 0.45,
+        );
+      } else if (ResponsiveBreakpoints.of(context).isMobile) {
+        return calculateRatio(
+          screenWidth: screenWidth,
+          width1: 400,
+          ratio1: 0.7,
+          width2: 550,
+          ratio2: 0.55,
+        );
+      } else if (screenWidth <= 2000) {
+        return calculateRatio(
+          screenWidth: screenWidth,
+          width1: 1025,
+          ratio1: 0.45,
+          width2: 2000,
+          ratio2: 0.18,
+        );
+      } else {
+        return calculateRatio(
+          screenWidth: screenWidth,
+          width1: 1025,
+          ratio1: 0.4,
+          width2: 2999,
+          ratio2: 0.09,
+        );
+      }
+    }
+
     return CarouselSlider.builder(
-      itemBuilder: (context, index, realIdx) {
-        final int first = index * 2;
-        final int second = first + 1;
-        final int third = second + 1;
-        final int fourth = third + 1;
-        final int firth = fourth + 1;
-        return blocks.isNotEmpty
-            ? Wrap(
-                direction: Axis.vertical,
-                children: <Widget>[
-                  VisibleBlockView(
-                    n1: first,
-                    n2: second,
-                    n3: third,
-                    n4: fourth,
-                    n5: firth,
-                    blocks: blocks,
-                  ),
-                ],
-              )
-            : SizedBox(
-                height: 0,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      "No blocks loaded",
-                      style: bodyMedium(context),
-                    ),
-                  ),
+      itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
+        if (blocks.isNotEmpty) {
+          final AsyncValue<Block> block = ref.watch(blockStateAtIndexProvider(itemIndex));
+          return BlockView(
+            asyncBlock: block,
+          );
+        } else {
+          return SizedBox(
+            height: 0,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "No blocks loaded",
+                  style: bodyMedium(context),
                 ),
-              );
+              ),
+            ),
+          );
+        }
       },
-      itemCount: (blocks.length / 3).round(),
+      itemCount: 100,
       options: CarouselOptions(
-        aspectRatio: 0.6,
         initialPage: 0,
+        enableInfiniteScroll: false,
         padEnds: false,
-        enlargeCenterPage: true,
         animateToClosest: true,
-        viewportFraction: 1,
+        viewportFraction: getViewPortFraction(screenWidth),
         height: 360,
       ),
       carouselController: controller,

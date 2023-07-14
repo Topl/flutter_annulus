@@ -13,8 +13,7 @@ class LineGraph extends HookConsumerWidget {
     final chartData = ref.watch(chartProvider);
     return chartData.when(
       data: (chart) => LineGraphContainer(chartData: chart),
-      error: (error, stack) =>
-          const Text('Oops, something unexpected happened'),
+      error: (error, stack) => const Text('Oops, something unexpected happened'),
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
@@ -30,27 +29,16 @@ class LineGraphContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pointList = chartData.results.entries
-        .map((e) =>
-            FlSpot(e.key.millisecondsSinceEpoch.toDouble(), e.value.toDouble()))
+        .map((e) => FlSpot(e.key.millisecondsSinceEpoch.toDouble(), e.value.toDouble()))
         .toList();
 
-    final maxYValue = chartData.results.entries
-        .map((e) => e.value.toDouble())
-        .toList()
-        .reduce(max)
-        .ceilToDouble();
+    final maxYValue = chartData.results.entries.map((e) => e.value.toDouble()).toList().reduce(max).ceilToDouble();
 
-    final maxXValue = chartData.results.entries
-        .map((e) => e.key.millisecondsSinceEpoch.toDouble())
-        .toList()
-        .reduce(max)
-        .toDouble();
+    final maxXValue =
+        chartData.results.entries.map((e) => e.key.millisecondsSinceEpoch.toDouble()).toList().reduce(max).toDouble();
 
-    final minXValue = chartData.results.entries
-        .map((e) => e.key.millisecondsSinceEpoch.toDouble())
-        .toList()
-        .reduce(min)
-        .toDouble();
+    final minXValue =
+        chartData.results.entries.map((e) => e.key.millisecondsSinceEpoch.toDouble()).toList().reduce(min).toDouble();
 
     return LineChart(
       LineChartData(
@@ -124,8 +112,7 @@ Widget leftTitleWidgets(double value, TitleMeta meta) {
     letterSpacing: -0.2,
   );
 
-  return Text(NumberFormat.compact().format(value).toString(),
-      style: style, textAlign: TextAlign.left);
+  return Text(NumberFormat.compact().format(value).toString(), style: style, textAlign: TextAlign.left);
 }
 
 // Displays the timeline axis

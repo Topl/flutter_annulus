@@ -37,9 +37,7 @@ class ChainSection extends HookConsumerWidget {
               color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                  style: BorderStyle.solid,
-                  width: 1.0),
+                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B), style: BorderStyle.solid, width: 1.0),
             ),
             child: const ChartSection(),
           ),

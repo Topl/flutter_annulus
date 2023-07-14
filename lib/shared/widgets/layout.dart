@@ -38,8 +38,7 @@ class CustomLayout extends HookConsumerWidget {
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Drawer(
-            backgroundColor:
-                getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+            backgroundColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
             width: double.infinity,
             child: Column(
               children: <Widget>[

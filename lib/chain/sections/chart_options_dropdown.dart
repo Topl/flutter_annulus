@@ -6,14 +6,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/chart_provider.dart';
 
 class ChartOptionsDropdown extends HookConsumerWidget {
-  final List<String> chartOptions =
-  ChartOption.values.map((e) => e.name).toList();
+  final List<String> chartOptions = ChartOption.values.map((e) => e.name).toList();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedOption = ref
-        .watch(chartOptionProvider)
-        .name;
+    final selectedOption = ref.watch(chartOptionProvider).name;
 
     return Center(
       child: DropdownButtonHideUnderline(
@@ -40,8 +37,7 @@ class ChartOptionsDropdown extends HookConsumerWidget {
           ),
           items: chartOptions
               .map(
-                (item) =>
-                DropdownMenuItem(
+                (item) => DropdownMenuItem(
                   value: item,
                   child: Text(
                     item,
@@ -54,7 +50,7 @@ class ChartOptionsDropdown extends HookConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-          )
+              )
               .toList(),
           value: selectedOption,
           onChanged: (value) {

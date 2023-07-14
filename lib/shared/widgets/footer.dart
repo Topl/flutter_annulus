@@ -1,10 +1,14 @@
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import '../constants/strings.dart';
 import '../providers/app_theme_provider.dart';
 import '../utils/theme_color.dart';
+import 'custom_shared.dart';
 
 /// Footer Widget
 class Footer extends HookConsumerWidget {
@@ -14,149 +18,162 @@ class Footer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
+    final isDesktopAndTab = ResponsiveBreakpoints.of(context).between(TABLET, DESKTOP);
+
     final colorTheme = ref.watch(appThemeColorProvider);
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(width: 40),
-            const SizedBox(
-              width: 200,
-              child: FooterColumn(
-                footerTitle: Strings.footerColumn1Header,
-                footerLinks: [
-                  Strings.footerColumn1Item1,
-                  Strings.footerColumn1Item2,
-                  Strings.footerColumn1Item3,
-                  Strings.footerColumn1Item4,
-                  Strings.footerColumn1Item5,
-                  Strings.footerColumn1Item6
-                ],
-              ),
-            ),
-            const SizedBox(
-              width: 80,
-            ),
-            const SizedBox(
-              width: 200,
-              child: FooterColumn(
-                footerTitle: Strings.footerColumn2Header,
-                footerLinks: [
-                  Strings.footerColumn2Item1,
-                  Strings.footerColumn2Item2,
-                  Strings.footerColumn2Item3,
-                  Strings.footerColumn2Item4,
-                  Strings.footerColumn2Item5
-                ],
-              ),
-            ),
-            const SizedBox(
-              width: 80,
-            ),
-            const SizedBox(
-              width: 200,
-              child: FooterColumn(
-                footerTitle: Strings.footerColumn3Header,
-                footerLinks: [
-                  Strings.footerColumn3Item1,
-                  Strings.footerColumn3Item2,
-                  Strings.footerColumn3Item3,
-                  Strings.footerColumn3Item4,
-                  Strings.footerColumn3Item5
-                ],
-              ),
-            ),
-            const SizedBox(
-              width: 40,
-            ),
-            const SizedBox(
-              width: 200,
-              child: FooterColumn(
-                footerTitle: Strings.footerColumn4Header,
-                footerLinks: [
-                  Strings.footerColumn4Item1,
-                  Strings.footerColumn4Item2,
-                  Strings.footerColumn4Item3,
-                  Strings.footerColumn4Item4,
-                  Strings.footerColumn4Item5
-                ],
-              ),
-            ),
-            const SizedBox(
-              width: 40,
-            ),
-            SizedBox(
-              width: 312,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    Strings.footerColumn5Header,
-                    style: TextStyle(
-                        color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFC0C4C4),
-                        fontSize: 16,
-                        fontFamily: 'Rational Display',
-                        fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(
-                    height: 14,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          width: 202,
-                          height: 40,
-                          child: TextField(
-                            controller: TextEditingController(text: ''),
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                                    borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
-                                hintText: Strings.email),
+        isDesktop
+            ? Padding(
+                padding: EdgeInsets.only(left: isDesktop ? 40 : 0, right: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      width: 200,
+                      child: FooterColumn(
+                        footerTitle: Strings.footerColumn1Header,
+                        footerLinks: [
+                          Strings.footerColumn1Item1,
+                          Strings.footerColumn1Item2,
+                          Strings.footerColumn1Item3,
+                          Strings.footerColumn1Item4,
+                          Strings.footerColumn1Item5,
+                          Strings.footerColumn1Item6
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 80,
+                    ),
+                    const SizedBox(
+                      width: 200,
+                      child: FooterColumn(
+                        footerTitle: Strings.footerColumn2Header,
+                        footerLinks: [
+                          Strings.footerColumn2Item1,
+                          Strings.footerColumn2Item2,
+                          Strings.footerColumn2Item3,
+                          Strings.footerColumn2Item4,
+                          Strings.footerColumn2Item5
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 80,
+                    ),
+                    const SizedBox(
+                      width: 200,
+                      child: FooterColumn(
+                        footerTitle: Strings.footerColumn3Header,
+                        footerLinks: [
+                          Strings.footerColumn3Item1,
+                          Strings.footerColumn3Item2,
+                          Strings.footerColumn3Item3,
+                          Strings.footerColumn3Item4,
+                          Strings.footerColumn3Item5
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 40,
+                    ),
+                    const SizedBox(
+                      width: 200,
+                      child: FooterColumn(
+                        footerTitle: Strings.footerColumn4Header,
+                        footerLinks: [
+                          Strings.footerColumn4Item1,
+                          Strings.footerColumn4Item2,
+                          Strings.footerColumn4Item3,
+                          Strings.footerColumn4Item4,
+                          Strings.footerColumn4Item5
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 40,
+                    ),
+                    SizedBox(
+                      width: 312,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            Strings.footerColumn5Header,
+                            style: TextStyle(
+                                color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFC0C4C4),
+                                fontSize: 16,
+                                fontFamily: Strings.rationalDisplayFont,
+                                fontWeight: FontWeight.w600),
                           ),
-                        ),
+                          const SizedBox(
+                            height: 14,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                  width: 202,
+                                  height: 40,
+                                  child: TextField(
+                                    controller: TextEditingController(text: ''),
+                                    decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                                            borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
+                                        hintText: Strings.email),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              SizedBox(
+                                height: 40,
+                                width: 102,
+                                child: TextButton(
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(
+                                            getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648))),
+                                    onPressed: null,
+                                    child: Text(Strings.subscribe,
+                                        style: TextStyle(
+                                            color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
+                                            fontSize: 14,
+                                            fontFamily: Strings.rationalDisplayFont))),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 80,
+                          ),
+                          const RowIcons(),
+                        ],
                       ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: 102,
-                        child: TextButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648))),
-                            onPressed: null,
-                            child: Text(Strings.subscribe,
-                                style: TextStyle(
-                                    color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
-                                    fontSize: 14,
-                                    fontFamily: 'Rational Display'))),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 80,
-                  ),
-                  const RowIconsFooter(
-                    svgIcons: [
-                      'assets/icons/linkedin.svg',
-                      'assets/icons/github.svg',
-                      'assets/icons/instagram.svg',
-                      'assets/icons/facebook.svg',
-                      'assets/icons/medium.svg',
-                      'assets/icons/twitter.svg',
-                    ],
-                  )
-                ],
+                    ),
+                  ],
+                ),
+              )
+            : const Divider(
+                color: Color(0xFFE7E8E8),
+                height: 2,
               ),
-            ),
-          ],
+        const SizedBox(
+          height: 20,
         ),
+        if (!isDesktop)
+          ResponsiveFooter(
+            colorTheme: colorTheme,
+            rowIcons: const RowIcons(),
+          ),
+        if (!isDesktop)
+          const SizedBox(
+            height: 20,
+          ),
         const Divider(
           color: Color(0xFFE7E8E8),
           height: 1,
@@ -168,39 +185,41 @@ class Footer extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
-              children: [
-                SizedBox(
-                  width: 80,
-                ),
-                FooterBottomLinks(text: Strings.footerPrivacyPolicy),
-                SizedBox(
-                  width: 24,
-                ),
-                FooterBottomLinks(text: Strings.footerTermsOfUse),
-                SizedBox(
-                  width: 24,
-                ),
-                FooterBottomLinks(text: Strings.footerCookiePolicy),
-                SizedBox(
-                  width: 24,
-                ),
-                FooterBottomLinks(text: Strings.footerCookiePreferences),
-              ],
-            ),
+            isDesktopAndTab
+                ? const Row(
+                    children: [
+                      SizedBox(
+                        width: 80,
+                      ),
+                      FooterBottomLinks(text: Strings.footerPrivacyPolicy),
+                      SizedBox(
+                        width: 24,
+                      ),
+                      FooterBottomLinks(text: Strings.footerTermsOfUse),
+                      SizedBox(
+                        width: 24,
+                      ),
+                      FooterBottomLinks(text: Strings.footerCookiePolicy),
+                      SizedBox(
+                        width: 24,
+                      ),
+                      FooterBottomLinks(text: Strings.footerCookiePreferences),
+                    ],
+                  )
+                : const SizedBox(),
             Row(
               children: [
                 const FooterBottomLinks(text: Strings.footerRightsReserved),
-                const SizedBox(
-                  width: 24,
+                SizedBox(
+                  width: isDesktopAndTab ? 24 : 200,
                 ),
                 SvgPicture.asset(
-                  colorTheme == ThemeMode.light ? 'images/logo.svg' : 'images/logo_dark.svg',
+                  colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',
                   width: 32,
                   height: 20,
                 ),
-                const SizedBox(
-                  width: 80,
+                SizedBox(
+                  width: isDesktopAndTab ? 80 : 20,
                 ),
               ],
             ),
@@ -209,6 +228,25 @@ class Footer extends HookConsumerWidget {
         const SizedBox(
           height: 20,
         )
+      ],
+    );
+  }
+}
+
+class RowIcons extends StatelessWidget {
+  const RowIcons({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const RowIconsFooter(
+      svgIcons: [
+        {'icon': 'assets/icons/linkedin.svg', 'url': 'https://www.linkedin.com/company/topl/'},
+        {'icon': 'assets/icons/github.svg', 'url': 'https://github.com/Topl'},
+        {'icon': 'assets/icons/instagram.svg', 'url': 'https://www.instagram.com/topl_protocol/'},
+        {'icon': 'assets/icons/medium.svg', 'url': 'https://medium.com/topl-blog'},
+        {'icon': 'assets/icons/twitter.svg', 'url': 'https://twitter.com/topl_protocol'}
       ],
     );
   }
@@ -238,11 +276,13 @@ class RowIconsFooter extends HookConsumerWidget {
     required this.svgIcons,
   });
 
-  final List<String> svgIcons;
+  final List<Map> svgIcons;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+    final isResponsive = ResponsiveBreakpoints.of(context).between(MOBILE, TABLET);
+
     return Row(
       children: [
         ...svgIcons
@@ -250,16 +290,19 @@ class RowIconsFooter extends HookConsumerWidget {
               (svgIcon) => Row(
                 children: [
                   Container(
-                    width: 42,
+                    width: isResponsive ? 32 : 42,
                     height: 40,
                     decoration: BoxDecoration(
                       color: getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: IconButton(
-                      onPressed: null,
+                      onPressed: () {
+                        //TODO: P.S line only applicable to web version
+                        html.window.open(svgIcon['url'], "");
+                      },
                       icon: SvgPicture.asset(
-                        svgIcon,
+                        svgIcon['icon'],
                         color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                       ),
                     ),
@@ -296,7 +339,10 @@ class FooterColumn extends HookConsumerWidget {
         Text(
           footerTitle,
           style: const TextStyle(
-              color: Color(0xFF858E8E), fontSize: 16, fontFamily: 'Rational Display', fontWeight: FontWeight.w600),
+              color: Color(0xFF858E8E),
+              fontSize: 16,
+              fontFamily: Strings.rationalDisplayFont,
+              fontWeight: FontWeight.w600),
         ),
         const SizedBox(
           height: 16,
@@ -309,7 +355,7 @@ class FooterColumn extends HookConsumerWidget {
                       style: TextStyle(
                           color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
                           fontSize: 14,
-                          fontFamily: 'Rational Display'),
+                          fontFamily: Strings.rationalDisplayFont),
                     ),
                     const SizedBox(
                       height: 16,
