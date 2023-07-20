@@ -76,6 +76,7 @@ class ChartNotifier extends StateNotifier<AsyncValue<ChartResult>> {
   Future<ChartResult> _loadAverageBlockTime() async {
     switch (timeFrame) {
       case TimeFrame.day:
+      return ref.watch
         return Future.delayed(const Duration(seconds: 1), () {
           return _mockChartData(timeFrame: timeFrame);
         });

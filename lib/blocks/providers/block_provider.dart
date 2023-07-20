@@ -23,8 +23,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 ///   ...
 ///   );
 /// ```
-final blockStateAtIndexProvider = FutureProvider.family<Block, int>((ref, index) async {
-  return ref.watch(blockProvider.notifier).getBlockFromStateAtIndex(index);
+final blockStateAtDepthProvider = FutureProvider.family<Block, int>((ref, depth) async {
+  return ref.watch(blockProvider.notifier).getBlockFromStateAtDepth(depth);
 });
 
 final getBlockByDepthProvider = FutureProvider.family<Block, int>((ref, depth) async {
@@ -87,7 +87,7 @@ final getBlockByIdProvider = FutureProvider.family<Block, String>((ref, header) 
   );
 });
 
-final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<List<Block>>>((ref) {
+final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<Map<int, Block>>>((ref) {
   /// Notes:
   /// We'll need to watch for the selectedChain here since we will need to know which
   /// instance of Genus to target
@@ -101,7 +101,7 @@ final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<List<Block
   );
 });
 
-class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
+class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
   final Chains selectedChain;
   final Ref ref;
   final Future<FetchNodeConfigRes> config;
@@ -121,8 +121,12 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   /// If [setState] is false, it will not update the state of the provider
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
     if (selectedChain == Chains.mock) {
-      final blocks = List.generate(100, (index) => getMockBlock());
-      if (setState) state = AsyncData(blocks);
+      final List<Block> blocks = List.generate(100, (index) => getMockBlock());
+      if (setState) {
+        state = AsyncData(
+          blocks.asMap(),
+        );
+      }
       return blocks;
     }
     try {
@@ -156,13 +160,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
 
       // Adding delay here to simulate API call
       if (setState) {
-        Future.delayed(
-          const Duration(seconds: 1),
-          () {
-            // Do API call here
-            state = AsyncData(blocks);
-          },
-        );
+        state = AsyncData(blocks.asMap());
       }
 
       return blocks;
@@ -176,7 +174,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
   /// It takes an [index] as a parameter
   ///
   /// It returns a [Future<Block>]
-  Future<Block> getBlockFromStateAtIndex(int index) async {
+  Future<Block> getBlockFromStateAtDepth(int depth) async {
     final blocks = state.asData?.value;
 
     if (blocks == null) {
@@ -184,13 +182,12 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
     }
 
     // If the index is less than the length of the list, return the block at that index
-    if (index < blocks.length) {
-      return blocks[index];
+    if (blocks[depth] != null) {
+      return blocks[depth]!;
     } else {
       // Get the next block by height from Genus
       final genusClient = ref.read(genusProvider(selectedChain));
-      int latestHeight = blocks[blocks.length - 1].height;
-      final blockRes = await genusClient.getBlockByHeight(height: latestHeight - 1);
+      final blockRes = await genusClient.getBlockByDepth(depth: depth);
       final presentConfig = await config;
       // Add that block to state's list
       var newBlock = Block(
@@ -202,8 +199,12 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
         timestamp: blockRes.block.header.timestamp.toInt(),
         transactionNumber: blockRes.block.fullBody.transactions.length,
       );
-      blocks.add(newBlock);
-      state = AsyncData([...blocks]);
+      blocks[depth] = newBlock;
+
+      // Sort the blocks by depth so that they are in order
+      List<MapEntry<int, Block>> sortedBlocks = blocks.entries.toList();
+      sortedBlocks.sort((a, b) => a.key.compareTo(b.key));
+      state = AsyncData({...Map.fromEntries(sortedBlocks)});
 
       // Return that block
       return newBlock;
