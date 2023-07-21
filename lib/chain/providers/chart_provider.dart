@@ -7,6 +7,7 @@ import 'package:flutter_annulus/chain/models/chart_result.dart';
 import 'package:flutter_annulus/chain/models/time_frame.dart';
 import 'package:flutter_annulus/chain/providers/chart_providers/average_block_time_provider.dart';
 import 'package:flutter_annulus/chain/providers/chart_providers/average_transaction_fee_provider.dart';
+import 'package:flutter_annulus/chain/providers/chart_providers/data_throughput_provider.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -135,37 +136,21 @@ class ChartNotifier extends StateNotifier<AsyncValue<ChartResult>> {
   Future<ChartResult> _loadDataThroughput() {
     switch (timeFrame) {
       case TimeFrame.day:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(dataThroughputDayProvider.future);
       case TimeFrame.week:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(dataThroughputWeekProvider.future);
       case TimeFrame.twoWeeks:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(dataThroughputTwoWeeksProvider.future);
       case TimeFrame.month:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(dataThroughputMonthProvider.future);
       case TimeFrame.threeMonths:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(dataThroughputThreeMonthsProvider.future);
       case TimeFrame.sixMonths:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(dataThroughputSixMonthsProvider.future);
       case TimeFrame.year:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(dataThroughputYearProvider.future);
       case TimeFrame.all:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(dataThroughputAllProvider.future);
     }
   }
 }
