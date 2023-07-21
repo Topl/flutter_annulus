@@ -175,7 +175,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
   ///
   /// It returns a [Future<Block>]
   Future<Block> getBlockFromStateAtDepth(int depth) async {
-    final blocks = state.asData?.value;
+    var blocks = state.asData?.value;
 
     if (blocks == null) {
       throw Exception('Error in blockProvider: blocks are null');
@@ -185,6 +185,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     if (blocks[depth] != null) {
       return blocks[depth]!;
     } else {
+      blocks = {...blocks};
       // Get the next block by height from Genus
       final genusClient = ref.read(genusProvider(selectedChain));
       final blockRes = await genusClient.getBlockByDepth(depth: depth);
@@ -200,10 +201,12 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
         transactionNumber: blockRes.block.fullBody.transactions.length,
       );
       blocks[depth] = newBlock;
+      print('QQQQ newBlock: $newBlock');
 
       // Sort the blocks by depth so that they are in order
       List<MapEntry<int, Block>> sortedBlocks = blocks.entries.toList();
-      sortedBlocks.sort((a, b) => a.key.compareTo(b.key));
+      sortedBlocks.sort((a, b) => b.key.compareTo(a.key));
+      print('QQQQ sortedBlocks: $sortedBlocks');
       state = AsyncData({...Map.fromEntries(sortedBlocks)});
 
       // Return that block

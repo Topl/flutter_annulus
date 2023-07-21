@@ -15,14 +15,23 @@ Future<ChartResult> _getAverageBlockTime({
 
   while (currentBlockEndTime.isAfter(endTime)) {
     final Block block1 = await ref.read(getBlockByDepthProvider(currentBlockDepth).future);
+    print('QQQQ block1: $block1');
 
     final nextBlockDepth = currentBlockDepth + skipCount;
-    final Block block2 = await ref.read(getBlockByDepthProvider(nextBlockDepth).future);
+    late Block block2;
+    try {
+      block2 = await ref.read(getBlockByDepthProvider(nextBlockDepth).future);
+    } catch (e) {
+      print('QQQQ error: $e');
+      break;
+    }
+    print('QQQQ block2: $block2');
 
     currentBlockDepth = nextBlockDepth;
     currentBlockEndTime = DateTime.fromMillisecondsSinceEpoch(block2.timestamp);
 
-    results[DateTime.fromMillisecondsSinceEpoch(block1.timestamp)] = block2.timestamp - block1.timestamp;
+    results[DateTime.fromMillisecondsSinceEpoch(block1.timestamp)] =
+        ((block1.timestamp - block2.timestamp) / 1000).round();
   }
   return ChartResult(results: results);
 }
@@ -39,7 +48,7 @@ final averageBlockTimeDayProvider = FutureProvider<ChartResult>((ref) async {
 
 final averageBlockTimeWeekProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: 1,
+    skipCount: 5,
     endTime: DateTime.now().subtract(
       const Duration(days: 7),
     ),
@@ -49,7 +58,7 @@ final averageBlockTimeWeekProvider = FutureProvider<ChartResult>((ref) async {
 
 final averageBlockTimeTwoWeeksProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: 1,
+    skipCount: 10,
     endTime: DateTime.now().subtract(
       const Duration(days: 14),
     ),
@@ -59,7 +68,7 @@ final averageBlockTimeTwoWeeksProvider = FutureProvider<ChartResult>((ref) async
 
 final averageBlockTimeMonthProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: 1,
+    skipCount: 20,
     endTime: DateTime.now().subtract(
       const Duration(days: 30),
     ),
@@ -69,7 +78,7 @@ final averageBlockTimeMonthProvider = FutureProvider<ChartResult>((ref) async {
 
 final averageBlockTimeThreeMonthsProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: 1,
+    skipCount: 60,
     endTime: DateTime.now().subtract(
       const Duration(days: 90),
     ),
@@ -79,7 +88,7 @@ final averageBlockTimeThreeMonthsProvider = FutureProvider<ChartResult>((ref) as
 
 final averageBlockTimeSixMonthsProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: 1,
+    skipCount: 120,
     endTime: DateTime.now().subtract(
       const Duration(days: 180),
     ),
@@ -89,7 +98,7 @@ final averageBlockTimeSixMonthsProvider = FutureProvider<ChartResult>((ref) asyn
 
 final averageBlockTimeYearProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: 1,
+    skipCount: 240,
     endTime: DateTime.now().subtract(
       const Duration(days: 365),
     ),
@@ -99,7 +108,7 @@ final averageBlockTimeYearProvider = FutureProvider<ChartResult>((ref) async {
 
 final averageBlockTimeAllTimeProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: 1,
+    skipCount: 480,
     endTime: DateTime.fromMillisecondsSinceEpoch(0),
     ref: ref,
   );
