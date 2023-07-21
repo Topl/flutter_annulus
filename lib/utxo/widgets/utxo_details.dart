@@ -21,6 +21,7 @@ class UTxODetailsPage extends HookConsumerWidget {
     // required this.utxoId,
   }) : super(key: key);
   static const String route = '/utxo_details';
+
   // final String utxoId;
 
   @override
@@ -73,7 +74,7 @@ class UTxODetailsPage extends HookConsumerWidget {
                       child: Row(
                         children: [
                           Text(
-                            'UTxO Details',
+                            'UTxO Transaction Details',
                             style: headlineLarge(context),
                           ),
                         ],
