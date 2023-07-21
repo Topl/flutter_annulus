@@ -6,6 +6,6 @@ part 'chart_result.freezed.dart';
 @freezed
 class ChartResult with _$ChartResult {
   const factory ChartResult({
-    required Map<DateTime, int> results,
+    required Map<DateTime, double> results,
   }) = _ChartResult;
 }

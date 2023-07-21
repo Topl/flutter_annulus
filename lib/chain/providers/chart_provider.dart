@@ -6,6 +6,7 @@ import 'package:flutter_annulus/chain/models/chart_option.dart';
 import 'package:flutter_annulus/chain/models/chart_result.dart';
 import 'package:flutter_annulus/chain/models/time_frame.dart';
 import 'package:flutter_annulus/chain/providers/chart_providers/average_block_time_provider.dart';
+import 'package:flutter_annulus/chain/providers/chart_providers/average_transaction_fee_provider.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -69,7 +70,6 @@ class ChartNotifier extends StateNotifier<AsyncValue<ChartResult>> {
         switch (chartOption) {
           case ChartOption.averageBlockTime:
             state = AsyncData(await _loadAverageBlockTime());
-            print('QQQQ state: $state');
             break;
           case ChartOption.averageTransactionFee:
             state = AsyncData(await _loadAverageTransactionFee());
@@ -87,64 +87,48 @@ class ChartNotifier extends StateNotifier<AsyncValue<ChartResult>> {
   Future<ChartResult> _loadAverageBlockTime() async {
     switch (timeFrame) {
       case TimeFrame.day:
-        return ref.watch(averageBlockTimeDayProvider.future);
+        return ref.read(averageBlockTimeDayProvider.future);
       case TimeFrame.week:
-        return ref.watch(averageBlockTimeWeekProvider.future);
+        return ref.read(averageBlockTimeWeekProvider.future);
 
       case TimeFrame.twoWeeks:
-        return ref.watch(averageBlockTimeTwoWeeksProvider.future);
+        return ref.read(averageBlockTimeTwoWeeksProvider.future);
 
       case TimeFrame.month:
-        return ref.watch(averageBlockTimeMonthProvider.future);
+        return ref.read(averageBlockTimeMonthProvider.future);
 
       case TimeFrame.threeMonths:
-        return ref.watch(averageBlockTimeThreeMonthsProvider.future);
+        return ref.read(averageBlockTimeThreeMonthsProvider.future);
 
       case TimeFrame.sixMonths:
-        return ref.watch(averageBlockTimeSixMonthsProvider.future);
+        return ref.read(averageBlockTimeSixMonthsProvider.future);
 
       case TimeFrame.year:
-        return ref.watch(averageBlockTimeYearProvider.future);
+        return ref.read(averageBlockTimeYearProvider.future);
 
       case TimeFrame.all:
-        return ref.watch(averageBlockTimeAllTimeProvider.future);
+        return ref.read(averageBlockTimeAllTimeProvider.future);
     }
   }
 
   Future<ChartResult> _loadAverageTransactionFee() {
     switch (timeFrame) {
       case TimeFrame.day:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(averageTransactionFeeDayProvider.future);
       case TimeFrame.week:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(averageTransactionFeeWeekProvider.future);
       case TimeFrame.twoWeeks:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(averageTransactionFeeTwoWeeksProvider.future);
       case TimeFrame.month:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(averageTransactionFeeMonthProvider.future);
       case TimeFrame.threeMonths:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(averageTransactionFeeThreeMonthsProvider.future);
       case TimeFrame.sixMonths:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(averageTransactionFeeSixMonthsProvider.future);
       case TimeFrame.year:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(averageTransactionFeeYearProvider.future);
       case TimeFrame.all:
-        return Future.delayed(const Duration(seconds: 1), () {
-          return _mockChartData(timeFrame: timeFrame);
-        });
+        return ref.read(averageTransactionFeeAllProvider.future);
     }
   }
 
@@ -202,7 +186,7 @@ ChartResult _mockChartData({
   int next(int min, int max) => min + random.nextInt(max - min);
 
   // Generate random values for the y-axis
-  List<int> yAxisResults = List.generate(dataPoints, (index) => next(0, 500000));
+  List<double> yAxisResults = List.generate(dataPoints, (index) => next(0, 500000).toDouble());
 
   // Get the current date and time
   final currentDate = DateTime.now();
@@ -223,7 +207,7 @@ ChartResult _mockChartData({
   );
 
   // Create a map of x-axis and y-axis results
-  final results = Map<DateTime, int>.fromIterables(xAxisResults, yAxisResults);
+  final results = Map<DateTime, double>.fromIterables(xAxisResults, yAxisResults);
 
   // Return the chart result
   return ChartResult(results: results);

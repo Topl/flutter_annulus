@@ -11,27 +11,25 @@ Future<ChartResult> _getAverageBlockTime({
   var currentBlockEndTime = DateTime.now();
   var currentBlockDepth = 0;
 
-  Map<DateTime, int> results = {};
+  Map<DateTime, double> results = {};
 
   while (currentBlockEndTime.isAfter(endTime)) {
     final Block block1 = await ref.read(getBlockByDepthProvider(currentBlockDepth).future);
-    print('QQQQ block1: $block1');
 
     final nextBlockDepth = currentBlockDepth + skipCount;
     late Block block2;
+
+    // If the next block is not available, break the loop
     try {
       block2 = await ref.read(getBlockByDepthProvider(nextBlockDepth).future);
     } catch (e) {
-      print('QQQQ error: $e');
       break;
     }
-    print('QQQQ block2: $block2');
 
     currentBlockDepth = nextBlockDepth;
     currentBlockEndTime = DateTime.fromMillisecondsSinceEpoch(block2.timestamp);
 
-    results[DateTime.fromMillisecondsSinceEpoch(block1.timestamp)] =
-        ((block1.timestamp - block2.timestamp) / 1000).round();
+    results[DateTime.fromMillisecondsSinceEpoch(block1.timestamp)] = ((block1.timestamp - block2.timestamp) / 1000);
   }
   return ChartResult(results: results);
 }
