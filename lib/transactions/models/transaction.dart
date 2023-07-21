@@ -39,16 +39,13 @@ class Transaction with _$Transaction {
     required double transactionFee,
 
     /// The address of the sender
-    required String senderAddress,
+    required List<String> senderAddress,
 
     /// The address of the receiver
-    required String receiverAddress,
+    required List<String> receiverAddress,
 
     /// The size of the transaction
     required int transactionSize,
-
-    /// Unknown
-    required String proposition,
 
     /// The quantity of the transaction
     required int quantity,
@@ -57,6 +54,5 @@ class Transaction with _$Transaction {
     required String name,
   }) = _Transaction;
 
-  factory Transaction.fromJson(Map<String, dynamic> json) =>
-      _$TransactionFromJson(json);
+  factory Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);
 }

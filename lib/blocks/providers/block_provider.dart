@@ -39,7 +39,7 @@ final getBlockByDepthProvider = FutureProvider.family<Block, int>((ref, depth) a
   return Block(
     header: decodeId(blockRes.block.header.headerId.value),
     epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-    size: 5432.2,
+    size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
     height: blockRes.block.header.height.toInt(),
     slot: blockRes.block.header.slot.toInt(),
     timestamp: blockRes.block.header.timestamp.toInt(),
@@ -59,7 +59,7 @@ final getBlockByHeightProvider = FutureProvider.family<Block, int>((ref, height)
   return Block(
     header: decodeId(blockRes.block.header.headerId.value),
     epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-    size: 5432.2,
+    size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
     height: blockRes.block.header.height.toInt(),
     slot: blockRes.block.header.slot.toInt(),
     timestamp: blockRes.block.header.timestamp.toInt(),
@@ -79,7 +79,7 @@ final getBlockByIdProvider = FutureProvider.family<Block, String>((ref, header) 
   return Block(
     header: decodeId(blockRes.block.header.headerId.value),
     epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-    size: 5432.2,
+    size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
     height: blockRes.block.header.height.toInt(),
     slot: blockRes.block.header.slot.toInt(),
     timestamp: blockRes.block.header.timestamp.toInt(),
@@ -145,7 +145,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
           Block(
             header: decodeId(blockRes.block.header.headerId.value),
             epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-            size: 5432.2,
+            size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
             height: blockRes.block.header.height.toInt(),
             slot: blockRes.block.header.slot.toInt(),
             timestamp: blockRes.block.header.timestamp.toInt(),
@@ -196,7 +196,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<List<Block>>> {
       var newBlock = Block(
         header: decodeId(blockRes.block.header.headerId.value),
         epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-        size: 5432.2,
+        size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
         height: blockRes.block.header.height.toInt(),
         slot: blockRes.block.header.slot.toInt(),
         timestamp: blockRes.block.header.timestamp.toInt(),
