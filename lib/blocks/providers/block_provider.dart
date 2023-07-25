@@ -2,13 +2,14 @@ import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
+import 'package:flutter_annulus/chain/utils/constants.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-/// Returns a block at the index
+/// Returns a block at the depth
 ///
 /// IMPORTANT: Only use this provider AFTER the blockProvider has been initialized
 /// Ex.
@@ -17,7 +18,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// blockProvider.when(
 ///   data: (data) {
 ///    // Use data here
-///    ref.watch(blockStateAtIndexProvider(index));
+///    ref.watch(blockStateAtDepthProvider(index));
 ///    ...
 ///   },
 ///   ...
@@ -26,6 +27,69 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 final blockStateAtDepthProvider = FutureProvider.family<Block, int>((ref, depth) async {
   return ref.watch(blockProvider.notifier).getBlockFromStateAtDepth(depth);
 });
+
+/// Returns a block at the height
+///
+/// IMPORTANT: Only use this provider AFTER the blockProvider has been initialized
+/// Ex.
+/// ```
+/// final blockProvider = ref.watch(blockProvider);
+/// blockProvider.when(
+///   data: (data) {
+///    // Use data here
+///    ref.watch(blockStateAtHeightProvider(index));
+///    ...
+///   },
+///   ...
+///   );
+/// ```
+final blockStateAtHeightProvider = FutureProvider.family<Block, int>((ref, height) async {
+  return ref.watch(blockProvider.notifier).getBlockFromStateAtHeight(height);
+});
+
+/// Returns a list of blocks since decentralization
+///
+/// The function calculates the spacing between elements and creates a list of
+/// heights to get the blocks from. It then loops through the list and gets the
+/// blocks at each height. If an error occurs, the loop is broken and the
+/// function returns the blocks that were successfully retrieved.
+///
+/// The function requires a [Ref] object to be passed in.
+Future<List<Block>> getBlocksSinceDecentralization({
+  required Ref ref,
+}) async {
+  // Get the block at depth 0 to determine the current height
+  final depth0Block = await ref.read(blockStateAtDepthProvider(0).future);
+  final height = depth0Block.height;
+
+  // Calculate the spacing between elements
+  double spacing = height / (minimumResults - 1);
+
+  // Create the list and add elements from quack to 0
+  List<int> myList = List<int>.generate(minimumResults, (index) {
+    if (index == 0) {
+      return height;
+    } else {
+      int value = (height - (spacing * index)).round();
+      return value >= 0 ? value : 0;
+    }
+  });
+
+  List<Block> blocks = [];
+
+  // Loop through the list and get the blocks
+  for (int i = 0; i < myList.length - 1; i++) {
+    try {
+      final currentHeight = myList[i];
+      final block = await ref.read(blockStateAtHeightProvider(currentHeight).future);
+      blocks.add(block);
+    } catch (e) {
+      break;
+    }
+  }
+
+  return blocks;
+}
 
 final getBlockByDepthProvider = FutureProvider.family<Block, int>((ref, depth) async {
   final selectedChain = ref.watch(selectedChainProvider);
@@ -169,7 +233,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     }
   }
 
-  /// This method is used to get a block at a specific index
+  /// This method is used to get a block at a specific depth
   /// If the block is not in the state, it will fetch the block from Genus
   /// It takes an [index] as a parameter
   ///
@@ -201,12 +265,65 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
         transactionNumber: blockRes.block.fullBody.transactions.length,
       );
       blocks[depth] = newBlock;
-      print('QQQQ newBlock: $newBlock');
 
       // Sort the blocks by depth so that they are in order
       List<MapEntry<int, Block>> sortedBlocks = blocks.entries.toList();
       sortedBlocks.sort((a, b) => b.key.compareTo(a.key));
-      print('QQQQ sortedBlocks: $sortedBlocks');
+      state = AsyncData({...Map.fromEntries(sortedBlocks)});
+
+      // Return that block
+      return newBlock;
+    }
+  }
+
+  /// This will get a block at a specific height
+  /// If the block is not in the state, it will fetch the block from Genus
+  /// It takes an [index] as a parameter
+  ///
+  /// It returns a [Future<Block>]
+  Future<Block> getBlockFromStateAtHeight(int height) async {
+    var blocks = state.asData?.value;
+
+    if (blocks == null) {
+      throw Exception('Error in blockProvider: blocks are null');
+    }
+
+    final blockAtDepth0 = blocks[0];
+
+    if (blockAtDepth0 == null) {
+      throw Exception('Error in blockProvider: blockAtDepth0 is null');
+    }
+
+    if (blockAtDepth0.height < height) {
+      throw Exception('Error in blockProvider: height is greater than the height of the latest block');
+    }
+
+    final depth = blockAtDepth0.height - height;
+
+    // If the index is less than the length of the list, return the block at that index
+    if (blocks[depth] != null) {
+      return blocks[depth]!;
+    } else {
+      blocks = {...blocks};
+      // Get the next block by height from Genus
+      final genusClient = ref.read(genusProvider(selectedChain));
+      final blockRes = await genusClient.getBlockByHeight(height: height);
+      final presentConfig = await config;
+      // Add that block to state's list
+      var newBlock = Block(
+        header: decodeId(blockRes.block.header.headerId.value),
+        epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
+        size: 5432.2,
+        height: blockRes.block.header.height.toInt(),
+        slot: blockRes.block.header.slot.toInt(),
+        timestamp: blockRes.block.header.timestamp.toInt(),
+        transactionNumber: blockRes.block.fullBody.transactions.length,
+      );
+      blocks[depth] = newBlock;
+
+      // Sort the blocks by depth so that they are in order
+      List<MapEntry<int, Block>> sortedBlocks = blocks.entries.toList();
+      sortedBlocks.sort((a, b) => b.key.compareTo(a.key));
       state = AsyncData({...Map.fromEntries(sortedBlocks)});
 
       // Return that block

@@ -3,9 +3,19 @@ import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/models/chart_result.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
+import 'package:flutter_annulus/chain/utils/constants.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// Returns a [ChartResult] object containing a map of [DateTime] objects to
+/// [double] values representing the average transaction fee for each block
+/// within the specified time range.
+///
+/// The [skipCount] parameter determines how many blocks to skip between each
+/// block that is included in the calculation. The [endTime] parameter specifies
+/// the end of the time range to include in the calculation. The [selectedChain]
+/// parameter specifies the chain to query for block data. The [ref] parameter
+/// is a reference to the current [ProviderReference].
 Future<ChartResult> _getTransactionFee({
   required int skipCount,
   required DateTime endTime,
@@ -48,13 +58,15 @@ Future<ChartResult> _getTransactionFee({
   return ChartResult(results: results);
 }
 
+/// The Following proivders are [FutureProvider] that returns a [ChartResult] object
+/// containing a map of [DateTime] objects to [double] values representing the average
+/// transaction fee for each block within the specified time frame.
+
 final averageTransactionFeeDayProvider = FutureProvider<ChartResult>((ref) async {
   final selectedChain = ref.watch(selectedChainProvider);
   return _getTransactionFee(
-    skipCount: 1,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 1),
-    ),
+    skipCount: chartDaySkipAmount,
+    endTime: chartDayEndTime,
     selectedChain: selectedChain,
     ref: ref,
   );
@@ -63,10 +75,8 @@ final averageTransactionFeeDayProvider = FutureProvider<ChartResult>((ref) async
 final averageTransactionFeeWeekProvider = FutureProvider<ChartResult>((ref) async {
   final selectedChain = ref.watch(selectedChainProvider);
   return _getTransactionFee(
-    skipCount: 5,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 7),
-    ),
+    skipCount: chartWeekSkipAmount,
+    endTime: chartWeekEndTime,
     selectedChain: selectedChain,
     ref: ref,
   );
@@ -75,10 +85,8 @@ final averageTransactionFeeWeekProvider = FutureProvider<ChartResult>((ref) asyn
 final averageTransactionFeeTwoWeeksProvider = FutureProvider<ChartResult>((ref) async {
   final selectedChain = ref.watch(selectedChainProvider);
   return _getTransactionFee(
-    skipCount: 10,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 14),
-    ),
+    skipCount: chartTwoWeekSkipAmount,
+    endTime: chartTwoWeekEndTime,
     selectedChain: selectedChain,
     ref: ref,
   );
@@ -87,10 +95,8 @@ final averageTransactionFeeTwoWeeksProvider = FutureProvider<ChartResult>((ref) 
 final averageTransactionFeeMonthProvider = FutureProvider<ChartResult>((ref) async {
   final selectedChain = ref.watch(selectedChainProvider);
   return _getTransactionFee(
-    skipCount: 20,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 30),
-    ),
+    skipCount: chartMonthSkipAmount,
+    endTime: chartMonthEndTime,
     selectedChain: selectedChain,
     ref: ref,
   );
@@ -99,10 +105,8 @@ final averageTransactionFeeMonthProvider = FutureProvider<ChartResult>((ref) asy
 final averageTransactionFeeThreeMonthsProvider = FutureProvider<ChartResult>((ref) async {
   final selectedChain = ref.watch(selectedChainProvider);
   return _getTransactionFee(
-    skipCount: 60,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 90),
-    ),
+    skipCount: chartThreeMonthSkipAmount,
+    endTime: chartThreeMonthEndTime,
     selectedChain: selectedChain,
     ref: ref,
   );
@@ -111,10 +115,8 @@ final averageTransactionFeeThreeMonthsProvider = FutureProvider<ChartResult>((re
 final averageTransactionFeeSixMonthsProvider = FutureProvider<ChartResult>((ref) async {
   final selectedChain = ref.watch(selectedChainProvider);
   return _getTransactionFee(
-    skipCount: 120,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 180),
-    ),
+    skipCount: chartSixMonthSkipAmount,
+    endTime: chartSixMonthEndTime,
     selectedChain: selectedChain,
     ref: ref,
   );
@@ -123,10 +125,8 @@ final averageTransactionFeeSixMonthsProvider = FutureProvider<ChartResult>((ref)
 final averageTransactionFeeYearProvider = FutureProvider<ChartResult>((ref) async {
   final selectedChain = ref.watch(selectedChainProvider);
   return _getTransactionFee(
-    skipCount: 240,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 365),
-    ),
+    skipCount: chartYearSkipAmount,
+    endTime: chartYearEndTime,
     selectedChain: selectedChain,
     ref: ref,
   );
@@ -135,8 +135,8 @@ final averageTransactionFeeYearProvider = FutureProvider<ChartResult>((ref) asyn
 final averageTransactionFeeAllProvider = FutureProvider<ChartResult>((ref) async {
   final selectedChain = ref.watch(selectedChainProvider);
   return _getTransactionFee(
-    skipCount: 480,
-    endTime: DateTime.fromMillisecondsSinceEpoch(0),
+    skipCount: chartAllSkipAmount,
+    endTime: chartAllEndTime,
     selectedChain: selectedChain,
     ref: ref,
   );

@@ -1,6 +1,7 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chart_result.dart';
+import 'package:flutter_annulus/chain/utils/constants.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Future<ChartResult> _calculateDataThroughput({
@@ -37,78 +38,64 @@ Future<ChartResult> _calculateDataThroughput({
 
 final dataThroughputDayProvider = FutureProvider<ChartResult>((ref) async {
   return _calculateDataThroughput(
-    skipCount: 1,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 1),
-    ),
+    skipCount: chartDaySkipAmount,
+    endTime: chartDayEndTime,
     ref: ref,
   );
 });
 
 final dataThroughputWeekProvider = FutureProvider<ChartResult>((ref) async {
   return _calculateDataThroughput(
-    skipCount: 5,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 7),
-    ),
+    skipCount: chartWeekSkipAmount,
+    endTime: chartWeekEndTime,
     ref: ref,
   );
 });
 
 final dataThroughputTwoWeeksProvider = FutureProvider<ChartResult>((ref) async {
   return _calculateDataThroughput(
-    skipCount: 10,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 14),
-    ),
+    skipCount: chartTwoWeekSkipAmount,
+    endTime: chartTwoWeekEndTime,
     ref: ref,
   );
 });
 
 final dataThroughputMonthProvider = FutureProvider<ChartResult>((ref) async {
   return _calculateDataThroughput(
-    skipCount: 20,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 30),
-    ),
+    skipCount: chartMonthSkipAmount,
+    endTime: chartMonthEndTime,
     ref: ref,
   );
 });
 
 final dataThroughputThreeMonthsProvider = FutureProvider<ChartResult>((ref) async {
   return _calculateDataThroughput(
-    skipCount: 60,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 90),
-    ),
+    skipCount: chartThreeMonthSkipAmount,
+    endTime: chartThreeMonthEndTime,
     ref: ref,
   );
 });
 
 final dataThroughputSixMonthsProvider = FutureProvider<ChartResult>((ref) async {
   return _calculateDataThroughput(
-    skipCount: 120,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 180),
-    ),
+    skipCount: chartSixMonthSkipAmount,
+    endTime: chartSixMonthEndTime,
     ref: ref,
   );
 });
 
 final dataThroughputYearProvider = FutureProvider<ChartResult>((ref) async {
   return _calculateDataThroughput(
-    skipCount: 240,
-    endTime: DateTime.now().subtract(
-      const Duration(days: 365),
-    ),
+    skipCount: chartYearSkipAmount,
+    endTime: chartYearEndTime,
     ref: ref,
   );
 });
 
 final dataThroughputAllProvider = FutureProvider<ChartResult>((ref) async {
   return _calculateDataThroughput(
-    skipCount: 480,
-    endTime: DateTime.fromMillisecondsSinceEpoch(0),
+    skipCount: chartAllSkipAmount,
+    endTime: chartAllEndTime,
     ref: ref,
   );
 });
