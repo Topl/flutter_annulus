@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
@@ -8,8 +9,6 @@ import 'package:flutter_annulus/shared/providers/config_provider.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:topl_common/proto/brambl/models/transaction/unspent_transaction_output.pb.dart';
-import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 import '../../blocks/models/block.dart';
 
 final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((ref, transactionId) async {
@@ -36,10 +35,10 @@ final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((r
   );
 
   //calculate values for fields
-  var txAmount = calculateAmount(outputs: transactionRes.transactionReceipt.transaction.outputs);
-  var txFees = calculateFees(
-      inputs: transactionRes.transactionReceipt.transaction.inputs,
-      outputs: transactionRes.transactionReceipt.transaction.outputs);
+  var inputList = transactionRes.transactionReceipt.transaction.inputs.toList();
+  var outputList = transactionRes.transactionReceipt.transaction.outputs.toList();
+  var txAmount = calculateAmount(outputs: outputList);
+  var txFees = calculateFees(inputs: inputList, outputs: outputList);
 
   var transaction = Transaction(
       transactionId: decodeId(transactionRes.transactionReceipt.transaction.transactionId.value),
@@ -90,10 +89,10 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
       final iDouble = i.toDouble();
 
       //calculate transaction amount
-      var txAmount = calculateAmount(outputs: blockRes.block.fullBody.transactions[i].outputs);
-      var txFees = calculateFees(
-          inputs: blockRes.block.fullBody.transactions[i].inputs,
-          outputs: blockRes.block.fullBody.transactions[i].outputs);
+      var inputList = blockRes.block.fullBody.transactions[i].inputs.toList();
+      var outputList = blockRes.block.fullBody.transactions[i].outputs.toList();
+      var txAmount = calculateAmount(outputs: outputList);
+      var txFees = calculateFees(inputs: inputList, outputs: outputList);
 
       transactions.add(
         Transaction(
@@ -185,10 +184,10 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
         final iDouble = i.toDouble();
 
         //calculate transaction amount
-        var txAmount = calculateAmount(outputs: latestBlockRes.block.fullBody.transactions[i].outputs);
-        var txFees = calculateFees(
-            inputs: latestBlockRes.block.fullBody.transactions[i].inputs,
-            outputs: latestBlockRes.block.fullBody.transactions[i].outputs);
+        var outputList = latestBlockRes.block.fullBody.transactions[i].outputs.toList();
+        var inputList = latestBlockRes.block.fullBody.transactions[i].inputs.toList();
+        var txAmount = calculateAmount(outputs: outputList);
+        var txFees = calculateFees(inputs: inputList, outputs: outputList);
 
         transactions.add(
           Transaction(

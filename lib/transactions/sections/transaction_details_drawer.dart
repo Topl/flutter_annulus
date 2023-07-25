@@ -8,6 +8,7 @@ import '../../shared/constants/numbers.dart';
 import '../../shared/utils/theme_color.dart';
 import '../models/transaction.dart';
 import 'transactions.dart';
+import 'package:flutter_annulus/transactions/utils/utils.dart';
 
 /// This is a custom widget that shows the transaction details drawer
 class TransactionDetailsDrawer extends HookConsumerWidget {
@@ -147,7 +148,8 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: transaction!.senderAddress)
+                ...createAddressWidgets(addresses: transaction!.senderAddress),
+                // CustomTextRight(desc: transaction!.senderAddress[0])
               ],
             ),
             Row(
@@ -157,7 +159,8 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: transaction!.receiverAddress)
+                ...createAddressWidgets(addresses: transaction!.receiverAddress),
+                // CustomTextRight(desc: transaction!.receiverAddress[0])
               ],
             ),
             const SizedBox(
