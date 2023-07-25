@@ -55,7 +55,7 @@ Future<ChartResult> _getAverageBlockTime({
   // Loop until the current block end time is after the end time
   while (currentBlockEndTime.isAfter(endTime)) {
     final Block block1 =
-        await ref.read(getBlockByDepthProvider(currentBlockDepth).future); // Get the block at the current depth
+        await ref.read(blockStateAtDepthProvider(currentBlockDepth).future); // Get the block at the current depth
 
     final nextBlockDepth = currentBlockDepth + skipCount; // Calculate the depth of the next block
 
@@ -63,14 +63,13 @@ Future<ChartResult> _getAverageBlockTime({
 
     // If the next block is not available, break the loop
     try {
-      block2 = await ref.read(getBlockByDepthProvider(nextBlockDepth).future); // Get the next block
+      block2 = await ref.read(blockStateAtDepthProvider(nextBlockDepth).future); // Get the next block
     } catch (e) {
       // If there is no block at the next depth, then break the loop
       break;
     }
 
-    // Doing the calc again here just incase there is a new skip count set
-    currentBlockDepth = currentBlockDepth + skipCount; // Update the current block depth
+    currentBlockDepth = nextBlockDepth; // Update the current block depth
 
     currentBlockEndTime = DateTime.fromMillisecondsSinceEpoch(
         block2.timestamp); // Set the current block end time to the timestamp of the next block

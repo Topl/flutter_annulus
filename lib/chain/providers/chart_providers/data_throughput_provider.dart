@@ -4,36 +4,80 @@ import 'package:flutter_annulus/chain/models/chart_result.dart';
 import 'package:flutter_annulus/chain/utils/constants.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-Future<ChartResult> _calculateDataThroughput({
-  required int skipCount,
-  required DateTime endTime,
-  required Ref ref,
+/// Gets the data throughput for 2 blocks
+double _getDataThroughputBetween2Blocks({
+  required Block block1,
+  required Block block2,
+}) {
+  return ((block1.size - block2.size) / 2).abs();
+}
+
+/// Gets the data throughput since decentralization
+
+/// Gets the data throughput since decentralization.
+/// Returns a [Future] of [ChartResult].
+Future<ChartResult> _getDataThroughputSinceDecentralization({
+  required Ref ref, // The reference to the block state.
 }) async {
-  var currentBlockEndTime = DateTime.now();
-  var currentBlockDepth = 0;
+  final List<Block> blocks = await getBlocksSinceDecentralization(ref: ref); // Get the blocks since decentralization.
 
-  Map<DateTime, double> results = {};
+  Map<DateTime, double> results = {}; // The results of the calculation.
 
+  // Loop through the blocks and calculate the data throughput between each pair of blocks.
+  for (int i = 0; i < blocks.length - 1; i++) {
+    final block1 = blocks[i]; // Get the first block.
+    final block2 = blocks[i + 1]; // Get the second block.
+
+    results[DateTime.fromMillisecondsSinceEpoch(block1.timestamp)] = _getDataThroughputBetween2Blocks(
+      block1: block1,
+      block2: block2,
+    ); // Calculate the data throughput between the two blocks and add it to the results.
+  }
+
+  return ChartResult(results: results); // Return the results.
+}
+
+/// Calculates the data throughput between blocks at a given skip count and end time.
+/// Returns a [Future] of [ChartResult].
+Future<ChartResult> _calculateDataThroughput({
+  required int skipCount, // The number of blocks to skip between each calculation.
+  required DateTime endTime, // The end time for the calculation.
+  required Ref ref, // The reference to the block state.
+}) async {
+  var currentBlockEndTime = DateTime.now(); // The current block's end time.
+  var currentBlockDepth = 0; // The current block's depth.
+
+  Map<DateTime, double> results = {}; // The results of the calculation.
+
+  // Loop through the blocks until the current block's end time is before the end time.
   while (currentBlockEndTime.isAfter(endTime)) {
-    final Block block1 = await ref.read(getBlockByDepthProvider(currentBlockDepth).future);
+    final Block block1 = await ref.read(blockStateAtDepthProvider(currentBlockDepth).future); // Get the current block.
 
-    final nextBlockDepth = currentBlockDepth + skipCount;
-    late Block block2;
+    final nextBlockDepth = currentBlockDepth + skipCount; // Calculate the depth of the next block.
+    late Block block2; // Declare the next block.
 
-    // If the next block is not available, break the loop
+    // If the next block is not available, break the loop.
     try {
-      block2 = await ref.read(getBlockByDepthProvider(nextBlockDepth).future);
+      block2 = await ref.read(blockStateAtDepthProvider(nextBlockDepth).future); // Get the next block.
     } catch (e) {
       break;
     }
 
-    currentBlockDepth = nextBlockDepth;
-    currentBlockEndTime = DateTime.fromMillisecondsSinceEpoch(block2.timestamp);
+    currentBlockDepth = nextBlockDepth; // Update the current block's depth.
+    currentBlockEndTime = DateTime.fromMillisecondsSinceEpoch(block2.timestamp); // Update the current block's end time.
 
-    results[DateTime.fromMillisecondsSinceEpoch(block1.timestamp)] = (block1.size - block2.size) / 2;
+    results[DateTime.fromMillisecondsSinceEpoch(block1.timestamp)] = _getDataThroughputBetween2Blocks(
+      block1: block1,
+      block2: block2,
+    ); // Calculate the data throughput between the two blocks and add it to the results.
   }
 
-  return ChartResult(results: results);
+  // If there are not enough results, get the data throughput since decentralization.
+  if (results.length < minimumResults) {
+    return await _getDataThroughputSinceDecentralization(ref: ref);
+  }
+
+  return ChartResult(results: results); // Return the results.
 }
 
 final dataThroughputDayProvider = FutureProvider<ChartResult>((ref) async {
@@ -93,9 +137,5 @@ final dataThroughputYearProvider = FutureProvider<ChartResult>((ref) async {
 });
 
 final dataThroughputAllProvider = FutureProvider<ChartResult>((ref) async {
-  return _calculateDataThroughput(
-    skipCount: chartAllSkipAmount,
-    endTime: chartAllEndTime,
-    ref: ref,
-  );
+  return _getDataThroughputSinceDecentralization(ref: ref);
 });

@@ -28,7 +28,7 @@ Future<ChartResult> _getTransactionFee({
   Map<DateTime, double> results = {};
 
   while (currentBlockEndTime.isAfter(endTime)) {
-    final Block block = await ref.read(getBlockByDepthProvider(currentBlockDepth).future);
+    final Block block = await ref.read(blockStateAtDepthProvider(currentBlockDepth).future);
 
     // TODO, this should be replaced with transaction provider methods
     var blockRes = await ref.read(genusProvider(selectedChain)).getBlockByDepth(depth: currentBlockDepth);

@@ -91,46 +91,6 @@ Future<List<Block>> getBlocksSinceDecentralization({
   return blocks;
 }
 
-final getBlockByDepthProvider = FutureProvider.family<Block, int>((ref, depth) async {
-  final selectedChain = ref.watch(selectedChainProvider);
-  final genusClient = ref.read(genusProvider(selectedChain));
-
-  final config = ref.read(configProvider.future);
-  final presentConfig = await config;
-
-  var blockRes = await genusClient.getBlockByDepth(depth: depth);
-
-  return Block(
-    header: decodeId(blockRes.block.header.headerId.value),
-    epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-    size: 5432.2,
-    height: blockRes.block.header.height.toInt(),
-    slot: blockRes.block.header.slot.toInt(),
-    timestamp: blockRes.block.header.timestamp.toInt(),
-    transactionNumber: blockRes.block.fullBody.transactions.length,
-  );
-});
-
-final getBlockByHeightProvider = FutureProvider.family<Block, int>((ref, height) async {
-  final selectedChain = ref.watch(selectedChainProvider);
-  final genusClient = ref.read(genusProvider(selectedChain));
-
-  final config = ref.read(configProvider.future);
-  final presentConfig = await config;
-
-  var blockRes = await genusClient.getBlockByHeight(height: height);
-
-  return Block(
-    header: decodeId(blockRes.block.header.headerId.value),
-    epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-    size: 5432.2,
-    height: blockRes.block.header.height.toInt(),
-    slot: blockRes.block.header.slot.toInt(),
-    timestamp: blockRes.block.header.timestamp.toInt(),
-    transactionNumber: blockRes.block.fullBody.transactions.length,
-  );
-});
-
 final getBlockByIdProvider = FutureProvider.family<Block, String>((ref, header) async {
   final selectedChain = ref.watch(selectedChainProvider);
   final genusClient = ref.read(genusProvider(selectedChain));
@@ -143,7 +103,7 @@ final getBlockByIdProvider = FutureProvider.family<Block, String>((ref, header) 
   return Block(
     header: decodeId(blockRes.block.header.headerId.value),
     epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-    size: 5432.2,
+    size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
     height: blockRes.block.header.height.toInt(),
     slot: blockRes.block.header.slot.toInt(),
     timestamp: blockRes.block.header.timestamp.toInt(),
@@ -213,7 +173,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
           Block(
             header: decodeId(blockRes.block.header.headerId.value),
             epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-            size: 5432.2,
+            size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
             height: blockRes.block.header.height.toInt(),
             slot: blockRes.block.header.slot.toInt(),
             timestamp: blockRes.block.header.timestamp.toInt(),
@@ -258,7 +218,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       var newBlock = Block(
         header: decodeId(blockRes.block.header.headerId.value),
         epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-        size: 5432.2,
+        size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
         height: blockRes.block.header.height.toInt(),
         slot: blockRes.block.header.slot.toInt(),
         timestamp: blockRes.block.header.timestamp.toInt(),
@@ -313,7 +273,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       var newBlock = Block(
         header: decodeId(blockRes.block.header.headerId.value),
         epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-        size: 5432.2,
+        size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
         height: blockRes.block.header.height.toInt(),
         slot: blockRes.block.header.slot.toInt(),
         timestamp: blockRes.block.header.timestamp.toInt(),

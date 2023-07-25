@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chart_result.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -10,10 +11,22 @@ import '../providers/chart_provider.dart';
 class LineGraph extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chartData = ref.watch(chartProvider);
-    return chartData.when(
-      data: (chart) => LineGraphContainer(chartData: chart),
-      error: (error, stack) => const Text('Oops, something unexpected happened'),
+    final blockData = ref.watch(blockProvider);
+    return blockData.when(
+      data: (data) {
+        return ref.watch(chartProvider).when(
+              data: (chart) {
+                return LineGraphContainer(chartData: chart);
+              },
+              error: (error, stack) => const Text('Oops, something unexpected happened'),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+      },
+      error: (error, stack) {
+        return const Text('Oops, something unexpected happened');
+      },
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
