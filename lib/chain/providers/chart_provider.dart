@@ -16,7 +16,7 @@ final chartOptionProvider = StateNotifierProvider<ChartOptionNotifier, ChartOpti
 });
 
 class ChartOptionNotifier extends StateNotifier<ChartOption> {
-  ChartOptionNotifier() : super(ChartOption.dataThroughput);
+  ChartOptionNotifier() : super(ChartOption.averageTransactionFee);
 
   void changeChartOption(String value) {
     state = ChartOption.values.firstWhere((element) => element.name == value);

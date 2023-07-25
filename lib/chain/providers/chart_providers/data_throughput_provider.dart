@@ -12,8 +12,6 @@ double _getDataThroughputBetween2Blocks({
   return ((block1.size - block2.size) / 2).abs();
 }
 
-/// Gets the data throughput since decentralization
-
 /// Gets the data throughput since decentralization.
 /// Returns a [Future] of [ChartResult].
 Future<ChartResult> _getDataThroughputSinceDecentralization({
