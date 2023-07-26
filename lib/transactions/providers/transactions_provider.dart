@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_annulus/shared/utils/extensions.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
@@ -81,7 +82,7 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
     var latestBlock = Block(
       header: decodeId(blockRes.block.header.headerId.value),
       epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-      size: 5432.2,
+      size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
       height: blockRes.block.header.height.toInt(),
       slot: blockRes.block.header.slot.toInt(),
       timestamp: blockRes.block.header.timestamp.toInt(),
@@ -249,8 +250,18 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       });
 
       Transaction newTransaction;
+      //calculate transaction amount
+      dynamic outputList;
+      dynamic inputList;
+      dynamic txAmount;
+      dynamic txFees;
       if (indexInBlock < lastTransactionBlock.block.fullBody.transactions.length - 1) {
         //use next transaction in block
+        outputList = lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].outputs.toList();
+        inputList = lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].inputs.toList();
+        txAmount = calculateAmount(outputs: outputList);
+        txFees = calculateFees(inputs: inputList, outputs: outputList);
+
         newTransaction = Transaction(
           transactionId:
               decodeId(lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].transactionId.value),
@@ -259,14 +270,22 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
           broadcastTimestamp: lastTransaction.block.timestamp,
           confirmedTimestamp: 0,
           transactionType: TransactionType.transfer,
-          amount: 10,
-          transactionFee: 10,
-          senderAddress: 'placeholder',
-          receiverAddress: 'placeholder',
-          transactionSize: 10,
-          proposition: 'placeholder',
+          amount: txAmount.toDouble(),
+          transactionFee: txFees.toDouble(),
+          senderAddress: lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].inputs
+              .map((e) => decodeId(e.address.id.value))
+              .toList(),
+          receiverAddress: lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].outputs
+              .map((e) => decodeId(e.address.id.value))
+              .toList(),
+          transactionSize: lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1]
+              .writeToBuffer()
+              .lengthInBytes
+              .toDouble(),
           quantity: 10,
-          name: 'placeholder',
+          name: lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].inputs[0].value.hasLvl()
+              ? 'Lvl'
+              : 'Topl',
         );
         transactions.add(newTransaction);
       } else {
@@ -278,12 +297,17 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
         var nextBlock = Block(
           header: decodeId(nextBlockRes.block.header.headerId.value),
           epoch: nextBlockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-          size: 5432.2,
+          size: nextBlockRes.writeToBuffer().lengthInBytes.toDouble(),
           height: nextBlockRes.block.header.height.toInt(),
           slot: nextBlockRes.block.header.slot.toInt(),
           timestamp: nextBlockRes.block.header.timestamp.toInt(),
-          transactionNumber: 10,
+          transactionNumber: nextBlockRes.block.fullBody.transactions.length,
         );
+
+        outputList = nextBlockRes.block.fullBody.transactions[indexInBlock + 1].outputs.toList();
+        inputList = nextBlockRes.block.fullBody.transactions[indexInBlock + 1].inputs.toList();
+        txAmount = calculateAmount(outputs: outputList);
+        txFees = calculateFees(inputs: inputList, outputs: outputList);
 
         newTransaction = Transaction(
           transactionId: decodeId(nextBlockRes.block.fullBody.transactions[0].transactionId.value),
@@ -292,14 +316,17 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
           broadcastTimestamp: nextBlock.timestamp,
           confirmedTimestamp: 0,
           transactionType: TransactionType.transfer,
-          amount: 10,
-          transactionFee: 10,
-          senderAddress: 'placeholder',
-          receiverAddress: 'placeholder',
-          transactionSize: 10,
-          proposition: 'placeholder',
+          amount: txAmount.toDouble(),
+          transactionFee: txFees.toDouble(),
+          senderAddress: nextBlockRes.block.fullBody.transactions[indexInBlock + 1].inputs
+              .map((e) => decodeId(e.address.id.value))
+              .toList(),
+          receiverAddress: nextBlockRes.block.fullBody.transactions[indexInBlock + 1].outputs
+              .map((e) => decodeId(e.address.id.value))
+              .toList(),
+          transactionSize: nextBlockRes.block.fullBody.transactions[0].writeToBuffer().lengthInBytes.toDouble(),
           quantity: 10,
-          name: 'placeholder',
+          name: nextBlockRes.block.fullBody.transactions[indexInBlock + 1].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
         );
 
         transactions.add(newTransaction);
