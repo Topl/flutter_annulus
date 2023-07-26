@@ -9,6 +9,13 @@ import '../../shared/utils/theme_color.dart';
 import '../models/transaction.dart';
 import 'transactions.dart';
 
+//method to create a list of text widgets
+List<Widget> createAddressWidgets({required List<String> addresses}) {
+  return List<Widget>.generate(addresses.length, (int index) {
+    return CustomTextRight(desc: addresses[index]);
+  });
+}
+
 /// This is a custom widget that shows the transaction details drawer
 class TransactionDetailsDrawer extends HookConsumerWidget {
   const TransactionDetailsDrawer({super.key, this.transactionId, this.transaction});
@@ -147,7 +154,8 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: transaction!.senderAddress)
+                ...createAddressWidgets(addresses: transaction!.senderAddress),
+                // CustomTextRight(desc: transaction!.senderAddress[0])
               ],
             ),
             Row(
@@ -157,7 +165,8 @@ class TransactionDetailsDrawer extends HookConsumerWidget {
                 const SizedBox(
                   width: 24,
                 ),
-                CustomTextRight(desc: transaction!.receiverAddress)
+                ...createAddressWidgets(addresses: transaction!.receiverAddress),
+                // CustomTextRight(desc: transaction!.receiverAddress[0])
               ],
             ),
             const SizedBox(

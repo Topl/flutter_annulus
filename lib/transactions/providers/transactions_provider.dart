@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
@@ -33,9 +34,11 @@ final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((r
     transactionNumber: blockRes.block.fullBody.transactions.length,
   );
 
-  //calculate transaction amount
-  var txAmount = transactionRes.transactionReceipt.transaction.inputs[0].value.lvl.quantity.value
-      .reduce((value, element) => value + element);
+  //calculate values for fields
+  var inputList = transactionRes.transactionReceipt.transaction.inputs.toList();
+  var outputList = transactionRes.transactionReceipt.transaction.outputs.toList();
+  var txAmount = calculateAmount(outputs: outputList);
+  var txFees = calculateFees(inputs: inputList, outputs: outputList);
 
   var transaction = Transaction(
       transactionId: decodeId(transactionRes.transactionReceipt.transaction.transactionId.value),
@@ -45,13 +48,14 @@ final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((r
       confirmedTimestamp: block.timestamp,
       transactionType: TransactionType.transfer,
       amount: txAmount.toDouble(),
-      transactionFee: 10,
-      senderAddress: decodeId(transactionRes.transactionReceipt.transaction.inputs[0].address.id.value),
-      receiverAddress: decodeId(transactionRes.transactionReceipt.transaction.outputs[0].address.id.value),
-      transactionSize: 10,
-      proposition: "28EhwUBiHJ3evyGidV1WH8QMfrLF6N8UDze9Yw7jqi6w",
+      transactionFee: txFees.toDouble(),
+      senderAddress:
+          transactionRes.transactionReceipt.transaction.inputs.map((e) => decodeId(e.address.id.value)).toList(),
+      receiverAddress:
+          transactionRes.transactionReceipt.transaction.outputs.map((e) => decodeId(e.address.id.value)).toList(),
+      transactionSize: transactionRes.writeToBuffer().lengthInBytes.toDouble(),
       quantity: 10,
-      name: "transaction");
+      name: transactionRes.transactionReceipt.transaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl');
 
   return transaction;
 });
@@ -82,29 +86,31 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
 
     //continue going through transactions
     for (int i = 0; i < transactionCount; i++) {
-      final iString = i.toString();
       final iDouble = i.toDouble();
 
       //calculate transaction amount
-      var txAmount = blockRes.block.fullBody.transactions[i].inputs[0].value.lvl.quantity.value
-          .reduce((value, element) => value + element);
+      var inputList = blockRes.block.fullBody.transactions[i].inputs.toList();
+      var outputList = blockRes.block.fullBody.transactions[i].outputs.toList();
+      var txAmount = calculateAmount(outputs: outputList);
+      var txFees = calculateFees(inputs: inputList, outputs: outputList);
 
       transactions.add(
         Transaction(
-          transactionId: decodeId(blockRes.block.fullBody.transactions[0].transactionId.value),
+          transactionId: decodeId(blockRes.block.fullBody.transactions[i].transactionId.value),
           status: TransactionStatus.pending,
           block: latestBlock,
           broadcastTimestamp: latestBlock.timestamp,
           confirmedTimestamp: 0, //for the latest block, it will never be confirmed (confirmation depth is 5)
           transactionType: TransactionType.transfer,
           amount: txAmount.toDouble(),
-          transactionFee: iDouble,
-          senderAddress: decodeId(blockRes.block.fullBody.transactions[0].inputs[0].address.id.value),
-          receiverAddress: decodeId(blockRes.block.fullBody.transactions[0].outputs[0].address.id.value),
-          transactionSize: i,
-          proposition: iString,
+          transactionFee: txFees.toDouble(),
+          senderAddress:
+              blockRes.block.fullBody.transactions[i].inputs.map((e) => decodeId(e.address.id.value)).toList(),
+          receiverAddress:
+              blockRes.block.fullBody.transactions[i].outputs.map((e) => decodeId(e.address.id.value)).toList(),
+          transactionSize: blockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
           quantity: i,
-          name: iString,
+          name: blockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
         ),
       );
     }
@@ -140,9 +146,9 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
     bool setState = false,
   }) async {
     if (selectedChain == Chains.mock) {
-      final transacitons = List.generate(100, (index) => getMockTransaction());
-      if (setState) state = AsyncData(transacitons);
-      return transacitons;
+      final transactions = List.generate(100, (index) => getMockTransaction());
+      if (setState) state = AsyncData(transactions);
+      return transactions;
     } else {
       if (setState) state = const AsyncLoading();
       final List<Transaction> transactions = [];
@@ -175,29 +181,31 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
 
       //continue going through transactions
       for (int i = 0; i < transactionCount; i++) {
-        final iString = i.toString();
         final iDouble = i.toDouble();
 
         //calculate transaction amount
-        var txAmount = latestBlockRes.block.fullBody.transactions[i].inputs[0].value.lvl.quantity.value
-            .reduce((value, element) => value + element);
+        var outputList = latestBlockRes.block.fullBody.transactions[i].outputs.toList();
+        var inputList = latestBlockRes.block.fullBody.transactions[i].inputs.toList();
+        var txAmount = calculateAmount(outputs: outputList);
+        var txFees = calculateFees(inputs: inputList, outputs: outputList);
 
         transactions.add(
           Transaction(
-            transactionId: decodeId(latestBlockRes.block.fullBody.transactions[0].transactionId.value),
+            transactionId: decodeId(latestBlockRes.block.fullBody.transactions[i].transactionId.value),
             status: TransactionStatus.pending,
             block: latestBlock,
             broadcastTimestamp: latestBlock.timestamp,
             confirmedTimestamp: 0, //for the latest block, it will never be confirmed (confirmation depth is 5)
             transactionType: TransactionType.transfer,
             amount: txAmount.toDouble(),
-            transactionFee: iDouble,
-            senderAddress: decodeId(latestBlockRes.block.fullBody.transactions[0].inputs[0].address.id.value),
-            receiverAddress: decodeId(latestBlockRes.block.fullBody.transactions[0].outputs[0].address.id.value),
-            transactionSize: i,
-            proposition: iString,
+            transactionFee: txFees.toDouble(),
+            senderAddress:
+                latestBlockRes.block.fullBody.transactions[i].inputs.map((e) => decodeId(e.address.id.value)).toList(),
+            receiverAddress:
+                latestBlockRes.block.fullBody.transactions[i].outputs.map((e) => decodeId(e.address.id.value)).toList(),
+            transactionSize: latestBlockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
             quantity: i,
-            name: iString,
+            name: latestBlockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
           ),
         );
       }
