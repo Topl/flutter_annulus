@@ -54,4 +54,6 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
 
   /// Add ad custom chain
   /// Make sure to add to state
+  /// And make sure the input is a CustomNetwork (See the chains class)
+  Future<void> addCustomChain(CustomNetwork chain) async {}
 }
