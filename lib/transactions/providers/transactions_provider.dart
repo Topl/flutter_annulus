@@ -53,7 +53,7 @@ final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((r
           transactionRes.transactionReceipt.transaction.inputs.map((e) => decodeId(e.address.id.value)).toList(),
       receiverAddress:
           transactionRes.transactionReceipt.transaction.outputs.map((e) => decodeId(e.address.id.value)).toList(),
-      transactionSize: 10,
+      transactionSize: transactionRes.writeToBuffer().lengthInBytes.toDouble(),
       quantity: 10,
       name: transactionRes.transactionReceipt.transaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl');
 
@@ -96,7 +96,7 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
 
       transactions.add(
         Transaction(
-          transactionId: decodeId(blockRes.block.fullBody.transactions[0].transactionId.value),
+          transactionId: decodeId(blockRes.block.fullBody.transactions[i].transactionId.value),
           status: TransactionStatus.pending,
           block: latestBlock,
           broadcastTimestamp: latestBlock.timestamp,
@@ -108,7 +108,7 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
               blockRes.block.fullBody.transactions[i].inputs.map((e) => decodeId(e.address.id.value)).toList(),
           receiverAddress:
               blockRes.block.fullBody.transactions[i].outputs.map((e) => decodeId(e.address.id.value)).toList(),
-          transactionSize: i,
+          transactionSize: blockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
           quantity: i,
           name: blockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
         ),
@@ -191,7 +191,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
 
         transactions.add(
           Transaction(
-            transactionId: decodeId(latestBlockRes.block.fullBody.transactions[0].transactionId.value),
+            transactionId: decodeId(latestBlockRes.block.fullBody.transactions[i].transactionId.value),
             status: TransactionStatus.pending,
             block: latestBlock,
             broadcastTimestamp: latestBlock.timestamp,
@@ -203,7 +203,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
                 latestBlockRes.block.fullBody.transactions[i].inputs.map((e) => decodeId(e.address.id.value)).toList(),
             receiverAddress:
                 latestBlockRes.block.fullBody.transactions[i].outputs.map((e) => decodeId(e.address.id.value)).toList(),
-            transactionSize: i,
+            transactionSize: latestBlockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
             quantity: i,
             name: latestBlockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
           ),

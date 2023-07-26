@@ -8,7 +8,13 @@ import '../../shared/constants/numbers.dart';
 import '../../shared/utils/theme_color.dart';
 import '../models/transaction.dart';
 import 'transactions.dart';
-import 'package:flutter_annulus/transactions/utils/utils.dart';
+
+//method to create a list of text widgets
+List<Widget> createAddressWidgets({required List<String> addresses}) {
+  return List<Widget>.generate(addresses.length, (int index) {
+    return CustomTextRight(desc: addresses[index]);
+  });
+}
 
 /// This is a custom widget that shows the transaction details drawer
 class TransactionDetailsDrawer extends HookConsumerWidget {

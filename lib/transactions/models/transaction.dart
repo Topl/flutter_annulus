@@ -45,7 +45,7 @@ class Transaction with _$Transaction {
     required List<String> receiverAddress,
 
     /// The size of the transaction
-    required int transactionSize,
+    required double transactionSize,
 
     /// The quantity of the transaction
     required int quantity,
