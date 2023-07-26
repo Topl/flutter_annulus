@@ -11,6 +11,10 @@ import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../blocks/models/block.dart';
 
+final transactionStateAtIndexProvider = FutureProvider.family<Transaction, int>((ref, index) async {
+  return ref.watch(transactionsProvider.notifier).getTransactionFromStateAtIndex(index);
+});
+
 final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((ref, transactionId) async {
   final selectedChain = ref.watch(selectedChainProvider);
   final genusClient = ref.read(genusProvider(selectedChain));
@@ -215,6 +219,96 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
         });
       }
       return transactions;
+    }
+  }
+
+  /// This method is used to get a transaction at a specific index
+  /// If the transaction is not in the state, it will fetch the transaction from Genus
+  /// It takes an [index] as a parameter
+  ///
+  /// It returns a [Future<Transaction>]
+  Future<Transaction> getTransactionFromStateAtIndex(int index) async {
+    final transactions = state.asData?.value;
+
+    if (transactions == null) {
+      throw Exception('Error in transactionsProvider: transactions are null');
+    }
+
+    // If the index is less than the length of the list, return the transaction at that index
+    if (index < transactions.length) {
+      return transactions[index];
+    } else {
+      final genusClient = ref.read(genusProvider(selectedChain));
+      //get final transaction in state
+      Transaction lastTransaction = transactions.last;
+      //get block that contains the last transaction
+      final lastTransactionBlock = await genusClient.getBlockById(blockIdString: lastTransaction.block.header);
+      //find transaction in block
+      int indexInBlock = lastTransactionBlock.block.fullBody.transactions.indexWhere((transaction) {
+        return decodeId(transaction.transactionId.value) == lastTransaction.transactionId;
+      });
+
+      Transaction newTransaction;
+      if (indexInBlock < lastTransactionBlock.block.fullBody.transactions.length - 1) {
+        //use next transaction in block
+        newTransaction = Transaction(
+          transactionId:
+              decodeId(lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].transactionId.value),
+          status: TransactionStatus.pending,
+          block: lastTransaction.block,
+          broadcastTimestamp: lastTransaction.block.timestamp,
+          confirmedTimestamp: 0,
+          transactionType: TransactionType.transfer,
+          amount: 10,
+          transactionFee: 10,
+          senderAddress: 'placeholder',
+          receiverAddress: 'placeholder',
+          transactionSize: 10,
+          proposition: 'placeholder',
+          quantity: 10,
+          name: 'placeholder',
+        );
+        transactions.add(newTransaction);
+      } else {
+        //fetch new block descending in height
+        final config = ref.read(configProvider.future);
+        final presentConfig = await config;
+
+        final nextBlockRes = await genusClient.getBlockByHeight(height: lastTransaction.block.height - 1);
+        var nextBlock = Block(
+          header: decodeId(nextBlockRes.block.header.headerId.value),
+          epoch: nextBlockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
+          size: 5432.2,
+          height: nextBlockRes.block.header.height.toInt(),
+          slot: nextBlockRes.block.header.slot.toInt(),
+          timestamp: nextBlockRes.block.header.timestamp.toInt(),
+          transactionNumber: 10,
+        );
+
+        newTransaction = Transaction(
+          transactionId: decodeId(nextBlockRes.block.fullBody.transactions[0].transactionId.value),
+          status: TransactionStatus.pending,
+          block: nextBlock,
+          broadcastTimestamp: nextBlock.timestamp,
+          confirmedTimestamp: 0,
+          transactionType: TransactionType.transfer,
+          amount: 10,
+          transactionFee: 10,
+          senderAddress: 'placeholder',
+          receiverAddress: 'placeholder',
+          transactionSize: 10,
+          proposition: 'placeholder',
+          quantity: 10,
+          name: 'placeholder',
+        );
+
+        transactions.add(newTransaction);
+      }
+
+      state = AsyncData([...transactions]);
+
+      // Return that block
+      return newTransaction;
     }
   }
 }
