@@ -22,7 +22,14 @@ class ChainNameDropDown extends HookConsumerWidget {
     this.onItemSelected,
   }) : super(key: key);
 
-  final List<Chains> chains = Chains.values;
+  //TODO: update to fetching all default chains and cached custom chains
+  final List<Chains> chains = [
+    const Chains.topl_mainnet(),
+    const Chains.valhalla_testnet(),
+    const Chains.private_network(),
+    const Chains.dev_network(),
+    const Chains.mock()
+  ];
 
   final isDropDownOpen = useState(false);
 
@@ -93,7 +100,7 @@ class _ResponsiveDropDown extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              chain.name,
+                              chain.networkName,
                               style: bodyMedium(context),
                             ),
                           ),
@@ -159,7 +166,7 @@ class _ResponsiveDropDown extends StatelessWidget {
               .map((Chains chain) => Row(
                     children: [
                       CustomItem(
-                        name: chain.name,
+                        name: chain.networkName,
                       ),
                     ],
                   ))
@@ -249,7 +256,7 @@ class _DesktopDropdown extends StatelessWidget {
                       child: Row(
                         children: [
                           CustomItem(
-                            name: chain.name,
+                            name: chain.networkName,
                           ),
                           const Spacer(),
                           Icon(
@@ -296,7 +303,7 @@ class _DesktopDropdown extends StatelessWidget {
               .map((Chains chain) => Row(
                     children: [
                       Text(
-                        chain.name,
+                        chain.networkName,
                         style: titleMedium(context),
                       ),
                     ],
