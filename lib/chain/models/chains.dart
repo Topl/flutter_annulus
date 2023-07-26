@@ -1,37 +1,45 @@
-enum Chains {
-  topl_mainnet(
-    name: 'Toplnet',
-    host: 'mainnet.topl.co',
-    port: 443,
-  ),
-  valhalla_testnet(
-    name: 'Valhalla',
-    host: 'testnet.topl.network',
-    port: 50051,
-  ),
-  private_network(
-    name: 'Private',
-    host: 'localhost',
-    port: 8080,
-  ),
-  dev_network(
-    name: 'Development',
-    host: 'testnet.topl.co',
-    port: 443,
-  ),
-  mock(
-    name: 'Mock',
-    host: 'mock',
-    port: 0000,
-  );
+// Package imports:
+import 'package:flutter_annulus/chain/models/currency.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  const Chains({
-    required this.name,
-    required this.host,
-    required this.port,
-  });
+part 'chains.freezed.dart';
 
-  final String name;
-  final String host;
-  final int port;
+part 'chains.g.dart';
+
+@freezed
+abstract class Chains with _$Chains {
+  const factory Chains.topl_mainnet({
+    @Default('Toplnet') String networkName,
+    @Default('mainnet.topl.co') String hostUrl,
+    @Default(443) int port,
+  }) = ToplMainnet;
+  const factory Chains.valhalla_testnet({
+    @Default('Valhalla') String networkName,
+    @Default('testnet.topl.network') String hostUrl,
+    @Default(50051) int port,
+  }) = ValhallaTestNet;
+  const factory Chains.private_network({
+    @Default('Private') String networkName,
+    @Default('localhost') String hostUrl,
+    @Default(8080) int port,
+  }) = PrivateNetwork;
+  const factory Chains.dev_network({
+    @Default('Development') String networkName,
+    @Default('testnet.topl.co') String hostUrl,
+    @Default(443) int port,
+  }) = DevNetwork;
+  const factory Chains.mock({
+    @Default('Mock') String networkName,
+    @Default('mock') String hostUrl,
+    @Default(0000) int port,
+  }) = MockNetwork;
+  const factory Chains.custom({
+    required String networkName,
+    required String hostUrl,
+    required int port,
+    required Currency currency,
+    String? blockExplorerUrl,
+  }) = CustomNetwork;
+
+  factory Chains.fromJson(Map<String, dynamic> json) => _$ChainsFromJson(json);
 }

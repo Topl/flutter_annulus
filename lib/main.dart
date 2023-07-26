@@ -10,12 +10,14 @@ import 'package:flutter_annulus/transactions/sections/transaction_details_page.d
 import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
 import 'package:flutter_annulus/utxo/widgets/utxo_details.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:vrouter/vrouter.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
   runApp(
     ProviderScope(
       child: ResponsiveBreakpoints.builder(
