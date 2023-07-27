@@ -15,11 +15,11 @@ Transaction getMockTransaction() {
     confirmedTimestamp: DateTime.now().millisecondsSinceEpoch,
     transactionType: TransactionType.transfer,
     amount: 1,
+    quantity: 10,
     transactionFee: 1,
     senderAddress: ['1'],
     receiverAddress: ['1'],
     transactionSize: 1,
-    quantity: 1,
     name: '1',
   );
 }

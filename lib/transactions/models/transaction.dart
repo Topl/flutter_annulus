@@ -48,7 +48,7 @@ class Transaction with _$Transaction {
     required double transactionSize,
 
     /// The quantity of the transaction
-    required int quantity,
+    required double quantity,
 
     /// The name of the asset
     required String name,

@@ -53,13 +53,13 @@ final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((r
       confirmedTimestamp: block.timestamp,
       transactionType: TransactionType.transfer,
       amount: txAmount.toDouble(),
+      quantity: txAmount.toDouble(),
       transactionFee: txFees.toDouble(),
       senderAddress:
           transactionRes.transactionReceipt.transaction.inputs.map((e) => decodeId(e.address.id.value)).toList(),
       receiverAddress:
           transactionRes.transactionReceipt.transaction.outputs.map((e) => decodeId(e.address.id.value)).toList(),
       transactionSize: transactionRes.writeToBuffer().lengthInBytes.toDouble(),
-      quantity: 10,
       name: transactionRes.transactionReceipt.transaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl');
 
   return transaction;
@@ -108,13 +108,13 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
           confirmedTimestamp: 0, //for the latest block, it will never be confirmed (confirmation depth is 5)
           transactionType: TransactionType.transfer,
           amount: txAmount.toDouble(),
+          quantity: txAmount.toDouble(),
           transactionFee: txFees.toDouble(),
           senderAddress:
               blockRes.block.fullBody.transactions[i].inputs.map((e) => decodeId(e.address.id.value)).toList(),
           receiverAddress:
               blockRes.block.fullBody.transactions[i].outputs.map((e) => decodeId(e.address.id.value)).toList(),
           transactionSize: blockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
-          quantity: i,
           name: blockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
         ),
       );
@@ -203,13 +203,13 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
             confirmedTimestamp: 0, //for the latest block, it will never be confirmed (confirmation depth is 5)
             transactionType: TransactionType.transfer,
             amount: txAmount.toDouble(),
+            quantity: txAmount.toDouble(),
             transactionFee: txFees.toDouble(),
             senderAddress:
                 latestBlockRes.block.fullBody.transactions[i].inputs.map((e) => decodeId(e.address.id.value)).toList(),
             receiverAddress:
                 latestBlockRes.block.fullBody.transactions[i].outputs.map((e) => decodeId(e.address.id.value)).toList(),
             transactionSize: latestBlockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
-            quantity: i,
             name: latestBlockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
           ),
         );
@@ -282,7 +282,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
               .writeToBuffer()
               .lengthInBytes
               .toDouble(),
-          quantity: 10,
+          quantity: txAmount.toDouble(),
           name: lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].inputs[0].value.hasLvl()
               ? 'Lvl'
               : 'Topl',
@@ -325,7 +325,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
               .map((e) => decodeId(e.address.id.value))
               .toList(),
           transactionSize: nextBlockRes.block.fullBody.transactions[0].writeToBuffer().lengthInBytes.toDouble(),
-          quantity: 10,
+          quantity: txAmount.toDouble(),
           name: nextBlockRes.block.fullBody.transactions[indexInBlock + 1].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
         );
 
