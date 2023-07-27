@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
-import 'package:flutter_annulus/transactions/sections/transaction_row_item.dart';
-import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_annulus/transactions/widgets/paginated_transaction_table.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:vrouter/vrouter.dart';
@@ -19,15 +17,10 @@ import '../providers/transactions_provider.dart';
 class TransactionTableScreen extends HookConsumerWidget {
   const TransactionTableScreen({Key? key}) : super(key: key);
   static const String route = '/transactions';
-  static const availableRowsPerPage = <int>[5, 10, 15, 20];
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
-    final isBiggerTablet = MediaQuery.of(context).size.width == 1024;
-    final isBiggerScreen = MediaQuery.of(context).size.width == 1920;
-
-    final rowsPerPage = useState(availableRowsPerPage[0]);
 
     final colorTheme = ref.watch(appThemeColorProvider);
     final AsyncValue<List<Transaction>> transactionsInfo = ref.watch(transactionsProvider);
@@ -82,71 +75,9 @@ class TransactionTableScreen extends HookConsumerWidget {
                                 data: Theme.of(context).copyWith(
                                   cardColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                                 ),
-                                child: PaginatedDataTable(
-                                  showCheckboxColumn: false,
-                                  headingRowHeight: 50,
-                                  columnSpacing: isBiggerTablet
-                                      ? 70
-                                      : isTablet
-                                          ? 24
-                                          : isBiggerScreen
-                                              ? 133
-                                              : 35,
-                                  arrowHeadColor: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
-                                  source: RowDataSource(
-                                    data: transactions,
-                                    context: context,
-                                    clr: getSelectedColor(
-                                      colorTheme,
-                                      0xFFFEFEFE,
-                                      0xFF282A2C,
-                                    ),
-                                  ),
-                                  showFirstLastButtons: true,
-                                  rowsPerPage: rowsPerPage.value,
-                                  dataRowMaxHeight: 80,
-                                  dataRowMinHeight: 80,
-                                  availableRowsPerPage: availableRowsPerPage,
-                                  onRowsPerPageChanged: (int? newRowsPerPage) {
-                                    if (newRowsPerPage != null) {
-                                      rowsPerPage.value = newRowsPerPage;
-                                    }
-                                  },
-                                  columns: [
-                                    DataColumn(
-                                      label: Padding(
-                                        padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
-                                        child: const SizedBox(
-                                          child: TableHeaderText(name: Strings.tableHeaderTxnHashId),
-                                        ),
-                                      ),
-                                    ),
-                                    DataColumn(
-                                        label: Padding(
-                                      padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
-                                      child: const TableHeaderText(name: Strings.tableHeaderBlock),
-                                    )),
-                                    DataColumn(
-                                        label: Padding(
-                                      padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
-                                      child: const TableHeaderText(name: Strings.tableHeaderType),
-                                    )),
-                                    DataColumn(
-                                        label: Padding(
-                                      padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
-                                      child: const TableHeaderText(name: Strings.tableHeaderSummary),
-                                    )),
-                                    DataColumn(
-                                        label: Padding(
-                                      padding: EdgeInsets.only(left: isTablet ? 2.0 : 40.0),
-                                      child: const TableHeaderText(name: Strings.tableHeaderFee),
-                                    )),
-                                    const DataColumn(
-                                        label: Padding(
-                                      padding: EdgeInsets.only(left: 2.0),
-                                      child: TableHeaderText(name: Strings.tableHeaderStatus),
-                                    )),
-                                  ],
+                                child: PaginatedTransactionTable(
+                                  transactions: transactions,
+                                  showAllColumns: true,
                                 ),
                               ),
                             )),
