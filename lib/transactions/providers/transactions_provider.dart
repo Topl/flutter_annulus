@@ -27,7 +27,7 @@ final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((r
   var block = Block(
     header: decodeId(blockRes.block.header.headerId.value),
     epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-    size: 5432.2,
+    size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
     height: blockRes.block.header.height.toInt(),
     slot: blockRes.block.header.slot.toInt(),
     timestamp: blockRes.block.header.timestamp.toInt(),
@@ -77,7 +77,7 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
     var latestBlock = Block(
       header: decodeId(blockRes.block.header.headerId.value),
       epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-      size: 5432.2,
+      size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
       height: blockRes.block.header.height.toInt(),
       slot: blockRes.block.header.slot.toInt(),
       timestamp: blockRes.block.header.timestamp.toInt(),
@@ -172,7 +172,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       var latestBlock = Block(
         header: decodeId(latestBlockRes.block.header.headerId.value),
         epoch: latestBlockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-        size: 5432.2,
+        size: latestBlockRes.writeToBuffer().lengthInBytes.toDouble(),
         height: latestBlockRes.block.header.height.toInt(),
         slot: latestBlockRes.block.header.slot.toInt(),
         timestamp: latestBlockRes.block.header.timestamp.toInt(),
