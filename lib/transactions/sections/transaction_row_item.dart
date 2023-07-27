@@ -127,14 +127,18 @@ class TransactionTableRow extends HookConsumerWidget {
 
 /// Data source class for obtaining row data for PaginatedDataTable.
 class RowDataSource extends DataTableSource {
-  RowDataSource(this.data, this.context, this.clr);
-
-  BuildContext context;
-  List<Transaction> data;
-  Color clr;
+  final BuildContext context;
+  final List<Transaction> data;
+  final Color clr;
+  RowDataSource({
+    required this.data,
+    required this.context,
+    required this.clr,
+  });
 
   @override
   DataRow? getRow(int index) {
+    print('QQQQ tracations ${data.length}');
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
