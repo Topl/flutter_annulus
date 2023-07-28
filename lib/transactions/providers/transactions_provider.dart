@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_annulus/shared/utils/extensions.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
@@ -32,7 +30,7 @@ final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((r
   var block = Block(
     header: decodeId(blockRes.block.header.headerId.value),
     epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-    size: 5432.2,
+    size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
     height: blockRes.block.header.height.toInt(),
     slot: blockRes.block.header.slot.toInt(),
     timestamp: blockRes.block.header.timestamp.toInt(),
@@ -239,55 +237,22 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
     if (index < transactions.length) {
       return transactions[index];
     } else {
+      Transaction newTransaction;
       final genusClient = ref.read(genusProvider(selectedChain));
       //get final transaction in state
       Transaction lastTransaction = transactions.last;
       //get block that contains the last transaction
       final lastTransactionBlock = await genusClient.getBlockById(blockIdString: lastTransaction.block.header);
+      int transactionsInLastBlock = lastTransactionBlock.block.fullBody.transactions.length;
       //find transaction in block
       int indexInBlock = lastTransactionBlock.block.fullBody.transactions.indexWhere((transaction) {
         return decodeId(transaction.transactionId.value) == lastTransaction.transactionId;
       });
 
-      Transaction newTransaction;
-      //calculate transaction amount
-      dynamic outputList;
-      dynamic inputList;
-      dynamic txAmount;
-      dynamic txFees;
-      if (indexInBlock < lastTransactionBlock.block.fullBody.transactions.length - 1) {
+      if (indexInBlock < transactionsInLastBlock - 1) {
         //use next transaction in block
-        outputList = lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].outputs.toList();
-        inputList = lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].inputs.toList();
-        txAmount = calculateAmount(outputs: outputList);
-        txFees = calculateFees(inputs: inputList, outputs: outputList);
-
-        newTransaction = Transaction(
-          transactionId:
-              decodeId(lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].transactionId.value),
-          status: TransactionStatus.pending,
-          block: lastTransaction.block,
-          broadcastTimestamp: lastTransaction.block.timestamp,
-          confirmedTimestamp: 0,
-          transactionType: TransactionType.transfer,
-          amount: txAmount.toDouble(),
-          transactionFee: txFees.toDouble(),
-          senderAddress: lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].inputs
-              .map((e) => decodeId(e.address.id.value))
-              .toList(),
-          receiverAddress: lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].outputs
-              .map((e) => decodeId(e.address.id.value))
-              .toList(),
-          transactionSize: lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1]
-              .writeToBuffer()
-              .lengthInBytes
-              .toDouble(),
-          quantity: txAmount.toDouble(),
-          name: lastTransactionBlock.block.fullBody.transactions[indexInBlock + 1].inputs[0].value.hasLvl()
-              ? 'Lvl'
-              : 'Topl',
-        );
-        transactions.add(newTransaction);
+        newTransaction = Transaction.fromBlockRes(
+            blockRes: lastTransactionBlock, index: indexInBlock + 1, block: lastTransaction.block);
       } else {
         //fetch new block descending in height
         final config = ref.read(configProvider.future);
@@ -304,37 +269,11 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
           transactionNumber: nextBlockRes.block.fullBody.transactions.length,
         );
 
-        outputList = nextBlockRes.block.fullBody.transactions[indexInBlock + 1].outputs.toList();
-        inputList = nextBlockRes.block.fullBody.transactions[indexInBlock + 1].inputs.toList();
-        txAmount = calculateAmount(outputs: outputList);
-        txFees = calculateFees(inputs: inputList, outputs: outputList);
-
-        newTransaction = Transaction(
-          transactionId: decodeId(nextBlockRes.block.fullBody.transactions[0].transactionId.value),
-          status: TransactionStatus.pending,
-          block: nextBlock,
-          broadcastTimestamp: nextBlock.timestamp,
-          confirmedTimestamp: 0,
-          transactionType: TransactionType.transfer,
-          amount: txAmount.toDouble(),
-          transactionFee: txFees.toDouble(),
-          senderAddress: nextBlockRes.block.fullBody.transactions[indexInBlock + 1].inputs
-              .map((e) => decodeId(e.address.id.value))
-              .toList(),
-          receiverAddress: nextBlockRes.block.fullBody.transactions[indexInBlock + 1].outputs
-              .map((e) => decodeId(e.address.id.value))
-              .toList(),
-          transactionSize: nextBlockRes.block.fullBody.transactions[0].writeToBuffer().lengthInBytes.toDouble(),
-          quantity: txAmount.toDouble(),
-          name: nextBlockRes.block.fullBody.transactions[indexInBlock + 1].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
-        );
-
-        transactions.add(newTransaction);
+        newTransaction = Transaction.fromBlockRes(blockRes: nextBlockRes, index: 0, block: nextBlock);
       }
 
+      transactions.add(newTransaction);
       state = AsyncData([...transactions]);
-
-      // Return that block
       return newTransaction;
     }
   }
