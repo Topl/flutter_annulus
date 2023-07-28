@@ -20,21 +20,31 @@ import '../../shared/constants/numbers.dart';
 class TransactionDetailsPage extends HookConsumerWidget {
   const TransactionDetailsPage({
     Key? key,
-    required this.transactionId,
   }) : super(key: key);
-  final String transactionId;
 
+  static const String transactionIdParam = 'transactionId';
   static const String route = '/transactions_details/';
+  static const String paramRoute = '$route:$transactionIdParam';
+  static String transactionDetailsPath(String transactionId) {
+    return '$route$transactionId';
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final String? transactionId = context.vRouter.pathParameters[transactionIdParam];
+    print('QQQQ pathParameters: ${context.vRouter.pathParameters}');
+    print('QQQQ paramRoute: $paramRoute');
+    print('QQQQ transactionId: $transactionId');
+
+    if (transactionId == null) {
+      context.vRouter.to('/');
+    }
+
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
-    final transactionNotifier = ref.watch(transactionsProvider.notifier);
-    final AsyncValue<Transaction> asyncTransaction =
-        ref.read(getTransactionByIdProvider(transactionId));
+    final AsyncValue<Transaction> asyncTransaction = ref.read(getTransactionByIdProvider(transactionId!));
 
     return asyncTransaction.when(
       data: (transaction) {

@@ -6,6 +6,7 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_details_drawer.dart';
+import 'package:flutter_annulus/transactions/sections/transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -176,24 +177,23 @@ class RowDataSource extends DataTableSource {
     if (index < data.length) {
       return DataRow(
         color: MaterialStateProperty.all(clr),
-        onSelectChanged: showAllColumns
-            ? (value) {
-                if (isDesktop) {
-                  showModalSideSheet(
-                      context: context,
-                      ignoreAppBar: true,
-                      width: 640,
-                      barrierColor: Colors.white.withOpacity(barrierOpacity),
-                      // with blur,
-                      barrierDismissible: true,
-                      body: TransactionDetailsDrawer(
-                        transaction: row,
-                      ));
-                } else {
-                  context.vRouter.to('/transactions_details/');
-                }
-              }
-            : null,
+        onSelectChanged: (value) {
+          if (isDesktop) {
+            showModalSideSheet(
+              context: context,
+              ignoreAppBar: true,
+              width: 640,
+              barrierColor: Colors.white.withOpacity(barrierOpacity),
+              // with blur,
+              barrierDismissible: true,
+              body: TransactionDetailsDrawer(
+                transaction: row,
+              ),
+            );
+          } else {
+            context.vRouter.to(TransactionDetailsPage.transactionDetailsPath(row.transactionId));
+          }
+        },
         cells: showAllColumns
             ? <DataCell>[
                 DataCell(GestureDetector(
