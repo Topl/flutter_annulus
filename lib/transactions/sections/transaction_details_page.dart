@@ -40,14 +40,20 @@ class TransactionDetailsPage extends HookConsumerWidget {
       context.vRouter.to('/');
     }
 
+    print('QQQQ build 1');
     final colorTheme = ref.watch(appThemeColorProvider);
+    print('QQQQ build 2');
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+    print('QQQQ build 3');
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+    print('QQQQ build 4');
 
-    final AsyncValue<Transaction> asyncTransaction = ref.read(getTransactionByIdProvider(transactionId!));
+    final AsyncValue<Transaction> asyncTransaction = ref.watch(getTransactionByIdProvider(transactionId!));
+    print('QQQQ build 5');
 
     return asyncTransaction.when(
       data: (transaction) {
+        print('QQQQ transaction: $transaction');
         return CustomLayout(
             header: Header(
               logoAsset: colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',
@@ -119,7 +125,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                                   leftText: Strings.tableHeaderTxnHashId,
                                                   rightText: transaction.transactionId
                                                       .toString()
-                                                      .substring(0, Numbers.textLength - 4),
+                                                      .substring(0, Numbers.textLength - 3),
                                                   hasIcon: true,
                                                 )
                                               : CustomRowWithText(
@@ -238,12 +244,12 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: isMobile
                                           ? CustomColumnWithText(
                                               leftText: Strings.fromAddress,
-                                              rightText: transaction.senderAddress
+                                              rightText: transaction.senderAddress[0]
                                                   .toString()
                                                   .substring(0, Numbers.textLength - 3))
                                           : CustomRowWithText(
                                               leftText: Strings.fromAddress,
-                                              rightText: transaction.senderAddress
+                                              rightText: transaction.senderAddress[0]
                                                   .toString()
                                                   .substring(0, Numbers.textLength - 3),
                                             ))),
@@ -256,12 +262,13 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: isMobile
                                           ? CustomColumnWithText(
                                               leftText: Strings.toAddress,
-                                              rightText: transaction.receiverAddress
+                                              rightText: transaction.receiverAddress[0]
                                                   .toString()
-                                                  .substring(0, Numbers.textLength - 3))
+                                                  .substring(0, Numbers.textLength - 3),
+                                            )
                                           : CustomRowWithText(
                                               leftText: Strings.toAddress,
-                                              rightText: transaction.receiverAddress
+                                              rightText: transaction.receiverAddress[0]
                                                   .toString()
                                                   .substring(0, Numbers.textLength - 3),
                                             ))),
@@ -292,7 +299,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
         return Text('Error occurred: $error');
       },
       loading: () {
-        return const CircularProgressIndicator();
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }

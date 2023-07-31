@@ -15,52 +15,8 @@ final transactionStateAtIndexProvider = FutureProvider.family<Transaction, int>(
 });
 
 final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((ref, transactionId) async {
-  final selectedChain = ref.watch(selectedChainProvider);
-  final genusClient = ref.read(genusProvider(selectedChain));
-
-  final config = ref.read(configProvider.future);
-  final presentConfig = await config;
-
-  var transactionRes = await genusClient.getTransactionById(transactionIdString: transactionId);
-
-  var blockRes = await genusClient.getBlockById(
-    blockIdBytes: transactionRes.transactionReceipt.blockId.value,
-  );
-
-  var block = Block(
-    header: decodeId(blockRes.block.header.headerId.value),
-    epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-    size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
-    height: blockRes.block.header.height.toInt(),
-    slot: blockRes.block.header.slot.toInt(),
-    timestamp: blockRes.block.header.timestamp.toInt(),
-    transactionNumber: blockRes.block.fullBody.transactions.length,
-  );
-
-  //calculate values for fields
-  var inputList = transactionRes.transactionReceipt.transaction.inputs.toList();
-  var outputList = transactionRes.transactionReceipt.transaction.outputs.toList();
-  var txAmount = calculateAmount(outputs: outputList);
-  var txFees = calculateFees(inputs: inputList, outputs: outputList);
-
-  var transaction = Transaction(
-      transactionId: decodeId(transactionRes.transactionReceipt.transaction.transactionId.value),
-      status: TransactionStatus.confirmed,
-      block: block,
-      broadcastTimestamp: transactionRes.transactionReceipt.transaction.datum.event.schedule.timestamp.toInt(),
-      confirmedTimestamp: block.timestamp,
-      transactionType: TransactionType.transfer,
-      amount: txAmount.toDouble(),
-      quantity: txAmount.toDouble(),
-      transactionFee: txFees.toDouble(),
-      senderAddress:
-          transactionRes.transactionReceipt.transaction.inputs.map((e) => decodeId(e.address.id.value)).toList(),
-      receiverAddress:
-          transactionRes.transactionReceipt.transaction.outputs.map((e) => decodeId(e.address.id.value)).toList(),
-      transactionSize: transactionRes.writeToBuffer().lengthInBytes.toDouble(),
-      name: transactionRes.transactionReceipt.transaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl');
-
-  return transaction;
+  print('QQQQ getTransactionByIdProvider $transactionId');
+  return ref.watch(transactionsProvider.notifier).getTransactionById(transactionId: transactionId);
 });
 
 final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, int>((ref, depth) async {
@@ -89,8 +45,6 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
 
     //continue going through transactions
     for (int i = 0; i < transactionCount; i++) {
-      final iDouble = i.toDouble();
-
       //calculate transaction amount
       var inputList = blockRes.block.fullBody.transactions[i].inputs.toList();
       var outputList = blockRes.block.fullBody.transactions[i].outputs.toList();
@@ -136,6 +90,71 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
   final Chains selectedChain;
   TransactionsNotifier(this.ref, this.selectedChain) : super(const AsyncLoading()) {
     getTransactions(setState: true);
+  }
+
+  /// Gets a transaction from genus and adds it to state
+  Future<Transaction> getTransactionById({
+    required String transactionId,
+  }) async {
+    final transactions = state.asData?.value;
+
+    if (transactions == null) {
+      throw Exception('Transactions are null');
+    }
+
+    // If the list of transactions already contains the transaction, return it
+    if (transactions.any((element) => element.transactionId == transactionId)) {
+      print('QQQQ in state ${transactions.firstWhere((element) => element.transactionId == transactionId)}');
+      return transactions.firstWhere((element) => element.transactionId == transactionId);
+    } else {
+      final selectedChain = ref.watch(selectedChainProvider);
+      final genusClient = ref.read(genusProvider(selectedChain));
+
+      final config = ref.read(configProvider.future);
+      final presentConfig = await config;
+
+      var transactionRes = await genusClient.getTransactionById(transactionIdString: transactionId);
+
+      var blockRes = await genusClient.getBlockById(
+        blockIdBytes: transactionRes.transactionReceipt.blockId.value,
+      );
+
+      var block = Block(
+        header: decodeId(blockRes.block.header.headerId.value),
+        epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
+        size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
+        height: blockRes.block.header.height.toInt(),
+        slot: blockRes.block.header.slot.toInt(),
+        timestamp: blockRes.block.header.timestamp.toInt(),
+        transactionNumber: blockRes.block.fullBody.transactions.length,
+      );
+
+      //calculate values for fields
+      var inputList = transactionRes.transactionReceipt.transaction.inputs.toList();
+      var outputList = transactionRes.transactionReceipt.transaction.outputs.toList();
+      var txAmount = calculateAmount(outputs: outputList);
+      var txFees = calculateFees(inputs: inputList, outputs: outputList);
+
+      final Transaction transaction = Transaction(
+          transactionId: decodeId(transactionRes.transactionReceipt.transaction.transactionId.value),
+          status: TransactionStatus.confirmed,
+          block: block,
+          broadcastTimestamp: transactionRes.transactionReceipt.transaction.datum.event.schedule.timestamp.toInt(),
+          confirmedTimestamp: block.timestamp,
+          transactionType: TransactionType.transfer,
+          amount: txAmount.toDouble(),
+          quantity: txAmount.toDouble(),
+          transactionFee: txFees.toDouble(),
+          senderAddress:
+              transactionRes.transactionReceipt.transaction.inputs.map((e) => decodeId(e.address.id.value)).toList(),
+          receiverAddress:
+              transactionRes.transactionReceipt.transaction.outputs.map((e) => decodeId(e.address.id.value)).toList(),
+          transactionSize: transactionRes.writeToBuffer().lengthInBytes.toDouble(),
+          name: transactionRes.transactionReceipt.transaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl');
+
+      state = AsyncData([...transactions, transaction]);
+      return transaction;
+    }
   }
 
   /// This method is used to get the list of transactions
@@ -184,8 +203,6 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
 
       //continue going through transactions
       for (int i = 0; i < transactionCount; i++) {
-        final iDouble = i.toDouble();
-
         //calculate transaction amount
         var outputList = latestBlockRes.block.fullBody.transactions[i].outputs.toList();
         var inputList = latestBlockRes.block.fullBody.transactions[i].inputs.toList();

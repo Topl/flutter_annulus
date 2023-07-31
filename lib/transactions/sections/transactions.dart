@@ -3,6 +3,7 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_details_drawer.dart';
+import 'package:flutter_annulus/transactions/sections/transaction_details_page.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -106,7 +107,8 @@ class Transactions extends HookConsumerWidget {
                               ),
                             );
                           } else {
-                            context.vRouter.to('/transactions_details/');
+                            context.vRouter
+                                .to(TransactionDetailsPage.transactionDetailsPath(transaction.transactionId));
                           }
                         },
                         cells: [
@@ -227,7 +229,11 @@ class CustomTextRight extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Text(desc, style: bodyMedium(context));
+    return Text(
+      desc,
+      style: bodyMedium(context),
+      overflow: TextOverflow.ellipsis,
+    );
   }
 }
 
