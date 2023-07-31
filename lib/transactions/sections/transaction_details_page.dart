@@ -32,28 +32,19 @@ class TransactionDetailsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? transactionId = context.vRouter.pathParameters[transactionIdParam];
-    print('QQQQ pathParameters: ${context.vRouter.pathParameters}');
-    print('QQQQ paramRoute: $paramRoute');
-    print('QQQQ transactionId: $transactionId');
 
     if (transactionId == null) {
       context.vRouter.to('/');
     }
 
-    print('QQQQ build 1');
     final colorTheme = ref.watch(appThemeColorProvider);
-    print('QQQQ build 2');
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-    print('QQQQ build 3');
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
-    print('QQQQ build 4');
 
     final AsyncValue<Transaction> asyncTransaction = ref.watch(getTransactionByIdProvider(transactionId!));
-    print('QQQQ build 5');
 
     return asyncTransaction.when(
       data: (transaction) {
-        print('QQQQ transaction: $transaction');
         return CustomLayout(
             header: Header(
               logoAsset: colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',

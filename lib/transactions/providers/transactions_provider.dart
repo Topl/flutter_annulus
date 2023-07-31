@@ -15,7 +15,6 @@ final transactionStateAtIndexProvider = FutureProvider.family<Transaction, int>(
 });
 
 final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((ref, transactionId) async {
-  print('QQQQ getTransactionByIdProvider $transactionId');
   return ref.watch(transactionsProvider.notifier).getTransactionById(transactionId: transactionId);
 });
 
@@ -104,7 +103,6 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
 
     // If the list of transactions already contains the transaction, return it
     if (transactions.any((element) => element.transactionId == transactionId)) {
-      print('QQQQ in state ${transactions.firstWhere((element) => element.transactionId == transactionId)}');
       return transactions.firstWhere((element) => element.transactionId == transactionId);
     } else {
       final selectedChain = ref.watch(selectedChainProvider);

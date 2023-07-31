@@ -178,7 +178,6 @@ class RowDataSource extends DataTableSource {
       return DataRow(
         color: MaterialStateProperty.all(clr),
         onSelectChanged: (value) {
-          print('QQQQ here 0');
           if (isDesktop) {
             showModalSideSheet(
               context: context,
@@ -192,7 +191,6 @@ class RowDataSource extends DataTableSource {
               ),
             );
           } else {
-            print('QQQQ here 1');
             context.vRouter.to(TransactionDetailsPage.transactionDetailsPath(row.transactionId));
           }
         },
