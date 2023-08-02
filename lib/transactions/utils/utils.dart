@@ -17,10 +17,10 @@ Transaction getMockTransaction() {
     amount: 1,
     quantity: 10,
     transactionFee: 1,
-    senderAddress: ['1'],
-    receiverAddress: ['1'],
+    senderAddress: ['1234567890123456789012345678901234567890'],
+    receiverAddress: ['1234567890123456789012345678901234567890'],
     transactionSize: 1,
-    name: '1',
+    name: '1234567890',
   );
 }
 

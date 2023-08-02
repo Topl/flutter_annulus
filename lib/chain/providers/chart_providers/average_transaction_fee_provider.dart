@@ -5,6 +5,7 @@ import 'package:flutter_annulus/chain/models/chart_result.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/chain/utils/constants.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
+import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 
@@ -19,9 +20,11 @@ double? _getAverageTransactionFeeForBlock({
 
     //continue going through transactions
     for (int i = 0; i < transactionCount; i++) {
-      // QQQQ need to figure out how to get transaction fee
-      // final transaction = blockRes.block.fullBody.transactions[i];
-      final double fee = 10;
+      final transaction = blockRes.block.fullBody.transactions[i];
+
+      final inputList = transaction.inputs;
+      final outputList = transaction.outputs;
+      final double fee = calculateFees(inputs: inputList, outputs: outputList).toDouble();
 
       if (averageTransactionFee == 0) {
         averageTransactionFee = fee;

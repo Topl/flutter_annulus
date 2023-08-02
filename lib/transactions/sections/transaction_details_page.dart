@@ -20,21 +20,28 @@ import '../../shared/constants/numbers.dart';
 class TransactionDetailsPage extends HookConsumerWidget {
   const TransactionDetailsPage({
     Key? key,
-    required this.transactionId,
   }) : super(key: key);
-  final String transactionId;
 
+  static const String transactionIdParam = 'transactionId';
   static const String route = '/transactions_details/';
+  static const String paramRoute = '$route:$transactionIdParam';
+  static String transactionDetailsPath(String transactionId) {
+    return '$route$transactionId';
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final String? transactionId = context.vRouter.pathParameters[transactionIdParam];
+
+    if (transactionId == null) {
+      context.vRouter.to('/');
+    }
+
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
-    final transactionNotifier = ref.watch(transactionsProvider.notifier);
-    final AsyncValue<Transaction> asyncTransaction =
-        ref.read(getTransactionByIdProvider(transactionId));
+    final AsyncValue<Transaction> asyncTransaction = ref.watch(getTransactionByIdProvider(transactionId!));
 
     return asyncTransaction.when(
       data: (transaction) {
@@ -109,7 +116,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                                   leftText: Strings.tableHeaderTxnHashId,
                                                   rightText: transaction.transactionId
                                                       .toString()
-                                                      .substring(0, Numbers.textLength - 4),
+                                                      .substring(0, Numbers.textLength - 3),
                                                   hasIcon: true,
                                                 )
                                               : CustomRowWithText(
@@ -228,12 +235,12 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: isMobile
                                           ? CustomColumnWithText(
                                               leftText: Strings.fromAddress,
-                                              rightText: transaction.senderAddress
+                                              rightText: transaction.senderAddress[0]
                                                   .toString()
                                                   .substring(0, Numbers.textLength - 3))
                                           : CustomRowWithText(
                                               leftText: Strings.fromAddress,
-                                              rightText: transaction.senderAddress
+                                              rightText: transaction.senderAddress[0]
                                                   .toString()
                                                   .substring(0, Numbers.textLength - 3),
                                             ))),
@@ -246,12 +253,13 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: isMobile
                                           ? CustomColumnWithText(
                                               leftText: Strings.toAddress,
-                                              rightText: transaction.receiverAddress
+                                              rightText: transaction.receiverAddress[0]
                                                   .toString()
-                                                  .substring(0, Numbers.textLength - 3))
+                                                  .substring(0, Numbers.textLength - 3),
+                                            )
                                           : CustomRowWithText(
                                               leftText: Strings.toAddress,
-                                              rightText: transaction.receiverAddress
+                                              rightText: transaction.receiverAddress[0]
                                                   .toString()
                                                   .substring(0, Numbers.textLength - 3),
                                             ))),
@@ -282,7 +290,7 @@ class TransactionDetailsPage extends HookConsumerWidget {
         return Text('Error occurred: $error');
       },
       loading: () {
-        return const CircularProgressIndicator();
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }
