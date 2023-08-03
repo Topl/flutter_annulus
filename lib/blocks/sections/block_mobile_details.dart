@@ -4,6 +4,7 @@ import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/widgets/footer.dart';
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/widgets/layout.dart';
+import 'package:flutter_annulus/transactions/widgets/paginated_transaction_table.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_row_column.dart';
@@ -21,7 +22,6 @@ class BlockTabBarMobileView extends HookConsumerWidget {
     // required this.block,
     this.widgetRoute,
   });
-  final _rowsPerPage = 5;
   //final Block block;
   final String? widgetRoute;
 
@@ -251,12 +251,9 @@ class BlockTabBarMobileView extends HookConsumerWidget {
                       CustomTabBar(colorTheme: colorTheme),
                       transactionsInfo.when(
                           data: (data) {
-                            final source =
-                                TableDataSource(data, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
-                            return CustomPaginatedTable(
-                              source: source,
-                              rowsPerPage: _rowsPerPage,
-                              colorMode: colorTheme,
+                            return PaginatedTransactionTable(
+                              showAllColumns: false,
+                              transactions: data,
                             );
                           },
                           loading: () => const Center(

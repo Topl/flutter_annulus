@@ -19,7 +19,7 @@ class BlockViewSlider extends HookConsumerWidget {
   final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue blocksInfo = ref.watch(blockProvider);
+    final AsyncValue<Map<int, Block>> blocksInfo = ref.watch(blockProvider);
     final colorTheme = ref.watch(appThemeColorProvider);
 
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
@@ -27,7 +27,7 @@ class BlockViewSlider extends HookConsumerWidget {
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     return blocksInfo.when(
-      data: (blocks) {
+      data: (Map<int, Block> blocks) {
         return SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 0 : 40.0, right: isMobile ? 0 : 40.0),
@@ -53,7 +53,7 @@ class BlockViewSlider extends HookConsumerWidget {
                       child: isMobile
                           ? MobileBlockViewSlider(
                               controller: _controller,
-                              blocks: blocks,
+                              blocks: blocks.values.toList(),
                             )
                           : Row(
                               children: [
@@ -64,7 +64,10 @@ class BlockViewSlider extends HookConsumerWidget {
                                 Expanded(
                                   child: SizedBox(
                                     width: MediaQuery.of(context).size.width * 0.7,
-                                    child: CustomCarousel(blocks: blocks, controller: _controller),
+                                    child: CustomCarousel(
+                                      blocks: blocks.values.toList(),
+                                      controller: _controller,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -326,7 +329,7 @@ class CustomCarousel extends HookConsumerWidget {
     return CarouselSlider.builder(
       itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
         if (blocks.isNotEmpty) {
-          final AsyncValue<Block> block = ref.watch(blockStateAtIndexProvider(itemIndex));
+          final AsyncValue<Block> block = ref.watch(blockStateAtDepthProvider(itemIndex));
           return BlockView(
             asyncBlock: block,
           );
