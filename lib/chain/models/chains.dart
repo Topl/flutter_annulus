@@ -76,7 +76,7 @@ void validateCustomChain(CustomNetwork chain) {
   }
   //currency is handled by CustomNetwork constructor
   //check for empty string only if blockExplorerUrl is not null
-  if (chain?.blockExplorerUrl?.isEmpty ?? false) {
+  if (chain.blockExplorerUrl?.isEmpty ?? false) {
     throw Exception('CustomNetwork: blockExplorerUrl cannot be empty');
   }
 }
