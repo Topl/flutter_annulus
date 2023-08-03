@@ -22,42 +22,63 @@ class ChainNameDropDown extends HookConsumerWidget {
     this.onItemSelected,
   }) : super(key: key);
 
-  //TODO: update to fetching all default chains and cached custom chains
-  final List<Chains> chains = [
-    const Chains.topl_mainnet(),
-    const Chains.valhalla_testnet(),
-    const Chains.private_network(),
-    const Chains.dev_network(),
-    const Chains.mock()
-  ];
-
   final isDropDownOpen = useState(false);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Chains selectedChain = ref.watch(selectedChainProvider);
     final isResponsive = ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
+    final AsyncValue allChains = ref.watch(chainsProvider);
 
-    return isResponsive
-        ? _ResponsiveDropDown(
-            onItemSelected: onItemSelected,
-            chains: chains,
-            selectedChain: selectedChain,
-            colorTheme: colorTheme,
-            setSelectedChain: (Chains chain) {
-              ref.read(selectedChainProvider.notifier).state = chain;
-            },
-            isDropDownOpen: isDropDownOpen,
-          )
-        : _DesktopDropdown(
-            chains: chains,
-            selectedChain: selectedChain,
-            colorTheme: colorTheme,
-            setSelectedChain: (Chains chain) {
-              ref.read(selectedChainProvider.notifier).state = chain;
-            },
-            isDropDownOpen: isDropDownOpen,
-          );
+    return allChains.when(
+      data: (chains) {
+        return isResponsive
+            ? _ResponsiveDropDown(
+                onItemSelected: onItemSelected,
+                chains: chains,
+                selectedChain: selectedChain,
+                colorTheme: colorTheme,
+                setSelectedChain: (Chains chain) {
+                  ref.read(selectedChainProvider.notifier).state = chain;
+                },
+                isDropDownOpen: isDropDownOpen,
+              )
+            : _DesktopDropdown(
+                chains: chains,
+                selectedChain: selectedChain,
+                colorTheme: colorTheme,
+                setSelectedChain: (Chains chain) {
+                  ref.read(selectedChainProvider.notifier).state = chain;
+                },
+                isDropDownOpen: isDropDownOpen,
+              );
+      },
+      error: (error, stack) => const Text('Oops, something unexpected happened'),
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    // return isResponsive
+    //     ? _ResponsiveDropDown(
+    //         onItemSelected: onItemSelected,
+    //         chains: chains,
+    //         selectedChain: selectedChain,
+    //         colorTheme: colorTheme,
+    //         setSelectedChain: (Chains chain) {
+    //           ref.read(selectedChainProvider.notifier).state = chain;
+    //         },
+    //         isDropDownOpen: isDropDownOpen,
+    //       )
+    //     : _DesktopDropdown(
+    //         chains: chains,
+    //         selectedChain: selectedChain,
+    //         colorTheme: colorTheme,
+    //         setSelectedChain: (Chains chain) {
+    //           ref.read(selectedChainProvider.notifier).state = chain;
+    //         },
+    //         isDropDownOpen: isDropDownOpen,
+    //       );
   }
 }
 

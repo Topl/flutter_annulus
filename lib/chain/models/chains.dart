@@ -7,7 +7,7 @@ part 'chains.freezed.dart';
 part 'chains.g.dart';
 
 @freezed
-abstract class Chains with _$Chains {
+sealed class Chains with _$Chains {
   const factory Chains.topl_mainnet({
     @Default('Toplnet') String networkName,
     @Default('mainnet.topl.co') String hostUrl,
@@ -34,6 +34,7 @@ abstract class Chains with _$Chains {
     @Default(0000) int port,
   }) = MockNetwork;
   const factory Chains.custom({
+    required String chainId,
     required String networkName,
     required String hostUrl,
     required int port,
@@ -42,4 +43,40 @@ abstract class Chains with _$Chains {
   }) = CustomNetwork;
 
   factory Chains.fromJson(Map<String, dynamic> json) => _$ChainsFromJson(json);
+}
+
+List<dynamic> splitUrl({required String completeUrl}) {
+  // '<route:port>'
+  final splitUrl = completeUrl.split(':');
+
+  if (splitUrl.length > 2) {
+    throw Exception('Invalid Url');
+  }
+
+  var port = int.tryParse(splitUrl[1]);
+  if (int == null) {
+    throw Exception('Invalid port');
+  }
+
+  return [splitUrl[0], port];
+}
+
+void validateCustomChain(CustomNetwork chain) {
+  if (chain.chainId.isEmpty) {
+    throw Exception('CustomNetwork: chainId cannot be empty');
+  }
+  if (chain.networkName.isEmpty) {
+    throw Exception('CustomNetwork: networkName cannot be empty');
+  }
+  if (chain.hostUrl.isEmpty) {
+    throw Exception('CustomNetwork: hostUrl cannot be empty');
+  }
+  if (chain.port <= 0) {
+    throw Exception('CustomNetwork: invalid port');
+  }
+  //currency is handled by CustomNetwork constructor
+  //check for empty string only if blockExplorerUrl is not null
+  if (chain?.blockExplorerUrl?.isEmpty ?? false) {
+    throw Exception('CustomNetwork: blockExplorerUrl cannot be empty');
+  }
 }

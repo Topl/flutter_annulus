@@ -15,3 +15,7 @@ List<String> currencies = [
   'ZAR',
   'AUD',
 ];
+
+Currency convertStringToCurrency({required String currencyString}) {
+  return Currency.values.firstWhere((e) => e.toString() == 'Currency.$currencyString');
+}

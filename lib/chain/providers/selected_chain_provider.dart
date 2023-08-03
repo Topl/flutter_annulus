@@ -15,10 +15,16 @@ final chainsProvider = StateNotifierProvider<ChainsNotifier, AsyncValue<List<Cha
 
 class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
   ChainsNotifier() : super(AsyncLoading()) {
-    _getAvailableChains();
+    _getAvailableChains(setState: true);
   }
 
-  Future<void> _getAvailableChains() async {
+  /// It takes a bool [setState]
+  ///
+  /// If [setState] is true, it will update the state of the provider
+  /// If [setState] is false, it will not update the state of the provider
+  Future<List<Chains>> _getAvailableChains({
+    bool setState = false,
+  }) async {
     final List<Chains> customChains = [];
     final Iterable<dynamic> hiveData = await HiveService().getAllItems(boxType: Hives.customChains);
     hiveData.toList().forEach((element) {
@@ -30,9 +36,25 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
       }
     });
 
-    // Add each predefined chain as well
+    // dev notes: This will have to be updated when we change the predetermined networks
+    final List<Chains> standardChains = [
+      const Chains.topl_mainnet(),
+      const Chains.valhalla_testnet(),
+      const Chains.private_network(),
+      const Chains.dev_network(),
+      const Chains.mock(),
+    ];
 
-    state = AsyncData(customChains);
+    //state holds both standard and custom chains
+    final allChains = [...standardChains, ...customChains];
+
+    if (setState) {
+      Future.delayed(const Duration(seconds: 1), () {
+        state = AsyncData(allChains);
+      });
+    }
+
+    return allChains;
   }
 
   test() {
@@ -55,5 +77,26 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
   /// Add ad custom chain
   /// Make sure to add to state
   /// And make sure the input is a CustomNetwork (See the chains class)
-  Future<void> addCustomChain(CustomNetwork chain) async {}
+  Future<void> addCustomChain({required CustomNetwork chain}) async {
+    final chains = state.asData?.value;
+
+    if (chains == null) {
+      throw Exception('Error in chainsProvider: chains are null');
+    }
+
+    //validate chain
+    validateCustomChain(chain);
+
+    //search for duplicate
+    // final dupeIndex = chains.indexWhere((element) => element.hostUrl == chain.hostUrl && element.port == chain.port);
+    // if (dupeIndex >= 0) {
+    //   throw Exception('Cannot add a duplicate chain');
+    // }
+
+    //add to cache
+    await HiveService().putItem(boxType: Hives.customChains, key: chain.chainId, value: chain.toJson());
+
+    //add new custom chain to state
+    state = AsyncData([...chains, chain]);
+  }
 }
