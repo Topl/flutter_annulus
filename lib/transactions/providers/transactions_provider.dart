@@ -165,7 +165,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
   Future<List<Transaction>> getTransactions({
     bool setState = false,
   }) async {
-    if (selectedChain == Chains.mock) {
+    if (selectedChain == const Chains.mock()) {
       final transactions = List.generate(100, (index) => getMockTransaction());
       if (setState) state = AsyncData(transactions);
       return transactions;
