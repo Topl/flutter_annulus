@@ -28,10 +28,10 @@ class ChainNameDropDown extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Chains selectedChain = ref.watch(selectedChainProvider);
     final isResponsive = ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
-    final AsyncValue allChains = ref.watch(chainsProvider);
+    final AsyncValue<List<Chains>> allChains = ref.watch(chainsProvider);
 
     return allChains.when(
-      data: (chains) {
+      data: (List<Chains> chains) {
         return isResponsive
             ? _ResponsiveDropDown(
                 onItemSelected: onItemSelected,

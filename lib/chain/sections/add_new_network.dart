@@ -303,6 +303,8 @@ class _AddNewNetworkState extends ConsumerState<AddNewNetworkContainer> {
                                     right: 0,
                                     child: child,
                                   ));
+                          if (!mounted) return;
+                          Navigator.pop(context);
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF0DC8D4)),
