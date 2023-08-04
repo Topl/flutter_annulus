@@ -49,9 +49,7 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
     final allChains = [...standardChains, ...customChains];
 
     if (setState) {
-      Future.delayed(const Duration(seconds: 1), () {
-        state = AsyncData(allChains);
-      });
+      state = AsyncData(allChains);
     }
 
     return allChains;
