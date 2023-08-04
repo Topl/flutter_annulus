@@ -54,7 +54,7 @@ List<dynamic> splitUrl({required String completeUrl}) {
   }
 
   var port = int.tryParse(splitUrl[1]);
-  if (int == null) {
+  if (port == null) {
     throw Exception('Invalid port');
   }
 
