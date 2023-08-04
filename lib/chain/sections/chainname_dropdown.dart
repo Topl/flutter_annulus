@@ -58,27 +58,6 @@ class ChainNameDropDown extends HookConsumerWidget {
         child: CircularProgressIndicator(),
       ),
     );
-
-    // return isResponsive
-    //     ? _ResponsiveDropDown(
-    //         onItemSelected: onItemSelected,
-    //         chains: chains,
-    //         selectedChain: selectedChain,
-    //         colorTheme: colorTheme,
-    //         setSelectedChain: (Chains chain) {
-    //           ref.read(selectedChainProvider.notifier).state = chain;
-    //         },
-    //         isDropDownOpen: isDropDownOpen,
-    //       )
-    //     : _DesktopDropdown(
-    //         chains: chains,
-    //         selectedChain: selectedChain,
-    //         colorTheme: colorTheme,
-    //         setSelectedChain: (Chains chain) {
-    //           ref.read(selectedChainProvider.notifier).state = chain;
-    //         },
-    //         isDropDownOpen: isDropDownOpen,
-    //       );
   }
 }
 
