@@ -5,6 +5,8 @@ import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/shared/utils/extensions.dart';
 import 'package:topl_common/proto/brambl/models/transaction/spent_transaction_output.pb.dart';
 import 'package:topl_common/proto/brambl/models/transaction/unspent_transaction_output.pb.dart';
+import 'package:topl_common/genus/services/transaction_grpc.dart';
+import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 
 Transaction getMockTransaction() {
   return Transaction(
@@ -57,4 +59,28 @@ BigInt calculateFees({required List<SpentTransactionOutput> inputs, required Lis
   BigInt outputSum = outputBigInts.reduce((value, element) => value + element);
 
   return inputSum - outputSum;
+}
+
+//TODO: figure out a better way since a ton of empty blocks means this is taking too long
+Future<BlockResponse> getFirstPopulatedBlock({required GenusGRPCService genusClient}) async {
+  int depth = 0;
+  var nextBlock = await genusClient.getBlockByDepth(depth: depth);
+  //check that block has transactions
+  while (!nextBlock.block.fullBody.hasField(1)) {
+    depth++;
+    nextBlock = await genusClient.getBlockByDepth(depth: depth);
+  }
+
+  return nextBlock;
+}
+
+Future<BlockResponse> getNextPopulatedBlock({required GenusGRPCService genusClient, required int height}) async {
+  var nextBlock = await genusClient.getBlockByHeight(height: height);
+  //check that block has transactions
+  while (!nextBlock.block.fullBody.hasField(1)) {
+    height--;
+    nextBlock = await genusClient.getBlockByHeight(height: height);
+  }
+
+  return nextBlock;
 }

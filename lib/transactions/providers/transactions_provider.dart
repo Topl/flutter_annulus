@@ -175,15 +175,8 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       //get most recent block
       final selectedChain = ref.read(selectedChainProvider.notifier).state;
       final genusClient = ref.read(genusProvider(selectedChain));
-      int depth = 0;
 
-      //TODO: figure out a better way since a ton of empty blocks means this is taking too long
-      var latestBlockRes = await genusClient.getBlockByDepth(depth: depth);
-      //check that block has transactions
-      while (!latestBlockRes.block.fullBody.hasField(1)) {
-        depth++;
-        latestBlockRes = await genusClient.getBlockByDepth(depth: depth);
-      }
+      var latestBlockRes = await getFirstPopulatedBlock(genusClient: genusClient);
       final config = ref.read(configProvider.future);
       final presentConfig = await config;
 
@@ -273,7 +266,8 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
         final config = ref.read(configProvider.future);
         final presentConfig = await config;
 
-        final nextBlockRes = await genusClient.getBlockByHeight(height: lastTransaction.block.height - 1);
+        final nextBlockRes =
+            await getNextPopulatedBlock(genusClient: genusClient, height: lastTransaction.block.height - 1);
         var nextBlock = Block(
           header: decodeId(nextBlockRes.block.header.headerId.value),
           epoch: nextBlockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
