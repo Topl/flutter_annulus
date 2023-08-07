@@ -294,6 +294,7 @@ class _AddNewNetworkState extends ConsumerState<AddNewNetworkContainer> {
 
                           await ref.read(chainsProvider.notifier).addCustomChain(chain: newChain as CustomNetwork);
 
+                          ref.read(selectedChainProvider.notifier).state = newChain;
                           toast.showToast(
                               child: CustomToast(widget: widget, isSuccess: true, cancel: () => Fluttertoast.cancel()),
                               toastDuration: const Duration(seconds: 4),
