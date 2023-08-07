@@ -41,7 +41,6 @@ class BlockView extends ConsumerWidget {
       ),
       child: asyncBlock.when(
         error: (error, stackTrace) {
-          print('QQQQ error: $error');
           return const Center(
             child: Text('Error'),
           );
