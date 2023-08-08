@@ -70,6 +70,9 @@ class CustomSearchBar extends HookConsumerWidget {
         Future.delayed(Duration.zero, () {
           showOverlay(context, entry, (SearchResult result) {
             entry.value?.remove();
+            entry.value = null;
+            searchText.value = '';
+            searchController.clear();
             result.map(
               transaction: (transaction) {
                 goToTransactionDetails(
