@@ -1,3 +1,5 @@
+import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/blocks/utils/extensions.dart';
 import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
@@ -7,7 +9,9 @@ import 'package:flutter_annulus/search/models/search_result.dart';
 import 'package:flutter_annulus/shared/models/logger.dart';
 import 'package:flutter_annulus/shared/providers/logger_provider.dart';
 import 'package:flutter_annulus/shared/providers/mock_state_provider.dart';
+import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/utxo.dart';
+import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
 import 'package:flutter_annulus/transactions/providers/utxo_provider.dart';
 import 'package:flutter_annulus/transactions/utils/extension.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
@@ -47,9 +51,7 @@ import 'package:topl_common/proto/genus/genus_rpc.pbgrpc.dart';
 ///   },
 ///  );
 /// ```
-final searchProvider =
-    StateNotifierProvider<SearchNotifier, AsyncValue<List<SearchResult>>>(
-        (ref) {
+final searchProvider = StateNotifierProvider<SearchNotifier, AsyncValue<List<SearchResult>>>((ref) {
   return SearchNotifier(ref);
 });
 
@@ -75,22 +77,55 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
   /// but it can be more than one item if multiple results are found
   /// IE. An ID returns both a block and a transaction
   Future<List<SearchResult>> searchById(String id) async {
+    print('QQQQ searchById: $id');
+
+    final List<SearchResult> results = [];
+
+    final currentBlocks = ref.read(blockProvider).asData?.value;
+    if (currentBlocks != null) {
+      print('QQQQ looking for matching blocks in currentBlocks: ${currentBlocks.length}');
+      final matchingCurrentBlocks =
+          currentBlocks.values.where((Block element) => element.header.toLowerCase().contains(id.toLowerCase()));
+      print('QQQQ matchingCurrentBlocks: ${matchingCurrentBlocks.length}');
+      print('QQQQ matchingCurrentBlocks: ${matchingCurrentBlocks}');
+      if (matchingCurrentBlocks.isNotEmpty) {
+        results.addAll(matchingCurrentBlocks
+            .map((Block block) => BlockResult(
+                  block,
+                  block.header,
+                ))
+            .toList());
+        state = AsyncData(results);
+      }
+    }
+
+    final currentTransactions = ref.read(transactionsProvider).asData?.value;
+    if (currentTransactions != null) {
+      final matchingCurrentTransactions = currentTransactions
+          .where((Transaction element) => element.transactionId.toLowerCase().contains(id.toLowerCase()));
+      print('QQQQ matchingCurrentTransactions: ${matchingCurrentTransactions.length}');
+      if (matchingCurrentTransactions.isNotEmpty) {
+        results.addAll(matchingCurrentTransactions
+            .map((Transaction transaction) => TransactionResult(
+                  transaction,
+                  transaction.transactionId,
+                ))
+            .toList());
+
+        state = AsyncData(results);
+      }
+    }
+
+    state = AsyncData(results);
+
     final BlockResult? block = await _searchForBlockById(id);
     final TransactionResult? transaction = await _searchForTransactionById(id);
     final UTxOResult? utxo = await _searchForUTxOById(id);
 
-    if (block == null && transaction == null && utxo == null) {
-      state = AsyncError('No results found', StackTrace.current);
-      return [];
-    }
+    results.addAll([if (block != null) block, if (transaction != null) transaction, if (utxo != null) utxo]);
 
-    final result = [
-      if (block != null) block,
-      if (transaction != null) transaction,
-      if (utxo != null) utxo
-    ];
-    state = AsyncData(result);
-    return result;
+    state = AsyncData(results);
+    return results;
   }
 
   Future<BlockResult?> _searchForBlockById(String id) async {
@@ -99,11 +134,12 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
         final Chains selectedChain = ref.read(selectedChainProvider);
         final BlockResponse blockResponse =
             await ref.read(genusProvider(selectedChain)).getBlockById(blockIdString: id);
-        return BlockResult(blockResponse.toBlock());
+        return BlockResult(blockResponse.toBlock(), blockResponse.toBlock().header);
       } else {
         return Future.delayed(const Duration(milliseconds: 250), () {
           return BlockResult(
             getMockBlock(),
+            getMockBlock().header,
           );
         });
       }
@@ -126,11 +162,15 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
         final TransactionResponse response =
             await ref.read(genusProvider(selectedChain)).getTransactionById(transactionIdString: id);
 
-        return TransactionResult(response.toTransaction());
+        return TransactionResult(
+          response.toTransaction(),
+          response.toTransaction().transactionId,
+        );
       } else {
         return Future.delayed(const Duration(milliseconds: 250), () {
           return TransactionResult(
             getMockTransaction(),
+            getMockTransaction().transactionId,
           );
         });
       }
@@ -152,7 +192,7 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
         id,
       ).future);
 
-      return UTxOResult(utxo);
+      return UTxOResult(utxo, utxo.utxoId);
     } catch (e) {
       ref.read(loggerProvider).log(
             logLevel: LogLevel.Warning,

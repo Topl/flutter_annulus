@@ -7,9 +7,18 @@ part 'search_result.freezed.dart';
 
 @freezed
 class SearchResult with _$SearchResult {
-  const factory SearchResult.transaction(Transaction transaction) = TransactionResult;
-  const factory SearchResult.block(Block block) = BlockResult;
+  const factory SearchResult.transaction(
+    Transaction transaction,
+    String id,
+  ) = TransactionResult;
+  const factory SearchResult.block(
+    Block block,
+    String id,
+  ) = BlockResult;
 
   // TODO: Implement later
-  const factory SearchResult.uTxO(UTxO utxo) = UTxOResult;
+  const factory SearchResult.uTxO(
+    UTxO utxo,
+    String id,
+  ) = UTxOResult;
 }
