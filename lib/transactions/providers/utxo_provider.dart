@@ -1,4 +1,5 @@
-import 'package:flutter_annulus/shared/providers/mock_state_provider.dart';
+import 'package:flutter_annulus/chain/models/chains.dart';
+import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/transactions/models/utxo.dart';
 import 'package:flutter_annulus/transactions/utils/utxo_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,7 +22,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// );
 /// ```
 final utxoByIdProvider = FutureProvider.family.autoDispose<UTxO, String>((ref, utxoId) async {
-  if (ref.read(mockStateProvider)) {
+  final selectedChain = ref.watch(selectedChainProvider);
+  if (selectedChain == Chains.mock) {
     return Future.delayed(
       const Duration(seconds: 1),
       () => getMockUTxO(),

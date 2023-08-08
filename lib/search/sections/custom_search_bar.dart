@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/search/models/search_result.dart';
 import 'package:flutter_annulus/search/sections/search_results.dart';
 import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/theme.dart';
+import 'package:flutter_annulus/shared/utils/nav_utils.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -26,7 +28,7 @@ class CustomSearchBar extends HookConsumerWidget {
   void showOverlay(
     BuildContext context,
     ValueNotifier<OverlayEntry?> entry,
-    Function resultSelected,
+    Function(SearchResult) resultSelected,
   ) {
     final overlay = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox;
@@ -38,7 +40,7 @@ class CustomSearchBar extends HookConsumerWidget {
         top: offset.dy + size.height,
         width: size.width,
         child: SearchResults(
-          resultSelected: () => resultSelected(),
+          resultSelected: resultSelected,
         ),
       ),
     );
@@ -66,8 +68,26 @@ class CustomSearchBar extends HookConsumerWidget {
     useValueChanged<String, String>(searchText.value, (oldValue, oldResult) {
       if (oldValue.isEmpty && searchText.value.isNotEmpty) {
         Future.delayed(Duration.zero, () {
-          showOverlay(context, entry, () {
+          showOverlay(context, entry, (SearchResult result) {
             entry.value?.remove();
+            result.map(
+              transaction: (transaction) {
+                goToTransactionDetails(
+                  context: context,
+                  transaction: transaction.transaction,
+                );
+              },
+              block: (block) {
+                goToBlockDetails(
+                  context: context,
+                  block: block.block,
+                  colorTheme: colorTheme,
+                );
+              },
+              uTxO: (uTxO) {
+                goToUtxoDetails();
+              },
+            );
           });
         });
       } else if (oldValue.isNotEmpty && searchText.value.isEmpty) {
@@ -98,10 +118,10 @@ class CustomSearchBar extends HookConsumerWidget {
 
     useEffect(() {
       searchFocusNode.addListener(() {
-        if (!searchFocusNode.hasFocus) {
-          searchText.value = '';
-          searchController.clear();
-        }
+        // if (!searchFocusNode.hasFocus) {
+        //   searchText.value = '';
+        //   searchController.clear();
+        // }
       });
       return null;
     }, []);

@@ -7,10 +7,8 @@ import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SearchResults extends HookConsumerWidget {
-  // final OverlayEntry entry;
-  final Function() resultSelected;
+  final Function(SearchResult) resultSelected;
   const SearchResults({
-    // required this.entry,
     required this.resultSelected,
     Key? key,
   }) : super(key: key);
@@ -46,7 +44,10 @@ class SearchResults extends HookConsumerWidget {
                 ),
               if (results.isEmpty && !isLoading)
                 const Center(
-                  child: Text("No results found"),
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: Text("No results found"),
+                  ),
                 ),
             ],
           ),
@@ -59,7 +60,7 @@ class SearchResults extends HookConsumerWidget {
 class _SearchResultItem extends StatelessWidget {
   final SearchResult suggestion;
   final ThemeMode colorTheme;
-  final Function() resultSelected;
+  final Function(SearchResult) resultSelected;
   const _SearchResultItem({
     required this.suggestion,
     required this.colorTheme,
@@ -67,61 +68,25 @@ class _SearchResultItem extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  String itemType() {
+    return suggestion.map(
+      transaction: (_) => 'Transaction',
+      block: (_) => 'Block',
+      uTxO: (_) => 'Utxo',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(suggestion.id, style: bodyMedium(context)),
+      title: Text('${itemType()} ${suggestion.id}', style: bodyMedium(context)),
       textColor: getSelectedColor(
         colorTheme,
         0xFF4B4B4B,
         0xFF858E8E,
       ),
       onTap: () {
-        resultSelected();
-        // entry.remove();
-        // if (isDesktop && suggestion.length > 6 && suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
-        //   showModalSideSheet(
-        //     context: context,
-        //     ignoreAppBar: true,
-        //     width: 640,
-        //     barrierColor: getSelectedColor(
-        //       colorTheme,
-        //       0xFFFEFEFE,
-        //       0xFF353739,
-        //     ).withOpacity(0.64),
-        //     barrierDismissible: true,
-        //     body: TransactionDetailsDrawer(
-        //       transaction: selectedTransactionId.value[index],
-        //     ),
-        //   );
-        // } else if (!isDesktop &&
-        //     suggestion.length > 6 &&
-        //     suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
-        //   context.vRouter.to(
-        //     '/transactions_details/',
-        //   );
-        // } else if (suggestion == "10x5be9d701Byd24neQfY1vXa987a") {
-        //   context.vRouter.to(
-        //     '/utxo_details/',
-        //   );
-        // } else {
-        //   isDesktop
-        //       ? showModalSideSheet(
-        //           context: context,
-        //           ignoreAppBar: true,
-        //           width: 640,
-        //           barrierColor: getSelectedColor(
-        //             colorTheme,
-        //             0xFFFEFEFE,
-        //             0xFF353739,
-        //           ).withOpacity(0.64),
-        //           barrierDismissible: true,
-        //           body: BlockDetailsDrawer(
-        //             block: selectedBlock.value as Block,
-        //           ),
-        //         )
-        //       : context.vRouter.to("/block_details");
-        // }
+        resultSelected(suggestion);
       },
     );
   }

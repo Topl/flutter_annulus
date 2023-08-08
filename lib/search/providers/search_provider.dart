@@ -8,7 +8,6 @@ import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/search/models/search_result.dart';
 import 'package:flutter_annulus/shared/models/logger.dart';
 import 'package:flutter_annulus/shared/providers/logger_provider.dart';
-import 'package:flutter_annulus/shared/providers/mock_state_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/utxo.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
@@ -26,12 +25,17 @@ final isLoadingRpcSearchResultsProvider = StateProvider<bool>((ref) {
 /// This provider is used to search for a [SearchResult] by an ID.
 /// It returns a [List] of [SearchResult] objects.
 final searchProvider = StateNotifierProvider<SearchNotifier, List<SearchResult>>((ref) {
-  return SearchNotifier(ref);
+  final selectedChain = ref.watch(selectedChainProvider);
+  return SearchNotifier(ref, selectedChain);
 });
 
 class SearchNotifier extends StateNotifier<List<SearchResult>> {
   final Ref ref;
-  SearchNotifier(this.ref) : super(const []);
+  final Chains selectedChain;
+  SearchNotifier(
+    this.ref,
+    this.selectedChain,
+  ) : super(const []);
 
   /// This method is used to search for a [SearchResult] by an ID.
   /// It first searches the current state for a match, then it searches the RPC.
@@ -43,35 +47,36 @@ class SearchNotifier extends StateNotifier<List<SearchResult>> {
   /// Searches the current state for matching blocks and transactions.
   _searchState(String id) {
     final currentBlocks = ref.read(blockProvider).asData?.value;
+    final blockResults = <BlockResult>[];
     if (currentBlocks != null) {
       final matchingCurrentBlocks =
           currentBlocks.values.where((Block element) => element.header.toLowerCase().contains(id.toLowerCase()));
       if (matchingCurrentBlocks.isNotEmpty) {
-        final results = matchingCurrentBlocks
+        blockResults.addAll(matchingCurrentBlocks
             .map((Block block) => BlockResult(
                   block,
                   block.header,
                 ))
-            .toList();
-        state = [...state, ...results];
+            .toList());
       }
     }
 
     final currentTransactions = ref.read(transactionsProvider).asData?.value;
+    final transactionResults = <TransactionResult>[];
     if (currentTransactions != null) {
       final matchingCurrentTransactions = currentTransactions
           .where((Transaction element) => element.transactionId.toLowerCase().contains(id.toLowerCase()));
       if (matchingCurrentTransactions.isNotEmpty) {
-        final results = matchingCurrentTransactions
+        transactionResults.addAll(matchingCurrentTransactions
             .map((Transaction transaction) => TransactionResult(
                   transaction,
                   transaction.transactionId,
                 ))
-            .toList();
-
-        state = [...state, ...results];
+            .toList());
       }
     }
+
+    state = [...blockResults, ...transactionResults];
   }
 
   /// Searches for a block, transaction, and UTxO by ID using RPC.
@@ -91,18 +96,17 @@ class SearchNotifier extends StateNotifier<List<SearchResult>> {
 
   Future<BlockResult?> _searchForBlockById(String id) async {
     try {
-      if (!ref.read(mockStateProvider)) {
-        final Chains selectedChain = ref.read(selectedChainProvider);
-        final BlockResponse blockResponse =
-            await ref.read(genusProvider(selectedChain)).getBlockById(blockIdString: id);
-        return BlockResult(blockResponse.toBlock(), blockResponse.toBlock().header);
-      } else {
+      if (selectedChain == Chains.mock) {
         return Future.delayed(const Duration(milliseconds: 250), () {
           return BlockResult(
             getMockBlock(),
             getMockBlock().header,
           );
         });
+      } else {
+        final BlockResponse blockResponse =
+            await ref.read(genusProvider(selectedChain)).getBlockById(blockIdString: id);
+        return BlockResult(blockResponse.toBlock(), blockResponse.toBlock().header);
       }
     } catch (e) {
       ref.read(loggerProvider).log(
@@ -117,9 +121,14 @@ class SearchNotifier extends StateNotifier<List<SearchResult>> {
 
   Future<TransactionResult?> _searchForTransactionById(String id) async {
     try {
-      if (!ref.read(mockStateProvider)) {
-        final Chains selectedChain = ref.read(selectedChainProvider);
-
+      if (selectedChain == Chains.mock) {
+        return Future.delayed(const Duration(milliseconds: 250), () {
+          return TransactionResult(
+            getMockTransaction(),
+            getMockTransaction().transactionId,
+          );
+        });
+      } else {
         final TransactionResponse response =
             await ref.read(genusProvider(selectedChain)).getTransactionById(transactionIdString: id);
 
@@ -127,13 +136,6 @@ class SearchNotifier extends StateNotifier<List<SearchResult>> {
           response.toTransaction(),
           response.toTransaction().transactionId,
         );
-      } else {
-        return Future.delayed(const Duration(milliseconds: 250), () {
-          return TransactionResult(
-            getMockTransaction(),
-            getMockTransaction().transactionId,
-          );
-        });
       }
     } catch (e) {
       ref.read(loggerProvider).log(
