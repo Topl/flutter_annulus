@@ -95,12 +95,16 @@ class CustomSearchBar extends HookConsumerWidget {
     /// The focus node used to control the search text field.
     /// When the focus node loses focus, the search text field is cleared.
     final searchFocusNode = useFocusNode();
-    searchFocusNode.addListener(() {
-      if (!searchFocusNode.hasFocus) {
-        searchText.value = '';
-        searchController.clear();
-      }
-    });
+
+    useEffect(() {
+      searchFocusNode.addListener(() {
+        if (!searchFocusNode.hasFocus) {
+          searchText.value = '';
+          searchController.clear();
+        }
+      });
+      return null;
+    }, []);
 
     return CompositedTransformTarget(
       link: layerLink,
