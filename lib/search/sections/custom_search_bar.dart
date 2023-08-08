@@ -56,6 +56,13 @@ class CustomSearchBar extends HookConsumerWidget {
 
     final ValueNotifier<OverlayEntry?> entry = useState(null);
 
+    /// This is used to show or hide the search results.
+    ///
+    /// When the search text field is not empty and the old value is empty,
+    /// the search results are shown.
+    ///
+    /// When the search text field is empty and the old value is not empty,
+    /// the search results are hidden.
     useValueChanged<String, String>(searchText.value, (oldValue, oldResult) {
       if (oldValue.isEmpty && searchText.value.isNotEmpty) {
         Future.delayed(Duration.zero, () {
@@ -85,6 +92,16 @@ class CustomSearchBar extends HookConsumerWidget {
       searchDebouncer.run(() => performSearch(id));
     }
 
+    /// The focus node used to control the search text field.
+    /// When the focus node loses focus, the search text field is cleared.
+    final searchFocusNode = useFocusNode();
+    searchFocusNode.addListener(() {
+      if (!searchFocusNode.hasFocus) {
+        searchText.value = '';
+        searchController.clear();
+      }
+    });
+
     return CompositedTransformTarget(
       link: layerLink,
       child: Row(
@@ -93,7 +110,10 @@ class CustomSearchBar extends HookConsumerWidget {
             child: TextField(
               style: bodyMedium(context),
               controller: searchController,
-              onSubmitted: (query) => onSearch(),
+              onSubmitted: (_) {
+                searchFocusNode.requestFocus();
+              },
+              focusNode: searchFocusNode,
               onChanged: (value) {
                 searchText.value = value;
                 if (value.isNotEmpty) {
