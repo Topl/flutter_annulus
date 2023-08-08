@@ -18,84 +18,42 @@ import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:topl_common/proto/genus/genus_rpc.pbgrpc.dart';
 
-/// This provider returns a [AsyncValue<List<SearchResult>>]
-///
-/// Usage Example:
-///
-/// ```dart
-/// final searchNotifier = ref.watch(searchProvider.notifier);
-/// searchNotifier.search(query);
-///
-/// final searchResult = ref.watch(searchProvider);
-/// searchResult.when(
-///  data: (SearchResult result) {
-///     return result.map(
-///       block: (BlockResult result) {
-///        final Block block = result.block;
-///         // Show block
-///       },
-///       transaction: (TransactionResult result) {
-///       final Transaction transaction = result.transaction;
-///         // Show transaction
-///       },
-///       utxo: (UTxOResult result) {
-///      final UTxO utxo = result.utxo;
-///         // Show utxo
-///       },
-///   },
-///   loading: () {
-///    // Show loading indicator
-///   },
-///   error: (error, stackTrace) {
-///   // Show error message
-///   },
-///  );
-/// ```
-final searchProvider = StateNotifierProvider<SearchNotifier, AsyncValue<List<SearchResult>>>((ref) {
+/// This provider is used to determine if the RPC search results are loading.
+final isLoadingRpcSearchResultsProvider = StateProvider<bool>((ref) {
+  return true;
+});
+
+/// This provider is used to search for a [SearchResult] by an ID.
+/// It returns a [List] of [SearchResult] objects.
+final searchProvider = StateNotifierProvider<SearchNotifier, List<SearchResult>>((ref) {
   return SearchNotifier(ref);
 });
 
-class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
+class SearchNotifier extends StateNotifier<List<SearchResult>> {
   final Ref ref;
-  SearchNotifier(this.ref) : super(const AsyncLoading());
+  SearchNotifier(this.ref) : super(const []);
 
-  /// Searches for a list of [SearchResult] objects by the given [id].
-  /// Returns a [Future] that completes with the search results.
-  ///
-  /// If no results are found, an empty list is returned.
-  ///
-  /// The search results are collected from three different methods:
-  /// - [_searchForBlockById]
-  /// - [_searchForTransactionById]
-  /// - [_searchForUTxOById]
-  ///
-  /// If any of the results are null, it means no corresponding result was found.
-  /// In such cases, the [state] is set to an [AsyncError] with a message and [StackTrace].
-  /// Otherwise, the search results are stored in the [state] as an [AsyncData] object.
-  ///
-  /// Typically the return value is a list of one item,
-  /// but it can be more than one item if multiple results are found
-  /// IE. An ID returns both a block and a transaction
-  Future<List<SearchResult>> searchById(String id) async {
-    print('QQQQ searchById: $id');
+  /// This method is used to search for a [SearchResult] by an ID.
+  /// It first searches the current state for a match, then it searches the RPC.
+  Future<void> searchById(String id) async {
+    _searchState(id);
+    await _searchRpc(id);
+  }
 
-    final List<SearchResult> results = [];
-
+  /// Searches the current state for matching blocks and transactions.
+  _searchState(String id) {
     final currentBlocks = ref.read(blockProvider).asData?.value;
     if (currentBlocks != null) {
-      print('QQQQ looking for matching blocks in currentBlocks: ${currentBlocks.length}');
       final matchingCurrentBlocks =
           currentBlocks.values.where((Block element) => element.header.toLowerCase().contains(id.toLowerCase()));
-      print('QQQQ matchingCurrentBlocks: ${matchingCurrentBlocks.length}');
-      print('QQQQ matchingCurrentBlocks: ${matchingCurrentBlocks}');
       if (matchingCurrentBlocks.isNotEmpty) {
-        results.addAll(matchingCurrentBlocks
+        final results = matchingCurrentBlocks
             .map((Block block) => BlockResult(
                   block,
                   block.header,
                 ))
-            .toList());
-        state = AsyncData(results);
+            .toList();
+        state = [...state, ...results];
       }
     }
 
@@ -103,29 +61,32 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
     if (currentTransactions != null) {
       final matchingCurrentTransactions = currentTransactions
           .where((Transaction element) => element.transactionId.toLowerCase().contains(id.toLowerCase()));
-      print('QQQQ matchingCurrentTransactions: ${matchingCurrentTransactions.length}');
       if (matchingCurrentTransactions.isNotEmpty) {
-        results.addAll(matchingCurrentTransactions
+        final results = matchingCurrentTransactions
             .map((Transaction transaction) => TransactionResult(
                   transaction,
                   transaction.transactionId,
                 ))
-            .toList());
+            .toList();
 
-        state = AsyncData(results);
+        state = [...state, ...results];
       }
     }
+  }
 
-    state = AsyncData(results);
+  /// Searches for a block, transaction, and UTxO by ID using RPC.
+  Future<void> _searchRpc(String id) async {
+    ref.read(isLoadingRpcSearchResultsProvider.notifier).state = true;
+    final List<SearchResult> results = [];
 
     final BlockResult? block = await _searchForBlockById(id);
     final TransactionResult? transaction = await _searchForTransactionById(id);
     final UTxOResult? utxo = await _searchForUTxOById(id);
 
     results.addAll([if (block != null) block, if (transaction != null) transaction, if (utxo != null) utxo]);
+    ref.read(isLoadingRpcSearchResultsProvider.notifier).state = false;
 
-    state = AsyncData(results);
-    return results;
+    state = [...state, ...results];
   }
 
   Future<BlockResult?> _searchForBlockById(String id) async {
@@ -206,6 +167,6 @@ class SearchNotifier extends StateNotifier<AsyncValue<List<SearchResult>>> {
 
   /// Clears the search results by setting the [state] to an empty list.
   void clearSearch() {
-    state = const AsyncValue.data([]);
+    state = [];
   }
 }

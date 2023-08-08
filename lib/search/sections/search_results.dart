@@ -18,6 +18,8 @@ class SearchResults extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
+    List<SearchResult> results = ref.watch(searchProvider);
+    bool isLoading = ref.watch(isLoadingRpcSearchResultsProvider);
     return Material(
       child: Container(
         decoration: BoxDecoration(
@@ -27,85 +29,100 @@ class SearchResults extends HookConsumerWidget {
           ),
           borderRadius: BorderRadius.circular(8.0),
         ),
-        child: ref.watch(searchProvider).when(
-              data: (List<SearchResult> results) {
-                print('QQQQ resultslength: ${results.length}');
-                return SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: results.length,
-                    itemBuilder: (context, index) {
-                      final suggestion = results[index];
-
-                      final displayText = suggestion.id;
-                      return ListTile(
-                        title: Text(displayText, style: bodyMedium(context)),
-                        textColor: getSelectedColor(
-                          colorTheme,
-                          0xFF4B4B4B,
-                          0xFF858E8E,
-                        ),
-                        onTap: () {
-                          resultSelected();
-                          // entry.remove();
-                          // if (isDesktop && suggestion.length > 6 && suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
-                          //   showModalSideSheet(
-                          //     context: context,
-                          //     ignoreAppBar: true,
-                          //     width: 640,
-                          //     barrierColor: getSelectedColor(
-                          //       colorTheme,
-                          //       0xFFFEFEFE,
-                          //       0xFF353739,
-                          //     ).withOpacity(0.64),
-                          //     barrierDismissible: true,
-                          //     body: TransactionDetailsDrawer(
-                          //       transaction: selectedTransactionId.value[index],
-                          //     ),
-                          //   );
-                          // } else if (!isDesktop &&
-                          //     suggestion.length > 6 &&
-                          //     suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
-                          //   context.vRouter.to(
-                          //     '/transactions_details/',
-                          //   );
-                          // } else if (suggestion == "10x5be9d701Byd24neQfY1vXa987a") {
-                          //   context.vRouter.to(
-                          //     '/utxo_details/',
-                          //   );
-                          // } else {
-                          //   isDesktop
-                          //       ? showModalSideSheet(
-                          //           context: context,
-                          //           ignoreAppBar: true,
-                          //           width: 640,
-                          //           barrierColor: getSelectedColor(
-                          //             colorTheme,
-                          //             0xFFFEFEFE,
-                          //             0xFF353739,
-                          //           ).withOpacity(0.64),
-                          //           barrierDismissible: true,
-                          //           body: BlockDetailsDrawer(
-                          //             block: selectedBlock.value as Block,
-                          //           ),
-                          //         )
-                          //       : context.vRouter.to("/block_details");
-                          // }
-                        },
-                      );
-                    },
-                  ),
-                );
-              },
-              error: (error, strackTrace) => const Center(
-                child: Text("Error"),
-              ),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
+        child: SizedBox(
+          height: 200,
+          child: ListView(
+            children: [
+              // List items from results
+              for (SearchResult suggestion in results)
+                _SearchResultItem(
+                  suggestion: suggestion,
+                  colorTheme: colorTheme,
+                  resultSelected: resultSelected,
+                ),
+              if (isLoading)
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              if (results.isEmpty && !isLoading)
+                const Center(
+                  child: Text("No results found"),
+                ),
+            ],
+          ),
+        ),
       ),
+    );
+  }
+}
+
+class _SearchResultItem extends StatelessWidget {
+  final SearchResult suggestion;
+  final ThemeMode colorTheme;
+  final Function() resultSelected;
+  const _SearchResultItem({
+    required this.suggestion,
+    required this.colorTheme,
+    required this.resultSelected,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(suggestion.id, style: bodyMedium(context)),
+      textColor: getSelectedColor(
+        colorTheme,
+        0xFF4B4B4B,
+        0xFF858E8E,
+      ),
+      onTap: () {
+        resultSelected();
+        // entry.remove();
+        // if (isDesktop && suggestion.length > 6 && suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
+        //   showModalSideSheet(
+        //     context: context,
+        //     ignoreAppBar: true,
+        //     width: 640,
+        //     barrierColor: getSelectedColor(
+        //       colorTheme,
+        //       0xFFFEFEFE,
+        //       0xFF353739,
+        //     ).withOpacity(0.64),
+        //     barrierDismissible: true,
+        //     body: TransactionDetailsDrawer(
+        //       transaction: selectedTransactionId.value[index],
+        //     ),
+        //   );
+        // } else if (!isDesktop &&
+        //     suggestion.length > 6 &&
+        //     suggestion != "10x5be9d701Byd24neQfY1vXa987a") {
+        //   context.vRouter.to(
+        //     '/transactions_details/',
+        //   );
+        // } else if (suggestion == "10x5be9d701Byd24neQfY1vXa987a") {
+        //   context.vRouter.to(
+        //     '/utxo_details/',
+        //   );
+        // } else {
+        //   isDesktop
+        //       ? showModalSideSheet(
+        //           context: context,
+        //           ignoreAppBar: true,
+        //           width: 640,
+        //           barrierColor: getSelectedColor(
+        //             colorTheme,
+        //             0xFFFEFEFE,
+        //             0xFF353739,
+        //           ).withOpacity(0.64),
+        //           barrierDismissible: true,
+        //           body: BlockDetailsDrawer(
+        //             block: selectedBlock.value as Block,
+        //           ),
+        //         )
+        //       : context.vRouter.to("/block_details");
+        // }
+      },
     );
   }
 }
