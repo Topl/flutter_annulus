@@ -48,8 +48,8 @@ class AnnulusRouter extends HookConsumerWidget {
           widget: const HomeScreen(),
         ),
         VWidget(
-          path: TransactionDetailsPage.route, // Transaction details screen
-          widget: const TransactionDetailsPage(transactionId: ''),
+          path: TransactionDetailsPage.paramRoute, // Transaction details screen
+          widget: const TransactionDetailsPage(),
         ),
         VWidget(
           path: UTxODetailsPage.route, // UTxO details screen

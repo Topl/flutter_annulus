@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/transactions/sections/transactions.dart';
+import 'package:flutter_annulus/transactions/widgets/paginated_transaction_table.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
@@ -18,7 +19,6 @@ class BlockTabBarView extends HookConsumerWidget {
     super.key,
     required this.block,
   });
-  final _rowsPerPage = 5;
   final Block? block;
 
   // create a custom tab bar view
@@ -182,7 +182,6 @@ class BlockTabBarView extends HookConsumerWidget {
             padding: const EdgeInsets.only(top: 40),
             child: transactionsInfo.when(
                 data: (data) {
-                  final source = TableDataSource(data, context, getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C));
                   return SizedBox(
                       width: 100,
                       child: SingleChildScrollView(
@@ -190,42 +189,10 @@ class BlockTabBarView extends HookConsumerWidget {
                           data: Theme.of(context).copyWith(
                             cardColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
                           ),
-                          child: PaginatedDataTable(
-                            source: source,
-                            showFirstLastButtons: true,
-                            rowsPerPage: _rowsPerPage,
-                            dataRowHeight: 80,
-                            columnSpacing: 0,
-                            availableRowsPerPage: const [1, 5, 10, 50],
-                            onRowsPerPageChanged: (newRowsPerPage) {
-                              if (newRowsPerPage != null) {}
-                            },
-                            onPageChanged: (int? n) {},
-                            columns: const [
-                              DataColumn(
-                                label: Padding(
-                                  padding: EdgeInsets.only(left: 40.0),
-                                  child: SizedBox(
-                                    child: TableHeaderText(name: Strings.tableHeaderTxnHashId),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                  label: Padding(
-                                padding: EdgeInsets.only(left: 40.0),
-                                child: TableHeaderText(name: Strings.tableHeaderBlock),
-                              )),
-                              DataColumn(
-                                  label: Padding(
-                                padding: EdgeInsets.only(left: 40.0),
-                                child: TableHeaderText(name: Strings.tableHeaderType),
-                              )),
-                              DataColumn(
-                                  label: Padding(
-                                padding: EdgeInsets.only(left: 40.0),
-                                child: TableHeaderText(name: Strings.tableHeaderFee),
-                              )),
-                            ],
+                          child: PaginatedTransactionTable(
+                            showAllColumns: false,
+                            transactions: data,
+                            isTabView: true,
                           ),
                         ),
                       ));
@@ -238,59 +205,5 @@ class BlockTabBarView extends HookConsumerWidget {
                     ))),
       ],
     );
-  }
-}
-
-//TODO: Refactor this table source to reusable widget
-class TableDataSource extends DataTableSource {
-  TableDataSource(this.data, this.context, this.clr);
-
-  BuildContext context;
-  List<Transaction> data;
-  Color clr;
-
-  @override
-  DataRow? getRow(int index) {
-    final row = data[index];
-    if (index < data.length) {
-      return DataRow(
-          color: MaterialStateProperty.all(clr),
-          onLongPress: () {
-            // Add what you want to do on tap
-          },
-          cells: <DataCell>[
-            const DataCell(TransactionColumnText(
-              textTop: 'row.',
-              textBottom: "49 ${Strings.secAgo}",
-            )),
-            DataCell(TransactionColumnText(
-              textTop: '${Strings.height}: ${row.block.height}',
-              textBottom: '${Strings.slot}: ${row.block.slot}',
-            )),
-            DataCell(TransactionColumnText(
-                textTop: '${row.amount} ${Strings.topl}', textBottom: '${row.quantity} ${Strings.bobs}')),
-            DataCell(TransactionColumnText(
-              textTop: '${row.transactionFee} ${Strings.feeAcronym}',
-              textBottom: "",
-              isBottomTextRequired: false,
-            )),
-          ]);
-    } else {
-      return null;
-    }
-  }
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get rowCount => data.length;
-
-  @override
-  int get selectedRowCount => 0;
-
-  @override
-  void notifyListeners() {
-    super.notifyListeners();
   }
 }
