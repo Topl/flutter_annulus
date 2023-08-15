@@ -6,7 +6,7 @@ import 'package:flutter_annulus/shared/services/hive/hives.dart';
 import 'package:flutter_annulus/shared/utils/hive_utils.dart';
 
 final selectedChainProvider = StateProvider<Chains>((ref) {
-  return kDebugMode ? Chains.private_network : Chains.topl_mainnet;
+  return kDebugMode ? const Chains.private_network() : const Chains.topl_mainnet();
 });
 
 final chainsProvider = StateNotifierProvider<ChainsNotifier, AsyncValue<List<Chains>>>((ref) {
@@ -14,7 +14,7 @@ final chainsProvider = StateNotifierProvider<ChainsNotifier, AsyncValue<List<Cha
 });
 
 class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
-  ChainsNotifier() : super(AsyncLoading()) {
+  ChainsNotifier() : super(const AsyncLoading()) {
     _getAvailableChains(setState: true);
   }
 
