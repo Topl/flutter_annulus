@@ -114,16 +114,12 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                           child: isMobile
                                               ? CustomColumnWithText(
                                                   leftText: Strings.tableHeaderTxnHashId,
-                                                  rightText: transaction.transactionId
-                                                      .toString()
-                                                      .substring(0, Numbers.textLength - 3),
+                                                  rightText: transaction.transactionId.toString(),
                                                   hasIcon: true,
                                                 )
                                               : CustomRowWithText(
                                                   leftText: Strings.tableHeaderTxnHashId,
-                                                  rightText: transaction.transactionId
-                                                      .toString()
-                                                      .substring(0, Numbers.textLength - 3),
+                                                  rightText: transaction.transactionId.toString(),
                                                   hasIcon: true,
                                                 ))),
                                 ],
@@ -235,14 +231,10 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: isMobile
                                           ? CustomColumnWithText(
                                               leftText: Strings.fromAddress,
-                                              rightText: transaction.senderAddress[0]
-                                                  .toString()
-                                                  .substring(0, Numbers.textLength - 3))
+                                              rightText: transaction.senderAddress[0].toString())
                                           : CustomRowWithText(
                                               leftText: Strings.fromAddress,
-                                              rightText: transaction.senderAddress[0]
-                                                  .toString()
-                                                  .substring(0, Numbers.textLength - 3),
+                                              rightText: transaction.senderAddress[0].toString(),
                                             ))),
                             ],
                           ),
@@ -253,15 +245,11 @@ class TransactionDetailsPage extends HookConsumerWidget {
                                       child: isMobile
                                           ? CustomColumnWithText(
                                               leftText: Strings.toAddress,
-                                              rightText: transaction.receiverAddress[0]
-                                                  .toString()
-                                                  .substring(0, Numbers.textLength - 3),
+                                              rightText: transaction.receiverAddress[0].toString(),
                                             )
                                           : CustomRowWithText(
                                               leftText: Strings.toAddress,
-                                              rightText: transaction.receiverAddress[0]
-                                                  .toString()
-                                                  .substring(0, Numbers.textLength - 3),
+                                              rightText: transaction.receiverAddress[0].toString(),
                                             ))),
                             ],
                           ),
