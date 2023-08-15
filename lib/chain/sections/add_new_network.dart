@@ -305,7 +305,10 @@ class _AddNewNetworkState extends ConsumerState<AddNewNetworkContainer> {
                                     child: child,
                                   ));
                           if (!mounted) return;
-                          Navigator.pop(context);
+                          //remove dropdown from screen
+                          final nav = Navigator.of(context);
+                          nav.pop();
+                          nav.pop();
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF0DC8D4)),
