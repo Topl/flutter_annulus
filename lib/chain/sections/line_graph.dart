@@ -45,7 +45,10 @@ class LineGraphContainer extends StatelessWidget {
         .map((e) => FlSpot(e.key.millisecondsSinceEpoch.toDouble(), e.value.toDouble()))
         .toList();
 
-    final maxYValue = chartData.results.entries.map((e) => e.value.toDouble()).toList().reduce(max).ceilToDouble();
+    var maxYValue = chartData.results.entries.map((e) => e.value.toDouble()).toList().reduce(max).ceilToDouble();
+    if (maxYValue == 0) {
+      maxYValue = 1;
+    }
 
     final maxXValue =
         chartData.results.entries.map((e) => e.key.millisecondsSinceEpoch.toDouble()).toList().reduce(max).toDouble();

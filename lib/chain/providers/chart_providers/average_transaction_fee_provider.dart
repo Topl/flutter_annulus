@@ -23,9 +23,12 @@ double? _getAverageTransactionFeeForBlock({
       final transaction = blockRes.block.fullBody.transactions[i];
 
       final inputList = transaction.inputs;
+
       final outputList = transaction.outputs;
+
       final double fee = calculateFees(inputs: inputList, outputs: outputList).toDouble();
 
+      // If this is the first transaction, set the average to the fee of the first transaction.
       if (averageTransactionFee == 0) {
         averageTransactionFee = fee;
       } else {

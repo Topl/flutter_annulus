@@ -145,6 +145,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
   /// If [setState] is false, it will not update the state of the provider
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
     if (selectedChain == const Chains.mock()) {
+      if (setState) state = const AsyncLoading();
       final List<Block> blocks = List.generate(100, (index) => getMockBlock());
       if (setState) {
         state = AsyncData(
@@ -157,18 +158,12 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       final genusClient = ref.read(genusProvider(selectedChain));
 
       if (setState) state = const AsyncLoading();
-
       //futures
       final List<Block> blocks = [];
       const pageLimit = 10;
       final presentConfig = await config;
-      List<Future> futures = [];
       for (int i = 0; i < pageLimit; i++) {
-        futures.add(genusClient.getBlockByDepth(depth: i));
-      }
-
-      final blockResponses = await Future.wait(futures);
-      blockResponses.asMap().forEach((i, blockRes) {
+        final blockRes = await genusClient.getBlockByDepth(depth: i);
         blocks.add(
           Block(
             header: decodeId(blockRes.block.header.headerId.value),
@@ -180,7 +175,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
             transactionNumber: blockRes.block.fullBody.transactions.length,
           ),
         );
-      });
+      }
 
       // Adding delay here to simulate API call
       if (setState) {
