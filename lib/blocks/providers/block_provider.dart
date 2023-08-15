@@ -7,6 +7,7 @@ import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
+import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// Returns a block at the depth
@@ -289,5 +290,35 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       // Return that block
       return newBlock;
     }
+  }
+
+  //TODO: figure out a better way since a ton of empty blocks means this is taking too long
+  Future<BlockResponse> getFirstPopulatedBlock() async {
+    int depth = 0;
+    final genusClient = ref.read(genusProvider(selectedChain));
+    var nextBlock = await genusClient.getBlockByDepth(depth: depth);
+    //check that block has transactions
+    while (!nextBlock.block.fullBody.hasField(1)) {
+      depth++;
+      nextBlock = await genusClient.getBlockByDepth(depth: depth);
+    }
+
+    //TODO: add block to state
+
+    return nextBlock;
+  }
+
+  Future<BlockResponse> getNextPopulatedBlock({required int height}) async {
+    final genusClient = ref.read(genusProvider(selectedChain));
+    var nextBlock = await genusClient.getBlockByHeight(height: height);
+    //check that block has transactions
+    while (!nextBlock.block.fullBody.hasField(1)) {
+      height--;
+      nextBlock = await genusClient.getBlockByHeight(height: height);
+    }
+
+    //TODO: add to state
+
+    return nextBlock;
   }
 }
