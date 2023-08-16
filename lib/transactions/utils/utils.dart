@@ -5,6 +5,8 @@ import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/shared/utils/extensions.dart';
 import 'package:topl_common/proto/brambl/models/transaction/spent_transaction_output.pb.dart';
 import 'package:topl_common/proto/brambl/models/transaction/unspent_transaction_output.pb.dart';
+import 'package:topl_common/genus/services/transaction_grpc.dart';
+import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 
 Transaction getMockTransaction() {
   return Transaction(
