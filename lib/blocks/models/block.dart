@@ -3,6 +3,9 @@ import 'package:flutter/foundation.dart';
 
 // Package imports:
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
+
+import '../../shared/utils/decode_id.dart';
 
 part 'block.freezed.dart';
 part 'block.g.dart';
@@ -32,6 +35,19 @@ class Block with _$Block {
     /// The number of transactions
     required int transactionNumber,
   }) = _Block;
+
+  factory Block.fromBlockRes({required BlockResponse blockRes, required int epochLength}) {
+    final block = Block(
+      header: decodeId(blockRes.block.header.headerId.value),
+      epoch: blockRes.block.header.slot.toInt() ~/ epochLength,
+      size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
+      height: blockRes.block.header.height.toInt(),
+      slot: blockRes.block.header.slot.toInt(),
+      timestamp: blockRes.block.header.timestamp.toInt(),
+      transactionNumber: blockRes.block.fullBody.transactions.length,
+    );
+    return block;
+  }
 
   factory Block.fromJson(Map<String, dynamic> json) => _$BlockFromJson(json);
 }
