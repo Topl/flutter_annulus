@@ -450,8 +450,8 @@ class CustomToast extends StatelessWidget {
               width: 450,
               child: Text(
                 isSuccess
-                    ? "Network was added ${isMobile ? '\n' : ""} successfully"
-                    : "Something went wrong... ${isMobile ? '\n' : ""} Please try again later",
+                    ? "Network was added ${isMobile ? '\n' : ""}successfully"
+                    : "Something went wrong... ${isMobile ? '\n' : ""}Please try again later",
                 style: bodyMedium(context),
               ),
             ),

@@ -64,7 +64,7 @@ class ChartNotifier extends StateNotifier<AsyncValue<ChartResult>> {
   }
 
   Future<void> _loadStatistics() async {
-    if (selectedChain == Chains.mock) {
+    if (selectedChain == const Chains.mock()) {
       state = AsyncData(_mockChartData(timeFrame: timeFrame));
     } else {
       try {

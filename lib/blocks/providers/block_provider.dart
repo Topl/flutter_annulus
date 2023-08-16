@@ -145,7 +145,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
   /// If [setState] is true, it will update the state of the provider
   /// If [setState] is false, it will not update the state of the provider
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
-    if (selectedChain == Chains.mock) {
+    if (selectedChain == const Chains.mock()) {
       if (setState) state = const AsyncLoading();
       final List<Block> blocks = List.generate(100, (index) => getMockBlock());
       if (setState) {
