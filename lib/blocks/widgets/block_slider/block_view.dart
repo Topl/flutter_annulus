@@ -29,7 +29,7 @@ class BlockView extends ConsumerWidget {
     return Container(
       width: 240,
       height: 344,
-      margin: EdgeInsets.only(left: isMobile ? 6.0 : 20.0, right: 0.0, bottom: 0.0, top: 20.0),
+      margin: EdgeInsets.only(left: isMobile ? 6.0 : 0.0, right: 0.0, bottom: 0.0, top: 20.0),
       decoration: BoxDecoration(
         color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
         borderRadius: BorderRadius.circular(16.0),
@@ -75,6 +75,7 @@ class BlockView extends ConsumerWidget {
               ),
               child: Container(
                   padding: const EdgeInsets.all(40.0),
+                  width: 240,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
