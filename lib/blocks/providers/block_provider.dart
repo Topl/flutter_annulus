@@ -163,17 +163,22 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       final List<Block> blocks = [];
       const pageLimit = 10;
       final presentConfig = await config;
-      for (int i = 0; i < pageLimit; i++) {
-        final blockRes = await genusClient.getBlockByDepth(depth: i);
+
+      final block0Res = await genusClient.getBlockByDepth(depth: 0);
+      blocks.add(
+        Block.fromBlockRes(
+          blockRes: block0Res,
+          epochLength: presentConfig.config.epochLength.toInt(),
+        ),
+      );
+
+      //fetch more blocks with block0 as the reference for a fixed depth
+      for (int i = 1; i < pageLimit; i++) {
+        final blockRes = await genusClient.getBlockByHeight(height: blocks[0].height - i);
         blocks.add(
-          Block(
-            header: decodeId(blockRes.block.header.headerId.value),
-            epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-            size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
-            height: blockRes.block.header.height.toInt(),
-            slot: blockRes.block.header.slot.toInt(),
-            timestamp: blockRes.block.header.timestamp.toInt(),
-            transactionNumber: blockRes.block.fullBody.transactions.length,
+          Block.fromBlockRes(
+            blockRes: blockRes,
+            epochLength: presentConfig.config.epochLength.toInt(),
           ),
         );
       }
@@ -208,17 +213,20 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       blocks = {...blocks};
       // Get the next block by height from Genus
       final genusClient = ref.read(genusProvider(selectedChain));
-      final blockRes = await genusClient.getBlockByDepth(depth: depth);
+
+      //convert depth to height (depth is fixed in reference to block0)
+      final blockAtDepth0 = blocks[0];
+      if (blockAtDepth0 == null) {
+        throw Exception('Error in blockProvider: blockAtDepth0 is null');
+      }
+      final desiredHeight = blockAtDepth0.height - depth;
+
+      final blockRes = await genusClient.getBlockByHeight(height: desiredHeight);
       final presentConfig = await config;
       // Add that block to state's list
-      var newBlock = Block(
-        header: decodeId(blockRes.block.header.headerId.value),
-        epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-        size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
-        height: blockRes.block.header.height.toInt(),
-        slot: blockRes.block.header.slot.toInt(),
-        timestamp: blockRes.block.header.timestamp.toInt(),
-        transactionNumber: blockRes.block.fullBody.transactions.length,
+      var newBlock = Block.fromBlockRes(
+        blockRes: blockRes,
+        epochLength: presentConfig.config.epochLength.toInt(),
       );
       blocks[depth] = newBlock;
 
@@ -266,14 +274,9 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       final blockRes = await genusClient.getBlockByHeight(height: height);
       final presentConfig = await config;
       // Add that block to state's list
-      var newBlock = Block(
-        header: decodeId(blockRes.block.header.headerId.value),
-        epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-        size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
-        height: blockRes.block.header.height.toInt(),
-        slot: blockRes.block.header.slot.toInt(),
-        timestamp: blockRes.block.header.timestamp.toInt(),
-        transactionNumber: blockRes.block.fullBody.transactions.length,
+      var newBlock = Block.fromBlockRes(
+        blockRes: blockRes,
+        epochLength: presentConfig.config.epochLength.toInt(),
       );
       blocks[depth] = newBlock;
 
