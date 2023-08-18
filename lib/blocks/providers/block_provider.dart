@@ -6,6 +6,7 @@ import 'package:flutter_annulus/chain/utils/constants.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
+import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
 import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -231,9 +232,8 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       blocks[depth] = newBlock;
 
       // Sort the blocks by depth so that they are in order
-      List<MapEntry<int, Block>> sortedBlocks = blocks.entries.toList();
-      sortedBlocks.sort((a, b) => b.key.compareTo(a.key));
-      state = AsyncData({...Map.fromEntries(sortedBlocks)});
+      final sortedBlocks = sortBlocksByDepth(blocks: blocks);
+      state = AsyncData(sortedBlocks);
 
       // Return that block
       return newBlock;
@@ -281,9 +281,8 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       blocks[depth] = newBlock;
 
       // Sort the blocks by depth so that they are in order
-      List<MapEntry<int, Block>> sortedBlocks = blocks.entries.toList();
-      sortedBlocks.sort((a, b) => b.key.compareTo(a.key));
-      state = AsyncData({...Map.fromEntries(sortedBlocks)});
+      final sortedBlocks = sortBlocksByDepth(blocks: blocks);
+      state = AsyncData(sortedBlocks);
 
       // Return that block
       return newBlock;
@@ -301,12 +300,15 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       nextBlock = await genusClient.getBlockByDepth(depth: depth);
     }
 
-    //TODO: add block to state
-
     return nextBlock;
   }
 
   Future<BlockResponse> getNextPopulatedBlock({required int height}) async {
+    var blocks = state.asData?.value;
+    if (blocks == null) {
+      throw Exception('Error in blockProvider: blocks are null');
+    }
+
     final genusClient = ref.read(genusProvider(selectedChain));
     var nextBlock = await genusClient.getBlockByHeight(height: height);
     //check that block has transactions
@@ -316,6 +318,19 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     }
 
     //TODO: add to state
+    final blockAtDepth0 = blocks[0];
+    if (blockAtDepth0 == null) {
+      throw Exception('Error in blockProvider: blockAtDepth0 is null');
+    }
+
+    final depth = blockAtDepth0.height - height;
+
+    //not in state
+    if (blocks[depth] == null) {
+      blocks = {...blocks};
+      final sortedBlocks = sortBlocksByDepth(blocks: blocks);
+      state = AsyncData(sortedBlocks);
+    }
 
     return nextBlock;
   }

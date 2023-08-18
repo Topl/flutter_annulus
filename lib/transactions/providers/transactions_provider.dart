@@ -174,9 +174,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
     } else {
       if (setState) state = const AsyncLoading();
       final List<Transaction> transactions = [];
-      //get most recent block
-      final selectedChain = ref.read(selectedChainProvider.notifier).state;
-      final genusClient = ref.read(genusProvider(selectedChain));
+      //get first populated block
 
       var latestBlockRes = await ref.read(blockProvider.notifier).getFirstPopulatedBlock();
 
