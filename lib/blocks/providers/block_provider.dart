@@ -317,7 +317,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       nextBlock = await genusClient.getBlockByHeight(height: height);
     }
 
-    //TODO: add to state
     final blockAtDepth0 = blocks[0];
     if (blockAtDepth0 == null) {
       throw Exception('Error in blockProvider: blockAtDepth0 is null');
