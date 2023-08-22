@@ -58,7 +58,7 @@ class AnnulusRouter extends HookConsumerWidget {
           widget: const UTxODetailsPage(),
         ),
         VWidget(
-          path: BlockTabBarMobileView.route, // Block details screen
+          path: BlockTabBarMobileView.paramRoute, // Block details screen
           widget: const BlockTabBarMobileView(),
         ),
         VNester(
