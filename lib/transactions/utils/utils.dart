@@ -5,6 +5,10 @@ import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/shared/utils/extensions.dart';
 import 'package:topl_common/proto/brambl/models/transaction/spent_transaction_output.pb.dart';
 import 'package:topl_common/proto/brambl/models/transaction/unspent_transaction_output.pb.dart';
+import 'package:topl_common/genus/services/transaction_grpc.dart';
+import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
+
+import '../../blocks/models/block.dart';
 
 Transaction getMockTransaction() {
   return Transaction(
@@ -57,4 +61,10 @@ BigInt calculateFees({required List<SpentTransactionOutput> inputs, required Lis
   BigInt outputSum = outputBigInts.reduce((value, element) => value + element);
 
   return inputSum - outputSum;
+}
+
+Map<int, Block> sortBlocksByDepth({required Map<int, Block> blocks}) {
+  List<MapEntry<int, Block>> sortedBlocks = blocks.entries.toList();
+  sortedBlocks.sort((a, b) => b.key.compareTo(a.key));
+  return {...Map.fromEntries(sortedBlocks)};
 }

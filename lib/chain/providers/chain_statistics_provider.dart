@@ -26,7 +26,7 @@ final last10BlockHeadersProvider = FutureProvider<List<BlockHeader>>((ref) async
   return last10Blocks;
 });
 
-final chainProvider = StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((ref) {
+final chainStatisticsProvider = StateNotifierProvider<ChainStatisticNotifier, AsyncValue<Chain>>((ref) {
   /// Adding some dev notes here
   ///
   /// THIS STILL NEEDS TO BE TESTED!
@@ -39,20 +39,20 @@ final chainProvider = StateNotifierProvider<ChainNotifier, AsyncValue<Chain>>((r
   /// but we have individual providers for each chain since it currently only supports 3 chains
   final selectedChain = ref.watch(selectedChainProvider);
 
-  return ChainNotifier(
+  return ChainStatisticNotifier(
     ref,
     selectedChain,
   );
 });
 
-class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
+class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
   final Chains selectedChain;
   final Ref ref;
 
   final GenusGRPCService genusClient;
   final NodeGRPCService nodeClient;
 
-  ChainNotifier(
+  ChainStatisticNotifier(
     this.ref,
     this.selectedChain,
   )   : genusClient = ref.read(genusProvider(selectedChain)),
@@ -72,7 +72,7 @@ class ChainNotifier extends StateNotifier<AsyncValue<Chain>> {
   Future<Chain> getSelectedChain({bool setState = false}) async {
     if (setState) state = const AsyncLoading();
 
-    final Chain chain = selectedChain == Chains.mock ? getMockChain() : await _getLiveChain();
+    final Chain chain = selectedChain == const Chains.mock() ? getMockChain() : await _getLiveChain();
 
     // Adding delay here to simulate API call
     if (setState) {

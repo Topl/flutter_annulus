@@ -1,8 +1,10 @@
+import 'package:flutter_annulus/search/models/search_result.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
+import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
@@ -165,25 +167,17 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
   Future<List<Transaction>> getTransactions({
     bool setState = false,
   }) async {
-    if (selectedChain == Chains.mock) {
+    if (selectedChain == const Chains.mock()) {
       final transactions = List.generate(100, (index) => getMockTransaction());
       if (setState) state = AsyncData(transactions);
       return transactions;
     } else {
       if (setState) state = const AsyncLoading();
       final List<Transaction> transactions = [];
-      //get most recent block
-      final selectedChain = ref.read(selectedChainProvider.notifier).state;
-      final genusClient = ref.read(genusProvider(selectedChain));
-      int depth = 0;
+      //get first populated block
 
-      //TODO: figure out a better way since a ton of empty blocks means this is taking too long
-      var latestBlockRes = await genusClient.getBlockByDepth(depth: depth);
-      //check that block has transactions
-      while (!latestBlockRes.block.fullBody.hasField(1)) {
-        depth++;
-        latestBlockRes = await genusClient.getBlockByDepth(depth: depth);
-      }
+      var latestBlockRes = await ref.read(blockProvider.notifier).getFirstPopulatedBlock();
+
       final config = ref.read(configProvider.future);
       final presentConfig = await config;
 
@@ -273,7 +267,8 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
         final config = ref.read(configProvider.future);
         final presentConfig = await config;
 
-        final nextBlockRes = await genusClient.getBlockByHeight(height: lastTransaction.block.height - 1);
+        final nextBlockRes =
+            await ref.read(blockProvider.notifier).getNextPopulatedBlock(height: lastTransaction.block.height - 1);
         var nextBlock = Block(
           header: decodeId(nextBlockRes.block.header.headerId.value),
           epoch: nextBlockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),

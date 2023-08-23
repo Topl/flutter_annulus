@@ -22,35 +22,42 @@ class ChainNameDropDown extends HookConsumerWidget {
     this.onItemSelected,
   }) : super(key: key);
 
-  final List<Chains> chains = Chains.values;
-
   final isDropDownOpen = useState(false);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Chains selectedChain = ref.watch(selectedChainProvider);
     final isResponsive = ResponsiveBreakpoints.of(context).smallerThan(DESKTOP);
+    final AsyncValue<List<Chains>> allChains = ref.watch(chainsProvider);
 
-    return isResponsive
-        ? _ResponsiveDropDown(
-            onItemSelected: onItemSelected,
-            chains: chains,
-            selectedChain: selectedChain,
-            colorTheme: colorTheme,
-            setSelectedChain: (Chains chain) {
-              ref.read(selectedChainProvider.notifier).state = chain;
-            },
-            isDropDownOpen: isDropDownOpen,
-          )
-        : _DesktopDropdown(
-            chains: chains,
-            selectedChain: selectedChain,
-            colorTheme: colorTheme,
-            setSelectedChain: (Chains chain) {
-              ref.read(selectedChainProvider.notifier).state = chain;
-            },
-            isDropDownOpen: isDropDownOpen,
-          );
+    return allChains.when(
+      data: (List<Chains> chains) {
+        return isResponsive
+            ? _ResponsiveDropDown(
+                onItemSelected: onItemSelected,
+                chains: chains,
+                selectedChain: selectedChain,
+                colorTheme: colorTheme,
+                setSelectedChain: (Chains chain) {
+                  ref.read(selectedChainProvider.notifier).state = chain;
+                },
+                isDropDownOpen: isDropDownOpen,
+              )
+            : _DesktopDropdown(
+                chains: chains,
+                selectedChain: selectedChain,
+                colorTheme: colorTheme,
+                setSelectedChain: (Chains chain) {
+                  ref.read(selectedChainProvider.notifier).state = chain;
+                },
+                isDropDownOpen: isDropDownOpen,
+              );
+      },
+      error: (error, stack) => const Text('Oops, something unexpected happened'),
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 }
 
@@ -93,7 +100,7 @@ class _ResponsiveDropDown extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              chain.name,
+                              chain.networkName,
                               style: bodyMedium(context),
                             ),
                           ),
@@ -159,7 +166,7 @@ class _ResponsiveDropDown extends StatelessWidget {
               .map((Chains chain) => Row(
                     children: [
                       CustomItem(
-                        name: chain.name,
+                        name: chain.networkName,
                       ),
                     ],
                   ))
@@ -249,7 +256,7 @@ class _DesktopDropdown extends StatelessWidget {
                       child: Row(
                         children: [
                           CustomItem(
-                            name: chain.name,
+                            name: chain.networkName,
                           ),
                           const Spacer(),
                           Icon(
@@ -296,7 +303,7 @@ class _DesktopDropdown extends StatelessWidget {
               .map((Chains chain) => Row(
                     children: [
                       Text(
-                        chain.name,
+                        chain.networkName,
                         style: titleMedium(context),
                       ),
                     ],

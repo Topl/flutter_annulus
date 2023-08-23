@@ -8,7 +8,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/utils/theme_color.dart';
-import '../providers/chain_provider.dart';
+import '../providers/chain_statistics_provider.dart';
 import '../widgets/chain_info/top_stat_with_icon.dart';
 import '../widgets/chain_info/stat_info_card.dart';
 
@@ -19,7 +19,7 @@ class ChainInfo extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<Chain> chainInfo = ref.watch(chainProvider);
+    final AsyncValue<Chain> chainInfo = ref.watch(chainStatisticsProvider);
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);

@@ -1,21 +1,24 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../models/chains.dart';
 import '../../shared/utils/theme_color.dart';
 import '../../transactions/widgets/custom_transaction_widgets.dart';
 import '../models/currency.dart';
 
 /// A widget that displays a dropdown button for selecting a chain name.
-class AddNewNetworkContainer extends StatefulWidget {
+class AddNewNetworkContainer extends ConsumerStatefulWidget {
   const AddNewNetworkContainer({Key? key, required this.colorTheme}) : super(key: key);
   final ThemeMode colorTheme;
   @override
   _AddNewNetworkState createState() => _AddNewNetworkState();
 }
 
-class _AddNewNetworkState extends State<AddNewNetworkContainer> {
+class _AddNewNetworkState extends ConsumerState<AddNewNetworkContainer> {
   /// isCDropDownOpen is used to check if the dropdown is open or not
   bool isCDropDownOpen = false;
 
@@ -25,6 +28,12 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
   /// selectedCurrencyValue is used to store the selected value from the dropdown
   String? selectedCurrencyValue = 'LVL';
 
+  Map<String, TextEditingController> textEditingControllers = {
+    'networkName': TextEditingController(text: 'Topl Mainnet'),
+    'networkUrl': TextEditingController(text: ''),
+    'chainId': TextEditingController(text: '192.158.0.0'),
+    'explorerUrl': TextEditingController(text: ''),
+  };
   final TextEditingController textEditingController = TextEditingController();
   final toast = FToast();
   @override
@@ -88,8 +97,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
               height: 48,
             ),
             TextField(
-              controller: TextEditingController(text: 'Topl Mainnet'),
-              enabled: false,
+              controller: textEditingControllers['networkName'],
               style: customTextFieldStyle(),
               decoration: InputDecoration(
                 labelText: 'Network Name',
@@ -103,7 +111,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
               height: 24,
             ),
             TextField(
-              controller: textEditingController,
+              controller: textEditingControllers['networkUrl'],
               style: customTextFieldStyle(),
               decoration: InputDecoration(
                 labelText: 'New RPC URL',
@@ -131,7 +139,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
               height: 16,
             ),
             TextField(
-              controller: TextEditingController(text: '192.158.0.0'),
+              controller: textEditingControllers['chainId'],
               style: customTextFieldStyle(),
               decoration: InputDecoration(
                 labelText: 'Chain ID',
@@ -229,7 +237,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
               height: 24,
             ),
             TextField(
-              controller: TextEditingController(text: ''),
+              controller: textEditingControllers['explorerUrl'],
               style: customTextFieldStyle(),
               decoration: InputDecoration(
                 hintText: 'Block Explorer URL (Optional)',
@@ -242,7 +250,7 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
             SizedBox(
               height: !isMobile ? 48 : null,
             ),
-            Padding(
+            Container(
               padding: const EdgeInsets.only(top: 64.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
@@ -273,7 +281,20 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                       width: isMobile ? 100 : 272,
                       height: 56,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          final urlList = splitUrl(completeUrl: textEditingControllers['networkUrl']!.text);
+                          Currency currencyEnum = convertStringToCurrency(currencyString: selectedCurrencyValue!);
+                          final newChain = Chains.custom(
+                            chainId: textEditingControllers['chainId']!.text,
+                            networkName: textEditingControllers['networkName']!.text,
+                            hostUrl: urlList[0],
+                            port: urlList[1],
+                            currency: currencyEnum,
+                          );
+
+                          await ref.read(chainsProvider.notifier).addCustomChain(chain: newChain as CustomNetwork);
+
+                          ref.read(selectedChainProvider.notifier).state = newChain;
                           toast.showToast(
                               child: CustomToast(widget: widget, isSuccess: true, cancel: () => Fluttertoast.cancel()),
                               toastDuration: const Duration(seconds: 4),
@@ -283,6 +304,11 @@ class _AddNewNetworkState extends State<AddNewNetworkContainer> {
                                     right: 0,
                                     child: child,
                                   ));
+                          if (!mounted) return;
+                          //remove dropdown from screen
+                          final nav = Navigator.of(context);
+                          nav.pop();
+                          nav.pop();
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF0DC8D4)),
