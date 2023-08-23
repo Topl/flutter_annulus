@@ -363,7 +363,14 @@ class CustomColumnWithText extends StatelessWidget {
         ),
         Row(
           children: [
-            CustomTextRight(desc: rightText),
+            Expanded(
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10), // Adjust the vertical padding as needed
+                  child: CustomTextRight(desc: rightText),
+                ),
+              ),
+            ),
             Padding(
                 padding: isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 0) : EdgeInsets.zero,
                 child: hasIcon ? CopyToClipboard(rightText: rightText) : null),
