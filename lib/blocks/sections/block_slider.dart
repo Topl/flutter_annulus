@@ -354,7 +354,7 @@ class CustomCarousel extends HookConsumerWidget {
         enableInfiniteScroll: false,
         padEnds: false,
         animateToClosest: true,
-        viewportFraction: getViewPortFraction(screenWidth + 250),
+        viewportFraction: getViewPortFraction(screenWidth),
         height: 360,
       ),
       carouselController: controller,
