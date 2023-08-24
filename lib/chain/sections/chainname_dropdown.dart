@@ -110,7 +110,7 @@ class _ResponsiveDropDown extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              chain.networkName,
+                              shortenNetwork(chain),
                               style: bodyMedium(context),
                             ),
                           ),
@@ -247,6 +247,10 @@ class _ResponsiveDropDown extends StatelessWidget {
   }
 }
 
+String shortenNetwork(Chains chain) {
+  return chain.networkName.length > 8 ? '${chain.networkName.substring(0, 7)}...' : chain.networkName;
+}
+
 class _DesktopDropdown extends StatelessWidget {
   final List<Chains> chains;
   final Chains selectedChain;
@@ -283,9 +287,11 @@ class _DesktopDropdown extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Row(
                         children: [
-                          CustomItem(
-                            name: chain.networkName,
-                          ),
+                          Tooltip(
+                              message: chain.networkName.length > 8 ? chain.networkName : '',
+                              child: CustomItem(
+                                name: shortenNetwork(chain),
+                              )),
                           const Spacer(),
                           Icon(
                             Icons.check,
@@ -355,7 +361,7 @@ class _DesktopDropdown extends StatelessWidget {
               .map((Chains chain) => Row(
                     children: [
                       Text(
-                        chain.networkName,
+                        shortenNetwork(chain),
                         style: titleMedium(context),
                       ),
                     ],
