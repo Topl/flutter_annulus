@@ -4,12 +4,14 @@ import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
 import '../../shared/constants/ui.dart';
 import '../../shared/utils/theme_color.dart';
+import '../../transactions/widgets/custom_transaction_widgets.dart';
 import 'add_new_network.dart';
 
 class ChainNameDropDown extends HookConsumerWidget {
@@ -41,6 +43,9 @@ class ChainNameDropDown extends HookConsumerWidget {
                 setSelectedChain: (Chains chain) {
                   ref.read(selectedChainProvider.notifier).state = chain;
                 },
+                removeCustomChain: (String chainId) async {
+                  await ref.read(chainsProvider.notifier).removeCustomChain(chainId: chainId);
+                },
                 isDropDownOpen: isDropDownOpen,
               )
             : _DesktopDropdown(
@@ -49,6 +54,9 @@ class ChainNameDropDown extends HookConsumerWidget {
                 colorTheme: colorTheme,
                 setSelectedChain: (Chains chain) {
                   ref.read(selectedChainProvider.notifier).state = chain;
+                },
+                removeCustomChain: (String chainId) async {
+                  await ref.read(chainsProvider.notifier).removeCustomChain(chainId: chainId);
                 },
                 isDropDownOpen: isDropDownOpen,
               );
@@ -66,6 +74,7 @@ class _ResponsiveDropDown extends StatelessWidget {
   final Chains selectedChain;
   final ThemeMode colorTheme;
   final Function(Chains) setSelectedChain;
+  final Function(String) removeCustomChain;
   final ValueNotifier<bool> isDropDownOpen;
   final void Function()? onItemSelected;
 
@@ -74,6 +83,7 @@ class _ResponsiveDropDown extends StatelessWidget {
     required this.selectedChain,
     required this.colorTheme,
     required this.setSelectedChain,
+    required this.removeCustomChain,
     required this.isDropDownOpen,
     required this.onItemSelected,
     Key? key,
@@ -110,6 +120,20 @@ class _ResponsiveDropDown extends StatelessWidget {
                               color: Color(0xFF7040EC),
                               size: 24,
                             ),
+                          if (chain is CustomNetwork)
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              tooltip: 'Remove custom network',
+                              iconSize: 24,
+                              onPressed: () async {
+                                await removeCustomChain(chain.chainId);
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                } else {
+                                  return;
+                                }
+                              },
+                            )
                         ],
                       ),
                     ))
@@ -228,19 +252,23 @@ class _DesktopDropdown extends StatelessWidget {
   final Chains selectedChain;
   final ThemeMode colorTheme;
   final Function(Chains) setSelectedChain;
+  final Function(String) removeCustomChain;
   final ValueNotifier<bool> isDropDownOpen;
+  static final FToast toast = FToast();
 
   const _DesktopDropdown({
     required this.chains,
     required this.selectedChain,
     required this.colorTheme,
     required this.setSelectedChain,
+    required this.removeCustomChain,
     required this.isDropDownOpen,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    toast.init(context);
     return Center(
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
@@ -264,6 +292,30 @@ class _DesktopDropdown extends StatelessWidget {
                             color: const Color(0xFF7040EC),
                             size: selectedChain == chain ? 24 : 0,
                           ),
+                          if (chain is CustomNetwork)
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              tooltip: 'Remove custom network',
+                              iconSize: 24,
+                              onPressed: () async {
+                                await removeCustomChain(chain.chainId);
+                                toast.showToast(
+                                    child: RemoveNetworkToast(
+                                        colorTheme: colorTheme, isSuccess: true, cancel: () => Fluttertoast.cancel()),
+                                    toastDuration: const Duration(seconds: 4),
+                                    positionedToastBuilder: (context, child) => Positioned(
+                                          top: 30,
+                                          left: ResponsiveBreakpoints.of(context).equals(TABLET) ? 70 : 0,
+                                          right: 0,
+                                          child: child,
+                                        ));
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                } else {
+                                  return;
+                                }
+                              },
+                            ),
                         ],
                       ),
                     ),

@@ -404,12 +404,12 @@ class CustomPadding extends StatelessWidget {
 class CustomToast extends StatelessWidget {
   const CustomToast({
     Key? key,
-    required this.widget,
+    required this.colorTheme,
     required this.cancel,
     required this.isSuccess,
   }) : super(key: key);
 
-  final AddNewNetworkContainer widget;
+  final ThemeMode colorTheme;
   final VoidCallback cancel;
   final bool isSuccess;
 
@@ -418,60 +418,107 @@ class CustomToast extends StatelessWidget {
     final isTablet = ResponsiveBreakpoints.of(context).between(TABLET, DESKTOP);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
-    return Container(
-      height: 64,
-      width: isTablet ? 500 : 345,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: getSelectedColor(widget.colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-        border: Border.all(
-          color: getSelectedColor(widget.colorTheme, 0xFFE0E0E0, 0xFF858E8E),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          const SizedBox(width: 16),
-          isSuccess
-              ? const Icon(
-                  Icons.check,
-                  color: Colors.green,
-                  size: 24,
-                )
-              : const Icon(
-                  Icons.warning_amber,
-                  color: Colors.red,
-                  size: 24,
-                ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: SizedBox(
-              width: 450,
-              child: Text(
-                isSuccess
-                    ? "Network was added ${isMobile ? '\n' : ""}successfully"
-                    : "Something went wrong... ${isMobile ? '\n' : ""}Please try again later",
-                style: bodyMedium(context),
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: cancel,
-          ),
-        ],
-      ),
+    return generateContainer(
+      colorTheme: colorTheme,
+      context: context,
+      isTablet: isTablet,
+      isMobile: isMobile,
+      isSuccess: isSuccess,
+      cancel: cancel,
+      message: "Network was added ${isMobile ? '\n' : ""}successfully",
     );
   }
+}
+
+class RemoveNetworkToast extends StatelessWidget {
+  const RemoveNetworkToast({
+    Key? key,
+    required this.colorTheme,
+    required this.cancel,
+    required this.isSuccess,
+  }) : super(key: key);
+
+  final ThemeMode colorTheme;
+  final VoidCallback cancel;
+  final bool isSuccess;
+
+  @override
+  Widget build(BuildContext context) {
+    final isTablet = ResponsiveBreakpoints.of(context).between(TABLET, DESKTOP);
+    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+
+    return generateContainer(
+      colorTheme: colorTheme,
+      context: context,
+      isTablet: isTablet,
+      isMobile: isMobile,
+      isSuccess: isSuccess,
+      cancel: cancel,
+      message: "Network was removed ${isMobile ? '\n' : ""}successfully",
+    );
+  }
+}
+
+Container generateContainer({
+  required ThemeMode colorTheme,
+  required BuildContext context,
+  required bool isTablet,
+  required bool isMobile,
+  required bool isSuccess,
+  required Function() cancel,
+  required String message,
+}) {
+  return Container(
+    height: 64,
+    width: isTablet ? 500 : 345,
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8),
+      color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+      border: Border.all(
+        color: getSelectedColor(colorTheme, 0xFFE0E0E0, 0xFF858E8E),
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 2,
+          blurRadius: 5,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Row(
+      children: [
+        const SizedBox(width: 16),
+        isSuccess
+            ? const Icon(
+                Icons.check,
+                color: Colors.green,
+                size: 24,
+              )
+            : const Icon(
+                Icons.warning_amber,
+                color: Colors.red,
+                size: 24,
+              ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: SizedBox(
+            width: 450,
+            child: Text(
+              isSuccess ? message : "Something went wrong... ${isMobile ? '\n' : ""}Please try again later",
+              style: bodyMedium(context),
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 20,
+        ),
+        IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: cancel,
+        ),
+      ],
+    ),
+  );
 }
