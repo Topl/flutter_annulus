@@ -15,8 +15,10 @@ RUN flutter pub get && \
 # Stage 2: Create a minimal image to run the built app
 FROM nginx:stable-alpine3.17
 
+USER nginx
+
 # Copy the built app from the previous stage to the nginx html directory
-COPY --from=build /app/build/web /usr/share/nginx/html
+COPY --from=build --chown=nginx:nginx /app/build/web /usr/share/nginx/html
 
 # Expose port 80 for the web server to listen on
 EXPOSE 80
