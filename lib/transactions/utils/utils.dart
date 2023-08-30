@@ -1,12 +1,11 @@
 import 'package:flutter_annulus/blocks/utils/utils.dart';
+import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/shared/utils/extensions.dart';
 import 'package:topl_common/proto/brambl/models/transaction/spent_transaction_output.pb.dart';
 import 'package:topl_common/proto/brambl/models/transaction/unspent_transaction_output.pb.dart';
-import 'package:topl_common/genus/services/transaction_grpc.dart';
-import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 
 import '../../blocks/models/block.dart';
 
@@ -67,4 +66,8 @@ Map<int, Block> sortBlocksByDepth({required Map<int, Block> blocks}) {
   List<MapEntry<int, Block>> sortedBlocks = blocks.entries.toList();
   sortedBlocks.sort((a, b) => b.key.compareTo(a.key));
   return {...Map.fromEntries(sortedBlocks)};
+}
+
+String shortenNetwork(Chains chain) {
+  return chain.networkName.length > 8 ? '${chain.networkName.substring(0, 7)}...' : chain.networkName;
 }
