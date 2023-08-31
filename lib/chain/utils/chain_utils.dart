@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
+
+import '../models/chains.dart';
 
 Chain getMockChain() {
   return const Chain(
@@ -16,4 +19,8 @@ Chain getMockChain() {
     activeStakes: 453,
     inactiveStakes: 66,
   );
+}
+
+Chains getDefaultChain() {
+  return kDebugMode ? const Chains.private_network() : const Chains.topl_mainnet();
 }

@@ -4,7 +4,6 @@ import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/chain/utils/constants.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
-import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
@@ -94,23 +93,7 @@ Future<List<Block>> getBlocksSinceDecentralization({
 }
 
 final getBlockByIdProvider = FutureProvider.family<Block, String>((ref, header) async {
-  final selectedChain = ref.watch(selectedChainProvider);
-  final genusClient = ref.read(genusProvider(selectedChain));
-
-  final config = ref.read(configProvider.future);
-  final presentConfig = await config;
-
-  var blockRes = await genusClient.getBlockById(blockIdString: header);
-
-  return Block(
-    header: decodeId(blockRes.block.header.headerId.value),
-    epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
-    size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
-    height: blockRes.block.header.height.toInt(),
-    slot: blockRes.block.header.slot.toInt(),
-    timestamp: blockRes.block.header.timestamp.toInt(),
-    transactionNumber: blockRes.block.fullBody.transactions.length,
-  );
+  return ref.read(blockProvider.notifier).getBlockFromStateById(header);
 });
 
 final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<Map<int, Block>>>((ref) {
@@ -332,5 +315,47 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     }
 
     return nextBlock;
+  }
+
+  Future<Block> getBlockFromStateById(String header) async {
+    var blocks = state.asData?.value;
+
+    if (blocks == null) {
+      throw Exception('Error in blockProvider: blocks are null');
+    }
+
+    // If the state contains the block, return it
+
+    try {
+      return blocks.values.firstWhere((element) => element.header == header);
+    } catch (e) {
+      final genusClient = ref.read(genusProvider(selectedChain));
+
+      final config = ref.read(configProvider.future);
+      final presentConfig = await config;
+
+      var blockRes = await genusClient.getBlockById(blockIdString: header);
+
+      final block = Block.fromBlockRes(
+        blockRes: blockRes,
+        epochLength: presentConfig.config.epochLength.toInt(),
+      );
+
+      // Set the state
+      blocks = {...blocks};
+      // Get blocks depth
+      final depth = blocks[0]!.height - block.height;
+      if (depth < 0) {
+        blocks[0] = block;
+      } else {
+        blocks[depth] = block;
+      }
+      final sortedBlocks = sortBlocksByDepth(blocks: blocks);
+      state = AsyncData(sortedBlocks);
+
+      return block;
+
+      // Set the state to the new block
+    }
   }
 }

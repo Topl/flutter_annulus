@@ -1,20 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
+import 'package:flutter_annulus/chain/utils/chain_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_annulus/shared/services/hive/hives.dart';
 import 'package:flutter_annulus/shared/utils/hive_utils.dart';
 
 final selectedChainProvider = StateProvider<Chains>((ref) {
-  return kDebugMode ? const Chains.private_network() : const Chains.topl_mainnet();
+  return getDefaultChain();
 });
 
 final chainsProvider = StateNotifierProvider<ChainsNotifier, AsyncValue<List<Chains>>>((ref) {
-  return ChainsNotifier();
+  return ChainsNotifier(ref);
 });
 
 class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
-  ChainsNotifier() : super(const AsyncLoading()) {
+  final Ref ref;
+  ChainsNotifier(this.ref) : super(const AsyncLoading()) {
     _getAvailableChains(setState: true);
   }
 
@@ -96,5 +98,19 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
 
     //add new custom chain to state
     state = AsyncData([...chains, chain]);
+  }
+
+  Future<void> removeCustomChain({required String chainId}) async {
+    final chains = state.asData?.value;
+
+    if (chains == null) {
+      throw Exception('Error in chainsProvider: chains are null');
+    }
+
+    await HiveService().deleteItem(boxType: Hives.customChains, key: chainId);
+
+    chains.removeWhere((element) => element is CustomNetwork && element.chainId == chainId);
+    state = AsyncData(chains);
+    ref.read(selectedChainProvider.notifier).state = getDefaultChain();
   }
 }
