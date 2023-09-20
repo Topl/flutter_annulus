@@ -166,8 +166,9 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       for (int i = 1; i < pageLimit; i++) {
         final int heightToSearch = blocks[0].height - i;
         // check is blocks exist in cache
-        if (await HiveService().getItem(boxType: Hives.blocks, key: heightToSearch.toString()) != null) {
-          final blockData = await HiveService().getItem(boxType: Hives.blocks, key: heightToSearch.toString());
+        final cachedData = await HiveService().getItem(boxType: Hives.blocks, key: heightToSearch.toString());
+        if (cachedData != null) {
+          final blockData = cachedData;
           blocks.add(Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>));
         } else {
           final blockRes = await genusClient.getBlockByHeight(height: blocks[0].height - i);
@@ -227,8 +228,9 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       final desiredHeight = blockAtDepth0.height - depth;
 
       // check is blocks exist in cache
-      if (await HiveService().getItem(boxType: Hives.blocks, key: desiredHeight.toString()) != null) {
-        final blockData = await HiveService().getItem(boxType: Hives.blocks, key: desiredHeight.toString());
+      final cachedData = await HiveService().getItem(boxType: Hives.blocks, key: desiredHeight.toString());
+      if (cachedData != null) {
+        final blockData = cachedData;
         final block = Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>);
         blocks[depth] = block;
         final sortedBlocks = sortBlocksByDepth(blocks: blocks);
@@ -292,8 +294,9 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     } else {
       blocks = {...blocks};
       // check if item exists in cache
-      if (await HiveService().getItem(boxType: Hives.blocks, key: height.toString()) != null) {
-        final blockData = await HiveService().getItem(boxType: Hives.blocks, key: height.toString());
+      final cachedData = await HiveService().getItem(boxType: Hives.blocks, key: height.toString());
+      if (cachedData != null) {
+        final blockData = cachedData;
         final block = Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>);
         blocks[depth] = block;
         final sortedBlocks = sortBlocksByDepth(blocks: blocks);
@@ -350,8 +353,9 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     }
 
     // check if item exists in cache
-    if (await HiveService().getItem(boxType: Hives.blocks, key: height.toString()) != null) {
-      final blockData = await HiveService().getItem(boxType: Hives.blocks, key: height.toString());
+    final cachedData = await HiveService().getItem(boxType: Hives.blocks, key: height.toString());
+    if (cachedData != null) {
+      final blockData = cachedData;
       final block = Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>);
       blocks[0] = block;
       final sortedBlocks = sortBlocksByDepth(blocks: blocks);
