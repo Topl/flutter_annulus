@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
@@ -5,10 +7,13 @@ import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/chain/utils/constants.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
+import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
 import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../shared/services/hive/hives.dart';
 
 /// Returns a block at the depth
 ///
@@ -114,6 +119,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
   final Chains selectedChain;
   final Ref ref;
   final Future<FetchNodeConfigRes> config;
+
   BlockNotifier(
     this.ref,
     this.selectedChain,
@@ -158,13 +164,28 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
 
       //fetch more blocks with block0 as the reference for a fixed depth
       for (int i = 1; i < pageLimit; i++) {
-        final blockRes = await genusClient.getBlockByHeight(height: blocks[0].height - i);
-        blocks.add(
-          Block.fromBlockRes(
+        final int heightToSearch = blocks[0].height - i;
+        // check is blocks exist in cache
+        if (await HiveService().getItem(boxType: Hives.blocks, key: heightToSearch.toString()) != null) {
+          final blockData = await HiveService().getItem(boxType: Hives.blocks, key: heightToSearch.toString());
+          blocks.add(Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>));
+        } else {
+          final blockRes = await genusClient.getBlockByHeight(height: blocks[0].height - i);
+          final blockData = Block.fromBlockRes(
             blockRes: blockRes,
             epochLength: presentConfig.config.epochLength.toInt(),
-          ),
-        );
+          );
+          final jsonData = blockData.toJson();
+          //add to cache
+          await HiveService().putItem(
+            boxType: Hives.blocks,
+            key: heightToSearch.toString(),
+            value: jsonEncode(jsonData),
+          );
+          blocks.add(
+            blockData,
+          );
+        }
       }
 
       // Adding delay here to simulate API call
@@ -205,21 +226,39 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       }
       final desiredHeight = blockAtDepth0.height - depth;
 
-      final blockRes = await genusClient.getBlockByHeight(height: desiredHeight);
-      final presentConfig = await config;
-      // Add that block to state's list
-      var newBlock = Block.fromBlockRes(
-        blockRes: blockRes,
-        epochLength: presentConfig.config.epochLength.toInt(),
-      );
-      blocks[depth] = newBlock;
+      // check is blocks exist in cache
+      if (await HiveService().getItem(boxType: Hives.blocks, key: desiredHeight.toString()) != null) {
+        final blockData = await HiveService().getItem(boxType: Hives.blocks, key: desiredHeight.toString());
+        final block = Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>);
+        blocks[depth] = block;
+        final sortedBlocks = sortBlocksByDepth(blocks: blocks);
+        state = AsyncData(sortedBlocks);
+        return block;
+      } else {
+        final blockRes = await genusClient.getBlockByHeight(height: desiredHeight);
+        final presentConfig = await config;
+        // Add that block to state's list
+        var newBlock = Block.fromBlockRes(
+          blockRes: blockRes,
+          epochLength: presentConfig.config.epochLength.toInt(),
+        );
 
-      // Sort the blocks by depth so that they are in order
-      final sortedBlocks = sortBlocksByDepth(blocks: blocks);
-      state = AsyncData(sortedBlocks);
+        final jsonData = newBlock.toJson();
+        //add to cache
+        await HiveService().putItem(
+          boxType: Hives.blocks,
+          key: desiredHeight.toString(),
+          value: jsonEncode(jsonData),
+        );
+        blocks[depth] = newBlock;
 
-      // Return that block
-      return newBlock;
+        // Sort the blocks by depth so that they are in order
+        final sortedBlocks = sortBlocksByDepth(blocks: blocks);
+        state = AsyncData(sortedBlocks);
+
+        // Return that block
+        return newBlock;
+      }
     }
   }
 
@@ -252,23 +291,41 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       return blocks[depth]!;
     } else {
       blocks = {...blocks};
-      // Get the next block by height from Genus
-      final genusClient = ref.read(genusProvider(selectedChain));
-      final blockRes = await genusClient.getBlockByHeight(height: height);
-      final presentConfig = await config;
-      // Add that block to state's list
-      var newBlock = Block.fromBlockRes(
-        blockRes: blockRes,
-        epochLength: presentConfig.config.epochLength.toInt(),
-      );
-      blocks[depth] = newBlock;
+      // check if item exists in cache
+      if (await HiveService().getItem(boxType: Hives.blocks, key: height.toString()) != null) {
+        final blockData = await HiveService().getItem(boxType: Hives.blocks, key: height.toString());
+        final block = Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>);
+        blocks[depth] = block;
+        final sortedBlocks = sortBlocksByDepth(blocks: blocks);
+        state = AsyncData(sortedBlocks);
+        return block;
+      } else {
+        // Get the next block by height from Genus
+        final genusClient = ref.read(genusProvider(selectedChain));
+        final blockRes = await genusClient.getBlockByHeight(height: height);
+        final presentConfig = await config;
+        // Add that block to state's list
+        var newBlock = Block.fromBlockRes(
+          blockRes: blockRes,
+          epochLength: presentConfig.config.epochLength.toInt(),
+        );
 
-      // Sort the blocks by depth so that they are in order
-      final sortedBlocks = sortBlocksByDepth(blocks: blocks);
-      state = AsyncData(sortedBlocks);
+        // add to cache
+        await HiveService().putItem(
+          boxType: Hives.blocks,
+          key: height.toString(),
+          value: jsonEncode(newBlock.toJson()),
+        );
 
-      // Return that block
-      return newBlock;
+        blocks[depth] = newBlock;
+
+        // Sort the blocks by depth so that they are in order
+        final sortedBlocks = sortBlocksByDepth(blocks: blocks);
+        state = AsyncData(sortedBlocks);
+
+        // Return that block
+        return newBlock;
+      }
     }
   }
 
@@ -292,29 +349,49 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       throw Exception('Error in blockProvider: blocks are null');
     }
 
-    final genusClient = ref.read(genusProvider(selectedChain));
-    var nextBlock = await genusClient.getBlockByHeight(height: height);
-    //check that block has transactions
-    while (!nextBlock.block.fullBody.hasField(1)) {
-      height--;
-      nextBlock = await genusClient.getBlockByHeight(height: height);
-    }
-
-    final blockAtDepth0 = blocks[0];
-    if (blockAtDepth0 == null) {
-      throw Exception('Error in blockProvider: blockAtDepth0 is null');
-    }
-
-    final depth = blockAtDepth0.height - height;
-
-    //not in state
-    if (blocks[depth] == null) {
-      blocks = {...blocks};
+    // check if item exists in cache
+    if (await HiveService().getItem(boxType: Hives.blocks, key: height.toString()) != null) {
+      final blockData = await HiveService().getItem(boxType: Hives.blocks, key: height.toString());
+      final block = Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>);
+      blocks[0] = block;
       final sortedBlocks = sortBlocksByDepth(blocks: blocks);
       state = AsyncData(sortedBlocks);
-    }
+      return BlockResponse();
+    } else {
+      final genusClient = ref.read(genusProvider(selectedChain));
+      var nextBlock = await genusClient.getBlockByHeight(height: height);
+      //check that block has transactions
+      while (!nextBlock.block.fullBody.hasField(1)) {
+        height--;
+        nextBlock = await genusClient.getBlockByHeight(height: height);
+      }
 
-    return nextBlock;
+      final blockAtDepth0 = blocks[0];
+      if (blockAtDepth0 == null) {
+        throw Exception('Error in blockProvider: blockAtDepth0 is null');
+      }
+
+      final depth = blockAtDepth0.height - height;
+
+      //not in state
+      if (blocks[depth] == null) {
+        blocks = {...blocks};
+        final sortedBlocks = sortBlocksByDepth(blocks: blocks);
+        state = AsyncData(sortedBlocks);
+      }
+      final presentConfig = await config;
+      // add to cache
+      await HiveService().putItem(
+        boxType: Hives.blocks,
+        key: height.toString(),
+        value: jsonEncode(Block.fromBlockRes(
+          blockRes: nextBlock,
+          epochLength: presentConfig.config.epochLength.toInt(),
+        ).toJson()),
+      );
+
+      return nextBlock;
+    }
   }
 
   Future<Block> getBlockFromStateById(String header) async {
