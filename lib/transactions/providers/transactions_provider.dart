@@ -177,7 +177,6 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       if (setState) state = const AsyncLoading();
       final List<Transaction> transactions = [];
       //get first populated block
-
       var latestBlockRes = await ref.read(blockProvider.notifier).getFirstPopulatedBlock();
 
       final config = ref.read(configProvider.future);
@@ -198,10 +197,10 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       //continue going through transactions
       for (int i = 0; i < transactionCount; i++) {
         // check is transactions exist in cache
-        final cachedData = await HiveService().getItem(boxType: Hives.transactions, key: latestBlock.header);
+        final cachedData = await HiveService().getItem(boxType: Hives.transactions, key: latestBlock.height.toString());
         if (cachedData != null) {
-          final transactionData = cachedData;
-          transactions.add(Transaction.fromJson(transactionData));
+          final List<dynamic> transactionList = jsonDecode(cachedData);
+          transactions.addAll(transactionList.map((item) => Transaction.fromJson(item)));
         } else {
           //calculate transaction amount
           var outputList = latestBlockRes.block.fullBody.transactions[i].outputs.toList();
@@ -233,8 +232,8 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
           //add to cache
           await HiveService().putItem(
             boxType: Hives.transactions,
-            key: latestBlock.header,
-            value: transactions,
+            key: latestBlock.height.toString(),
+            value: jsonEncode(transactions),
           );
         }
       }
