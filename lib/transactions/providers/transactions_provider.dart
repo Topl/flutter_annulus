@@ -1,4 +1,6 @@
-import 'package:flutter_annulus/search/models/search_result.dart';
+import 'dart:convert';
+import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
+import 'package:flutter_annulus/shared/services/hive/hives.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
@@ -175,7 +177,6 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       if (setState) state = const AsyncLoading();
       final List<Transaction> transactions = [];
       //get first populated block
-
       var latestBlockRes = await ref.read(blockProvider.notifier).getFirstPopulatedBlock();
 
       final config = ref.read(configProvider.future);
@@ -195,31 +196,46 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
 
       //continue going through transactions
       for (int i = 0; i < transactionCount; i++) {
-        //calculate transaction amount
-        var outputList = latestBlockRes.block.fullBody.transactions[i].outputs.toList();
-        var inputList = latestBlockRes.block.fullBody.transactions[i].inputs.toList();
-        var txAmount = calculateAmount(outputs: outputList);
-        var txFees = calculateFees(inputs: inputList, outputs: outputList);
+        // check is transactions exist in cache
+        final cachedData = await HiveService().getItem(boxType: Hives.transactions, key: latestBlock.height.toString());
+        if (cachedData != null) {
+          final List<dynamic> transactionList = jsonDecode(cachedData);
+          transactions.addAll(transactionList.map((item) => Transaction.fromJson(item)));
+        } else {
+          //calculate transaction amount
+          var outputList = latestBlockRes.block.fullBody.transactions[i].outputs.toList();
+          var inputList = latestBlockRes.block.fullBody.transactions[i].inputs.toList();
+          var txAmount = calculateAmount(outputs: outputList);
+          var txFees = calculateFees(inputs: inputList, outputs: outputList);
 
-        transactions.add(
-          Transaction(
-            transactionId: decodeId(latestBlockRes.block.fullBody.transactions[i].transactionId.value),
-            status: TransactionStatus.pending,
-            block: latestBlock,
-            broadcastTimestamp: latestBlock.timestamp,
-            confirmedTimestamp: 0, //for the latest block, it will never be confirmed (confirmation depth is 5)
-            transactionType: TransactionType.transfer,
-            amount: txAmount.toDouble(),
-            quantity: txAmount.toDouble(),
-            transactionFee: txFees.toDouble(),
-            senderAddress:
-                latestBlockRes.block.fullBody.transactions[i].inputs.map((e) => decodeId(e.address.id.value)).toList(),
-            receiverAddress:
-                latestBlockRes.block.fullBody.transactions[i].outputs.map((e) => decodeId(e.address.id.value)).toList(),
-            transactionSize: latestBlockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
-            name: latestBlockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
-          ),
-        );
+          transactions.add(
+            Transaction(
+              transactionId: decodeId(latestBlockRes.block.fullBody.transactions[i].transactionId.value),
+              status: TransactionStatus.pending,
+              block: latestBlock,
+              broadcastTimestamp: latestBlock.timestamp,
+              confirmedTimestamp: 0, //for the latest block, it will never be confirmed (confirmation depth is 5)
+              transactionType: TransactionType.transfer,
+              amount: txAmount.toDouble(),
+              quantity: txAmount.toDouble(),
+              transactionFee: txFees.toDouble(),
+              senderAddress: latestBlockRes.block.fullBody.transactions[i].inputs
+                  .map((e) => decodeId(e.address.id.value))
+                  .toList(),
+              receiverAddress: latestBlockRes.block.fullBody.transactions[i].outputs
+                  .map((e) => decodeId(e.address.id.value))
+                  .toList(),
+              transactionSize: latestBlockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
+              name: latestBlockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
+            ),
+          );
+          //add to cache
+          await HiveService().putItem(
+            boxType: Hives.transactions,
+            key: latestBlock.height.toString(),
+            value: jsonEncode(transactions),
+          );
+        }
       }
       if (setState) {
         Future.delayed(const Duration(seconds: 1), () {
