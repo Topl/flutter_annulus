@@ -45,7 +45,7 @@ Future<ChartResult> _calculateDataThroughput({
 }) async {
   final blockAtHeight0 = await ref.read(blockStateAtHeightProvider(1).future);
   int skipCount = await blockSkipAmount(
-    timeFrame: endTime.millisecondsSinceEpoch - blockAtHeight0.timestamp,
+    timeFrame: Duration(milliseconds: endTime.millisecondsSinceEpoch - blockAtHeight0.timestamp),
     ref: ref,
     blockAtHeight0: blockAtHeight0,
   );

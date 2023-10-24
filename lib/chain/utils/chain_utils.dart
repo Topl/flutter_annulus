@@ -29,7 +29,7 @@ Chains getDefaultChain() {
 }
 
 Future<int> blockSkipAmount({
-  required int timeFrame,
+  required Duration timeFrame,
   required Ref ref,
   required Block blockAtHeight0,
 }) async {
@@ -37,7 +37,7 @@ Future<int> blockSkipAmount({
 
   var chainInfo = ref.read(chainStatisticsProvider);
   var averageBlockTime = chainInfo.asData!.value.averageBlockTime;
-  var blockSkipAmount = (timeFrame / (averageBlockTime * skipCount)).round();
+  var blockSkipAmount = (timeFrame.inMilliseconds / (averageBlockTime * skipCount)).round();
 
   if (blockSkipAmount < 1) {
     return 1;
