@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
@@ -273,18 +274,12 @@ class MobileMenu extends HookConsumerWidget {
   }
 }
 
-/// ThemeModeSwitch widget that displays the switch button.
-class ThemeModeSwitch extends StatefulWidget {
-  const ThemeModeSwitch({Key? key, required this.onPressed}) : super(key: key);
+/// ThemeModeSwitch widget state.
+class ThemeModeSwitch extends HookWidget {
+  bool darkMode = false;
   final Function onPressed;
 
-  @override
-  State<ThemeModeSwitch> createState() => _ThemeModeSwitchState();
-}
-
-/// ThemeModeSwitch widget state.
-class _ThemeModeSwitchState extends State<ThemeModeSwitch> {
-  bool darkMode = false;
+  ThemeModeSwitch({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

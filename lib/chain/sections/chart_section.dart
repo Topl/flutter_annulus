@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/models/time_frame.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
@@ -54,7 +55,7 @@ class ChartSection extends ConsumerWidget {
   }
 }
 
-class ChartTabItem extends StatelessWidget {
+class ChartTabItem extends HookWidget {
   const ChartTabItem({
     super.key,
     this.clicked = false,
