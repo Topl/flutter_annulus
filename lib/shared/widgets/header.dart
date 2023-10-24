@@ -288,10 +288,8 @@ class ThemeModeSwitch extends HookWidget {
       activeColor: const Color(0xFF7040EC),
       onChanged: (bool value) {
         // This is called when the user toggles the switch.
-        setState(() {
-          darkMode = value;
-        });
-        widget.onPressed();
+        darkMode = value;
+        onPressed();
       },
     );
   }
