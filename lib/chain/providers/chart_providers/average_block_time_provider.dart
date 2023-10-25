@@ -1,6 +1,8 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chart_result.dart';
+import 'package:flutter_annulus/chain/providers/chart_providers/average_transaction_fee_provider.dart';
+import 'package:flutter_annulus/chain/utils/chain_utils.dart';
 import 'package:flutter_annulus/chain/utils/constants.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -43,17 +45,25 @@ Future<ChartResult> _getBlockTimeSinceDecentralization({
 
 // Function to get the average block time
 Future<ChartResult> _getAverageBlockTime({
-  required int skipCount, // Number of blocks to skip
   required DateTime endTime, // End time for the calculation
   required Ref ref, // Reference to the provider
 }) async {
+  final blockAtHeight0 = await ref.read(blockStateAtHeightProvider(1).future);
+
+  int skipCount = await blockSkipAmount(
+    timeFrame: Duration(milliseconds:  endTime.millisecondsSinceEpoch - blockAtHeight0.timestamp),
+    ref: ref,
+    blockAtHeight0: blockAtHeight0,
+  );
+
   var currentBlockEndTime = DateTime.now(); // Set the current block end time to now
   var currentBlockDepth = 0; // Set the current block depth to 0
 
   Map<DateTime, double> results = {}; // Map to store the results
-
+  int amountOfBlocksRequested = 1;
   // Loop until the current block end time is after the end time
-  while (currentBlockEndTime.isAfter(endTime)) {
+  while (currentBlockEndTime.isAfter(endTime) && amountOfBlocksRequested <= maxDataPoints) {
+    amountOfBlocksRequested += 1;
     final Block block1 =
         await ref.read(blockStateAtDepthProvider(currentBlockDepth).future); // Get the block at the current depth
 
@@ -90,7 +100,6 @@ Future<ChartResult> _getAverageBlockTime({
 
 final averageBlockTimeDayProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: chartDaySkipAmount,
     endTime: chartDayEndTime,
     ref: ref,
   );
@@ -98,7 +107,6 @@ final averageBlockTimeDayProvider = FutureProvider<ChartResult>((ref) async {
 
 final averageBlockTimeWeekProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: chartWeekSkipAmount,
     endTime: chartWeekEndTime,
     ref: ref,
   );
@@ -106,7 +114,6 @@ final averageBlockTimeWeekProvider = FutureProvider<ChartResult>((ref) async {
 
 final averageBlockTimeTwoWeeksProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: chartTwoWeekSkipAmount,
     endTime: chartTwoWeekEndTime,
     ref: ref,
   );
@@ -114,7 +121,6 @@ final averageBlockTimeTwoWeeksProvider = FutureProvider<ChartResult>((ref) async
 
 final averageBlockTimeMonthProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: chartMonthSkipAmount,
     endTime: chartMonthEndTime,
     ref: ref,
   );
@@ -122,7 +128,6 @@ final averageBlockTimeMonthProvider = FutureProvider<ChartResult>((ref) async {
 
 final averageBlockTimeThreeMonthsProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: chartThreeMonthSkipAmount,
     endTime: chartThreeMonthEndTime,
     ref: ref,
   );
@@ -130,7 +135,6 @@ final averageBlockTimeThreeMonthsProvider = FutureProvider<ChartResult>((ref) as
 
 final averageBlockTimeSixMonthsProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: chartSixMonthSkipAmount,
     endTime: chartSixMonthEndTime,
     ref: ref,
   );
@@ -138,7 +142,6 @@ final averageBlockTimeSixMonthsProvider = FutureProvider<ChartResult>((ref) asyn
 
 final averageBlockTimeYearProvider = FutureProvider<ChartResult>((ref) async {
   return _getAverageBlockTime(
-    skipCount: chartYearSkipAmount,
     endTime: chartYearEndTime,
     ref: ref,
   );
