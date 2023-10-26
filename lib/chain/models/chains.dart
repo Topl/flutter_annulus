@@ -25,7 +25,7 @@ sealed class Chains with _$Chains {
   }) = PrivateNetwork;
   const factory Chains.dev_network({
     @Default('Development') String networkName,
-    @Default('testnet.topl.co') String hostUrl,
+    @Default('testnet.topl.tech') String hostUrl,
     @Default(443) int port,
   }) = DevNetwork;
   const factory Chains.mock({
