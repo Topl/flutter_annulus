@@ -136,9 +136,9 @@ class ChainInfo extends HookConsumerWidget {
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  const CustomTooltip(
+                                  CustomTooltip(
                                     tooltipText: Strings.eonTooltipText,
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.info_outline,
                                       color: Color(0xFF858E8E),
                                     ),
@@ -184,9 +184,9 @@ class ChainInfo extends HookConsumerWidget {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                const CustomTooltip(
+                                CustomTooltip(
                                   tooltipText: Strings.eraTooltipText,
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.info_outline,
                                     color: Color(0xFF858E8E),
                                   ),

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 
-class TransactionDrawer extends StatefulWidget {
-  const TransactionDrawer({super.key, this.show = false});
-  final bool show;
-  @override
-  _TransactionDrawerState createState() => _TransactionDrawerState();
-}
+class TransactionDrawer extends HookWidget {
+  TransactionDrawer({super.key});
 
-class _TransactionDrawerState extends State<TransactionDrawer> {
+  bool show = false;
+
   @override
   Widget build(BuildContext context) {
     return BodyWithSideSheet(
