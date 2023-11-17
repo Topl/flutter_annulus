@@ -41,20 +41,30 @@ List<BigInt> getOutputBigInts({required List<UnspentTransactionOutput> outputs})
   List<UnspentTransactionOutput> outputLvls = outputs.where((element) {
     return element.value.hasLvl();
   }).toList();
-
-  return outputLvls.map((e) {
-    return e.value.lvl.quantity.value.toBigInt;
-  }).toList();
+  try {
+    return outputLvls.map((e) {
+      return e.value.lvl.quantity.value.toBigInt;
+    }).toList();
+  } catch (e) {
+    return [];
+  }
 }
 
 BigInt calculateAmount({required List<UnspentTransactionOutput> outputs}) {
   List<BigInt> outputBigInts = getOutputBigInts(outputs: outputs);
+  if (outputBigInts.isEmpty) {
+    return BigInt.zero;
+  }
   return outputBigInts.reduce((value, element) => value + element);
 }
 
 BigInt calculateFees({required List<SpentTransactionOutput> inputs, required List<UnspentTransactionOutput> outputs}) {
   List<BigInt> inputBigInts = getInputBigInts(inputs: inputs);
   List<BigInt> outputBigInts = getOutputBigInts(outputs: outputs);
+
+  if (inputBigInts.isEmpty || outputBigInts.isEmpty) {
+    return BigInt.zero;
+  }
 
   BigInt inputSum = inputBigInts.reduce((value, element) => value + element);
   BigInt outputSum = outputBigInts.reduce((value, element) => value + element);

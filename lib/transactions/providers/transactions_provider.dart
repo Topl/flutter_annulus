@@ -208,6 +208,11 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
             var txAmount = calculateAmount(outputs: outputList);
             var txFees = calculateFees(inputs: inputList, outputs: outputList);
 
+            final name = latestBlockRes.block.fullBody.transactions[i].inputs.isNotEmpty &&
+                    latestBlockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl()
+                ? 'Lvl'
+                : 'Topl';
+
             transactions.add(
               Transaction(
                 transactionId: decodeId(latestBlockRes.block.fullBody.transactions[i].transactionId.value),
@@ -226,7 +231,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
                     .map((e) => decodeId(e.address.id.value))
                     .toList(),
                 transactionSize: latestBlockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
-                name: latestBlockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
+                name: name,
               ),
             );
             //add to cache
