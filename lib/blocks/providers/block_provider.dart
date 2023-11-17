@@ -332,20 +332,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     }
   }
 
-  //TODO: figure out a better way since a ton of empty blocks means this is taking too long
-  Future<BlockResponse> getFirstPopulatedBlock() async {
-    int depth = 0;
-    final genusClient = ref.read(genusProvider(selectedChain));
-    var nextBlock = await genusClient.getBlockByDepth(depth: depth);
-    //check that block has transactions
-    while (!nextBlock.block.fullBody.hasField(1)) {
-      depth++;
-      nextBlock = await genusClient.getBlockByDepth(depth: depth);
-    }
-
-    return nextBlock;
-  }
-
   Future<BlockResponse> getNextPopulatedBlock({required int height}) async {
     var blocks = state.asData?.value;
     if (blocks == null) {
@@ -440,3 +426,31 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     }
   }
 }
+
+final getFirstPopulatedBlockProvider =
+    FutureProvider.autoDispose.family<BlockResponse, Chains>((ref, selectedChain) async {
+  int depth = 0;
+  final genusClient = ref.read(genusProvider(selectedChain));
+  var nextBlock = await genusClient.getBlockByDepth(depth: depth);
+
+  // Get the current time
+  final startTime = DateTime.now();
+
+  //check that block has transactions
+  while (!nextBlock.block.fullBody.hasField(1)) {
+    // This will break the loop after 20 seconds
+    // Get the current time in each iteration
+    final currentTime = DateTime.now();
+    // Calculate the elapsed time
+    final elapsedTime = currentTime.difference(startTime);
+    // If the elapsed time is greater than the desired duration, break the loop
+    if (elapsedTime > const Duration(seconds: 20)) {
+      throw ('Error in blockProvider: getFirstPopulatedBlockProvider took too long');
+    }
+
+    depth++;
+    nextBlock = await genusClient.getBlockByDepth(depth: depth);
+  }
+
+  return nextBlock;
+});
