@@ -1,6 +1,7 @@
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chart_result.dart';
+import 'package:flutter_annulus/chain/utils/chain_utils.dart';
 import 'package:flutter_annulus/chain/utils/constants.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -42,13 +43,20 @@ Future<ChartResult> _calculateDataThroughput({
   required DateTime endTime, // The end time for the calculation.
   required Ref ref, // The reference to the block state.
 }) async {
+  final blockAtHeight0 = await ref.read(blockStateAtHeightProvider(1).future);
+  int skipCount = await blockSkipAmount(
+    timeFrame: Duration(milliseconds: endTime.millisecondsSinceEpoch - blockAtHeight0.timestamp),
+    ref: ref,
+    blockAtHeight0: blockAtHeight0,
+  );
   var currentBlockEndTime = DateTime.now(); // The current block's end time.
   var currentBlockDepth = 0; // The current block's depth.
 
   Map<DateTime, double> results = {}; // The results of the calculation.
-
+  int amountOfBlocksRequested = 1;
   // Loop through the blocks until the current block's end time is before the end time.
-  while (currentBlockEndTime.isAfter(endTime)) {
+  while (currentBlockEndTime.isAfter(endTime) && amountOfBlocksRequested <= 100) {
+    amountOfBlocksRequested += 1;
     final Block block1 = await ref.read(blockStateAtDepthProvider(currentBlockDepth).future); // Get the current block.
 
     final nextBlockDepth = currentBlockDepth + skipCount; // Calculate the depth of the next block.
