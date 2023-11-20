@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
+import 'package:flutter_annulus/shared/utils/nav_utils.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
-import 'package:flutter_annulus/transactions/sections/transaction_details_drawer.dart';
-import 'package:flutter_annulus/transactions/sections/transaction_details_page.dart';
+import 'package:flutter_annulus/transactions/sections/desktop_transaction_details_page.dart';
+import 'package:flutter_annulus/transactions/sections/mobile_transaction_details_page.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -94,22 +95,7 @@ class Transactions extends HookConsumerWidget {
                     .map(
                       (transaction) => DataRow(
                         onSelectChanged: (value) {
-                          //handles on click
-                          if (isDesktop) {
-                            showModalSideSheet(
-                              context: context,
-                              ignoreAppBar: false,
-                              width: 640,
-                              barrierColor: Colors.white.withOpacity(barrierOpacity),
-                              barrierDismissible: true,
-                              body: TransactionDetailsDrawer(
-                                transaction: transaction,
-                              ),
-                            );
-                          } else {
-                            context.vRouter
-                                .to(TransactionDetailsPage.transactionDetailsPath(transaction.transactionId));
-                          }
+                          goToTransactionDetails(context: context, transaction: transaction);
                         },
                         cells: [
                           DataCell(Container(
