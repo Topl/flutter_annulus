@@ -19,10 +19,6 @@ final transactionStateAtIndexProvider = FutureProvider.family<Transaction, int>(
 });
 
 final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((ref, transactionId) async {
-  // QQQQ
-  // return ref.watch(transactionsProvider.notifier).getTransactionById(transactionId: transactionId);
-
-  await Future.delayed(Duration(seconds: 2));
   return ref.watch(transactionsProvider.notifier).getTransactionById(transactionId: transactionId);
 });
 

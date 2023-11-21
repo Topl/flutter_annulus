@@ -45,7 +45,7 @@ class ChainNameDropDown extends HookConsumerWidget {
                 colorTheme: colorTheme,
                 setSelectedChain: (Chains chain) {
                   ref.read(selectedChainProvider.notifier).state = chain;
-                  VRouter.of(context).to(HomeScreen.chainPath(chain.networkName));
+                  VRouter.of(context).to(HomeScreen.chainPath(chain.urlName));
                 },
                 removeCustomChain: (String chainId) async {
                   await ref.read(chainsProvider.notifier).removeCustomChain(chainId: chainId);
@@ -59,7 +59,7 @@ class ChainNameDropDown extends HookConsumerWidget {
                 setSelectedChain: (Chains chain) {
                   ref.read(selectedChainProvider.notifier).state = chain;
                   VRouter.of(context).to(
-                    HomeScreen.chainPath(chain.networkName),
+                    HomeScreen.chainPath(chain.urlName),
                   );
                 },
                 removeCustomChain: (String chainId) async {

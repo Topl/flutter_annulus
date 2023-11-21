@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chart_result.dart';
+import 'package:flutter_annulus/chain/providers/chain_statistics_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import "dart:math";
@@ -13,12 +14,25 @@ class LineGraph extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final blockData = ref.watch(blockProvider);
     return blockData.when(
-      data: (data) {
-        return ref.watch(chartProvider).when(
-              data: (chart) {
-                return LineGraphContainer(chartData: chart);
+      data: (blockData) {
+        // TODO, combine chain statistics and block data into the chart provider
+        return ref.watch(chainStatisticsProvider).when(
+              data: (chainData) {
+                return ref.watch(chartProvider).when(
+                      data: (chart) {
+                        return LineGraphContainer(chartData: chart);
+                      },
+                      error: (error, stack) {
+                        return const Text('Oops, something unexpected happened');
+                      },
+                      loading: () => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
               },
-              error: (error, stack) => const Text('Oops, something unexpected happened'),
+              error: (error, stack) {
+                return const Text('Oops, something unexpected happened');
+              },
               loading: () => const Center(
                 child: CircularProgressIndicator(),
               ),

@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/blocks/sections/block_details_drawer.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
-import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
-import 'package:flutter_annulus/transactions/sections/desktop_transaction_details_page.dart';
-import 'package:flutter_annulus/transactions/sections/mobile_transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_details_page.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -34,7 +31,6 @@ goToTransactionDetails({
   required Transaction transaction,
 }) {
   final chainId = context.vRouter.pathParameters[HomeScreen.chainIdParam];
-  print('QQQQ $chainId');
   context.vRouter.to(TransactionDetailsPage.transactionDetailsPath(transaction.transactionId, chainId!));
 }
 

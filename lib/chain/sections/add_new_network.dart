@@ -290,6 +290,7 @@ class _AddNewNetworkState extends ConsumerState<AddNewNetworkContainer> {
                             hostUrl: urlList[0],
                             port: urlList[1],
                             currency: currencyEnum,
+                            urlName: textEditingControllers['networkName']!.text,
                           );
 
                           await ref.read(chainsProvider.notifier).addCustomChain(chain: newChain as CustomNetwork);

@@ -11,3 +11,9 @@ Block getMockBlock() {
     transactionNumber: 200,
   );
 }
+
+String blockTimeStampToDifference(Block block) {
+  final difference = DateTime.now().millisecondsSinceEpoch - block.timestamp;
+
+  return "${difference ~/ 1000} sec ago";
+}

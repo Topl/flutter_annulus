@@ -25,25 +25,6 @@ class SlideFromRightModalSheetRoute<T> extends ModalRoute<T> {
   @override
   Color get barrierColor => Colors.black.withOpacity(0.5);
 
-  // QQQQ
-  // addScopedWillPopCallback
-  // @override
-  // bool didPop(T? result) {
-  //   print('QQQQ result $result');
-  //   // VRouter.of(AnnulusRouter.globalKey.currentContext!).to(HomeScreen.route);
-  //   return super.didPop(result);
-  //   if (Navigator.of(navigator!.context).userGestureInProgress) {
-  //     // The pop event is due to a barrier dismissal.
-  //     // Perform your custom behavior here.
-  //     // Return false to prevent the route from being popped.
-  //     return false;
-  //   } else {
-  //     // The pop event is not due to a barrier dismissal.
-  //     // Perform the default pop behavior.
-  //     return super.didPop(result);
-  //   }
-  // }
-
   @override
   Future<RoutePopDisposition> willPop() async {
     final pathParams = VRouter.of(AnnulusRouter.globalKey.currentContext!).pathParameters;

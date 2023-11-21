@@ -27,7 +27,6 @@ class MobileTransactionDetailsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-    final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     final AsyncValue<Transaction> asyncTransaction = ref.watch(getTransactionByIdProvider(transactionId));
 

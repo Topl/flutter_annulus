@@ -3,18 +3,14 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/nav_utils.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
-import 'package:flutter_annulus/transactions/sections/desktop_transaction_details_page.dart';
-import 'package:flutter_annulus/transactions/sections/mobile_transaction_details_page.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../shared/constants/strings.dart';
-import '../../shared/constants/ui.dart';
 import '../../shared/utils/theme_color.dart';
 import '../models/transaction.dart';
 import '../widgets/custom_transaction_widgets.dart';
-import 'package:modal_side_sheet/modal_side_sheet.dart';
 
 /// A widget to display the list of transactions.
 class Transactions extends HookConsumerWidget {

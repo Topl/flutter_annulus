@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_details_drawer.dart';
 import 'package:flutter_annulus/blocks/sections/block_mobile_details.dart';
+import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
@@ -102,7 +103,7 @@ class BlockView extends ConsumerWidget {
                           height: 16,
                         ),
                         Text(block.height.toString(), style: titleLarge(context)),
-                        const BlockSmallText(text: '12 sec ago'),
+                        BlockSmallText(text: blockTimeStampToDifference(block)),
                         const SizedBox(
                           height: 8,
                         ),
