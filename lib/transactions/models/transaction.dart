@@ -1,18 +1,15 @@
 // Flutter imports:
-import 'package:flutter/foundation.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
+import 'package:flutter_annulus/transactions/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 
 // Package imports:
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../shared/utils/decode_id.dart';
-import '../utils/utils.dart';
-
 part 'transaction.freezed.dart';
-
 part 'transaction.g.dart';
 
 @freezed

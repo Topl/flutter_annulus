@@ -5,15 +5,14 @@ import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/chain/utils/constants.dart';
-import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/providers/config_provider.dart';
+import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
+import 'package:flutter_annulus/shared/services/hive/hives.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
 import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../shared/services/hive/hives.dart';
 
 /// Returns a block at the depth
 ///
@@ -119,7 +118,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
   final Chains selectedChain;
   final Ref ref;
   final Future<FetchNodeConfigRes> config;
-
   BlockNotifier(
     this.ref,
     this.selectedChain,
@@ -145,6 +143,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       }
       return blocks;
     }
+
     try {
       final genusClient = ref.read(genusProvider(selectedChain));
 
@@ -241,7 +240,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
         throw Exception('Error in blockProvider: blockAtDepth0 is null');
       }
       final desiredHeight = blockAtDepth0.height - depth;
-
       // check is blocks exist in cache
       final cachedData = await HiveService().getItem(boxType: Hives.blocks, key: desiredHeight.toString());
       if (cachedData != null) {
@@ -352,7 +350,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     if (blocks == null) {
       throw Exception('Error in blockProvider: blocks are null');
     }
-
     // check if item exists in cache
     final cachedData = await HiveService().getItem(boxType: Hives.blocks, key: height.toString());
     if (cachedData != null) {
@@ -409,7 +406,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     // If the state contains the block, return it
 
     try {
-      return blocks.values.firstWhere((element) => element.header == header);
+      return blocks!.values.firstWhere((element) => element.header == header);
     } catch (e) {
       final genusClient = ref.read(genusProvider(selectedChain));
 
@@ -424,14 +421,19 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       );
 
       // Set the state
-      blocks = {...blocks};
+      blocks = {...blocks ?? {}};
       // Get blocks depth
-      final depth = blocks[0]!.height - block.height;
-      if (depth < 0) {
+
+      if (blocks.isEmpty) {
         blocks[0] = block;
       } else {
-        blocks[depth] = block;
+        final depth = blocks[0]!.height - block.height;
+        if (depth < 0) {
+        } else {
+          blocks[depth] = block;
+        }
       }
+
       final sortedBlocks = sortBlocksByDepth(blocks: blocks);
       state = AsyncData(sortedBlocks);
 
