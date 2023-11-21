@@ -29,7 +29,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 ///   ...
 ///   );
 /// ```
-final blockStateAtDepthProvider = FutureProvider.family<Block, int>((ref, depth) async {
+final blockStateAtDepthProvider = FutureProvider.family.autoDispose<Block, int>((ref, depth) async {
   return ref.watch(blockProvider.notifier).getBlockFromStateAtDepth(depth);
 });
 
@@ -48,7 +48,7 @@ final blockStateAtDepthProvider = FutureProvider.family<Block, int>((ref, depth)
 ///   ...
 ///   );
 /// ```
-final blockStateAtHeightProvider = FutureProvider.family<Block, int>((ref, height) async {
+final blockStateAtHeightProvider = FutureProvider.family.autoDispose<Block, int>((ref, height) async {
   return ref.watch(blockProvider.notifier).getBlockFromStateAtHeight(height);
 });
 
@@ -207,13 +207,28 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
   Future<Block> getBlockFromStateAtDepth(int depth) async {
     var blocks = state.asData?.value;
 
-    if (blocks == null) {
-      throw Exception('Error in blockProvider: blocks are null');
-    }
-
     // If the index is less than the length of the list, return the block at that index
-    if (blocks[depth] != null) {
+    if (blocks != null && blocks[depth] != null) {
       return blocks[depth]!;
+    } else if (blocks == null) {
+      // If there are no blocks, then you cant use reference for height, so get block by depth
+      final genusClient = ref.read(genusProvider(selectedChain));
+      final blockRes = await genusClient.getBlockByDepth(depth: depth);
+      final presentConfig = await config;
+      // Add that block to state's list
+      var newBlock = Block.fromBlockRes(
+        blockRes: blockRes,
+        epochLength: presentConfig.config.epochLength.toInt(),
+      );
+
+      // Set the state to the new block
+      blocks = {...blocks ?? {}};
+      blocks[0] = newBlock;
+      final sortedBlocks = sortBlocksByDepth(blocks: blocks);
+      state = AsyncData(sortedBlocks);
+
+      // Return that block
+      return newBlock;
     } else {
       blocks = {...blocks};
       // Get the next block by height from Genus

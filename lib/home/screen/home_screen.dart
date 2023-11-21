@@ -15,6 +15,12 @@ import '../../transactions/sections/transactions.dart';
 
 class HomeScreen extends HookConsumerWidget {
   static const String route = '/';
+  static const String chainIdParam = 'chainId';
+  static const String chianRoute = '/chain/';
+  static const String chainParamRoute = '$chianRoute:$chainIdParam';
+  static String chainPath(String chianId) {
+    return '$chianRoute$chianId';
+  }
 
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -23,6 +29,7 @@ class HomeScreen extends HookConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
+
     return CustomLayout(
       header: Header(
         logoAsset: colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',

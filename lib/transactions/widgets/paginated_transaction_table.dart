@@ -3,10 +3,11 @@ import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/extensions/widget_extensions.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/utils/nav_utils.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
-import 'package:flutter_annulus/transactions/sections/transaction_details_drawer.dart';
-import 'package:flutter_annulus/transactions/sections/transaction_details_page.dart';
+import 'package:flutter_annulus/transactions/sections/desktop_transaction_details_page.dart';
+import 'package:flutter_annulus/transactions/sections/mobile_transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -178,21 +179,10 @@ class RowDataSource extends DataTableSource {
       return DataRow(
         color: MaterialStateProperty.all(clr),
         onSelectChanged: (value) {
-          if (isDesktop) {
-            showModalSideSheet(
-              context: context,
-              ignoreAppBar: true,
-              width: 640,
-              barrierColor: Colors.white.withOpacity(barrierOpacity),
-              // with blur,
-              barrierDismissible: true,
-              body: TransactionDetailsDrawer(
-                transaction: row,
-              ),
-            );
-          } else {
-            context.vRouter.to(TransactionDetailsPage.transactionDetailsPath(row.transactionId));
-          }
+          goToTransactionDetails(
+            context: context,
+            transaction: row,
+          );
         },
         cells: showAllColumns
             ? <DataCell>[

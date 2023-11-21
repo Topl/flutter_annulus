@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_mobile_details.dart';
+import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
+import 'package:flutter_annulus/shared/widgets/model_right_sheet.dart';
 import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
@@ -33,6 +35,9 @@ void main() async {
 }
 
 class AnnulusRouter extends HookConsumerWidget {
+  static final globalKey = GlobalKey<NavigatorState>();
+  static Duration defaultDuration = const Duration(milliseconds: 200);
+
   const AnnulusRouter({Key? key}) : super(key: key);
 
   @override
@@ -44,14 +49,40 @@ class AnnulusRouter extends HookConsumerWidget {
       theme: lightTheme(context: context),
       darkTheme: darkTheme(context: context),
       themeMode: ref.watch(appThemeColorProvider),
+      navigatorKey: globalKey,
       routes: [
-        VWidget(
-          path: HomeScreen.route,
-          widget: const HomeScreen(),
-        ),
-        VWidget(
-          path: TransactionDetailsPage.paramRoute, // Transaction details screen
-          widget: const TransactionDetailsPage(),
+        VGuard(
+          beforeEnter: (vRedirector) async {
+            final String? chainId = vRedirector.newVRouterData?.pathParameters[HomeScreen.chainIdParam];
+            final selectedChain = ref.read(selectedChainProvider);
+            if (chainId == null) {
+              vRedirector.to(HomeScreen.chainPath(selectedChain.urlName));
+            } else if (chainId != selectedChain.urlName) {
+              final urlChain = ChainsNotifier.standardChains.where((element) => element.urlName == chainId).first;
+
+              ref.read(selectedChainProvider.notifier).state = urlChain;
+            }
+          },
+          stackedRoutes: [
+            VWidget(
+              path: HomeScreen.route,
+              widget: const HomeScreen(),
+              buildTransition: (animation, secondaryAnimation, child) => child,
+              aliases: const [
+                HomeScreen.chainParamRoute,
+              ],
+              stackedRoutes: [
+                VPage(
+                  path: TransactionDetailsPage.paramRoute,
+                  pageBuilder: (key, child, name) => ModelRightPage(
+                    key,
+                    child,
+                  ),
+                  widget: const TransactionDetailsPage(),
+                ),
+              ],
+            ),
+          ],
         ),
         VWidget(
           path: UTxODetailsPage.route, // UTxO details screen
@@ -75,6 +106,7 @@ class AnnulusRouter extends HookConsumerWidget {
             /// TODO: Add New Chain Screen
           ],
         ),
+        VRouteRedirector(path: '*', redirectTo: '/')
       ],
     );
   }

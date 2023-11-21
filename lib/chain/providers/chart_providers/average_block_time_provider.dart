@@ -51,7 +51,7 @@ Future<ChartResult> _getAverageBlockTime({
   final blockAtHeight0 = await ref.read(blockStateAtHeightProvider(1).future);
 
   int skipCount = await blockSkipAmount(
-    timeFrame: Duration(milliseconds:  endTime.millisecondsSinceEpoch - blockAtHeight0.timestamp),
+    timeFrame: Duration(milliseconds: endTime.millisecondsSinceEpoch - blockAtHeight0.timestamp),
     ref: ref,
     blockAtHeight0: blockAtHeight0,
   );
@@ -66,7 +66,6 @@ Future<ChartResult> _getAverageBlockTime({
     amountOfBlocksRequested += 1;
     final Block block1 =
         await ref.read(blockStateAtDepthProvider(currentBlockDepth).future); // Get the block at the current depth
-
     final nextBlockDepth = currentBlockDepth + skipCount; // Calculate the depth of the next block
 
     late Block block2; // Declare the next block
