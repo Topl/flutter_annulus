@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/blocks/sections/block_details_drawer.dart';
+import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
@@ -32,25 +33,9 @@ goToTransactionDetails({
   required BuildContext context,
   required Transaction transaction,
 }) {
-  context.vRouter.to(TransactionDetailsPage.transactionDetailsPath(transaction.transactionId));
-
-  // final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
-  // if (isDesktop) {
-  //   context.vRouter.to(TransactionDetailsDrawer.transactionsPath(transaction.transactionId));
-  //   // showModalSideSheet(
-  //   //   context: context,
-  //   //   ignoreAppBar: true,
-  //   //   width: 640,
-  //   //   barrierColor: Colors.white.withOpacity(barrierOpacity),
-  //   //   // with blur,
-  //   //   barrierDismissible: true,
-  //   //   body: TransactionDetailsDrawer(
-  //   //     transaction: transaction,
-  //   //   ),
-  //   // );
-  // } else {
-  //   context.vRouter.to(TransactionDetailsPage.transactionDetailsPath(transaction.transactionId));
-  // }
+  final chainId = context.vRouter.pathParameters[HomeScreen.chainIdParam];
+  print('QQQQ $chainId');
+  context.vRouter.to(TransactionDetailsPage.transactionDetailsPath(transaction.transactionId, chainId!));
 }
 
 // TODO: Implement this

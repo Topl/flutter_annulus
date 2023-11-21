@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
+import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:vrouter/vrouter.dart';
 
 import '../../shared/constants/ui.dart';
 import '../../shared/utils/theme_color.dart';
@@ -43,6 +45,7 @@ class ChainNameDropDown extends HookConsumerWidget {
                 colorTheme: colorTheme,
                 setSelectedChain: (Chains chain) {
                   ref.read(selectedChainProvider.notifier).state = chain;
+                  VRouter.of(context).to(HomeScreen.chainPath(chain.networkName));
                 },
                 removeCustomChain: (String chainId) async {
                   await ref.read(chainsProvider.notifier).removeCustomChain(chainId: chainId);
@@ -55,6 +58,9 @@ class ChainNameDropDown extends HookConsumerWidget {
                 colorTheme: colorTheme,
                 setSelectedChain: (Chains chain) {
                   ref.read(selectedChainProvider.notifier).state = chain;
+                  VRouter.of(context).to(
+                    HomeScreen.chainPath(chain.networkName),
+                  );
                 },
                 removeCustomChain: (String chainId) async {
                   await ref.read(chainsProvider.notifier).removeCustomChain(chainId: chainId);

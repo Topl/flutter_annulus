@@ -19,6 +19,10 @@ final transactionStateAtIndexProvider = FutureProvider.family<Transaction, int>(
 });
 
 final getTransactionByIdProvider = FutureProvider.family<Transaction, String>((ref, transactionId) async {
+  // QQQQ
+  // return ref.watch(transactionsProvider.notifier).getTransactionById(transactionId: transactionId);
+
+  await Future.delayed(Duration(seconds: 2));
   return ref.watch(transactionsProvider.notifier).getTransactionById(transactionId: transactionId);
 });
 
@@ -101,12 +105,8 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
   }) async {
     final transactions = state.asData?.value;
 
-    if (transactions == null) {
-      throw Exception('Transactions are null');
-    }
-
     // If the list of transactions already contains the transaction, return it
-    if (transactions.any((element) => element.transactionId == transactionId)) {
+    if (transactions != null && transactions.any((element) => element.transactionId == transactionId)) {
       return transactions.firstWhere((element) => element.transactionId == transactionId);
     } else {
       final selectedChain = ref.watch(selectedChainProvider);
@@ -154,7 +154,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
           transactionSize: transactionRes.writeToBuffer().lengthInBytes.toDouble(),
           name: transactionRes.transactionReceipt.transaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl');
 
-      state = AsyncData([...transactions, transaction]);
+      state = AsyncData([...transactions ?? [], transaction]);
       return transaction;
     }
   }

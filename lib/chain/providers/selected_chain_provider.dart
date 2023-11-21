@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/utils/chain_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

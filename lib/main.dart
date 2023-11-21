@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_mobile_details.dart';
-import 'package:flutter_annulus/farts.dart';
+import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
-import 'package:flutter_annulus/model_right_sheet.dart';
+import 'package:flutter_annulus/shared/widgets/model_right_sheet.dart';
 import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/transitions.dart';
 import 'package:flutter_annulus/shared/widgets/slide_left_builder.dart';
-import 'package:flutter_annulus/transactions/sections/desktop_transaction_details_page.dart';
-import 'package:flutter_annulus/transactions/sections/mobile_transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
 import 'package:flutter_annulus/utxo/widgets/utxo_details.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -46,7 +42,6 @@ class AnnulusRouter extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
     return VRouter(
       debugShowCheckedModeBanner: false,
       title: 'Annulus Event Explorer',
@@ -56,22 +51,35 @@ class AnnulusRouter extends HookConsumerWidget {
       themeMode: ref.watch(appThemeColorProvider),
       navigatorKey: globalKey,
       routes: [
-        VWidget(
-          path: HomeScreen.route,
-          widget: const HomeScreen(),
+        VGuard(
+          beforeEnter: (vRedirector) async {
+            final String? chainId = vRedirector.newVRouterData?.pathParameters[HomeScreen.chainIdParam];
+            final selectedChain = ref.read(selectedChainProvider);
+            if (chainId == null) {
+              vRedirector.to(HomeScreen.chainPath(selectedChain.networkName));
+            } else if (chainId != selectedChain.networkName) {
+              vRedirector.to(HomeScreen.chainPath(selectedChain.networkName));
+            }
+          },
           stackedRoutes: [
-            VPage(
-              path: TransactionDetailsPage.paramRoute,
-              pageBuilder: (key, child, name) => ModelRightPage(
-                key,
-                child,
-              ),
-              widget: const TransactionDetailsPage(),
+            VWidget(
+              path: HomeScreen.route,
+              widget: const HomeScreen(),
+              buildTransition: (animation, secondaryAnimation, child) => child,
+              aliases: const [
+                HomeScreen.chainParamRoute,
+              ],
+              stackedRoutes: [
+                VPage(
+                  path: TransactionDetailsPage.paramRoute,
+                  pageBuilder: (key, child, name) => ModelRightPage(
+                    key,
+                    child,
+                  ),
+                  widget: const TransactionDetailsPage(),
+                ),
+              ],
             ),
-            // VWidget(
-            //   path: TransactionDetailsPage.paramRoute,
-            //   widget: const TransactionDetailsPage(),
-            // ),
           ],
         ),
         VWidget(
@@ -96,6 +104,7 @@ class AnnulusRouter extends HookConsumerWidget {
             /// TODO: Add New Chain Screen
           ],
         ),
+        VRouteRedirector(path: '*', redirectTo: '/')
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/transactions/sections/desktop_transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/sections/mobile_transaction_details_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,16 +12,16 @@ class TransactionDetailsPage extends HookConsumerWidget {
     Key? key,
   }) : super(key: key);
 
-  static const String transactionIdParam = 'transactionId';
-  static const String route = '/transactions_details/';
-  static const String paramRoute = '$route:$transactionIdParam';
-  static String transactionDetailsPath(String transactionId) {
-    return '$route$transactionId';
+  static const String _transactionIdParam = 'transactionId';
+  static const String _route = '/transaction_details/';
+  static const String paramRoute = '${HomeScreen.chainParamRoute}$_route:$_transactionIdParam';
+  static String transactionDetailsPath(String transactionId, String chainId) {
+    return '${HomeScreen.chainPath(chainId)}$_route$transactionId';
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String? transactionId = context.vRouter.pathParameters[transactionIdParam];
+    final String? transactionId = context.vRouter.pathParameters[_transactionIdParam];
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
 
     if (transactionId == null) {
