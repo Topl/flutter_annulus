@@ -1,18 +1,19 @@
 import 'dart:convert';
+
+import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/providers/block_provider.dart';
+import 'package:flutter_annulus/chain/models/chains.dart';
+import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
+import 'package:flutter_annulus/shared/providers/config_provider.dart';
+import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_annulus/shared/services/hive/hives.dart';
+import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
-import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
-import 'package:flutter_annulus/chain/models/chains.dart';
-import 'package:flutter_annulus/shared/providers/genus_provider.dart';
-import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
-import 'package:flutter_annulus/shared/providers/config_provider.dart';
-import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../blocks/models/block.dart';
 
 final transactionStateAtIndexProvider = FutureProvider.family<Transaction, int>((ref, index) async {
   return ref.watch(transactionsProvider.notifier).getTransactionFromStateAtIndex(index);
@@ -101,12 +102,8 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
   }) async {
     final transactions = state.asData?.value;
 
-    if (transactions == null) {
-      throw Exception('Transactions are null');
-    }
-
     // If the list of transactions already contains the transaction, return it
-    if (transactions.any((element) => element.transactionId == transactionId)) {
+    if (transactions != null && transactions.any((element) => element.transactionId == transactionId)) {
       return transactions.firstWhere((element) => element.transactionId == transactionId);
     } else {
       final selectedChain = ref.watch(selectedChainProvider);
@@ -154,7 +151,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
           transactionSize: transactionRes.writeToBuffer().lengthInBytes.toDouble(),
           name: transactionRes.transactionReceipt.transaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl');
 
-      state = AsyncData([...transactions, transaction]);
+      state = AsyncData([...transactions ?? [], transaction]);
       return transaction;
     }
   }
@@ -177,12 +174,9 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       try {
         //get first populated block
         var latestBlockRes = await ref.read(getFirstPopulatedBlockProvider(selectedChain).future);
-
         final config = ref.read(configProvider.future);
         final presentConfig = await config;
-
         int transactionCount = latestBlockRes.block.fullBody.transactions.length;
-
         var latestBlock = Block(
           header: decodeId(latestBlockRes.block.header.headerId.value),
           epoch: latestBlockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
@@ -192,7 +186,6 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
           timestamp: latestBlockRes.block.header.timestamp.toInt(),
           transactionNumber: transactionCount,
         );
-
         //continue going through transactions
         for (int i = 0; i < transactionCount; i++) {
           // check is transactions exist in cache

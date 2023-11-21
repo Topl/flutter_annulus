@@ -10,32 +10,38 @@ part 'chains.g.dart';
 sealed class Chains with _$Chains {
   const factory Chains.topl_mainnet({
     @Default('Toplnet') String networkName,
+    @Default('toplnet') String urlName,
     @Default('mainnet.topl.co') String hostUrl,
     @Default(443) int port,
   }) = ToplMainnet;
-  const factory Chains.valhalla_testnet({
-    @Default('Valhalla') String networkName,
-    @Default('testnet.topl.network') String hostUrl,
-    @Default(50051) int port,
-  }) = ValhallaTestNet;
+  const factory Chains.testnet({
+    @Default('Testnet') String networkName,
+    @Default('testnet') String urlName,
+    @Default('testnet.topl.co') String hostUrl,
+    @Default(443) int port,
+  }) = TestNet;
   const factory Chains.private_network({
     @Default('Private') String networkName,
+    @Default('private') String urlName,
     @Default('localhost') String hostUrl,
     @Default(8080) int port,
   }) = PrivateNetwork;
   const factory Chains.dev_network({
     @Default('Development') String networkName,
     @Default('testnet.topl.tech') String hostUrl,
+    @Default('development') String urlName,
     @Default(443) int port,
   }) = DevNetwork;
   const factory Chains.mock({
     @Default('Mock') String networkName,
+    @Default('mock') String urlName,
     @Default('mock') String hostUrl,
     @Default(0000) int port,
   }) = MockNetwork;
   const factory Chains.custom({
     required String chainId,
     required String networkName,
+    required String urlName,
     required String hostUrl,
     required int port,
     required Currency currency,

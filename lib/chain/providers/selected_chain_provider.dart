@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/utils/chain_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,6 +18,14 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
   ChainsNotifier(this.ref) : super(const AsyncLoading()) {
     _getAvailableChains(setState: true);
   }
+  // dev notes: This will have to be updated when we change the predetermined networks
+  static List<Chains> standardChains = [
+    const Chains.topl_mainnet(),
+    const Chains.testnet(),
+    const Chains.private_network(),
+    const Chains.dev_network(),
+    const Chains.mock(),
+  ];
 
   /// It takes a bool [setState]
   ///
@@ -38,15 +45,6 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
       }
     });
 
-    // dev notes: This will have to be updated when we change the predetermined networks
-    final List<Chains> standardChains = [
-      const Chains.topl_mainnet(),
-      const Chains.valhalla_testnet(),
-      const Chains.private_network(),
-      const Chains.dev_network(),
-      const Chains.mock(),
-    ];
-
     //state holds both standard and custom chains
     final allChains = [...standardChains, ...customChains];
 
@@ -55,23 +53,6 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
     }
 
     return allChains;
-  }
-
-  test() {
-    switch (Chains) {
-      case Chains.topl_mainnet:
-        break;
-      case Chains.valhalla_testnet:
-        break;
-      case Chains.private_network:
-        break;
-      case Chains.dev_network:
-        break;
-      case Chains.mock:
-        break;
-      case Chains.custom:
-        break;
-    }
   }
 
   /// Add ad custom chain
