@@ -120,8 +120,9 @@ class SearchNotifier extends StateNotifier<List<SearchResult>> {
   }
 
   Future<TransactionResult?> _searchForTransactionById(String id) async {
+    print('QQQQ searchForTransactionById $id');
     try {
-      if (selectedChain == Chains.mock) {
+      if (selectedChain == const Chains.mock()) {
         return Future.delayed(const Duration(milliseconds: 250), () {
           return TransactionResult(
             getMockTransaction(),
@@ -129,8 +130,17 @@ class SearchNotifier extends StateNotifier<List<SearchResult>> {
           );
         });
       } else {
+        print('QQQQ here 1');
         final TransactionResponse response =
             await ref.read(genusProvider(selectedChain)).getTransactionById(transactionIdString: id);
+        print('QQQQ response $response');
+
+        final transactionResult = TransactionResult(
+          response.toTransaction(),
+          response.toTransaction().transactionId,
+        );
+
+        print('QQQQ transactionResult $transactionResult');
 
         return TransactionResult(
           response.toTransaction(),
@@ -138,6 +148,7 @@ class SearchNotifier extends StateNotifier<List<SearchResult>> {
         );
       }
     } catch (e) {
+      print('QQQQ error $e');
       ref.read(loggerProvider).log(
             logLevel: LogLevel.Warning,
             loggerClass: LoggerClass.ApiError,
