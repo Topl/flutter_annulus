@@ -30,14 +30,6 @@ class CustomLayout extends HookConsumerWidget {
     final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-    useEffect(() {
-      print('QQQQ build');
-
-      return () {
-        print('QQQQ dispose');
-      };
-    }, []);
-
     return Scaffold(
       key: scaffoldKey,
       endDrawer: Container(
