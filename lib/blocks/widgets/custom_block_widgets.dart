@@ -28,7 +28,11 @@ class CustomTabBar extends HookConsumerWidget {
           padding: EdgeInsets.only(left: isTablet ? 35 : 16),
           child: TextButton(
               onPressed: () {
-                context.vRouter.to('/');
+                if (context.vRouter.previousUrl != null) {
+                  context.vRouter.to(context.vRouter.previousUrl!);
+                } else {
+                  context.vRouter.to('/');
+                }
               },
               child: Row(
                 children: [

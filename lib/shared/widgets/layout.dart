@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
@@ -28,6 +29,14 @@ class CustomLayout extends HookConsumerWidget {
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
     final ThemeMode colorTheme = ref.watch(appThemeColorProvider);
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+    useEffect(() {
+      print('QQQQ build');
+
+      return () {
+        print('QQQQ dispose');
+      };
+    }, []);
 
     return Scaffold(
       key: scaffoldKey,
@@ -59,6 +68,7 @@ class CustomLayout extends HookConsumerWidget {
                 Expanded(
                   child: Center(
                     child: ListView(
+                      key: const PageStorageKey(0),
                       padding: const EdgeInsets.only(top: 30),
                       children: <Widget>[
                         ListTile(
