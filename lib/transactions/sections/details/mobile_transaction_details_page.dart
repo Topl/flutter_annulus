@@ -8,12 +8,12 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_row_column.dart';
 import 'package:vrouter/vrouter.dart';
 
-import '../../shared/providers/app_theme_provider.dart';
-import '../../shared/widgets/footer.dart';
-import '../../shared/widgets/header.dart';
-import '../../shared/widgets/layout.dart';
-import '../models/transaction.dart';
-import '../providers/transactions_provider.dart';
+import '../../../shared/providers/app_theme_provider.dart';
+import '../../../shared/widgets/footer.dart';
+import '../../../shared/widgets/header.dart';
+import '../../../shared/widgets/layout.dart';
+import '../../models/transaction.dart';
+import '../../providers/transactions_provider.dart';
 
 /// This is a custom widget that shows the transaction details page
 class MobileTransactionDetailsPage extends HookConsumerWidget {

@@ -276,19 +276,18 @@ class MobileMenu extends HookConsumerWidget {
 
 /// ThemeModeSwitch widget state.
 class ThemeModeSwitch extends HookWidget {
-  bool darkMode = false;
   final Function onPressed;
 
-  ThemeModeSwitch({super.key, required this.onPressed});
+  const ThemeModeSwitch({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
+    final darkMode = useState(false);
     return Switch(
-      value: darkMode,
+      value: darkMode.value,
       activeColor: const Color(0xFF7040EC),
       onChanged: (bool value) {
-        // This is called when the user toggles the switch.
-        darkMode = value;
+        darkMode.value = value;
         onPressed();
       },
     );

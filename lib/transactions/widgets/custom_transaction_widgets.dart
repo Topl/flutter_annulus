@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_row_column.dart';
 
-import '../../chain/sections/add_new_network.dart';
 import '../../shared/utils/theme_color.dart';
 import '../../shared/widgets/copy_to_clipboard.dart';
 import '../sections/transactions.dart';

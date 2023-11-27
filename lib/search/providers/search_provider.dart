@@ -148,14 +148,9 @@ class SearchNotifier extends StateNotifier<List<SearchResult>> {
             await ref.read(genusProvider(selectedChain)).getTransactionById(transactionIdString: id);
         print('QQQQ response $response');
 
-        final transactionResult = TransactionResult(
-          response.toTransaction(),
-          response.toTransaction().transactionId,
-        );
-
-        print('QQQQ transactionResult $transactionResult');
-
         final Transaction transaction = await response.toTransaction(ref);
+
+        print('QQQQ transaction $transaction');
 
         return TransactionResult(
           transaction,
