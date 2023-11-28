@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/blocks/sections/block_mobile_details.dart';
+import 'package:flutter_annulus/blocks/sections/details/block_details_page.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/widgets/model_right_sheet.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/transitions.dart';
 import 'package:flutter_annulus/shared/widgets/slide_left_builder.dart';
-import 'package:flutter_annulus/transactions/sections/transaction_details_page.dart';
+import 'package:flutter_annulus/transactions/sections/details/transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
 import 'package:flutter_annulus/utxo/widgets/utxo_details.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -92,6 +92,14 @@ class AnnulusRouter extends HookConsumerWidget {
                   ),
                   widget: const TransactionDetailsPage(),
                 ),
+                VPage(
+                  path: BlockDetailsPage.paramRoute,
+                  pageBuilder: (key, child, name) => ModelRightPage(
+                    key,
+                    child,
+                  ),
+                  widget: const BlockDetailsPage(),
+                ),
               ],
             ),
           ],
@@ -99,10 +107,6 @@ class AnnulusRouter extends HookConsumerWidget {
         VWidget(
           path: UTxODetailsPage.route, // UTxO details screen
           widget: const UTxODetailsPage(),
-        ),
-        VWidget(
-          path: BlockTabBarMobileView.paramRoute, // Block details screen
-          widget: const BlockTabBarMobileView(),
         ),
         VNester(
           path: '',

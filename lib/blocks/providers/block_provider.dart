@@ -97,7 +97,7 @@ Future<List<Block>> getBlocksSinceDecentralization({
 }
 
 final getBlockByIdProvider = FutureProvider.family<Block, String>((ref, header) async {
-  return ref.read(blockProvider.notifier).getBlockFromStateById(header);
+  return ref.watch(blockProvider.notifier).getBlockFromStateById(header);
 });
 
 final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<Map<int, Block>>>((ref) {
@@ -402,15 +402,11 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
   Future<Block> getBlockFromStateById(String header) async {
     var blocks = state.asData?.value;
 
-    if (blocks == null) {
-      throw Exception('Error in blockProvider: blocks are null');
-    }
-
     // If the state contains the block, return it
 
-    try {
-      return blocks!.values.firstWhere((element) => element.header == header);
-    } catch (e) {
+    if (blocks != null && blocks.values.any((element) => element.header == header)) {
+      return blocks.values.firstWhere((element) => element.header == header);
+    } else {
       final genusClient = ref.read(genusProvider(selectedChain));
 
       final config = ref.read(configProvider.future);
@@ -441,8 +437,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       state = AsyncData(sortedBlocks);
 
       return block;
-
-      // Set the state to the new block
     }
   }
 }

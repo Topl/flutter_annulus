@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/constants/strings.dart';
-import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/extensions/widget_extensions.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/utils/nav_utils.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
-import 'package:flutter_annulus/transactions/sections/desktop_transaction_details_page.dart';
-import 'package:flutter_annulus/transactions/sections/mobile_transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:vrouter/vrouter.dart';
 
 class PaginatedTransactionTable extends HookConsumerScreenWidget {
   final List<Transaction> transactions;
@@ -171,7 +166,6 @@ class RowDataSource extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
-    final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     final row = data[index];

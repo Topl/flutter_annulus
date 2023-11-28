@@ -134,7 +134,7 @@ class SearchNotifier extends StateNotifier<List<SearchResult>> {
 
   Future<TransactionResult?> _searchForTransactionById(String id) async {
     try {
-      if (selectedChain == Chains.mock) {
+      if (selectedChain == const Chains.mock()) {
         return Future.delayed(const Duration(milliseconds: 250), () {
           return TransactionResult(
             getMockTransaction(),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/blocks/widgets/custom_block_widgets.dart';
 import 'package:flutter_annulus/shared/constants/strings.dart';
@@ -10,42 +9,29 @@ import 'package:flutter_annulus/transactions/widgets/paginated_transaction_table
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_row_column.dart';
-import 'package:vrouter/vrouter.dart';
 
-import '../../shared/providers/app_theme_provider.dart';
-import '../../shared/utils/theme_color.dart';
-import '../../transactions/models/transaction.dart';
-import '../../transactions/providers/transactions_provider.dart';
-import '../../transactions/widgets/custom_transaction_widgets.dart';
+import '../../../shared/providers/app_theme_provider.dart';
+import '../../../shared/utils/theme_color.dart';
+import '../../../transactions/models/transaction.dart';
+import '../../../transactions/providers/transactions_provider.dart';
+import '../../../transactions/widgets/custom_transaction_widgets.dart';
 
 // This is the block_details widget that is shown when the user clicks on the block on mobile
-class BlockTabBarMobileView extends HookConsumerWidget {
-  const BlockTabBarMobileView({
+class MobileBlockDetailsPage extends HookConsumerWidget {
+  const MobileBlockDetailsPage({
     super.key,
-    // required this.block,
-    this.widgetRoute,
+    required this.blockId,
   });
-  //final Block block;
-  final String? widgetRoute;
 
-  // create a custom tab bar view
-  static const String route = '/block_details/';
-  static const String blockIdParam = 'blockId';
-  static const String paramRoute = '$route:$blockIdParam';
-  static String blockDetailsPath(String blockId) {
-    return '$route$blockId';
-  }
-
-  // assign widgetRoute to route
-  static String getRoute(String widgetRoute) => route;
+  final String blockId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final asyncBlock = ref.watch(getBlockByIdProvider(blockId));
+
     final colorTheme = ref.watch(appThemeColorProvider);
-    final String? blockId = context.vRouter.pathParameters[blockIdParam];
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
     final AsyncValue<List<Transaction>> transactionsInfo = ref.watch(transactionsProvider);
-    final AsyncValue<Block> asyncBlock = ref.watch(getBlockByIdProvider(blockId!));
 
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
     return asyncBlock.when(data: (block) {
