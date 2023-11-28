@@ -112,71 +112,69 @@ class Footer extends HookConsumerWidget {
                         width: 40,
                       ),
                     ),
-                    Expanded(
-                      child: SizedBox(
-                        width: 312,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              Strings.footerColumn5Header,
-                              style: TextStyle(
-                                  color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFC0C4C4),
-                                  fontSize: 16,
-                                  fontFamily: Strings.rationalDisplayFont,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(
-                              height: 14,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: SizedBox(
-                                    width: 202,
-                                    height: 40,
-                                    child: TextField(
-                                      controller: TextEditingController(text: ''),
-                                      decoration: const InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(8)),
-                                              borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
-                                          hintText: Strings.email),
-                                    ),
-                                  ),
-                                ),
-                                const Expanded(
-                                  child: SizedBox(
-                                    width: 8,
-                                  ),
-                                ),
-                                SizedBox(
+                    SizedBox(
+                      width: 312,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            Strings.footerColumn5Header,
+                            style: TextStyle(
+                                color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFC0C4C4),
+                                fontSize: 16,
+                                fontFamily: Strings.rationalDisplayFont,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(
+                            height: 14,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                  width: 202,
                                   height: 40,
-                                  width: 102,
-                                  child: TextButton(
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(
-                                            getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648))),
-                                    onPressed: null,
-                                    child: Text(
-                                      Strings.subscribe,
-                                      style: TextStyle(
-                                        color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
-                                        fontSize: 14,
-                                        fontFamily: Strings.rationalDisplayFont,
-                                      ),
+                                  child: TextField(
+                                    controller: TextEditingController(text: ''),
+                                    decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                                            borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
+                                        hintText: Strings.email),
+                                  ),
+                                ),
+                              ),
+                              const Expanded(
+                                child: SizedBox(
+                                  width: 8,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 40,
+                                width: 102,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(
+                                          getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648))),
+                                  onPressed: null,
+                                  child: Text(
+                                    Strings.subscribe,
+                                    style: TextStyle(
+                                      color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
+                                      fontSize: 14,
+                                      fontFamily: Strings.rationalDisplayFont,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 80,
-                            ),
-                            //const RowIcons(), TODO: Clean up this code
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 80,
+                          ),
+                          const RowIcons(),
+                        ],
                       ),
                     ),
                   ],
@@ -205,49 +203,51 @@ class Footer extends HookConsumerWidget {
         const SizedBox(
           height: 20,
         ),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
-          // children: [
-          //   isDesktopAndTab
-          //       ? const Row(
-          //           children: [
-          //             SizedBox(
-          //               width: 80,
-          //             ),
-          //             FooterBottomLinks(text: Strings.footerPrivacyPolicy),
-          //             SizedBox(
-          //               width: 24,
-          //             ),
-          //             FooterBottomLinks(text: Strings.footerTermsOfUse),
-          //             SizedBox(
-          //               width: 24,
-          //             ),
-          //             FooterBottomLinks(text: Strings.footerCookiePolicy),
-          //             SizedBox(
-          //               width: 24,
-          //             ),
-          //             FooterBottomLinks(text: Strings.footerCookiePreferences),
-          //           ],
-          //         )
-          //       : const SizedBox(),
-          //   Row(
-          //     children: [
-          //       const FooterBottomLinks(text: Strings.footerRightsReserved),
-          //       SizedBox(
-          //         width: isDesktopAndTab ? 24 : 200,
-          //       ),
-          //       SvgPicture.asset(
-          //         colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',
-          //         width: 32,
-          //         height: 20,
-          //       ),
-          //       SizedBox(
-          //         width: isDesktopAndTab ? 80 : 20,
-          //       ),
-          //     ],
-          //   ),
-          // ],
+          children: [
+            Expanded(
+              child: isDesktopAndTab
+                  ? const Row(
+                      children: [
+                        SizedBox(
+                          width: 80,
+                        ),
+                        FooterBottomLinks(text: Strings.footerPrivacyPolicy),
+                        SizedBox(
+                          width: 24,
+                        ),
+                        FooterBottomLinks(text: Strings.footerTermsOfUse),
+                        SizedBox(
+                          width: 24,
+                        ),
+                        FooterBottomLinks(text: Strings.footerCookiePolicy),
+                        SizedBox(
+                          width: 24,
+                        ),
+                        FooterBottomLinks(text: Strings.footerCookiePreferences),
+                      ],
+                    )
+                  : const SizedBox(),
+            ),
+            Row(
+              children: [
+                // const FooterBottomLinks(text: Strings.footerRightsReserved),
+                SizedBox(
+                  width: isDesktopAndTab ? 24 : 200,
+                ),
+                SvgPicture.asset(
+                  colorTheme == ThemeMode.light ? 'assets/icons/logo.svg' : 'assets/icons/logo_dark.svg',
+                  width: 32,
+                  height: 20,
+                ),
+                SizedBox(
+                  width: isDesktopAndTab ? 80 : 20,
+                ),
+              ],
+            ),
+          ],
         ),
         const SizedBox(
           height: 20,
@@ -264,14 +264,16 @@ class RowIcons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const RowIconsFooter(
-      svgIcons: [
-        {'icon': 'assets/icons/linkedin.svg', 'url': 'https://www.linkedin.com/company/topl/'},
-        {'icon': 'assets/icons/github.svg', 'url': 'https://github.com/Topl'},
-        {'icon': 'assets/icons/instagram.svg', 'url': 'https://www.instagram.com/topl_protocol/'},
-        {'icon': 'assets/icons/medium.svg', 'url': 'https://medium.com/topl-blog'},
-        {'icon': 'assets/icons/twitter.svg', 'url': 'https://twitter.com/topl_protocol'}
-      ],
+    return const SingleChildScrollView(
+      child: RowIconsFooter(
+        svgIcons: [
+          {'icon': 'assets/icons/linkedin.svg', 'url': 'https://www.linkedin.com/company/topl/'},
+          {'icon': 'assets/icons/github.svg', 'url': 'https://github.com/Topl'},
+          {'icon': 'assets/icons/instagram.svg', 'url': 'https://www.instagram.com/topl_protocol/'},
+          {'icon': 'assets/icons/medium.svg', 'url': 'https://medium.com/topl-blog'},
+          {'icon': 'assets/icons/twitter.svg', 'url': 'https://twitter.com/topl_protocol'}
+        ],
+      ),
     );
   }
 }
