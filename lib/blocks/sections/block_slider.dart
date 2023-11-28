@@ -154,7 +154,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(Strings.latestBlocks, style: headlineLarge(context)),
+                        Expanded(child: Text(Strings.latestBlocks, style: headlineLarge(context))),
                         const SizedBox(width: 10),
                         Row(
                           children: [

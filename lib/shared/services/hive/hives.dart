@@ -7,6 +7,9 @@ enum Hives {
   ),
   transactions(
     id: 'transactions',
+  ),
+  rateLimit(
+    id: 'rateLimit',
   );
 
   const Hives({

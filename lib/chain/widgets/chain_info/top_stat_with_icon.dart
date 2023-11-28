@@ -28,19 +28,21 @@ class TopStatWithIcon extends ConsumerWidget {
     final colorTheme = ref.watch(appThemeColorProvider);
     final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
     return Container(
-      margin: isMobile ? null : EdgeInsets.only(left: firstItem ? 0 : 20),
+      margin: isMobile ? null : EdgeInsets.only(left: firstItem ? 0 : 40),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           firstItem
               ? const SizedBox()
-              : Container(
-                  margin: EdgeInsets.only(left: firstItem ? 0 : 10, right: 10),
-                  height: 60,
-                  child: VerticalDivider(
-                    thickness: 1,
-                    color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+              : Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(left: firstItem ? 0 : 10, right: 10),
+                    height: 60,
+                    child: VerticalDivider(
+                      thickness: 1,
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                    ),
                   ),
                 ),
           ResponsiveRowColumn(
@@ -64,13 +66,11 @@ class TopStatWithIcon extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      margin: isMobile ? null : const EdgeInsets.only(top: 14),
-                      child: Text(
+                    if (isMobile)
+                      Text(
                         titleString,
                         style: titleMedium(context),
                       ),
-                    ),
                     Container(
                       margin: const EdgeInsets.only(top: 16),
                       child: Row(

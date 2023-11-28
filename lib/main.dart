@@ -21,17 +21,29 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 void main() async {
   await Hive.initFlutter();
   runApp(
-    ProviderScope(
-      child: ResponsiveBreakpoints.builder(
-        child: const AnnulusRouter(),
-        breakpoints: const [
-          Breakpoint(start: 0, end: mobileBreak, name: MOBILE),
-          Breakpoint(start: mobileBreak + 1, end: tabletBreak, name: TABLET),
-          Breakpoint(start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
-        ],
-      ),
+    const ProviderScope(
+      child: ResponsiveBreakPointsWrapper(),
     ),
   );
+}
+
+class ResponsiveBreakPointsWrapper extends StatelessWidget {
+  final Widget? child;
+  const ResponsiveBreakPointsWrapper({Key? key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final targetChild = child ?? const AnnulusRouter();
+
+    return ResponsiveBreakpoints.builder(
+      child: targetChild,
+      breakpoints: const [
+        Breakpoint(start: 0, end: mobileBreak, name: MOBILE),
+        Breakpoint(start: mobileBreak + 1, end: tabletBreak, name: TABLET),
+        Breakpoint(start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
+      ],
+    );
+  }
 }
 
 class AnnulusRouter extends HookConsumerWidget {
@@ -56,9 +68,9 @@ class AnnulusRouter extends HookConsumerWidget {
             final String? chainId = vRedirector.newVRouterData?.pathParameters[HomeScreen.chainIdParam];
             final selectedChain = ref.read(selectedChainProvider);
             if (chainId == null) {
-              vRedirector.to(HomeScreen.chainPath(selectedChain.urlName));
-            } else if (chainId != selectedChain.urlName) {
-              final urlChain = ChainsNotifier.standardChains.where((element) => element.urlName == chainId).first;
+              vRedirector.to(HomeScreen.chainPath(selectedChain.hostUrl));
+            } else if (chainId != selectedChain.hostUrl) {
+              final urlChain = ChainsNotifier.standardChains.where((element) => element.hostUrl == chainId).first;
 
               ref.read(selectedChainProvider.notifier).state = urlChain;
             }

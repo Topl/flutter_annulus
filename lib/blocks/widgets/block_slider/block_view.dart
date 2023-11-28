@@ -117,10 +117,12 @@ class BlockView extends ConsumerWidget {
                         const SizedBox(
                           height: 8,
                         ),
-                        BlockHeaderText(
-                          text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp).toString().substring(11, 19),
+                        Expanded(
+                          child: BlockHeaderText(
+                            text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp).toString().substring(11, 19),
+                          ),
                         ),
-                        const BlockSmallText(text: 'UTC'),
+                        const Expanded(child: BlockSmallText(text: 'UTC')),
                       ]))
               //cardChild,
               );

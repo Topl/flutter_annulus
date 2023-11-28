@@ -1,4 +1,4 @@
-import 'dart:html' as html;
+import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/svg.dart';
@@ -31,70 +31,86 @@ class Footer extends HookConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      width: 200,
-                      child: FooterColumn(
-                        footerTitle: Strings.footerColumn1Header,
-                        footerLinks: [
-                          Strings.footerColumn1Item1,
-                          Strings.footerColumn1Item2,
-                          Strings.footerColumn1Item3,
-                          Strings.footerColumn1Item4,
-                          Strings.footerColumn1Item5,
-                          Strings.footerColumn1Item6
-                        ],
+                    const Expanded(
+                      child: SizedBox(
+                        width: 200,
+                        child: FooterColumn(
+                          footerTitle: Strings.footerColumn1Header,
+                          footerLinks: [
+                            Strings.footerColumn1Item1,
+                            Strings.footerColumn1Item2,
+                            Strings.footerColumn1Item3,
+                            Strings.footerColumn1Item4,
+                            Strings.footerColumn1Item5,
+                            Strings.footerColumn1Item6
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 80,
-                    ),
-                    const SizedBox(
-                      width: 200,
-                      child: FooterColumn(
-                        footerTitle: Strings.footerColumn2Header,
-                        footerLinks: [
-                          Strings.footerColumn2Item1,
-                          Strings.footerColumn2Item2,
-                          Strings.footerColumn2Item3,
-                          Strings.footerColumn2Item4,
-                          Strings.footerColumn2Item5
-                        ],
+                    const Expanded(
+                      child: SizedBox(
+                        width: 80,
                       ),
                     ),
-                    const SizedBox(
-                      width: 80,
-                    ),
-                    const SizedBox(
-                      width: 200,
-                      child: FooterColumn(
-                        footerTitle: Strings.footerColumn3Header,
-                        footerLinks: [
-                          Strings.footerColumn3Item1,
-                          Strings.footerColumn3Item2,
-                          Strings.footerColumn3Item3,
-                          Strings.footerColumn3Item4,
-                          Strings.footerColumn3Item5
-                        ],
+                    const Expanded(
+                      child: SizedBox(
+                        width: 200,
+                        child: FooterColumn(
+                          footerTitle: Strings.footerColumn2Header,
+                          footerLinks: [
+                            Strings.footerColumn2Item1,
+                            Strings.footerColumn2Item2,
+                            Strings.footerColumn2Item3,
+                            Strings.footerColumn2Item4,
+                            Strings.footerColumn2Item5
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    const SizedBox(
-                      width: 200,
-                      child: FooterColumn(
-                        footerTitle: Strings.footerColumn4Header,
-                        footerLinks: [
-                          Strings.footerColumn4Item1,
-                          Strings.footerColumn4Item2,
-                          Strings.footerColumn4Item3,
-                          Strings.footerColumn4Item4,
-                          Strings.footerColumn4Item5
-                        ],
+                    const Expanded(
+                      child: SizedBox(
+                        width: 80,
                       ),
                     ),
-                    const SizedBox(
-                      width: 40,
+                    const Expanded(
+                      child: SizedBox(
+                        width: 200,
+                        child: FooterColumn(
+                          footerTitle: Strings.footerColumn3Header,
+                          footerLinks: [
+                            Strings.footerColumn3Item1,
+                            Strings.footerColumn3Item2,
+                            Strings.footerColumn3Item3,
+                            Strings.footerColumn3Item4,
+                            Strings.footerColumn3Item5
+                          ],
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: SizedBox(
+                        width: 40,
+                      ),
+                    ),
+                    const Expanded(
+                      child: SizedBox(
+                        width: 200,
+                        child: FooterColumn(
+                          footerTitle: Strings.footerColumn4Header,
+                          footerLinks: [
+                            Strings.footerColumn4Item1,
+                            Strings.footerColumn4Item2,
+                            Strings.footerColumn4Item3,
+                            Strings.footerColumn4Item4,
+                            Strings.footerColumn4Item5
+                          ],
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: SizedBox(
+                        width: 40,
+                      ),
                     ),
                     SizedBox(
                       width: 312,
@@ -111,40 +127,44 @@ class Footer extends HookConsumerWidget {
                                 fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(
-                            height: 14,
+                            height: 10,
                           ),
                           Row(
                             children: [
-                              Expanded(
-                                child: SizedBox(
-                                  width: 202,
-                                  height: 40,
-                                  child: TextField(
-                                    controller: TextEditingController(text: ''),
-                                    decoration: const InputDecoration(
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                                            borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
-                                        hintText: Strings.email),
-                                  ),
+                              SizedBox(
+                                width: 204,
+                                height: 40,
+                                child: TextField(
+                                  controller: TextEditingController(text: ''),
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                                          borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
+                                      hintText: Strings.email),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 8,
+                              const Expanded(
+                                child: SizedBox(
+                                  width: 8,
+                                ),
                               ),
                               SizedBox(
                                 height: 40,
                                 width: 102,
                                 child: TextButton(
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(
-                                            getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648))),
-                                    onPressed: null,
-                                    child: Text(Strings.subscribe,
-                                        style: TextStyle(
-                                            color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
-                                            fontSize: 14,
-                                            fontFamily: Strings.rationalDisplayFont))),
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(
+                                          getSelectedColor(colorTheme, 0xFFE2E3E3, 0xFF434648))),
+                                  onPressed: null,
+                                  child: Text(
+                                    Strings.subscribe,
+                                    style: TextStyle(
+                                      color: getSelectedColor(colorTheme, 0xFF000000, 0xFFFEFEFE),
+                                      fontSize: 14,
+                                      fontFamily: Strings.rationalDisplayFont,
+                                    ),
+                                  ),
+                                ),
                               )
                             ],
                           ),
@@ -185,31 +205,38 @@ class Footer extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            isDesktopAndTab
-                ? const Row(
-                    children: [
-                      SizedBox(
-                        width: 80,
-                      ),
-                      FooterBottomLinks(text: Strings.footerPrivacyPolicy),
-                      SizedBox(
-                        width: 24,
-                      ),
-                      FooterBottomLinks(text: Strings.footerTermsOfUse),
-                      SizedBox(
-                        width: 24,
-                      ),
-                      FooterBottomLinks(text: Strings.footerCookiePolicy),
-                      SizedBox(
-                        width: 24,
-                      ),
-                      FooterBottomLinks(text: Strings.footerCookiePreferences),
-                    ],
-                  )
-                : const SizedBox(),
+            Expanded(
+              child: isDesktopAndTab
+                  ? const Row(
+                      children: [
+                        SizedBox(
+                          width: 40,
+                        ),
+                        FooterBottomLinks(text: Strings.footerPrivacyPolicy),
+                        SizedBox(
+                          width: 24,
+                        ),
+                        FooterBottomLinks(text: Strings.footerTermsOfUse),
+                        SizedBox(
+                          width: 24,
+                        ),
+                        FooterBottomLinks(text: Strings.footerCookiePolicy),
+                        SizedBox(
+                          width: 24,
+                        ),
+                        FooterBottomLinks(text: Strings.footerCookiePreferences),
+                      ],
+                    )
+                  : const SizedBox(),
+            ),
             Row(
               children: [
-                const FooterBottomLinks(text: Strings.footerRightsReserved),
+                const SizedBox(
+                  width: 10,
+                ),
+                SizedBox(
+                    width: isDesktopAndTab ? 135 : 200,
+                    child: const FooterBottomLinks(text: Strings.footerRightsReserved)),
                 SizedBox(
                   width: isDesktopAndTab ? 24 : 200,
                 ),
@@ -219,7 +246,7 @@ class Footer extends HookConsumerWidget {
                   height: 20,
                 ),
                 SizedBox(
-                  width: isDesktopAndTab ? 80 : 20,
+                  width: isDesktopAndTab ? 60 : 20,
                 ),
               ],
             ),
@@ -240,14 +267,16 @@ class RowIcons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const RowIconsFooter(
-      svgIcons: [
-        {'icon': 'assets/icons/linkedin.svg', 'url': 'https://www.linkedin.com/company/topl/'},
-        {'icon': 'assets/icons/github.svg', 'url': 'https://github.com/Topl'},
-        {'icon': 'assets/icons/instagram.svg', 'url': 'https://www.instagram.com/topl_protocol/'},
-        {'icon': 'assets/icons/medium.svg', 'url': 'https://medium.com/topl-blog'},
-        {'icon': 'assets/icons/twitter.svg', 'url': 'https://twitter.com/topl_protocol'}
-      ],
+    return const SingleChildScrollView(
+      child: RowIconsFooter(
+        svgIcons: [
+          {'icon': 'assets/icons/linkedin.svg', 'url': 'https://www.linkedin.com/company/topl/'},
+          {'icon': 'assets/icons/github.svg', 'url': 'https://github.com/Topl'},
+          {'icon': 'assets/icons/instagram.svg', 'url': 'https://www.instagram.com/topl_protocol/'},
+          {'icon': 'assets/icons/medium.svg', 'url': 'https://medium.com/topl-blog'},
+          {'icon': 'assets/icons/twitter.svg', 'url': 'https://twitter.com/topl_protocol'}
+        ],
+      ),
     );
   }
 }
