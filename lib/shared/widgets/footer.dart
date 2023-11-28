@@ -127,22 +127,20 @@ class Footer extends HookConsumerWidget {
                                 fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(
-                            height: 14,
+                            height: 10,
                           ),
                           Row(
                             children: [
-                              Expanded(
-                                child: SizedBox(
-                                  width: 202,
-                                  height: 40,
-                                  child: TextField(
-                                    controller: TextEditingController(text: ''),
-                                    decoration: const InputDecoration(
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                                            borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
-                                        hintText: Strings.email),
-                                  ),
+                              SizedBox(
+                                width: 204,
+                                height: 40,
+                                child: TextField(
+                                  controller: TextEditingController(text: ''),
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                                          borderSide: BorderSide(color: Color(0xFFE2E3E3), width: 1)),
+                                      hintText: Strings.email),
                                 ),
                               ),
                               const Expanded(
@@ -212,7 +210,7 @@ class Footer extends HookConsumerWidget {
                   ? const Row(
                       children: [
                         SizedBox(
-                          width: 80,
+                          width: 40,
                         ),
                         FooterBottomLinks(text: Strings.footerPrivacyPolicy),
                         SizedBox(
@@ -233,7 +231,12 @@ class Footer extends HookConsumerWidget {
             ),
             Row(
               children: [
-                // const FooterBottomLinks(text: Strings.footerRightsReserved),
+                const SizedBox(
+                  width: 10,
+                ),
+                SizedBox(
+                    width: isDesktopAndTab ? 135 : 200,
+                    child: const FooterBottomLinks(text: Strings.footerRightsReserved)),
                 SizedBox(
                   width: isDesktopAndTab ? 24 : 200,
                 ),
@@ -243,7 +246,7 @@ class Footer extends HookConsumerWidget {
                   height: 20,
                 ),
                 SizedBox(
-                  width: isDesktopAndTab ? 80 : 20,
+                  width: isDesktopAndTab ? 60 : 20,
                 ),
               ],
             ),
