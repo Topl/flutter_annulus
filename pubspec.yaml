@@ -59,6 +59,9 @@ dependencies:
   fast_base58: ^0.2.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  mockito: ^5.4.2
+  fixnum: ^1.1.0
+  universal_html: ^2.2.4
 
 dev_dependencies:
   flutter_test:
