@@ -35,9 +35,7 @@ class BlockTabBarView extends HookConsumerWidget {
           child: Container(
             padding: isMobile ? const EdgeInsets.all(2.0) : const EdgeInsets.all(0),
             decoration: BoxDecoration(
-              // QQQQ
-              color: Colors.pink,
-              // color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+              color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

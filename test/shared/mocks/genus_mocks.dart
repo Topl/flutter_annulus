@@ -17,7 +17,7 @@ GenusGRPCService getMockGenus({
     options: anyNamed('options'),
   )).thenAnswer(
     (realInvocation) async {
-      return getMockBlockResponse(blockId: blockId);
+      return getMockBlockResponse(blockId: blockId, transactionId: transactionId);
     },
   );
 
@@ -27,7 +27,7 @@ GenusGRPCService getMockGenus({
     options: anyNamed('options'),
   )).thenAnswer(
     (realInvocation) async {
-      return getMockBlockResponse(blockId: blockId);
+      return getMockBlockResponse(blockId: blockId, transactionId: transactionId);
     },
   );
 

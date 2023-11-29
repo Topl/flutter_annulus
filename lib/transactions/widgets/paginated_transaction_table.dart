@@ -153,6 +153,7 @@ List<DataColumn> _dataColumns({
 
 /// Data source class for obtaining row data for PaginatedDataTable.
 class RowDataSource extends DataTableSource {
+  static Key transactionRowIdKey(String transactionId) => Key('transaction_row_$transactionId');
   final BuildContext context;
   final List<Transaction> data;
   final Color clr;
@@ -169,6 +170,7 @@ class RowDataSource extends DataTableSource {
     final isTablet = ResponsiveBreakpoints.of(context).equals(TABLET);
 
     final row = data[index];
+
     if (index < data.length) {
       return DataRow(
         color: MaterialStateProperty.all(clr),
@@ -182,6 +184,7 @@ class RowDataSource extends DataTableSource {
             ? <DataCell>[
                 DataCell(GestureDetector(
                   child: TransactionColumnText(
+                    key: transactionRowIdKey(row.transactionId),
                     isTransactionTable: true,
                     textTop: isTablet ? row.transactionId.substring(0, 9) : row.transactionId.substring(0, 38),
                     textBottom: "49 ${Strings.secAgo}",

@@ -14,6 +14,7 @@ import '../widgets/custom_transaction_widgets.dart';
 
 /// A widget to display the list of transactions.
 class Transactions extends HookConsumerWidget {
+  static Key transactionListItemKey(String transactionId) => Key('transactionListItemKey_$transactionId');
   const Transactions({super.key});
 
   @override
@@ -86,73 +87,73 @@ class Transactions extends HookConsumerWidget {
                 dataRowMinHeight: 80.0,
                 dataRowMaxHeight: 100.0,
                 showCheckboxColumn: false,
-                rows: transactions
-                    .sublist(0, 3)
-                    .map(
-                      (transaction) => DataRow(
-                        onSelectChanged: (value) {
-                          goToTransactionDetails(context: context, transaction: transaction);
-                        },
-                        cells: [
+                rows: transactions.sublist(0, 3).map(
+                  (transaction) {
+                    return DataRow(
+                      onSelectChanged: (value) {
+                        goToTransactionDetails(context: context, transaction: transaction);
+                      },
+                      cells: [
+                        DataCell(Container(
+                          transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
+                          padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
+                          child: TransactionColumnText(
+                            key: transactionListItemKey(transaction.transactionId),
+                            textTop: transaction.transactionId
+                                .replaceRange(isTablet ? 7 : 16, transaction.transactionId.length, "..."),
+                            textBottom: "49 ${Strings.secAgo}",
+                          ),
+                        )),
+                        DataCell(Container(
+                          transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
+                          padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
+                          child: TransactionColumnText(
+                            textTop: '${Strings.height}: ${transaction.block.height}',
+                            textBottom: '${Strings.slot}: ${transaction.block.slot}',
+                          ),
+                        )),
+                        if (!isMobile)
                           DataCell(Container(
                             transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
                             padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
                             child: TransactionColumnText(
-                              textTop: transaction.transactionId
-                                  .replaceRange(isTablet ? 7 : 16, transaction.transactionId.length, "..."),
-                              textBottom: "49 ${Strings.secAgo}",
+                              textTop: transaction.transactionType.string,
+                              textBottom: "",
+                              isBottomTextRequired: false,
                             ),
                           )),
+                        if (!isMobile)
                           DataCell(Container(
                             transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
                             padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
                             child: TransactionColumnText(
-                              textTop: '${Strings.height}: ${transaction.block.height}',
-                              textBottom: '${Strings.slot}: ${transaction.block.slot}',
+                              textTop: '${transaction.quantity} ${Strings.topl}',
+                              textBottom: '${transaction.amount} ${Strings.bobs}',
                             ),
                           )),
-                          if (!isMobile)
-                            DataCell(Container(
+                        if (!isMobile)
+                          DataCell(
+                            Container(
                               transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
                               padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
                               child: TransactionColumnText(
-                                textTop: transaction.transactionType.string,
+                                textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
                                 textBottom: "",
                                 isBottomTextRequired: false,
                               ),
-                            )),
-                          if (!isMobile)
-                            DataCell(Container(
-                              transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
-                              padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
-                              child: TransactionColumnText(
-                                textTop: '${transaction.quantity} ${Strings.topl}',
-                                textBottom: '${transaction.amount} ${Strings.bobs}',
-                              ),
-                            )),
-                          if (!isMobile)
-                            DataCell(
-                              Container(
-                                transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
-                                padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
-                                child: TransactionColumnText(
-                                  textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
-                                  textBottom: "",
-                                  isBottomTextRequired: false,
-                                ),
-                              ),
                             ),
-                          if (!isMobile)
-                            DataCell(Padding(
-                              padding: const EdgeInsets.only(
-                                left: 30,
-                              ),
-                              child: StatusButton(status: transaction.status.string),
-                            )),
-                        ],
-                      ),
-                    )
-                    .toList(),
+                          ),
+                        if (!isMobile)
+                          DataCell(Padding(
+                            padding: const EdgeInsets.only(
+                              left: 30,
+                            ),
+                            child: StatusButton(status: transaction.status.string),
+                          )),
+                      ],
+                    );
+                  },
+                ).toList(),
               ),
             ),
             const SizedBox(height: 20.0),
@@ -179,10 +180,14 @@ class Transactions extends HookConsumerWidget {
           ],
         ),
       ),
-      error: (error, stack) => const Text('Oops, something unexpected happened'),
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      error: (error, stack) {
+        return const Text('Oops, something unexpected happened');
+      },
+      loading: () {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }
