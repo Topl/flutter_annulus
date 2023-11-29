@@ -1,31 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vrouter/vrouter.dart';
 
 import '../essential_test_provider_widget.dart';
 import '../required_test_class.dart';
 import '../shared/mocks/hive_mocks.dart';
 import '../utils/tester_utils.dart';
-
-class DesktopBlockDetails extends RequiredTest {
-  Future<void> Function(TestScreenSizes testScreenSize) desktopBlockDetailsTest;
-
-  DesktopBlockDetails({
-    required this.desktopBlockDetailsTest,
-    required super.testScreenSize,
-  });
-
-  Future<void> runTests() async {
-    await desktopBlockDetailsTest(testScreenSize);
-  }
-}
+import 'required_block_detail_tests.dart';
 
 void main() async {
-  final requestTests = DesktopBlockDetails(
-    desktopBlockDetailsTest: (testScreenSize) => desktopBlockDetailsTest(testScreenSize),
+  final chainTests = RequiredBlockDetailTests(
+    navigateToBlockDetails: (testScreenSize) => desktopBlockDetailsTest(testScreenSize),
     testScreenSize: TestScreenSizes.desktop,
   );
 
-  await requestTests.runTests();
+  await chainTests.runTests();
 }
 
 Future<void> desktopBlockDetailsTest(TestScreenSizes testScreenSize) async =>
@@ -35,14 +25,18 @@ Future<void> desktopBlockDetailsTest(TestScreenSizes testScreenSize) async =>
           hivePackageProvider.overrideWithValue(getMockHive().mockHive),
         ]),
       );
+
+      final BuildContext context = tester.element(find.byType(Container));
+      final vRouter = VRouter.of(context);
+
+      final pathParams = vRouter.pathParameters;
+
       await tester.pumpAndSettle();
       await tester.ensureVisible(find.text('1000'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('1000'));
-      (WidgetTester tester) async {
-        await customRunAsync(tester, test: () async {
-          expect(find.text('1000'), findsOneWidget);
-          await tester.ensureVisible(find.text('Block Details'));
-        });
-      };
+      await customRunAsync(tester, test: () async {
+        expect(find.text('1000'), findsOneWidget);
+        await tester.ensureVisible(find.text('Block Details'));
+      });
     });

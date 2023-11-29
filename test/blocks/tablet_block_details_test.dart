@@ -4,27 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 import '../essential_test_provider_widget.dart';
 import '../required_test_class.dart';
 import '../shared/mocks/hive_mocks.dart';
-
-class TabletBlockDetails extends RequiredTest {
-  Future<void> Function(TestScreenSizes testScreenSize) tabletBlockDetailsTest;
-
-  TabletBlockDetails({
-    required this.tabletBlockDetailsTest,
-    required super.testScreenSize,
-  });
-
-  Future<void> runTests() async {
-    await tabletBlockDetailsTest(testScreenSize);
-  }
-}
+import 'required_block_detail_tests.dart';
 
 void main() async {
-  final requestTests = TabletBlockDetails(
-    tabletBlockDetailsTest: (testScreenSize) => tabletBlockDetailsTest(testScreenSize),
+  final chainTests = RequiredBlockDetailTests(
+    navigateToBlockDetails: (testScreenSize) => tabletBlockDetailsTest(testScreenSize),
     testScreenSize: TestScreenSizes.tablet,
   );
 
-  await requestTests.runTests();
+  await chainTests.runTests();
 }
 
 Future<void> tabletBlockDetailsTest(TestScreenSizes testScreenSize) async =>

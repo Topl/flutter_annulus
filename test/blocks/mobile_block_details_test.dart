@@ -4,27 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 import '../essential_test_provider_widget.dart';
 import '../required_test_class.dart';
 import '../shared/mocks/hive_mocks.dart';
-
-class MobileBlockDetails extends RequiredTest {
-  Future<void> Function(TestScreenSizes testScreenSize) MobileBlockSliderTest;
-
-  MobileBlockDetails({
-    required this.MobileBlockSliderTest,
-    required super.testScreenSize,
-  });
-
-  Future<void> runTests() async {
-    await MobileBlockSliderTest(testScreenSize);
-  }
-}
+import 'required_block_detail_tests.dart';
 
 void main() async {
-  final requestTests = MobileBlockDetails(
-    MobileBlockSliderTest: (testScreenSize) => mobileBlockSliderTest(testScreenSize),
+  final chainTests = RequiredBlockDetailTests(
+    navigateToBlockDetails: (testScreenSize) => mobileBlockSliderTest(testScreenSize),
     testScreenSize: TestScreenSizes.mobile,
   );
 
-  await requestTests.runTests();
+  await chainTests.runTests();
 }
 
 Future<void> mobileBlockSliderTest(TestScreenSizes testScreenSize) async =>
