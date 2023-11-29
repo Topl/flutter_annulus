@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/providers/chain_statistics_provider.dart';
+import 'package:flutter_annulus/shared/utils/get_dev_mode.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../models/chains.dart';
@@ -25,7 +25,7 @@ Chain getMockChain() {
 }
 
 Chains getDefaultChain() {
-  return kDebugMode ? const Chains.mock() : const Chains.topl_mainnet();
+  return getDevMode() ? const Chains.mock() : const Chains.topl_mainnet();
 }
 
 Future<int> blockSkipAmount({

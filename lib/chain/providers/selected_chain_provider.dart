@@ -1,5 +1,6 @@
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/utils/chain_utils.dart';
+import 'package:flutter_annulus/shared/utils/get_dev_mode.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_annulus/shared/services/hive/hives.dart';
@@ -18,13 +19,12 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
   ChainsNotifier(this.ref) : super(const AsyncLoading()) {
     _getAvailableChains(setState: true);
   }
+  static List<Chains> devChains = [const Chains.private_network(), const Chains.dev_network(), const Chains.mock()];
   // dev notes: This will have to be updated when we change the predetermined networks
   static List<Chains> standardChains = [
     const Chains.topl_mainnet(),
     const Chains.testnet(),
-    const Chains.private_network(),
-    const Chains.dev_network(),
-    const Chains.mock(),
+    if (getDevMode()) ...devChains,
   ];
 
   /// It takes a bool [setState]
