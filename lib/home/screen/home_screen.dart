@@ -14,6 +14,7 @@ import '../../shared/widgets/footer.dart';
 import '../../transactions/sections/transactions.dart';
 
 class HomeScreen extends HookConsumerWidget {
+  static const Key homeScreenKey = Key('homeScreenKey');
   static const String route = '/';
   static const String chainIdParam = 'chainId';
   static const String chianRoute = '/chain/';
@@ -22,7 +23,7 @@ class HomeScreen extends HookConsumerWidget {
     return '$chianRoute$chianId';
   }
 
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen() : super(key: homeScreenKey);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

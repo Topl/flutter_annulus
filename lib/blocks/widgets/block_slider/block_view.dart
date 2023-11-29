@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_details_drawer.dart';
 import 'package:flutter_annulus/blocks/sections/block_mobile_details.dart';
 import 'package:flutter_annulus/blocks/utils/utils.dart';
+import 'package:flutter_annulus/main.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
@@ -58,7 +59,7 @@ class BlockView extends ConsumerWidget {
                         width: 640,
                         barrierColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF353739).withOpacity(0.64),
                         barrierDismissible: true,
-                        body: BlockDetailsDrawer(block: block))
+                        body: ResponsiveBreakPointsWrapper(child: BlockDetailsDrawer(block: block)))
                     : context.vRouter.to(BlockTabBarMobileView.blockDetailsPath(block.header));
               },
               style: ButtonStyle(

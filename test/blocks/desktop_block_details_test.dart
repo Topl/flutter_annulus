@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/chain/models/chains.dart';
+import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vrouter/vrouter.dart';
@@ -26,17 +28,30 @@ Future<void> desktopBlockDetailsTest(TestScreenSizes testScreenSize) async =>
         ]),
       );
 
-      final BuildContext context = tester.element(find.byType(Container));
+      await tester.pumpAndSettle();
+
+      final BuildContext context = tester.element(find.byKey(HomeScreen.homeScreenKey));
       final vRouter = VRouter.of(context);
 
-      final pathParams = vRouter.pathParameters;
+      final url = vRouter.url;
+      print('QQQQ url: $url');
 
-      await tester.pumpAndSettle();
+      final pathParams = vRouter.pathParameters;
+      print('QQQQ pathParams: $pathParams');
+
+      // Expect the pathParams to contain chainId
+      expect(pathParams.containsKey('chainId'), true);
+
+      // Expect the chainId is the only path parameter
+      expect(pathParams.length == 1, true);
+
+      // Expect the chainId to be the mock chain
+      expect(pathParams['chainId'] == const Chains.mock().urlName, true);
+
       await tester.ensureVisible(find.text('1000'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('1000'));
-      await customRunAsync(tester, test: () async {
-        expect(find.text('1000'), findsOneWidget);
-        await tester.ensureVisible(find.text('Block Details'));
-      });
+      await tester.pumpAndSettle();
+      expect(find.text('1000'), findsOneWidget);
+      await tester.ensureVisible(find.text('Block Details'));
     });
