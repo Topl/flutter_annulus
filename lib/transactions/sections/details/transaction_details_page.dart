@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
-import 'package:flutter_annulus/transactions/sections/desktop_transaction_details_page.dart';
-import 'package:flutter_annulus/transactions/sections/mobile_transaction_details_page.dart';
+import 'package:flutter_annulus/transactions/sections/details/desktop_transaction_details_page.dart';
+import 'package:flutter_annulus/transactions/sections/details/mobile_transaction_details_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';

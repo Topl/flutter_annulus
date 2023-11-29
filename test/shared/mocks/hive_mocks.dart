@@ -9,10 +9,12 @@ class MockHiveResponse {
   MockHiveInterface mockHive;
   MockBox mockCustomChainBox;
   MockBox mockRateLimitBox;
+  MockBox mockBlockBox;
   MockHiveResponse({
     required this.mockHive,
     required this.mockCustomChainBox,
     required this.mockRateLimitBox,
+    required this.mockBlockBox,
   });
 }
 
@@ -24,6 +26,7 @@ MockHiveResponse getMockHive() {
     mockHive: mockHive,
     mockCustomChainBox: getMockCustomChains(mockHive),
     mockRateLimitBox: getMockRateLimit(mockHive),
+    mockBlockBox: getMockBlockBox(mockHive),
   );
 }
 
@@ -53,4 +56,22 @@ MockBox getMockRateLimit(MockHiveInterface mockHive) {
   });
 
   return mockRateLimitBox;
+}
+
+MockBox getMockBlockBox(MockHiveInterface mockHive) {
+  MockBox mockBlockBox = MockBox();
+
+  when(mockHive.openBox(Hives.blocks.id)).thenAnswer((realInvocation) async {
+    return mockBlockBox;
+  });
+
+  when(mockBlockBox.get(any)).thenAnswer((realInvocation) {
+    return null;
+  });
+
+  when(mockBlockBox.values).thenAnswer((realInvocation) {
+    return [];
+  });
+
+  return mockBlockBox;
 }

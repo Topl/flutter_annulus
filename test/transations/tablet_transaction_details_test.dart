@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../essential_test_provider_widget.dart';
 import '../required_test_class.dart';
 import '../shared/mocks/hive_mocks.dart';
-import '../utils/tester_utils.dart';
+import '../shared/utils/tester_utils.dart';
 
 class TabletTransactionDetails extends RequiredTest {
   Future<void> Function(TestScreenSizes testScreenSize) tabletTransactionDetailsTest;

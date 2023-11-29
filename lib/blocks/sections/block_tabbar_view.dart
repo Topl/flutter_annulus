@@ -35,7 +35,9 @@ class BlockTabBarView extends HookConsumerWidget {
           child: Container(
             padding: isMobile ? const EdgeInsets.all(2.0) : const EdgeInsets.all(0),
             decoration: BoxDecoration(
-              color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
+              // QQQQ
+              color: Colors.pink,
+              // color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +52,11 @@ class BlockTabBarView extends HookConsumerWidget {
                     const SizedBox(
                       width: 24,
                     ),
-                    CustomTextRight(desc: block!.header.substring(0, Numbers.textLength - 3)),
+                    Expanded(
+                      child: CustomTextRight(
+                        desc: block!.header.substring(0, Numbers.textLength - 3),
+                      ),
+                    ),
                   ],
                 ),
                 Row(

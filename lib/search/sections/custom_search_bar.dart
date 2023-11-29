@@ -84,7 +84,6 @@ class CustomSearchBar extends HookConsumerWidget {
                 goToBlockDetails(
                   context: context,
                   block: block.block,
-                  colorTheme: colorTheme,
                 );
               },
               uTxO: (uTxO) {

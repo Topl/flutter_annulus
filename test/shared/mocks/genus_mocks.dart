@@ -1,11 +1,14 @@
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:topl_common/genus/services/transaction_grpc.dart';
-import '../../utils/block_utils.dart';
+import '../utils/block_utils.dart';
 import 'genus_mocks.mocks.dart';
 
 @GenerateMocks([GenusGRPCService])
-GenusGRPCService getMockGenus() {
+GenusGRPCService getMockGenus({
+  String? blockId,
+  String? transactionId,
+}) {
   MockGenusGRPCService mockGenus = MockGenusGRPCService();
 
   when(mockGenus.getBlockByDepth(
@@ -14,7 +17,7 @@ GenusGRPCService getMockGenus() {
     options: anyNamed('options'),
   )).thenAnswer(
     (realInvocation) async {
-      return getMockBlockResponse();
+      return getMockBlockResponse(blockId: blockId);
     },
   );
 
@@ -24,7 +27,7 @@ GenusGRPCService getMockGenus() {
     options: anyNamed('options'),
   )).thenAnswer(
     (realInvocation) async {
-      return getMockBlockResponse();
+      return getMockBlockResponse(blockId: blockId);
     },
   );
 

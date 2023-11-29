@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/blocks/sections/block_details_drawer.dart';
-import 'package:flutter_annulus/blocks/sections/block_mobile_details.dart';
 import 'package:flutter_annulus/blocks/utils/utils.dart';
-import 'package:flutter_annulus/main.dart';
 import 'package:flutter_annulus/shared/theme.dart';
+import 'package:flutter_annulus/shared/utils/nav_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:vrouter/vrouter.dart';
 
 import '../../../shared/providers/app_theme_provider.dart';
 import '../../../shared/utils/theme_color.dart';
@@ -26,7 +22,6 @@ class BlockView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-    final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
 
     final colorTheme = ref.watch(appThemeColorProvider);
     return Container(
@@ -50,17 +45,13 @@ class BlockView extends ConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         data: (Block block) {
+          print('QQQQ block: $block');
           return TextButton(
               onPressed: () {
-                isDesktop
-                    ? showModalSideSheet(
-                        context: context,
-                        ignoreAppBar: false,
-                        width: 640,
-                        barrierColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF353739).withOpacity(0.64),
-                        barrierDismissible: true,
-                        body: ResponsiveBreakPointsWrapper(child: BlockDetailsDrawer(block: block)))
-                    : context.vRouter.to(BlockTabBarMobileView.blockDetailsPath(block.header));
+                goToBlockDetails(
+                  context: context,
+                  block: block,
+                );
               },
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
@@ -113,7 +104,7 @@ class BlockView extends ConsumerWidget {
                         const SizedBox(
                           height: 8,
                         ),
-                        BlockHeaderText(text: block.header.replaceRange(7, block.header.length, '...')),
+                        BlockHeaderText(text: block.header),
                         const BlockSmallText(text: 'Header'),
                         const SizedBox(
                           height: 8,
