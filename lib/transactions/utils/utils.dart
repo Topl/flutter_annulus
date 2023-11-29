@@ -9,11 +9,11 @@ import 'package:topl_common/proto/brambl/models/transaction/unspent_transaction_
 
 import '../../blocks/models/block.dart';
 
-Transaction getMockTransaction() {
-  return Transaction(
+Transaction getMockTransaction([int? i]) {
+  final baseTransation = Transaction(
     transactionId: "8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q",
     status: TransactionStatus.confirmed,
-    block: getMockBlock(),
+    block: getMockBlock(i),
     broadcastTimestamp: DateTime.now().millisecondsSinceEpoch,
     confirmedTimestamp: DateTime.now().millisecondsSinceEpoch,
     transactionType: TransactionType.transfer,
@@ -25,6 +25,10 @@ Transaction getMockTransaction() {
     transactionSize: 1,
     name: '1234567890',
   );
+
+  return i != null
+      ? baseTransation.copyWith(transactionId: "${i}8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q")
+      : baseTransation;
 }
 
 List<BigInt> getInputBigInts({required List<SpentTransactionOutput> inputs}) {

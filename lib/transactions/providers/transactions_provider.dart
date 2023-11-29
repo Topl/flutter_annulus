@@ -165,7 +165,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
   /// If [setState] is false, it will not update the state of the provider
   Future<void> getTransactions() async {
     if (selectedChain == const Chains.mock()) {
-      final transactions = List.generate(100, (index) => getMockTransaction());
+      final transactions = List.generate(100, (index) => getMockTransaction(index));
       state = AsyncData(transactions);
     } else {
       state = const AsyncLoading();
