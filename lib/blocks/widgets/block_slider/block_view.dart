@@ -13,6 +13,8 @@ import '../../models/block.dart';
 class BlockView extends ConsumerWidget {
   final AsyncValue<Block> asyncBlock;
 
+  static Key blockItemKey(String blockId) => Key('blockItem-$blockId');
+
   // Constructor for BlockView widget
   const BlockView({
     Key? key,
@@ -45,8 +47,8 @@ class BlockView extends ConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         data: (Block block) {
-          print('QQQQ block: $block');
           return TextButton(
+              key: blockItemKey(block.header),
               onPressed: () {
                 goToBlockDetails(
                   context: context,
@@ -134,6 +136,8 @@ class BlockHeaderText extends StatelessWidget {
     return Text(
       text,
       style: titleSmall(context),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
     );
   }
 }

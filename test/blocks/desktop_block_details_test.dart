@@ -1,3 +1,4 @@
+import 'package:flutter_annulus/blocks/widgets/block_slider/block_view.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
@@ -35,11 +36,11 @@ Future<void> desktopBlockDetailsTest(TestScreenSizes testScreenSize) async =>
 
       confirmHomeScreenRoute(tester: tester);
 
-      print('QQQQ blockId: $blockId');
+      final blockFinder = find.byKey(BlockView.blockItemKey(blockId)).first;
 
-      await tester.ensureVisible(find.text(blockId));
+      await tester.ensureVisible(blockFinder);
       await tester.pumpAndSettle();
-      await tester.tap(find.text(blockId));
+      await tester.tap(blockFinder);
       await tester.pumpAndSettle();
 
       confirmBlockDetailsRoute(
