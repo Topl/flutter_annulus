@@ -1,3 +1,5 @@
+import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
@@ -84,14 +86,23 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
 
   Future<Chain> _getLiveChain() async {
     try {
-      final FetchEpochDataRes chainData = await nodeClient.fetchEpochData(epoch: 1);
+      final Block blockAtDepth0 = await ref.read(blockStateAtDepthProvider(0).future);
+      final int currentEpoch = blockAtDepth0.epoch.toInt();
+
+      print('QQQQ currentEpoch ${blockAtDepth0.epoch}');
+
+      final FetchEpochDataRes chainData = await nodeClient.fetchEpochData(epoch: currentEpoch);
 
       //////// Data Throughput ////////
       final int dataBytes = chainData.epochData.dataBytes.toInt();
 
       final int startTimestamp = chainData.epochData.startTimestamp.toInt();
+      print('QQQQ startTimestamp $startTimestamp');
 
       final int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+      print('QQQQ currentTimestamp $currentTimestamp');
+
+      // Convert milliseconds to seconds
 
       final double dataThroughput =
           double.parse((dataBytes / ((currentTimestamp - startTimestamp) / 1000)).toStringAsFixed(2));
@@ -103,10 +114,10 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       final double averageTransactionFee = totalTransactionReward.toInt() / totalTransactionsInEpoch;
 
       //////// Average Block Time ////////
-
       final int totalBlocks = chainData.epochData.endHeight.toInt();
 
-      final int averageBlockTime = ((currentTimestamp - startTimestamp) / 1000 / totalBlocks).round();
+      final int averageBlockTime =
+          totalBlocks == 0 ? 0 : (totalBlocks / ((currentTimestamp - startTimestamp) / 1000)).round();
 
       //////// Others ////////
       final int eon = chainData.epochData.eon.toInt();
@@ -122,7 +133,6 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       final inactiveStakes = chainData.epochData.inactiveStake.toBigInt().toInt();
 
       final totalStakes = activeStakes + inactiveStakes;
-
       final Chain chain = Chain(
         dataThroughput: dataThroughput,
         averageTransactionFee: averageTransactionFee,
@@ -141,6 +151,7 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       );
       return chain;
     } catch (e) {
+      print('QQQQ Error retrieving chain data $e');
       throw ('Error retrieving chain data $e');
     }
   }
