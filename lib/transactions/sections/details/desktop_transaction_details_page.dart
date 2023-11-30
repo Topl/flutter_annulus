@@ -10,10 +10,14 @@ import '../../../shared/constants/numbers.dart';
 import '../transactions.dart';
 
 //method to create a list of text widgets
-List<Widget> createAddressWidgets({required List<String> addresses}) {
-  return List<Widget>.generate(addresses.length, (int index) {
-    return CustomTextRight(desc: addresses[index]);
-  });
+Widget createAddressWidgets({required List<String> addresses}) {
+  return Column(
+    children: [
+      ...List<Widget>.generate(addresses.length, (int index) {
+        return CustomTextRight(desc: addresses[index]);
+      }),
+    ],
+  );
 }
 
 /// This is a custom widget that shows the transaction details drawer
@@ -157,8 +161,9 @@ class DesktopTransactionDetailsPage extends HookConsumerWidget {
                     const SizedBox(
                       width: 24,
                     ),
-                    ...createAddressWidgets(addresses: transaction.senderAddress),
-                    // CustomTextRight(desc: transaction!.senderAddress[0])
+                    Expanded(
+                      child: createAddressWidgets(addresses: transaction.senderAddress),
+                    ),
                   ],
                 ),
                 Row(
@@ -168,8 +173,7 @@ class DesktopTransactionDetailsPage extends HookConsumerWidget {
                     const SizedBox(
                       width: 24,
                     ),
-                    ...createAddressWidgets(addresses: transaction.receiverAddress),
-                    // CustomTextRight(desc: transaction!.receiverAddress[0])
+                    createAddressWidgets(addresses: transaction.receiverAddress),
                   ],
                 ),
                 const SizedBox(

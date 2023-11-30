@@ -12,16 +12,16 @@ class BlockDetailsPage extends HookConsumerWidget {
     Key? key,
   }) : super(key: key);
 
-  static const String _blockIdParam = 'blockId';
+  static const String blockIdParam = 'blockId';
   static const String _route = '/block_details/';
-  static const String paramRoute = '${HomeScreen.chainParamRoute}$_route:$_blockIdParam';
+  static const String paramRoute = '${HomeScreen.chainParamRoute}$_route:$blockIdParam';
   static String blockDetailsPath(String blockId, String chainId) {
     return '${HomeScreen.chainPath(chainId)}$_route$blockId';
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String? blockId = context.vRouter.pathParameters[_blockIdParam];
+    final String? blockId = context.vRouter.pathParameters[blockIdParam];
     final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
 
     if (blockId == null) {

@@ -68,8 +68,8 @@ class AnnulusRouter extends HookConsumerWidget {
             final String? chainId = vRedirector.newVRouterData?.pathParameters[HomeScreen.chainIdParam];
             final selectedChain = ref.read(selectedChainProvider);
             if (chainId == null) {
-              vRedirector.to(HomeScreen.chainPath(selectedChain.hostUrl));
-            } else if (chainId != selectedChain.hostUrl) {
+              vRedirector.to(HomeScreen.chainPath(selectedChain.urlName));
+            } else if (chainId != selectedChain.urlName) {
               final urlChain = ChainsNotifier.standardChains.where((element) => element.hostUrl == chainId).first;
 
               ref.read(selectedChainProvider.notifier).state = urlChain;
