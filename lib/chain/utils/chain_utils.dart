@@ -25,7 +25,7 @@ Chain getMockChain() {
 }
 
 Chains getDefaultChain() {
-  return getDevMode() ? const Chains.mock() : const Chains.topl_mainnet();
+  return getDevMode() ? const Chains.dev_network() : const Chains.topl_mainnet();
 }
 
 Future<int> blockSkipAmount({
