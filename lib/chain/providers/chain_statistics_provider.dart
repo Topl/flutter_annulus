@@ -97,15 +97,14 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       final int dataBytes = chainData.epochData.dataBytes.toInt();
 
       final int startTimestamp = chainData.epochData.startTimestamp.toInt();
-      print('QQQQ startTimestamp $startTimestamp');
 
       final int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
-      print('QQQQ currentTimestamp $currentTimestamp');
+
+      final double epochDuration = (currentTimestamp - startTimestamp) / 1000;
 
       // Convert milliseconds to seconds
 
-      final double dataThroughput =
-          double.parse((dataBytes / ((currentTimestamp - startTimestamp) / 1000)).toStringAsFixed(2));
+      final double dataThroughput = double.parse((dataBytes / (epochDuration)).toStringAsFixed(2));
 
       //////// Average Transaction fee ////////
       final int totalTransactionsInEpoch = chainData.epochData.transactionCount.toInt();
@@ -114,10 +113,12 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       final double averageTransactionFee = totalTransactionReward.toInt() / totalTransactionsInEpoch;
 
       //////// Average Block Time ////////
-      final int totalBlocks = chainData.epochData.endHeight.toInt();
+      final int endBlocks = chainData.epochData.endHeight.toInt();
+      final int startBlocks = chainData.epochData.startHeight.toInt();
 
-      final int averageBlockTime =
-          totalBlocks == 0 ? 0 : (totalBlocks / ((currentTimestamp - startTimestamp) / 1000)).round();
+      final int totalBlocksInEpoch = endBlocks - startBlocks;
+
+      final int averageBlockTime = totalBlocksInEpoch == 0 ? 0 : (epochDuration / totalBlocksInEpoch).round();
 
       //////// Others ////////
       final int eon = chainData.epochData.eon.toInt();
@@ -126,7 +127,9 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
 
       final int epoch = chainData.epochData.epoch.toInt();
 
-      final int endHeight = chainData.epochData.endHeight.toInt();
+      // TODO: Node seems to be ahead of genus, so currently going to use block at depth 0
+      // final int endHeight = chainData.epochData.endHeight.toInt();
+      final int endHeight = blockAtDepth0.height;
 
       final activeStakes = chainData.epochData.activeStake.toBigInt().toInt();
 
