@@ -39,7 +39,7 @@ class Block with _$Block {
   factory Block.fromBlockRes({required BlockResponse blockRes, required int epochLength}) {
     final block = Block(
       header: decodeId(blockRes.block.header.headerId.value),
-      epoch: (blockRes.block.header.slot.toInt() ~/ epochLength),
+      epoch: blockRes.block.header.slot.toInt() ~/ epochLength,
       size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
       height: blockRes.block.header.height.toInt(),
       slot: blockRes.block.header.slot.toInt(),
