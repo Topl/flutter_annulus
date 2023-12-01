@@ -89,8 +89,6 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       final Block blockAtDepth0 = await ref.read(blockStateAtDepthProvider(0).future);
       final int currentEpoch = blockAtDepth0.epoch.toInt();
 
-      print('QQQQ currentEpoch ${blockAtDepth0.epoch}');
-
       final FetchEpochDataRes chainData = await nodeClient.fetchEpochData(epoch: currentEpoch);
 
       //////// Data Throughput ////////
@@ -154,7 +152,6 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       );
       return chain;
     } catch (e) {
-      print('QQQQ Error retrieving chain data $e');
       throw ('Error retrieving chain data $e');
     }
   }
