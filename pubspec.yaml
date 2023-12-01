@@ -50,7 +50,7 @@ dependencies:
   topl_common: 
     git: 
       url: https://github.com/Topl/dart_topl_common.git
-      ref: feath_epoch_data_null
+      ref: master
   modal_side_sheet: ^0.0.1
   advanced_datatable: ^0.0.8
   responsive_framework: ^1.0.0
