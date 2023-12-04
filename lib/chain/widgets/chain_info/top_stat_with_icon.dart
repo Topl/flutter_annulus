@@ -64,7 +64,7 @@ class TopStatWithIcon extends ConsumerWidget {
               ),
               ResponsiveRowColumnItem(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (isMobile)
                       Text(
@@ -75,12 +75,17 @@ class TopStatWithIcon extends ConsumerWidget {
                       margin: const EdgeInsets.only(top: 16),
                       child: Row(
                         children: [
-                          Text(
-                            statAmount,
-                            style: titleLarge(context),
+                          SizedBox(
+                            width: 100,
+                            child: Text(
+                              statAmount,
+                              overflow: TextOverflow.ellipsis,
+                              style: titleLarge(context),
+                            ),
                           ),
                           Text(
                             statSymbol,
+                            overflow: TextOverflow.ellipsis,
                             style: titleMedium(context)!.copyWith(
                               color: myColors(context).altTextColor2,
                             ),

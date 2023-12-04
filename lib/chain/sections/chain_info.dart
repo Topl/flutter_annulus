@@ -12,9 +12,10 @@ import '../widgets/chain_info/top_stat_with_icon.dart';
 import '../widgets/chain_info/stat_info_card.dart';
 
 class ChainInfo extends HookConsumerWidget {
-  const ChainInfo({
-    super.key,
-  });
+  static const chainInfoKey = Key('ChainInfo');
+  static const eraTextKey = Key('eraTextKey');
+  static const eonTextKey = Key('eonTextKey');
+  const ChainInfo() : super(key: chainInfoKey);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -128,6 +129,7 @@ class ChainInfo extends HookConsumerWidget {
                                           height: 4,
                                         ),
                                         Text(
+                                          key: eonTextKey,
                                           chain.eon.toString(),
                                           style: titleLarge(context),
                                         )
@@ -178,6 +180,7 @@ class ChainInfo extends HookConsumerWidget {
                                         height: 4,
                                       ),
                                       Text(
+                                        key: eraTextKey,
                                         chain.era.toString(),
                                         style: titleLarge(context),
                                       )
