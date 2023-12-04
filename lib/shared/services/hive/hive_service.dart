@@ -1,9 +1,20 @@
 import 'package:flutter_annulus/shared/services/hive/hives.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final hivePackageProvider = Provider<HiveInterface>((ref) {
+  return Hive;
+});
+
+final hiveProvider = Provider<HiveService>((ref) {
+  return HiveService(ref);
+});
 
 class HiveService {
+  final Ref ref;
+  HiveService(this.ref);
   Future<Box<dynamic>> _openBox(String box) async {
-    return await Hive.openBox(box);
+    return await ref.read(hivePackageProvider).openBox(box);
   }
 
   Future<void> putItem({

@@ -32,6 +32,12 @@ sealed class Chains with _$Chains {
     @Default('development') String urlName,
     @Default(443) int port,
   }) = DevNetwork;
+  const factory Chains.sean_network({
+    @Default('Seannet') String networkName,
+    @Default('seannet.topl.tech') String hostUrl,
+    @Default('seannet') String urlName,
+    @Default(443) int port,
+  }) = SeanNetwork;
   const factory Chains.mock({
     @Default('Mock') String networkName,
     @Default('mock') String urlName,

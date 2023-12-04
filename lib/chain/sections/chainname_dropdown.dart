@@ -363,9 +363,12 @@ class _DesktopDropdown extends StatelessWidget {
           selectedItemBuilder: (context) => chains
               .map((Chains chain) => Row(
                     children: [
-                      Text(
-                        shortenNetwork(chain),
-                        style: titleMedium(context),
+                      Expanded(
+                        child: Text(
+                          chain.networkName,
+                          style: titleMedium(context),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ))

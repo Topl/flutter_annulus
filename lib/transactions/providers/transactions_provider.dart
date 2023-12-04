@@ -165,7 +165,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
   /// If [setState] is false, it will not update the state of the provider
   Future<void> getTransactions() async {
     if (selectedChain == const Chains.mock()) {
-      final transactions = List.generate(100, (index) => getMockTransaction());
+      final transactions = List.generate(100, (index) => getMockTransaction(index));
       state = AsyncData(transactions);
     } else {
       state = const AsyncLoading();
@@ -190,7 +190,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
         for (int i = 0; i < transactionCount; i++) {
           // check is transactions exist in cache
           final cachedData =
-              await HiveService().getItem(boxType: Hives.transactions, key: latestBlock.height.toString());
+              await ref.read(hiveProvider).getItem(boxType: Hives.transactions, key: latestBlock.height.toString());
           if (cachedData != null) {
             final List<dynamic> transactionList = jsonDecode(cachedData);
             transactions.addAll(transactionList.map((item) => Transaction.fromJson(item)));
@@ -228,11 +228,11 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
               ),
             );
             //add to cache
-            await HiveService().putItem(
-              boxType: Hives.transactions,
-              key: latestBlock.height.toString(),
-              value: jsonEncode(transactions),
-            );
+            await ref.read(hiveProvider).putItem(
+                  boxType: Hives.transactions,
+                  key: latestBlock.height.toString(),
+                  value: jsonEncode(transactions),
+                );
           }
         }
 

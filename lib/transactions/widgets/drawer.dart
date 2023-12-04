@@ -3,9 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 
 class TransactionDrawer extends HookWidget {
-  TransactionDrawer({super.key});
+  const TransactionDrawer({super.key});
 
-  bool show = false;
+  final bool show = false;
 
   @override
   Widget build(BuildContext context) {

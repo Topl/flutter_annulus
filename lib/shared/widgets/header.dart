@@ -11,6 +11,7 @@ import '../utils/theme_color.dart';
 
 /// Header widget that displays the logo, search bar and dropdown.
 class Header extends HookConsumerWidget {
+  static const Key menuKey = Key('menuKey');
   final String logoAsset;
   final VoidCallback onSearch;
   final ValueChanged<String> onDropdownChanged;
@@ -58,6 +59,7 @@ class Header extends HookConsumerWidget {
               isSmallerThanOrEqualToTablet
                   ? SizedBox(
                       child: IconButton(
+                        key: menuKey,
                         onPressed: () {
                           // toggle between light and dark theme
                           showGeneralDialog(
@@ -276,19 +278,18 @@ class MobileMenu extends HookConsumerWidget {
 
 /// ThemeModeSwitch widget state.
 class ThemeModeSwitch extends HookWidget {
-  bool darkMode = false;
   final Function onPressed;
 
-  ThemeModeSwitch({super.key, required this.onPressed});
+  const ThemeModeSwitch({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
+    final darkMode = useState(false);
     return Switch(
-      value: darkMode,
+      value: darkMode.value,
       activeColor: const Color(0xFF7040EC),
       onChanged: (bool value) {
-        // This is called when the user toggles the switch.
-        darkMode = value;
+        darkMode.value = value;
         onPressed();
       },
     );

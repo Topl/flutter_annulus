@@ -1,5 +1,6 @@
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/utils/chain_utils.dart';
+import 'package:flutter_annulus/shared/utils/get_dev_mode.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_annulus/shared/services/hive/hives.dart';
@@ -18,13 +19,17 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
   ChainsNotifier(this.ref) : super(const AsyncLoading()) {
     _getAvailableChains(setState: true);
   }
+  static List<Chains> devChains = [
+    const Chains.private_network(),
+    const Chains.dev_network(),
+    const Chains.sean_network(),
+    const Chains.mock(),
+  ];
   // dev notes: This will have to be updated when we change the predetermined networks
   static List<Chains> standardChains = [
     const Chains.topl_mainnet(),
     const Chains.testnet(),
-    const Chains.private_network(),
-    const Chains.dev_network(),
-    const Chains.mock(),
+    if (getDevMode()) ...devChains,
   ];
 
   /// It takes a bool [setState]
@@ -35,7 +40,7 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
     bool setState = false,
   }) async {
     final List<Chains> customChains = [];
-    final Iterable<dynamic> hiveData = await HiveService().getAllItems(boxType: Hives.customChains);
+    final Iterable<dynamic> hiveData = await ref.read(hiveProvider).getAllItems(boxType: Hives.customChains);
     hiveData.toList().forEach((element) {
       final Map<String, dynamic> hiveJson = convertHashMapToMap(element);
       try {
@@ -75,8 +80,7 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
     // }
 
     //add to cache
-    await HiveService().putItem(boxType: Hives.customChains, key: chain.chainId, value: chain.toJson());
-
+    await ref.read(hiveProvider).putItem(boxType: Hives.customChains, key: chain.chainId, value: chain.toJson());
     //add new custom chain to state
     state = AsyncData([...chains, chain]);
   }
@@ -88,7 +92,7 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
       throw Exception('Error in chainsProvider: chains are null');
     }
 
-    await HiveService().deleteItem(boxType: Hives.customChains, key: chainId);
+    await ref.read(hiveProvider).deleteItem(boxType: Hives.customChains, key: chainId);
 
     chains.removeWhere((element) => element is CustomNetwork && element.chainId == chainId);
     state = AsyncData(chains);

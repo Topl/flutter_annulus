@@ -59,6 +59,7 @@ class CustomLayout extends HookConsumerWidget {
                 Expanded(
                   child: Center(
                     child: ListView(
+                      key: const PageStorageKey(0),
                       padding: const EdgeInsets.only(top: 30),
                       children: <Widget>[
                         ListTile(

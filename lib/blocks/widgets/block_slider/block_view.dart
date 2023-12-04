@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_annulus/blocks/sections/block_details_drawer.dart';
-import 'package:flutter_annulus/blocks/sections/block_mobile_details.dart';
 import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/shared/theme.dart';
+import 'package:flutter_annulus/shared/utils/nav_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:vrouter/vrouter.dart';
 
 import '../../../shared/providers/app_theme_provider.dart';
 import '../../../shared/utils/theme_color.dart';
@@ -15,6 +12,8 @@ import '../../models/block.dart';
 /// Block view widget
 class BlockView extends ConsumerWidget {
   final AsyncValue<Block> asyncBlock;
+
+  static Key blockItemKey(String blockId) => Key('blockItem-$blockId');
 
   // Constructor for BlockView widget
   const BlockView({
@@ -25,7 +24,6 @@ class BlockView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
-    final isDesktop = ResponsiveBreakpoints.of(context).equals(DESKTOP);
 
     final colorTheme = ref.watch(appThemeColorProvider);
     return Container(
@@ -50,16 +48,12 @@ class BlockView extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         data: (Block block) {
           return TextButton(
+              key: blockItemKey(block.header),
               onPressed: () {
-                isDesktop
-                    ? showModalSideSheet(
-                        context: context,
-                        ignoreAppBar: false,
-                        width: 640,
-                        barrierColor: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF353739).withOpacity(0.64),
-                        barrierDismissible: true,
-                        body: BlockDetailsDrawer(block: block))
-                    : context.vRouter.to(BlockTabBarMobileView.blockDetailsPath(block.header));
+                goToBlockDetails(
+                  context: context,
+                  block: block,
+                );
               },
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
@@ -112,15 +106,17 @@ class BlockView extends ConsumerWidget {
                         const SizedBox(
                           height: 8,
                         ),
-                        BlockHeaderText(text: block.header.replaceRange(7, block.header.length, '...')),
+                        BlockHeaderText(text: block.header),
                         const BlockSmallText(text: 'Header'),
                         const SizedBox(
                           height: 8,
                         ),
-                        BlockHeaderText(
-                          text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp).toString().substring(11, 19),
+                        Expanded(
+                          child: BlockHeaderText(
+                            text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp).toString().substring(11, 19),
+                          ),
                         ),
-                        const BlockSmallText(text: 'UTC'),
+                        const Expanded(child: BlockSmallText(text: 'UTC')),
                       ]))
               //cardChild,
               );
@@ -140,6 +136,8 @@ class BlockHeaderText extends StatelessWidget {
     return Text(
       text,
       style: titleSmall(context),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
     );
   }
 }

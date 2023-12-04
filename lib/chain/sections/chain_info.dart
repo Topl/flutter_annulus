@@ -5,7 +5,6 @@ import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-
 import '../../shared/providers/app_theme_provider.dart';
 import '../../shared/utils/theme_color.dart';
 import '../providers/chain_statistics_provider.dart';
@@ -117,21 +116,23 @@ class ChainInfo extends HookConsumerWidget {
                             child: SizedBox(
                               child: Row(
                                 children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Eon",
-                                        style: titleMedium(context),
-                                      ),
-                                      const SizedBox(
-                                        height: 4,
-                                      ),
-                                      Text(
-                                        chain.eon.toString(),
-                                        style: titleLarge(context),
-                                      )
-                                    ],
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Eon",
+                                          style: titleMedium(context),
+                                        ),
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        Text(
+                                          chain.eon.toString(),
+                                          style: titleLarge(context),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                   const SizedBox(
                                     width: 10,
@@ -165,21 +166,23 @@ class ChainInfo extends HookConsumerWidget {
                                         width: 10,
                                       )
                                     : const SizedBox(),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Era",
-                                      style: titleMedium(context),
-                                    ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      chain.era.toString(),
-                                      style: titleLarge(context),
-                                    )
-                                  ],
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Era",
+                                        style: titleMedium(context),
+                                      ),
+                                      const SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        chain.era.toString(),
+                                        style: titleLarge(context),
+                                      )
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(
                                   width: 10,

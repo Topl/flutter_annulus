@@ -97,7 +97,7 @@ Future<List<Block>> getBlocksSinceDecentralization({
 }
 
 final getBlockByIdProvider = FutureProvider.family<Block, String>((ref, header) async {
-  return ref.read(blockProvider.notifier).getBlockFromStateById(header);
+  return ref.watch(blockProvider.notifier).getBlockFromStateById(header);
 });
 
 final blockProvider = StateNotifierProvider<BlockNotifier, AsyncValue<Map<int, Block>>>((ref) {
@@ -135,7 +135,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
   Future<List<Block>> getLatestBlocks({bool setState = false}) async {
     if (selectedChain == const Chains.mock()) {
       if (setState) state = const AsyncLoading();
-      final List<Block> blocks = List.generate(100, (index) => getMockBlock());
+      final List<Block> blocks = List.generate(100, (index) => getMockBlock(index));
       if (setState) {
         state = AsyncData(
           blocks.asMap(),
@@ -165,7 +165,8 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       for (int i = 1; i < pageLimit; i++) {
         final int heightToSearch = blocks[0].height - i;
         // check is blocks exist in cache
-        final cachedData = await HiveService().getItem(boxType: Hives.blocks, key: heightToSearch.toString());
+        final cachedData = await ref.read(hiveProvider).getItem(boxType: Hives.blocks, key: heightToSearch.toString());
+
         if (cachedData != null) {
           final blockData = cachedData;
           blocks.add(Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>));
@@ -177,11 +178,11 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
           );
           final jsonData = blockData.toJson();
           //add to cache
-          await HiveService().putItem(
-            boxType: Hives.blocks,
-            key: heightToSearch.toString(),
-            value: jsonEncode(jsonData),
-          );
+          await ref.read(hiveProvider).putItem(
+                boxType: Hives.blocks,
+                key: heightToSearch.toString(),
+                value: jsonEncode(jsonData),
+              );
           blocks.add(
             blockData,
           );
@@ -241,7 +242,8 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       }
       final desiredHeight = blockAtDepth0.height - depth;
       // check is blocks exist in cache
-      final cachedData = await HiveService().getItem(boxType: Hives.blocks, key: desiredHeight.toString());
+      final cachedData = await ref.read(hiveProvider).getItem(boxType: Hives.blocks, key: desiredHeight.toString());
+
       if (cachedData != null) {
         final blockData = cachedData;
         final block = Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>);
@@ -260,11 +262,12 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
 
         final jsonData = newBlock.toJson();
         //add to cache
-        await HiveService().putItem(
-          boxType: Hives.blocks,
-          key: desiredHeight.toString(),
-          value: jsonEncode(jsonData),
-        );
+        await ref.read(hiveProvider).putItem(
+              boxType: Hives.blocks,
+              key: desiredHeight.toString(),
+              value: jsonEncode(jsonData),
+            );
+
         blocks[depth] = newBlock;
 
         // Sort the blocks by depth so that they are in order
@@ -307,7 +310,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
     } else {
       blocks = {...blocks};
       // check if item exists in cache
-      final cachedData = await HiveService().getItem(boxType: Hives.blocks, key: height.toString());
+      final cachedData = await ref.read(hiveProvider).getItem(boxType: Hives.blocks, key: height.toString());
       if (cachedData != null) {
         final blockData = cachedData;
         final block = Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>);
@@ -327,11 +330,11 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
         );
 
         // add to cache
-        await HiveService().putItem(
-          boxType: Hives.blocks,
-          key: height.toString(),
-          value: jsonEncode(newBlock.toJson()),
-        );
+        await ref.read(hiveProvider).putItem(
+              boxType: Hives.blocks,
+              key: height.toString(),
+              value: jsonEncode(newBlock.toJson()),
+            );
 
         blocks[depth] = newBlock;
 
@@ -351,7 +354,7 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       throw Exception('Error in blockProvider: blocks are null');
     }
     // check if item exists in cache
-    final cachedData = await HiveService().getItem(boxType: Hives.blocks, key: height.toString());
+    final cachedData = await ref.read(hiveProvider).getItem(boxType: Hives.blocks, key: height.toString());
     if (cachedData != null) {
       final blockData = cachedData;
       final block = Block.fromJson(jsonDecode(blockData) as Map<String, dynamic>);
@@ -383,14 +386,14 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       }
       final presentConfig = await config;
       // add to cache
-      await HiveService().putItem(
-        boxType: Hives.blocks,
-        key: height.toString(),
-        value: jsonEncode(Block.fromBlockRes(
-          blockRes: nextBlock,
-          epochLength: presentConfig.config.epochLength.toInt(),
-        ).toJson()),
-      );
+      await ref.read(hiveProvider).putItem(
+            boxType: Hives.blocks,
+            key: height.toString(),
+            value: jsonEncode(Block.fromBlockRes(
+              blockRes: nextBlock,
+              epochLength: presentConfig.config.epochLength.toInt(),
+            ).toJson()),
+          );
 
       return nextBlock;
     }
@@ -399,15 +402,11 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
   Future<Block> getBlockFromStateById(String header) async {
     var blocks = state.asData?.value;
 
-    if (blocks == null) {
-      throw Exception('Error in blockProvider: blocks are null');
-    }
-
     // If the state contains the block, return it
 
-    try {
-      return blocks!.values.firstWhere((element) => element.header == header);
-    } catch (e) {
+    if (blocks != null && blocks.values.any((element) => element.header == header)) {
+      return blocks.values.firstWhere((element) => element.header == header);
+    } else {
       final genusClient = ref.read(genusProvider(selectedChain));
 
       final config = ref.read(configProvider.future);
@@ -438,8 +437,6 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
       state = AsyncData(sortedBlocks);
 
       return block;
-
-      // Set the state to the new block
     }
   }
 }
