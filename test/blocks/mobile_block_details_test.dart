@@ -42,11 +42,9 @@ Future<void> mobileBlockSliderTest(TestScreenSizes testScreenSize) async =>
       await tester.pumpAndSettle();
       await tester.tap(blockFinder);
       await tester.pumpAndSettle();
-
       confirmBlockDetailsRoute(
         tester: tester,
         blockId: blockId,
       );
-
-      await tester.ensureVisible(find.text('Block Details'));
+      await validateBlockDetailsTabletMobile(tester, blockId);
     });
