@@ -58,6 +58,6 @@ Future<void> desktopChainInfoTest(TestScreenSizes testScreenSize) async =>
       await tester.ensureVisible(chainInfoFinder);
       await tester.pumpAndSettle();
 
-      testTextField(ChainInfo.eraTextKey, '500', tester);
-      testTextField(ChainInfo.eonTextKey, '600', tester);
+      testTextField(ChainInfo.eraTextKey, '500');
+      testTextField(ChainInfo.eonTextKey, '600');
     });

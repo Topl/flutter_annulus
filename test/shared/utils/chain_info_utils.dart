@@ -48,7 +48,7 @@ getModifiedMockChainInfo({
   );
 }
 
-testTextField(Key textFieldKey, String text, WidgetTester tester) async {
+testTextField(Key textFieldKey, String text) async {
   final currentKey = find.byKey(textFieldKey);
   expect(currentKey, findsOneWidget);
   Text textFinder = currentKey.evaluate().single.widget as Text;
