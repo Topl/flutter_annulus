@@ -4,6 +4,7 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../../../shared/utils/theme_color.dart';
 
 class StatInfoCard extends ConsumerWidget {
@@ -11,6 +12,7 @@ class StatInfoCard extends ConsumerWidget {
   final String statSymbol;
   final bool firstItem;
   final String tooltipText;
+  final bool isLoading;
 
   const StatInfoCard({
     super.key,
@@ -18,6 +20,7 @@ class StatInfoCard extends ConsumerWidget {
     required this.statSymbol,
     this.firstItem = false,
     this.tooltipText = "",
+    required this.isLoading,
   });
 
   @override
@@ -43,7 +46,7 @@ class StatInfoCard extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                statString,
+                isLoading ? 'Loading' : statString,
                 style: TextStyle(
                   color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                   fontSize: 16,
@@ -52,20 +55,22 @@ class StatInfoCard extends ConsumerWidget {
                 ),
               ),
               Text(
-                statSymbol,
+                isLoading ? 'small' : statSymbol,
                 style: bodySmall(context),
               ),
             ],
           ),
         ),
         if (isTablet) const Expanded(child: SizedBox(width: 20)),
-        Container(
-          margin: const EdgeInsets.only(left: 8),
-          child: CustomTooltip(
-            tooltipText: tooltipText,
-            child: const Icon(
-              Icons.info_outline,
-              color: Color(0xFF858E8E),
+        Skeleton.ignore(
+          child: Container(
+            margin: const EdgeInsets.only(left: 8),
+            child: CustomTooltip(
+              tooltipText: tooltipText,
+              child: const Icon(
+                Icons.info_outline,
+                color: Color(0xFF858E8E),
+              ),
             ),
           ),
         )
