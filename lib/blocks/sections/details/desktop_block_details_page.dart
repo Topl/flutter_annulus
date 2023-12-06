@@ -12,6 +12,7 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 
 /// This is a custom widget that shows the block details drawer
 class DesktopBlockDetailsPage extends HookConsumerWidget {
+  static Key exampleText(String text) => Key('exampleText-$text');
   const DesktopBlockDetailsPage({
     super.key,
     required this.blockId,
@@ -76,8 +77,11 @@ class DesktopBlockDetailsPage extends HookConsumerWidget {
                                         Radius.circular(16.0),
                                       ),
                                     ),
-                                    child: const Tab(
-                                      child: Text(Strings.summary),
+                                    child: Tab(
+                                      child: Text(
+                                        Strings.summary,
+                                        key: exampleText(block.height.toString()),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(

@@ -3,6 +3,7 @@ import 'package:flutter_annulus/blocks/sections/details/block_details_page.dart'
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 import 'package:vrouter/vrouter.dart';
 
 confirmBlockDetailsRoute({
@@ -28,4 +29,33 @@ confirmBlockDetailsRoute({
 
   // Expect the blockId to be the mock block
   expect(pathParams[BlockDetailsPage.blockIdParam] == blockId, true);
+}
+
+BlockResponse getBlockResponse() {
+  return BlockResponse(
+    block: FullBlock(
+      header: BlockHeader(
+        address: StakingAddress(value: [1, 2, 3, 4, 5, 6, 7, 8]),
+        height: Int64(1),
+        bloomFilter: [],
+        eligibilityCertificate: EligibilityCertificate(),
+        headerId: BlockId(value: encodeId(blockId)),
+        metadata: [],
+        operationalCertificate: OperationalCertificate(),
+        parentHeaderId: BlockId(value: [1, 2, 3, 4, 5, 6, 7, 8]),
+        parentSlot: Int64(1),
+        slot: Int64(1),
+        timestamp: Int64(DateTime.now().millisecondsSinceEpoch),
+        txRoot: [],
+      ),
+      fullBody: FullBlockBody(
+        transactions: List.generate(
+          10,
+          (index) => getMockIoTransaction(
+            id: '$transactionId',
+          ),
+        ),
+      ),
+    ),
+  );
 }

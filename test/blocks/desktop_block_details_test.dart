@@ -1,8 +1,11 @@
+import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/sections/details/desktop_block_details_page.dart';
 import 'package:flutter_annulus/blocks/widgets/block_slider/block_view.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 
 import '../essential_test_provider_widget.dart';
 import '../required_test_class.dart';
@@ -23,12 +26,10 @@ void main() async {
 
 Future<void> desktopBlockDetailsTest(TestScreenSizes testScreenSize) async =>
     testWidgets('Block details test ${testScreenSize.name}', (WidgetTester tester) async {
-      final blockId = createId();
-
       await tester.pumpWidget(
         await essentialTestProviderWidget(tester: tester, testScreenSize: testScreenSize, overrides: [
           hivePackageProvider.overrideWithValue(getMockHive().mockHive),
-          genusProvider.overrideWith((ref, arg) => getMockGenus(blockId: blockId)),
+          genusProvider.overrideWith((ref, arg) => getMockGenus(blockResponse: blockResponse)),
         ]),
       );
 
@@ -36,7 +37,9 @@ Future<void> desktopBlockDetailsTest(TestScreenSizes testScreenSize) async =>
 
       confirmHomeScreenRoute(tester: tester);
 
-      final blockFinder = find.byKey(BlockView.blockItemKey(blockId)).first;
+      final blockFinder = find.byKey(BlockView.blockItemKey(block.header)).first;
+
+      final blockTextFinder = find.byKey(DesktopBlockDetailsPage.exampleText(text)).first;
 
       await tester.ensureVisible(blockFinder);
       await tester.pumpAndSettle();
