@@ -36,6 +36,8 @@ class TopChainInfoSection extends StatelessWidget {
           // columnSpacing: 20.0,
           // rowSpacing: 60.0,
           columnMainAxisAlignment: MainAxisAlignment.spaceBetween,
+          columnMainAxisSize: MainAxisSize.min,
+          rowMainAxisSize: MainAxisSize.min,
           children: [
             ResponsiveRowColumnItem(
               rowFlex: 1,

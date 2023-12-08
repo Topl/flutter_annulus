@@ -7,23 +7,25 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../providers/chain_statistics_provider.dart';
 
 class ChainInfo extends HookConsumerWidget {
-  const ChainInfo({
-    super.key,
-  });
+  static const chainInfoKey = Key('ChainInfo');
+  static const Key loadingChainInfoKey = Key('LoadingChainInfo');
+  const ChainInfo() : super(key: chainInfoKey);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<Chain> chainInfo = ref.watch(chainStatisticsProvider);
 
     return chainInfo.when(
-      data: (chain) => MainChainInfoSection(
-        chain: chain,
-      ),
+      data: (chain) {
+        return MainChainInfoSection(
+          chain: chain,
+        );
+      },
       error: (error, stack) => const Text('Oops, something unexpected happened'),
       loading: () {
         final mockChain = getMockChain();
         return Skeletonizer(
-          
+          key: loadingChainInfoKey,
           child: MainChainInfoSection(
             isLoading: true,
             chain: mockChain,

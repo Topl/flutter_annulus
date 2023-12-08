@@ -137,6 +137,7 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       final inactiveStakes = chainData.epochData.inactiveStake.toBigInt().toInt();
 
       final totalStakes = activeStakes + inactiveStakes;
+
       final Chain chain = Chain(
         dataThroughput: dataThroughput,
         averageTransactionFee: averageTransactionFee,

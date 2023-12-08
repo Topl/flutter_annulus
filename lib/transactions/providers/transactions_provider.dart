@@ -164,12 +164,10 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
   /// If [setState] is true, it will update the state of the provider
   /// If [setState] is false, it will not update the state of the provider
   Future<void> getTransactions() async {
-    print('QQQQ here');
     if (selectedChain == const Chains.mock()) {
       final transactions = List.generate(100, (index) => getMockTransaction(index));
       state = AsyncData(transactions);
     } else {
-      print('QQQQ here 2');
       state = const AsyncLoading();
       final List<Transaction> transactions = [];
 
@@ -188,7 +186,6 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
           timestamp: latestBlockRes.block.header.timestamp.toInt(),
           transactionNumber: transactionCount,
         );
-        print('QQQQ here 3');
         //continue going through transactions
         for (int i = 0; i < transactionCount; i++) {
           // check is transactions exist in cache
@@ -199,8 +196,6 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
             transactions.addAll(transactionList.map((item) => Transaction.fromJson(item)));
           } else {
             //calculate transaction amount
-            final transaction = latestBlockRes.block.fullBody.transactions[i];
-            print('QQQQ transaction: $transaction');
             var outputList = latestBlockRes.block.fullBody.transactions[i].outputs.toList();
             var inputList = latestBlockRes.block.fullBody.transactions[i].inputs.toList();
             var txAmount = calculateAmount(outputs: outputList);

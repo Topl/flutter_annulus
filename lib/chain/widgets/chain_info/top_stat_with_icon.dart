@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 /// TopStatWithIcon Widget that displays a stat with an icon on top of it.
 class TopStatWithIcon extends ConsumerWidget {
@@ -24,64 +22,45 @@ class TopStatWithIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    // print current size of the widget
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ResponsiveRowColumn(
-          layout: ResponsiveRowColumnType.COLUMN,
-          rowMainAxisAlignment: MainAxisAlignment.start,
-          rowCrossAxisAlignment: CrossAxisAlignment.start,
-          columnMainAxisAlignment: MainAxisAlignment.spaceBetween,
-          columnCrossAxisAlignment: CrossAxisAlignment.start,
-          rowSpacing: 10.0,
+        SvgPicture.asset(
+          iconString,
+          width: 20.0,
+          height: 16.0,
+        ),
+        const SizedBox(height: 16.0),
+        Text(
+          isLoading ? 'Loading long String is loading' : titleString,
+          style: titleMedium(context),
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 5.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ResponsiveRowColumnItem(
-              child: SvgPicture.asset(
-                iconString,
-                width: 20.0,
-                height: 16.0,
-              ),
-            ),
-            ResponsiveRowColumnItem(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 16,
+            Expanded(
+              child: RichText(
+                text: TextSpan(
+                  style: titleLarge(context),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: isLoading ? 'small string' : statAmount,
                     ),
-                    child: Text(
-                      isLoading ? 'Loading long String is loading' : titleString,
-                      style: titleMedium(context),
+                    TextSpan(
+                      text: isLoading ? '' : statSymbol,
+                      style: titleMedium(context)!.copyWith(
+                        color: myColors(context).altTextColor2,
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 5,
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          isLoading ? 'small string' : statAmount,
-                          style: titleLarge(context),
-                        ),
-                        Skeleton.ignore(
-                          child: Text(
-                            statSymbol,
-                            style: titleMedium(context)!.copyWith(
-                              color: myColors(context).altTextColor2,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

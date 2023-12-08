@@ -24,6 +24,7 @@ class MainChainInfoSection extends HookConsumerWidget {
     final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
     final isTablet = ResponsiveBreakpoints.of(context).smallerOrEqualTo(TABLET);
     return Container(
+      width: MediaQuery.of(context).size.width,
       margin: isMobile ? null : EdgeInsets.only(right: isTablet ? 5 : 40),
       decoration: BoxDecoration(
         color: colorTheme == ThemeMode.light ? Colors.white : const Color(0xFF282A2C),
