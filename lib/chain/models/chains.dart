@@ -11,7 +11,7 @@ sealed class Chains with _$Chains {
   const factory Chains.topl_mainnet({
     @Default('Toplnet') String networkName,
     @Default('toplnet') String urlName,
-    @Default('mainnet.topl.co') String hostUrl,
+    @Default('toplnet.topl.co') String hostUrl,
     @Default(443) int port,
   }) = ToplMainnet;
   const factory Chains.testnet({
