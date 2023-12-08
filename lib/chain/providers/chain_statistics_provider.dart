@@ -62,8 +62,9 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
         super(
           const AsyncLoading(),
         ) {
+    // getSelectedChain(setState: true);
     Future.delayed(const Duration(milliseconds: 1000), () {
-      // getSelectedChain(setState: true);
+      getSelectedChain(setState: true);
     });
   }
 

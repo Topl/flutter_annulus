@@ -24,15 +24,12 @@ class TopStatWithIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ResponsiveRowColumn(
-          layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
-              ? ResponsiveRowColumnType.ROW
-              : ResponsiveRowColumnType.COLUMN,
+          layout: ResponsiveRowColumnType.COLUMN,
           rowMainAxisAlignment: MainAxisAlignment.start,
           rowCrossAxisAlignment: CrossAxisAlignment.start,
           columnMainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,14 +48,18 @@ class TopStatWithIcon extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: isMobile ? 0 : 16),
+                    margin: const EdgeInsets.only(
+                      top: 16,
+                    ),
                     child: Text(
                       isLoading ? 'Loading long String is loading' : titleString,
                       style: titleMedium(context),
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 5),
+                    margin: const EdgeInsets.only(
+                      top: 5,
+                    ),
                     child: Row(
                       children: [
                         Text(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
-import 'package:flutter_annulus/chain/widgets/chain_info/stat_info_card.dart';
-import 'package:flutter_annulus/chain/widgets/chain_info/top_stat_with_icon.dart';
+import 'package:flutter_annulus/chain/widgets/chain_info/bottom_section/bottom_section.dart';
+import 'package:flutter_annulus/chain/widgets/chain_info/bottom_section/top_section.dart';
+import 'package:flutter_annulus/chain/widgets/chain_info/top_chain_info_section.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
-import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -37,191 +37,38 @@ class MainChainInfoSection extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           //Top Metrics
-          IntrinsicHeight(
-            child: Container(
-              padding: isMobile ? const EdgeInsets.all(5.0) : const EdgeInsets.all(20.0),
-              margin: isMobile ? const EdgeInsets.only(bottom: 10.0) : null,
-              child: ResponsiveRowColumn(
-                layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
-                    ? ResponsiveRowColumnType.COLUMN
-                    : ResponsiveRowColumnType.ROW,
-                // columnSpacing: 20.0,
-                // rowSpacing: 60.0,
-                children: [
-                  ResponsiveRowColumnItem(
-                    rowFlex: 1,
-                    child: TopStatWithIcon(
-                      iconString: 'assets/icons/speedometer.svg',
-                      titleString: "Data Throughput",
-                      statAmount: chain.dataThroughput.toString(),
-                      statSymbol: " kbps",
-                      isLoading: isLoading,
-                    ),
-                  ),
-                  ResponsiveRowColumnItem(
-                    child: isMobile
-                        ? Divider(
-                            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                            indent: 20,
-                            endIndent: 20,
-                            height: 1,
-                          )
-                        : VerticalDivider(
-                            thickness: 1,
-                            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                          ),
-                  ),
-                  ResponsiveRowColumnItem(
-                    rowFlex: 1,
-                    child: TopStatWithIcon(
-                      iconString: 'assets/icons/coin.svg',
-                      titleString: "Average Transaction Fees",
-                      statAmount: chain.averageTransactionFee.toString(),
-                      statSymbol: " LVL",
-                      isLoading: isLoading,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          TopChainInfoSection(
+            chain: chain,
+            isLoading: isLoading,
+            isMobile: isMobile,
+            colorTheme: colorTheme,
           ),
+
           Divider(
             color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
             indent: 0,
             height: 1,
           ),
           //Bottom Metrics
-          SizedBox(
-            child: ResponsiveRowColumn(
-              layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
-                  ? ResponsiveRowColumnType.COLUMN
-                  : ResponsiveRowColumnType.ROW,
-              children: [
-                ResponsiveRowColumnItem(
-                  rowFlex: 6,
-                  child: Column(
-                    crossAxisAlignment: !isMobile ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: isMobile ? 20.0 : 32.0, horizontal: isMobile ? 20 : 20.0),
-                        child: ResponsiveRowColumn(
-                          layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
-                              ? ResponsiveRowColumnType.COLUMN
-                              : ResponsiveRowColumnType.ROW,
-                          columnSpacing: 10.0,
-                          children: [
-                            ResponsiveRowColumnItem(
-                              rowFlex: 1,
-                              child: StatInfoCard(
-                                statString: chain.epoch.toString(),
-                                statSymbol: "Epoch",
-                                firstItem: true,
-                                tooltipText: Strings.epochTooltipText,
-                                isLoading: isLoading,
-                              ),
-                            ),
-                            ResponsiveRowColumnItem(
-                              rowFlex: 1,
-                              child: StatInfoCard(
-                                statString: chain.totalTransactionsInEpoch.toString(),
-                                statSymbol: "Txs",
-                                firstItem: isMobile,
-                                tooltipText: Strings.totalTransactionTooltipText,
-                                isLoading: isLoading,
-                              ),
-                            ),
-                            ResponsiveRowColumnItem(
-                              rowFlex: 1,
-                              child: StatInfoCard(
-                                statString: chain.height.toString(),
-                                statSymbol: "Height",
-                                firstItem: isMobile,
-                                tooltipText: Strings.heightTooltipText,
-                                isLoading: isLoading,
-                              ),
-                            ),
-                            ResponsiveRowColumnItem(
-                              rowFlex: 1,
-                              child: StatInfoCard(
-                                statString: chain.averageBlockTime.toString(),
-                                statSymbol: "Avg Block Time",
-                                firstItem: isMobile,
-                                tooltipText: Strings.averageBlockTimeTooltipText,
-                                isLoading: isLoading,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 800,
-                        child: Divider(
-                          thickness: 1,
-                          height: 1,
-                          color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                          indent: 0,
-                          endIndent: 0,
-                        ),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: isMobile ? 20.0 : 32.0, horizontal: isMobile ? 20.0 : 20.0),
-                        child: ResponsiveRowColumn(
-                          layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
-                              ? ResponsiveRowColumnType.COLUMN
-                              : ResponsiveRowColumnType.ROW,
-                          columnSpacing: 10.0,
-                          children: [
-                            ResponsiveRowColumnItem(
-                              rowFlex: 1,
-                              child: StatInfoCard(
-                                statString: '${chain.totalStake.toString()}%',
-                                statSymbol: "Total Stake",
-                                firstItem: true,
-                                tooltipText: Strings.totalStakeTooltipText,
-                                isLoading: isLoading,
-                              ),
-                            ),
-                            ResponsiveRowColumnItem(
-                              rowFlex: 1,
-                              child: StatInfoCard(
-                                statString: chain.registeredStakes.toString(),
-                                statSymbol: "Registered\nStakes",
-                                firstItem: isMobile,
-                                tooltipText: Strings.registeredStakesTooltipText,
-                                isLoading: isLoading,
-                              ),
-                            ),
-                            ResponsiveRowColumnItem(
-                              rowFlex: 1,
-                              child: StatInfoCard(
-                                statString: '${chain.activeStakes.toString()}%',
-                                statSymbol: "Active\nStakes",
-                                firstItem: isMobile,
-                                tooltipText: Strings.activeStakesTooltipText,
-                                isLoading: isLoading,
-                              ),
-                            ),
-                            ResponsiveRowColumnItem(
-                              rowFlex: 1,
-                              child: StatInfoCard(
-                                statString: '${chain.inactiveStakes.toString()}%',
-                                statSymbol: "Inactive\nStakes",
-                                firstItem: isMobile,
-                                tooltipText: Strings.invalidStakesTooltipText,
-                                isLoading: isLoading,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          )
+          TopSection(
+            chain: chain,
+            isLoading: isLoading,
+            isMobile: isMobile,
+            colorTheme: colorTheme,
+          ),
+          Divider(
+            thickness: 1,
+            height: 1,
+            color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+            indent: 0,
+            endIndent: 0,
+          ),
+          BottomSection(
+            colorTheme: colorTheme,
+            chain: chain,
+            isLoading: isLoading,
+            isMobile: isMobile,
+          ),
         ],
       ),
     );
