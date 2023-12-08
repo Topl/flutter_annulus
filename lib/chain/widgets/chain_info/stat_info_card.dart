@@ -7,6 +7,8 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 import '../../../shared/utils/theme_color.dart';
 
 class StatInfoCard extends ConsumerWidget {
+  static Key statInfoItemKey(String name) => Key('statInfoItemKey_$name');
+
   final String statString;
   final String statSymbol;
   final bool firstItem;
@@ -44,6 +46,7 @@ class StatInfoCard extends ConsumerWidget {
             children: [
               Text(
                 statString,
+                key: statInfoItemKey(statSymbol),
                 style: TextStyle(
                   color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),
                   fontSize: 16,

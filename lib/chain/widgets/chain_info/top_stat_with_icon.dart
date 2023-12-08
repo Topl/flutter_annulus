@@ -9,6 +9,8 @@ import '../../../shared/utils/theme_color.dart';
 
 /// TopStatWithIcon Widget that displays a stat with an icon on top of it.
 class TopStatWithIcon extends ConsumerWidget {
+  static Key topStatItemKey(String name) => Key('topStatItemKey_$name');
+
   final String iconString;
   final String titleString;
   final String statAmount;
@@ -79,6 +81,7 @@ class TopStatWithIcon extends ConsumerWidget {
                             width: 100,
                             child: Text(
                               statAmount,
+                              key: topStatItemKey(titleString),
                               overflow: TextOverflow.ellipsis,
                               style: titleLarge(context),
                             ),

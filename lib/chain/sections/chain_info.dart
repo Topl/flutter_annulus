@@ -15,6 +15,7 @@ class ChainInfo extends HookConsumerWidget {
   static const chainInfoKey = Key('ChainInfo');
   static const eraTextKey = Key('eraTextKey');
   static const eonTextKey = Key('eonTextKey');
+
   const ChainInfo() : super(key: chainInfoKey);
 
   @override
