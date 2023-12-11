@@ -98,6 +98,8 @@ class BlockPlaceHolder extends HookConsumerWidget {
         super(key: key);
 
   final CarouselController _controller;
+  static const Key leftButtonKey = Key('leftButtonKey');
+  static const Key rightButtonKey = Key('rightButtonKey');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -124,7 +126,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
                     children: <Widget>[
                       Flexible(
                         child: CustomTextButton(
-                          key: const Key('leftButton'),
+                          key: leftButtonKey,
                           controller: _controller,
                           text: '←',
                           isPrevious: true,
@@ -133,7 +135,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
                       const SizedBox(width: 10),
                       Flexible(
                         child: CustomTextButton(
-                          key: const Key('rightButton'),
+                          key: rightButtonKey,
                           controller: _controller,
                           text: '→',
                         ),
@@ -163,14 +165,14 @@ class BlockPlaceHolder extends HookConsumerWidget {
                         Row(
                           children: [
                             CustomTextButton(
-                              key: const Key('leftButton'),
+                              key: leftButtonKey,
                               controller: _controller,
                               text: '←',
                               isPrevious: true,
                             ),
                             const SizedBox(width: 10),
                             CustomTextButton(
-                              key: const Key('rightButton'),
+                              key: rightButtonKey,
                               controller: _controller,
                               text: '→',
                             ),
@@ -258,9 +260,6 @@ class CustomTextButton extends ConsumerWidget {
 class MobileBlockViewSlider extends StatelessWidget {
   final CarouselController controller;
   final List<Block> blocks;
-  int getItemCount() {
-    return 100;
-  }
 
   const MobileBlockViewSlider({
     Key? key,

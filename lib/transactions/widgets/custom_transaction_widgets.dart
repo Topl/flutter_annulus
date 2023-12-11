@@ -315,18 +315,7 @@ class CustomRowWithText extends StatelessWidget {
         Expanded(child: CustomTextRight(desc: rightText)),
         Padding(
             padding: !isMobile ? const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 0) : EdgeInsets.zero,
-            child: hasIcon
-                ? GestureDetector(
-                    onTap: () {
-                      Clipboard.setData(ClipboardData(text: rightText));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Copied to Clipboard'),
-                        ),
-                      );
-                    },
-                    child: const Icon(Icons.copy))
-                : null),
+            child: hasIcon ? CopyToClipboard(rightText: rightText) : null),
       ],
     );
   }
