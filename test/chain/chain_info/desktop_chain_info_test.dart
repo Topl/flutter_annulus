@@ -13,6 +13,7 @@ import '../../shared/mocks/node_config_mocks.dart';
 import '../../shared/utils/chain_info_utils.dart';
 import '../../shared/utils/navigation_utils.dart';
 import 'required_chain_info_tests.dart';
+import 'utils/chain_info_utils.dart';
 
 void main() async {
   final requestTests = RequiredChainInfoTests(
@@ -50,10 +51,7 @@ Future<void> desktopChainInfoTest(TestScreenSizes testScreenSize) async =>
         ),
       );
 
-      // Pump once and find the loading widget
-      await tester.pump();
-      final loadingChainInfoFinder = find.byKey(ChainInfo.loadingChainInfoKey);
-      expect(loadingChainInfoFinder, findsOneWidget);
+      await expectLoadingChainInfo(tester);
 
       await tester.pumpAndSettle();
 
