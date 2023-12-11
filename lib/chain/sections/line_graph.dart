@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chart_result.dart';
 import 'package:flutter_annulus/chain/providers/chain_statistics_provider.dart';
+import 'package:flutter_annulus/shared/widgets/snackbar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import "dart:math";
@@ -23,7 +24,15 @@ class LineGraph extends HookConsumerWidget {
                         return LineGraphContainer(chartData: chart);
                       },
                       error: (error, stack) {
-                        return const Text('Oops, something unexpected happened');
+                        CustomSnackBar.showSnackBarAndToast(
+                          context,
+                          onRetry: () {
+                            ref.refresh(chartProvider);
+                            ref.refresh(chainStatisticsProvider);
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          },
+                        );
+                        return const SizedBox();
                       },
                       loading: () => const Center(
                         child: CircularProgressIndicator(),
