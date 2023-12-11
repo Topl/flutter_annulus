@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../shared/constants/strings.dart';
 import '../../shared/utils/theme_color.dart';
+import '../../shared/widgets/snackbar.dart';
 import '../models/transaction.dart';
 import '../widgets/custom_transaction_widgets.dart';
 
@@ -181,7 +182,14 @@ class Transactions extends HookConsumerWidget {
         ),
       ),
       error: (error, stack) {
-        return const Text('Oops, something unexpected happened');
+        CustomSnackBar.showSnackBarAndToast(
+          context,
+          onRetry: () {
+            ref.refresh(transactionsProvider);
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        );
+        return const SizedBox();
       },
       loading: () {
         return const Center(

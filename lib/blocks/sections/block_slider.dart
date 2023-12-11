@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/theme.dart';
+import 'package:flutter_annulus/shared/widgets/snackbar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -80,7 +81,16 @@ class BlockViewSlider extends HookConsumerWidget {
               ),
             );
           },
-          error: (error, stack) => const Text('Oops, something unexpected happened'),
+          error: (error, stack) {
+            CustomSnackBar.showSnackBarAndToast(
+              context,
+              onRetry: () {
+                ref.refresh(blockProvider);
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              },
+            );
+            return const SizedBox();
+          },
           loading: () => const Center(
             child: CircularProgressIndicator(),
           ),
