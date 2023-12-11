@@ -136,7 +136,7 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       final totalStakes = activeStakes + inactiveStakes;
       final Chain chain = Chain(
         dataThroughput: dataThroughput,
-        averageTransactionFee: averageTransactionFee,
+        averageTransactionFee: averageTransactionFee.isNaN ? 0 : averageTransactionFee,
         // TODO: This is not yet implemented in the API
         uniqueActiveAddresses: 0,
         eon: eon,
