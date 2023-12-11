@@ -73,7 +73,6 @@ Future<void> desktopChainInfoTest(TestScreenSizes testScreenSize) async =>
       testTextField(StatInfoCard.statInfoItemKey("Txs"), mockChainInfo.epochData!.transactionCount.toString());
       testTextField(StatInfoCard.statInfoItemKey("Height"), mockChainInfo.epochData!.endHeight.toString());
       testTextField(StatInfoCard.statInfoItemKey("Avg Block Time"), "0");
-      // testTextField(StatInfoCard.statInfoItemKey("Total Stake"), "200 B");
       testTextField(StatInfoCard.statInfoItemKey("Registered\nStakes"), "0");
       testTextField(StatInfoCard.statInfoItemKey("Active\nStakes"), "0%");
       testTextField(StatInfoCard.statInfoItemKey("Inactive\nStakes"), "0%");
