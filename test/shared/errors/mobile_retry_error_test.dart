@@ -23,7 +23,6 @@ void main() async {
 Future<void> mobileRetryError(TestScreenSizes testScreenSize) async =>
     testWidgets('Retry Error Toast message test for ${testScreenSize.name}', (WidgetTester tester) async {
       final blockId = createId();
-
       await tester.pumpWidget(
         await essentialTestProviderWidget(tester: tester, testScreenSize: testScreenSize, overrides: [
           hivePackageProvider.overrideWithValue(getMockHive().mockHive),
