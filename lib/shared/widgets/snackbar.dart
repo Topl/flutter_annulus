@@ -11,7 +11,6 @@ class CustomSnackBar {
   static const Key retryButtonKey = Key('retryButtonKey');
   static const Key retryTextKey = Key('retryTextKey');
   static const Key pleaseTryLaterTextKey = Key('pleaseTryLaterTextKey');
-
   static void showSnackBarAndToast(BuildContext context, {Function()? onRetry}) {
     Future.delayed(Duration.zero, () {
       final snackBar = buildSnackBarAndToast(context, onRetry);
