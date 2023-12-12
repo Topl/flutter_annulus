@@ -23,7 +23,7 @@ void main() async {
 Future<void> mobileRetryError(TestScreenSizes testScreenSize) async =>
     testWidgets('Retry Error Toast message test for ${testScreenSize.name}', (WidgetTester tester) async {
       final blockId = createId();
-      
+
       await tester.pumpWidget(
         await essentialTestProviderWidget(tester: tester, testScreenSize: testScreenSize, overrides: [
           hivePackageProvider.overrideWithValue(getMockHive().mockHive),
@@ -32,18 +32,18 @@ Future<void> mobileRetryError(TestScreenSizes testScreenSize) async =>
       );
 
       await tester.pumpAndSettle();
-      
+
       expect(find.byKey(CustomSnackBar.snackBarContentKey), findsOneWidget);
-      
+
       final retryButton = find.byKey(CustomSnackBar.retryButtonKey);
-      
-      await tester.tap(retryButton, warnIfMissed: false);
-      
+
+      await tester.tap(retryButton);
+
       await tester.pumpAndSettle();
 
       expect(find.text(Strings.failedToLoadPage), findsOne);
-      
+
       expect(find.text(Strings.tryAgainLater), findsOne);
-      
+
       expect(find.text(Strings.retry), findsOne);
     });
