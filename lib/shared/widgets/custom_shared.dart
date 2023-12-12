@@ -40,6 +40,7 @@ class FooterContent extends StatelessWidget {
         Container(
           margin: isTablet ? EdgeInsets.zero : const EdgeInsets.only(right: 10, left: 10),
           padding: isTablet ? const EdgeInsets.only(left: 50) : EdgeInsets.zero,
+          width: isTablet ? 400 : 300,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -88,8 +89,8 @@ class CustomFooterTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: isTablet ? 200 : double.infinity,
       height: 40,
+      width: 200,
       child: TextField(
         controller: TextEditingController(text: ''),
         decoration: const InputDecoration(

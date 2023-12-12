@@ -46,7 +46,7 @@ class HomeScreen extends HookConsumerWidget {
         ),
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            SizedBox(height: isMobile ? null : 20),
             Container(
               margin: EdgeInsets.symmetric(horizontal: isMobile ? 20.0 : 40.0, vertical: 20),
               child: ResponsiveRowColumn(

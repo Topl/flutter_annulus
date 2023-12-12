@@ -62,7 +62,10 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
         super(
           const AsyncLoading(),
         ) {
-    getSelectedChain(setState: true);
+    // getSelectedChain(setState: true);
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      getSelectedChain(setState: true);
+    });
   }
 
   /// TODO: Implements with dart gRPC client
@@ -134,6 +137,7 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       final inactiveStakes = chainData.epochData.inactiveStake.toBigInt().toInt();
 
       final totalStakes = activeStakes + inactiveStakes;
+
       final Chain chain = Chain(
         dataThroughput: dataThroughput,
         averageTransactionFee: averageTransactionFee.isNaN ? 0 : averageTransactionFee,
