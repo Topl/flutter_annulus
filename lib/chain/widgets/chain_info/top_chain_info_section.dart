@@ -22,7 +22,6 @@ class TopChainInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('QQQQ averageTransactionFeeKey: ${averageTransactionFeeKey(chain.averageTransactionFee.toString())}');
     return IntrinsicHeight(
       child: Container(
         padding: isMobile ? const EdgeInsets.all(5.0) : const EdgeInsets.all(20.0),

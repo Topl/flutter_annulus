@@ -34,7 +34,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    final avgTransactionFeeKey = TopChainInfoSection.averageTransactionFeeKey(0);
+    final avgTransactionFeeKey = TopChainInfoSection.averageTransactionFeeKey(0.0);
 
     expect(find.byKey(avgTransactionFeeKey), findsOneWidget);
   });
