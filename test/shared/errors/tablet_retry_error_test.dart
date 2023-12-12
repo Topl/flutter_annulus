@@ -4,7 +4,6 @@ import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/shared/widgets/snackbar.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import '../../essential_test_provider_widget.dart';
 import '../../required_test_class.dart';
 import '../mocks/genus_mocks.dart';
@@ -21,7 +20,7 @@ void main() async {
 }
 
 Future<void> tabletRetryError(TestScreenSizes testScreenSize) async =>
-    testWidgets('Retry Error Toast message test for ${testScreenSize.name}', (WidgetTester tester) async {
+    testWidgets('Retry Error Toast message test for${testScreenSize.name}', (WidgetTester tester) async {
       final blockId = createId();
 
       await tester.pumpWidget(
@@ -41,9 +40,9 @@ Future<void> tabletRetryError(TestScreenSizes testScreenSize) async =>
 
       await tester.pumpAndSettle();
 
-      expect(find.text(Strings.failedToLoadPage), findsOneWidget);
+      expect(find.text(Strings.failedToLoadPage), findsOne);
 
-      expect(find.text(Strings.tryAgainLater), findsOneWidget);
+      expect(find.text(Strings.tryAgainLater), findsOne);
 
-      expect(find.text(Strings.retry), findsOneWidget);
+      expect(find.text(Strings.retry), findsOne);
     });
