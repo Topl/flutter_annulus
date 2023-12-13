@@ -22,7 +22,7 @@ getMockChainInfo() {
   );
 }
 
-getModifiedMockChainInfo({
+FetchEpochDataRes getModifiedMockChainInfo({
   int? dataBytes,
   int? startTimestamp,
   int? transactionCount,

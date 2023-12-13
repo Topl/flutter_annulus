@@ -35,6 +35,7 @@ class StatInfoCard extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
+                  key: statInfoItemKey(statSymbol),
                   isLoading ? 'Loading' : statString,
                   style: TextStyle(
                     color: getSelectedColor(colorTheme, 0xFF282A2C, 0xFFFEFEFE),

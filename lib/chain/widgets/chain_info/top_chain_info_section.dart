@@ -6,7 +6,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class TopChainInfoSection extends StatelessWidget {
   static Key averageTransactionFeeKey(avgFee) => Key('averageTransactionFeeKey-$avgFee');
-  static Key dataThroughputKey = const Key('dataThroughputKey');
+  static Key dataThroughputKey(throughput) => Key('dataThroughputKey-$throughput');
   final Chain chain;
   final bool isLoading;
   final bool isMobile;
@@ -50,6 +50,7 @@ class TopChainInfoSection extends StatelessWidget {
                 statAmount: chain.dataThroughput.toString(),
                 statSymbol: " kbps",
                 isLoading: isLoading,
+                key: dataThroughputKey(chain.dataThroughput.toString()),
               ),
             ),
             ResponsiveRowColumnItem(
