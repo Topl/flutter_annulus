@@ -38,10 +38,8 @@ class Strings {
   static const String footerColumn5Header = 'Subscribe to Our Newsletter';
   static const String footerColumn5Button = 'Submit';
   static const String footerColumn1Item1 = 'Energy Efficient Regularized PoS';
-  static const String footerColumn1Item2 =
-      'UTxO Ledger and Achieving Scalability';
-  static const String footerColumn1Item3 =
-      'User Ecosystem, Standards and Development';
+  static const String footerColumn1Item2 = 'UTxO Ledger and Achieving Scalability';
+  static const String footerColumn1Item3 = 'User Ecosystem, Standards and Development';
   static const String footerColumn1Item4 = 'Tokenomics';
   static const String footerColumn1Item5 = 'Governance';
   static const String footerColumn1Item6 = 'Ribn';
@@ -67,20 +65,17 @@ class Strings {
   static const String footerRightsReserved = '2023 © All rights reserved';
   static const String latestBlocksHeader = 'Latest Blocks';
   static const String eonTooltipText = '';
-  static const String eraTooltipText =
-      'An era is a period during which a specific set of active validators exists.';
+  static const String eraTooltipText = 'An era is a period during which a specific set of active validators exists.';
   static const String epochTooltipText =
       'An epoch or session is one-sixth of an era. \nDuring the last epoch, the active set of the next era is elected. \nAnd after the end of each era, the rewards are calculated and are ready to be distributed to the validators and nominators.';
   static const String totalTransactionTooltipText =
       'Indicates the total number of transactions on the Topl blockchain.';
   static const String heightTooltipText =
       'Indicates the number of blocks that have been confirmed in the entire history of the Topl blockchain.';
-  static const String averageBlockTimeTooltipText =
-      'The average time taken to generate a new block.';
+  static const String averageBlockTimeTooltipText = 'The average time taken to generate a new block.';
   static const String totalStakeTooltipText =
       'Indicates the total percentage of users that have staked on the Topl blockchain to confirm transactions.';
-  static const String registeredStakesTooltipText =
-      'Indicates the total numbers of registered stakes on the Topl blockchain.';
+  static const String totalStakesTooltipText = 'Indicates the total number of stakes on the Topl blockchain';
   static const String activeStakesTooltipText =
       'Indicates the total validators actively being nominated for the current era. \nA single validator is nominated in each era with the full stake. \nThis validator will pay rewards once the payout has been activated at the end of that era.';
   static const String invalidStakesTooltipText =
@@ -114,8 +109,7 @@ class Strings {
   static const String proposition = 'Proposition';
   static const String quantity = 'Quantity';
   static const String name = 'Name';
-  static const String searchHintText =
-      'Search by blocks, transactions, or UTxOs';
+  static const String searchHintText = 'Search by blocks, transactions, or UTxOs';
   static const String averageTxnFee = 'Average Transaction Fee';
   static const String averageTxnFees = 'Average Transaction Fees';
   static const String addNewNetwork = 'Add New Network';
@@ -127,8 +121,7 @@ class Strings {
   static const String requiredField = 'This field is required';
   static const String chainId = 'Chain ID';
   static const String chainIdPlaceHolder = '192.158.0.0';
-  static const String chainIdIdentifierMsg =
-      'The Chain ID is a unique identifier for the network';
+  static const String chainIdIdentifierMsg = 'The Chain ID is a unique identifier for the network';
   static const String selectNetwork = 'Select Network';
   static const String blockExplorerUrl = 'Block Explorer URL (Optional)';
   static const String cancelText = 'Cancel';
@@ -140,4 +133,8 @@ class Strings {
   static const String standardSideSheet = 'Show Standard Side Sheet';
   static const String summary = 'Summary';
   static const String transactions = 'Transactions';
+  static const String totalRegisteredStake = 'Total Registered\nStake';
+  static const String totalStakes = 'Total\nStakes';
+  static const String activeStakes = 'Active\nStakes';
+  static const String inactiveStakes = 'Inactive\nStakes';
 }

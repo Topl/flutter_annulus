@@ -2,6 +2,7 @@ import 'package:flutter_annulus/chain/sections/chain_info.dart';
 import 'package:flutter_annulus/chain/utils/chain_info_calc_utils.dart';
 import 'package:flutter_annulus/chain/widgets/chain_info/stat_info_card.dart';
 import 'package:flutter_annulus/chain/widgets/chain_info/top_chain_info_section.dart';
+import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:topl_common/genus/data_extensions.dart';
 import 'package:topl_common/proto/node/services/bifrost_rpc.pb.dart';
@@ -43,7 +44,10 @@ void confirmChainInfoText({
   final activeStakes = mockChainInfo.epochData.activeStake.toBigInt().toInt();
   final inactiveStakes = mockChainInfo.epochData.inactiveStake.toBigInt().toInt();
   final totalStakes = activeStakes + inactiveStakes;
-  testTextField(StatInfoCard.statInfoItemKey("Registered\nStakes"), "$totalStakes");
-  testTextField(StatInfoCard.statInfoItemKey("Active\nStakes"), "$activeStakes%");
-  testTextField(StatInfoCard.statInfoItemKey("Inactive\nStakes"), "$inactiveStakes%");
+  final totalRegisteredStake = (activeStakes / totalStakes) * 100;
+
+  testTextField(StatInfoCard.statInfoItemKey(Strings.totalStakes), "$totalStakes");
+  testTextField(StatInfoCard.statInfoItemKey(Strings.activeStakes), "$activeStakes");
+  testTextField(StatInfoCard.statInfoItemKey(Strings.inactiveStakes), "$inactiveStakes");
+  testTextField(StatInfoCard.statInfoItemKey(Strings.totalRegisteredStake), "$totalRegisteredStake%");
 }
