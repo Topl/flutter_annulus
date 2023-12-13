@@ -74,8 +74,6 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
   Future<Chain> getSelectedChain({bool setState = false}) async {
     if (setState) state = const AsyncLoading();
 
-    AsyncValue.error("error", StackTrace.current);
-
     final Chain chain = selectedChain == const Chains.mock() ? getMockChain() : await _getLiveChain();
 
     // Adding delay here to simulate API call
