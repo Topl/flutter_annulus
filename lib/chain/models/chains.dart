@@ -11,7 +11,7 @@ sealed class Chains with _$Chains {
   const factory Chains.topl_mainnet({
     @Default('Toplnet') String networkName,
     @Default('toplnet') String urlName,
-    @Default('mainnet.topl.co') String hostUrl,
+    @Default('toplnet.topl.co') String hostUrl,
     @Default(443) int port,
   }) = ToplMainnet;
   const factory Chains.testnet({
@@ -32,6 +32,12 @@ sealed class Chains with _$Chains {
     @Default('development') String urlName,
     @Default(443) int port,
   }) = DevNetwork;
+  const factory Chains.sean_network({
+    @Default('Seannet') String networkName,
+    @Default('seannet.topl.tech') String hostUrl,
+    @Default('seannet') String urlName,
+    @Default(443) int port,
+  }) = SeanNetwork;
   const factory Chains.mock({
     @Default('Mock') String networkName,
     @Default('mock') String urlName,

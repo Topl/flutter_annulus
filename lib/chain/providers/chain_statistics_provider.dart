@@ -1,3 +1,5 @@
+import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chain.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/chain/providers/selected_chain_provider.dart';
@@ -84,7 +86,10 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
 
   Future<Chain> _getLiveChain() async {
     try {
-      final FetchEpochDataRes chainData = await nodeClient.fetchEpochData(epoch: 1);
+      final Block blockAtDepth0 = await ref.read(blockStateAtDepthProvider(0).future);
+      final int currentEpoch = blockAtDepth0.epoch.toInt();
+
+      final FetchEpochDataRes chainData = await nodeClient.fetchEpochData(epoch: currentEpoch);
 
       //////// Data Throughput ////////
       final int dataBytes = chainData.epochData.dataBytes.toInt();
@@ -93,8 +98,11 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
 
       final int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
-      final double dataThroughput =
-          double.parse((dataBytes / ((currentTimestamp - startTimestamp) / 1000)).toStringAsFixed(2));
+      final double epochDuration = (currentTimestamp - startTimestamp) / 1000;
+
+      // Convert milliseconds to seconds
+
+      final double dataThroughput = double.parse((dataBytes / (epochDuration)).toStringAsFixed(2));
 
       //////// Average Transaction fee ////////
       final int totalTransactionsInEpoch = chainData.epochData.transactionCount.toInt();
@@ -103,10 +111,12 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       final double averageTransactionFee = totalTransactionReward.toInt() / totalTransactionsInEpoch;
 
       //////// Average Block Time ////////
+      final int endBlocks = chainData.epochData.endHeight.toInt();
+      final int startBlocks = chainData.epochData.startHeight.toInt();
 
-      final int totalBlocks = chainData.epochData.endHeight.toInt();
+      final int totalBlocksInEpoch = endBlocks - startBlocks;
 
-      final int averageBlockTime = ((currentTimestamp - startTimestamp) / 1000 / totalBlocks).round();
+      final int averageBlockTime = totalBlocksInEpoch == 0 ? 0 : (epochDuration / totalBlocksInEpoch).round();
 
       //////// Others ////////
       final int eon = chainData.epochData.eon.toInt();
@@ -115,14 +125,15 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
 
       final int epoch = chainData.epochData.epoch.toInt();
 
-      final int endHeight = chainData.epochData.endHeight.toInt();
+      // TODO: Node seems to be ahead of genus, so currently going to use block at depth 0
+      // final int endHeight = chainData.epochData.endHeight.toInt();
+      final int endHeight = blockAtDepth0.height;
 
       final activeStakes = chainData.epochData.activeStake.toBigInt().toInt();
 
       final inactiveStakes = chainData.epochData.inactiveStake.toBigInt().toInt();
 
       final totalStakes = activeStakes + inactiveStakes;
-
       final Chain chain = Chain(
         dataThroughput: dataThroughput,
         averageTransactionFee: averageTransactionFee,
