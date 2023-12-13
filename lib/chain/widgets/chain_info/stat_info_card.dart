@@ -7,6 +7,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../../../shared/utils/theme_color.dart';
 
 class StatInfoCard extends ConsumerWidget {
+  static Key statInfoItemKey(String name) => Key('statInfoItemKey_$name');
+
   final String statString;
   final String statSymbol;
   final String tooltipText;
