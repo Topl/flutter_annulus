@@ -43,11 +43,9 @@ class FooterContent extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              isTablet
-                  ? CustomFooterTextField(isTablet: isTablet)
-                  : Expanded(
-                      child: CustomFooterTextField(isTablet: isTablet),
-                    ),
+              const Expanded(
+                child: CustomFooterTextField(),
+              ),
               const SizedBox(width: 8),
               SizedBox(
                 height: 40,
@@ -80,15 +78,11 @@ class FooterContent extends StatelessWidget {
 class CustomFooterTextField extends StatelessWidget {
   const CustomFooterTextField({
     super.key,
-    required this.isTablet,
   });
-
-  final bool isTablet;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: isTablet ? 200 : double.infinity,
       height: 40,
       child: TextField(
         controller: TextEditingController(text: ''),
@@ -125,21 +119,13 @@ class ResponsiveFooter extends StatelessWidget {
       children: [
         ResponsiveRowColumnItem(
           rowFlex: 1,
-          child: isMobile
-              ? Column(
-                  children: [
-                    FooterContent(colorTheme: colorTheme),
-                    const SizedBox(height: 30),
-                    Container(width: 400, padding: const EdgeInsets.only(left: 10), child: rowIcons),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FooterContent(colorTheme: colorTheme),
-                    Container(padding: const EdgeInsets.only(right: 35), child: rowIcons),
-                  ],
-                ),
+          child: FooterContent(colorTheme: colorTheme),
+        ),
+        ResponsiveRowColumnItem(
+          child: Container(
+              width: isMobile ? 400 : 0,
+              padding: isMobile ? const EdgeInsets.only(left: 10) : const EdgeInsets.only(right: 35),
+              child: rowIcons),
         ),
       ],
     );

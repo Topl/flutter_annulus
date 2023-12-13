@@ -9,6 +9,8 @@ import '../../../shared/utils/theme_color.dart';
 
 /// TopStatWithIcon Widget that displays a stat with an icon on top of it.
 class TopStatWithIcon extends ConsumerWidget {
+  static Key topStatItemKey(String name) => Key('topStatItemKey_$name');
+
   final String iconString;
   final String titleString;
   final String statAmount;
@@ -64,7 +66,7 @@ class TopStatWithIcon extends ConsumerWidget {
               ),
               ResponsiveRowColumnItem(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (isMobile)
                       Text(
@@ -75,12 +77,18 @@ class TopStatWithIcon extends ConsumerWidget {
                       margin: const EdgeInsets.only(top: 16),
                       child: Row(
                         children: [
-                          Text(
-                            statAmount,
-                            style: titleLarge(context),
+                          SizedBox(
+                            width: 100,
+                            child: Text(
+                              statAmount,
+                              key: topStatItemKey(titleString),
+                              overflow: TextOverflow.ellipsis,
+                              style: titleLarge(context),
+                            ),
                           ),
                           Text(
                             statSymbol,
+                            overflow: TextOverflow.ellipsis,
                             style: titleMedium(context)!.copyWith(
                               color: myColors(context).altTextColor2,
                             ),
