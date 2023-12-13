@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// TopStatWithIcon Widget that displays a stat with an icon on top of it.
 class TopStatWithIcon extends ConsumerWidget {
+  static Key topStatItemKey(String name) => Key('topStatItemKey_$name');
+
   final String iconString;
   final String titleString;
   final String statAmount;

@@ -31,6 +31,8 @@ getModifiedMockChainInfo({
   int? eon,
   int? era,
   int? epoch,
+  int? activeStake,
+  int? inactiveStake,
 }) {
   return FetchEpochDataRes(
     epochData: EpochData(
