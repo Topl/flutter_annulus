@@ -15,10 +15,7 @@ import '../../shared/mocks/node_config_mocks.dart';
 import '../../shared/utils/chain_info_utils.dart';
 import '../../shared/utils/navigation_utils.dart';
 import 'required_chain_info_tests.dart';
-<<<<<<< HEAD
 import 'utils/chain_info_utils.dart';
-=======
->>>>>>> dev
 
 void main() async {
   final requestTests = RequiredChainInfoTests(
@@ -70,11 +67,6 @@ Future<void> desktopChainInfoTest(TestScreenSizes testScreenSize) async =>
       final chainInfoFinder = find.byKey(ChainInfo.chainInfoKey);
       await tester.ensureVisible(chainInfoFinder);
       await tester.pumpAndSettle();
-<<<<<<< HEAD
-=======
-
-      testTextField(ChainInfo.eraTextKey, mockChainInfo.epochData!.era.toString());
-      testTextField(ChainInfo.eonTextKey, mockChainInfo.epochData!.eon.toString());
 
       testTextField(TopStatWithIcon.topStatItemKey("Average Transaction Fees"), "0.0");
       testTextField(StatInfoCard.statInfoItemKey("Epoch"), mockChainInfo.epochData!.epoch.toString());
@@ -84,5 +76,4 @@ Future<void> desktopChainInfoTest(TestScreenSizes testScreenSize) async =>
       testTextField(StatInfoCard.statInfoItemKey("Registered\nStakes"), "0");
       testTextField(StatInfoCard.statInfoItemKey("Active\nStakes"), "0%");
       testTextField(StatInfoCard.statInfoItemKey("Inactive\nStakes"), "0%");
->>>>>>> dev
     });
