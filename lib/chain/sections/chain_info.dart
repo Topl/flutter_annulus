@@ -10,6 +10,7 @@ import '../../shared/utils/theme_color.dart';
 import '../providers/chain_statistics_provider.dart';
 import '../widgets/chain_info/top_stat_with_icon.dart';
 import '../widgets/chain_info/stat_info_card.dart';
+import 'chain_info_failed.dart';
 
 class ChainInfo extends HookConsumerWidget {
   const ChainInfo({
@@ -339,7 +340,7 @@ class ChainInfo extends HookConsumerWidget {
           ],
         ),
       ),
-      error: (error, stack) => const Text('Oops, something unexpected happened'),
+      error: (error, stack) => ChainInfoFailed(isMobile: isMobile, isTablet: isTablet, colorTheme: colorTheme),
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
