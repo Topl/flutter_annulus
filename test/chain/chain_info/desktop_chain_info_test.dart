@@ -14,7 +14,7 @@ import '../../shared/mocks/hive_mocks.dart';
 import '../../shared/mocks/node_config_mocks.dart';
 import '../../shared/utils/chain_info_utils.dart';
 import '../../shared/utils/navigation_utils.dart';
-import 'required_chain_info_test.dart';
+import 'required_chain_info_tests.dart';
 
 void main() async {
   final requestTests = RequiredChainInfoTests(
