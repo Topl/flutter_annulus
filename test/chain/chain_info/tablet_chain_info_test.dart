@@ -30,7 +30,7 @@ final mockChainInfo = getModifiedMockChainInfo(
   startTimestamp: DateTime.now().millisecondsSinceEpoch,
   transactionCount: 300,
   totalTransactionReward: 1500,
-  endHeight: 100,
+  endHeight: 1,
   eon: 600,
   era: 500,
   epoch: 400,
@@ -38,42 +38,43 @@ final mockChainInfo = getModifiedMockChainInfo(
   inactiveStake: 200,
 );
 
-Future<void> desktopChainInfoTest(TestScreenSizes testScreenSize) async =>
-    testWidgets('Chain Info test ${testScreenSize.name}', (WidgetTester tester) async {
-      final blockId = createId();
-      await tester.pumpWidget(
-        await essentialTestProviderWidget(
-          tester: tester,
-          testScreenSize: testScreenSize,
-          overrides: [
-            hivePackageProvider.overrideWithValue(getMockHive().mockHive),
-            genusProvider.overrideWith((ref, arg) => getMockGenus(blockId: blockId)),
-            nodeProvider.overrideWith(
-              (ref, arg) => getMockNodeGRPCService(
-                chainInfo: mockChainInfo,
-              ),
+Future<void> desktopChainInfoTest(TestScreenSizes testScreenSize) async {
+  testWidgets('Chain Info test ${testScreenSize.name}', (WidgetTester tester) async {
+    final blockId = createId();
+    await tester.pumpWidget(
+      await essentialTestProviderWidget(
+        tester: tester,
+        testScreenSize: testScreenSize,
+        overrides: [
+          hivePackageProvider.overrideWithValue(getMockHive().mockHive),
+          genusProvider.overrideWith((ref, arg) => getMockGenus(blockId: blockId)),
+          nodeProvider.overrideWith(
+            (ref, arg) => getMockNodeGRPCService(
+              chainInfo: mockChainInfo,
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
 
-      await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
 
-      confirmHomeScreenRoute(tester: tester);
+    confirmHomeScreenRoute(tester: tester);
 
-      final chainInfoFinder = find.byKey(ChainInfo.chainInfoKey);
-      await tester.ensureVisible(chainInfoFinder);
-      await tester.pumpAndSettle();
+    final chainInfoFinder = find.byKey(ChainInfo.chainInfoKey);
+    await tester.ensureVisible(chainInfoFinder);
+    await tester.pumpAndSettle();
 
-      testTextField(ChainInfo.eraTextKey, mockChainInfo.epochData!.era.toString());
-      testTextField(ChainInfo.eonTextKey, mockChainInfo.epochData!.eon.toString());
+    testTextField(ChainInfo.eraTextKey, mockChainInfo.epochData!.era.toString());
+    testTextField(ChainInfo.eonTextKey, mockChainInfo.epochData!.eon.toString());
 
-      testTextField(TopStatWithIcon.topStatItemKey("Average Transaction Fees"), "0.0");
-      testTextField(StatInfoCard.statInfoItemKey("Epoch"), mockChainInfo.epochData!.epoch.toString());
-      testTextField(StatInfoCard.statInfoItemKey("Txs"), mockChainInfo.epochData!.transactionCount.toString());
-      testTextField(StatInfoCard.statInfoItemKey("Height"), mockChainInfo.epochData!.endHeight.toString());
-      testTextField(StatInfoCard.statInfoItemKey("Avg Block Time"), "0");
-      testTextField(StatInfoCard.statInfoItemKey("Registered\nStakes"), "0");
-      testTextField(StatInfoCard.statInfoItemKey("Active\nStakes"), "0%");
-      testTextField(StatInfoCard.statInfoItemKey("Inactive\nStakes"), "0%");
-    });
+    testTextField(TopStatWithIcon.topStatItemKey("Average Transaction Fees"), "0.0");
+    testTextField(StatInfoCard.statInfoItemKey("Epoch"), mockChainInfo.epochData!.epoch.toString());
+    testTextField(StatInfoCard.statInfoItemKey("Txs"), mockChainInfo.epochData!.transactionCount.toString());
+    testTextField(StatInfoCard.statInfoItemKey("Height"), mockChainInfo.epochData!.endHeight.toString());
+    testTextField(StatInfoCard.statInfoItemKey("Avg Block Time"), "0");
+    testTextField(StatInfoCard.statInfoItemKey("Registered\nStakes"), "0");
+    testTextField(StatInfoCard.statInfoItemKey("Active\nStakes"), "0%");
+    testTextField(StatInfoCard.statInfoItemKey("Inactive\nStakes"), "0%");
+  });
+}

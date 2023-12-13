@@ -30,7 +30,7 @@ final mockChainInfo = getModifiedMockChainInfo(
   startTimestamp: DateTime.now().millisecondsSinceEpoch,
   transactionCount: 300,
   totalTransactionReward: 1500,
-  endHeight: 100,
+  endHeight: 1,
   eon: 600,
   era: 500,
   epoch: 400,
