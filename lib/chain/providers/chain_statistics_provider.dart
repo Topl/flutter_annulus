@@ -152,6 +152,7 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
       );
       return chain;
     } catch (e) {
+      state = AsyncError('Error retrieving chain data $e', StackTrace.current);
       throw ('Error retrieving chain data $e');
     }
   }
