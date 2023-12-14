@@ -15,6 +15,13 @@ RUN flutter pub get && \
 # Stage 2: Create a minimal image to run the built app
 FROM nginx:stable-alpine3.17
 
+# Add permissions
+RUN chown -R nginx:nginx /var/cache/nginx && \
+    mkdir /tmp/nginx && \
+    chown -R nginx:nginx /tmp/nginx && \
+    touch /var/run/nginx.pid && \
+    chown nginx:nginx /var/run/nginx.pid
+
 USER nginx
 
 # Copy the built app from the previous stage to the nginx html directory
