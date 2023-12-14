@@ -65,6 +65,7 @@ dependencies:
   mockito: ^5.4.2
   fixnum: ^1.1.0
   universal_html: ^2.2.4
+  skeletonizer: ^0.8.0
 
 dev_dependencies:
   flutter_test:

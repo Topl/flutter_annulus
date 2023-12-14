@@ -84,6 +84,7 @@ class CustomFooterTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 40,
+      width: 200,
       child: TextField(
         controller: TextEditingController(text: ''),
         decoration: const InputDecoration(

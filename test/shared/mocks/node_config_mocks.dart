@@ -29,3 +29,15 @@ MockNodeGRPCService getMockNodeGRPCService({
   });
   return mockNodeService;
 }
+
+MockNodeGRPCService getLoadingMockNodeGRPCService() {
+  final mockNodeService = MockNodeGRPCService();
+
+  when(mockNodeService.fetchNodeConfig()).thenAnswer((_) async* {});
+
+  when(mockNodeService.fetchEpochData(epoch: anyNamed('epoch'))).thenAnswer((realInvocation) async {
+    Future.delayed(const Duration(days: 2));
+    return getMockChainInfo();
+  });
+  return mockNodeService;
+}
