@@ -256,6 +256,9 @@ class MobileTransactionDetailsPage extends HookConsumerWidget {
                             ),
                           ],
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         DetailItem(
                           title: Strings.metadata,
                           value: transaction.metadata ?? 'None',

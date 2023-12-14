@@ -10,11 +10,12 @@ class UpperDetailSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DetailSection(
+    return const DetailSection(
       items: [
         DetailItem(
           title: Strings.transactionHash,
           value: 'value',
+          detailItemKey: Key('Placeholder'),
         ),
       ],
     );
