@@ -22,7 +22,7 @@ getMockChainInfo() {
   );
 }
 
-getModifiedMockChainInfo({
+FetchEpochDataRes getModifiedMockChainInfo({
   int? dataBytes,
   int? startTimestamp,
   int? transactionCount,
@@ -54,5 +54,6 @@ testTextField(Key textFieldKey, String text) async {
   final currentKey = find.byKey(textFieldKey);
   expect(currentKey, findsOneWidget);
   Text textFinder = currentKey.evaluate().single.widget as Text;
-  expect(textFinder.data, text);
+  final textFinderData = textFinder.data;
+  expect(textFinderData, text);
 }
