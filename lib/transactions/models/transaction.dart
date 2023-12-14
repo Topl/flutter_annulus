@@ -5,6 +5,7 @@ import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:topl_common/proto/brambl/models/transaction/io_transaction.pb.dart';
 import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 
 // Package imports:
@@ -53,30 +54,65 @@ class Transaction with _$Transaction {
 
     /// The name of the asset
     required String name,
+
+    /// The metadata
+    required String? metadata,
   }) = _Transaction;
 
   factory Transaction.fromBlockRes({required BlockResponse blockRes, required int index, required Block block}) {
-    final outputList = blockRes.block.fullBody.transactions[index].outputs.toList();
-    final inputList = blockRes.block.fullBody.transactions[index].inputs.toList();
+    final IoTransaction ioTransaction = blockRes.block.fullBody.transactions[index];
+    final String metadata = decodeId(ioTransaction.datum.event.metadata.value);
+
+    final outputList = ioTransaction.outputs.toList();
+    final inputList = ioTransaction.inputs.toList();
     final txAmount = calculateAmount(outputs: outputList).toDouble();
     final txFees = calculateFees(inputs: inputList, outputs: outputList).toDouble();
 
     final transaction = Transaction(
-        transactionId: decodeId(blockRes.block.fullBody.transactions[index].transactionId.value),
-        status: TransactionStatus.pending,
-        block: block,
-        broadcastTimestamp: block.timestamp,
-        confirmedTimestamp: 0,
-        transactionType: TransactionType.transfer,
-        amount: txAmount,
-        transactionFee: txFees,
-        senderAddress:
-            blockRes.block.fullBody.transactions[index].inputs.map((e) => decodeId(e.address.id.value)).toList(),
-        receiverAddress:
-            blockRes.block.fullBody.transactions[index].outputs.map((e) => decodeId(e.address.id.value)).toList(),
-        transactionSize: blockRes.block.fullBody.transactions[index].writeToBuffer().lengthInBytes.toDouble(),
-        quantity: txAmount,
-        name: blockRes.block.fullBody.transactions[index].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl');
+      transactionId: decodeId(ioTransaction.transactionId.value),
+      status: TransactionStatus.pending,
+      block: block,
+      broadcastTimestamp: block.timestamp,
+      confirmedTimestamp: 0,
+      transactionType: TransactionType.transfer,
+      amount: txAmount,
+      transactionFee: txFees,
+      senderAddress: ioTransaction.inputs.map((e) => decodeId(e.address.id.value)).toList(),
+      receiverAddress: ioTransaction.outputs.map((e) => decodeId(e.address.id.value)).toList(),
+      transactionSize: ioTransaction.writeToBuffer().lengthInBytes.toDouble(),
+      quantity: txAmount,
+      name: ioTransaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
+      metadata: metadata,
+    );
+
+    return transaction;
+  }
+
+  factory Transaction.fromIoTransaction({
+    required IoTransaction ioTransaction,
+    required Block associatedBlock,
+  }) {
+    final inputList = ioTransaction.inputs.toList();
+    final outputList = ioTransaction.outputs.toList();
+    final txAmount = calculateAmount(outputs: outputList);
+    final txFees = calculateFees(inputs: inputList, outputs: outputList);
+    final metadata = decodeId(ioTransaction.datum.event.metadata.value);
+    final transaction = Transaction(
+      transactionId: decodeId(ioTransaction.transactionId.value),
+      status: TransactionStatus.pending,
+      block: associatedBlock,
+      broadcastTimestamp: associatedBlock.timestamp,
+      confirmedTimestamp: 0, //for the latest block, it will never be confirmed (confirmation depth is 5)
+      transactionType: TransactionType.transfer,
+      amount: txAmount.toDouble(),
+      quantity: txAmount.toDouble(),
+      transactionFee: txFees.toDouble(),
+      senderAddress: ioTransaction.inputs.map((e) => decodeId(e.address.id.value)).toList(),
+      receiverAddress: ioTransaction.outputs.map((e) => decodeId(e.address.id.value)).toList(),
+      transactionSize: ioTransaction.writeToBuffer().lengthInBytes.toDouble(),
+      name: ioTransaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
+      metadata: metadata,
+    );
 
     return transaction;
   }

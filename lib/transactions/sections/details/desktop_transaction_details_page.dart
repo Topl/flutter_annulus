@@ -4,6 +4,7 @@ import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/widgets/detail_tab_bar_view.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
+import 'package:flutter_annulus/transactions/sections/details/detail_item.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../shared/constants/numbers.dart';
@@ -189,6 +190,10 @@ class DesktopTransactionDetailsPage extends HookConsumerWidget {
                 ),
                 const SizedBox(
                   height: 10,
+                ),
+                DetailItem(
+                  title: Strings.metadata,
+                  value: transaction.metadata ?? 'None',
                 ),
               ],
             ),
