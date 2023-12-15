@@ -140,8 +140,8 @@ class ChainStatisticNotifier extends StateNotifier<AsyncValue<Chain>> {
         totalTransactionsInEpoch: totalTransactionsInEpoch,
         height: endHeight,
         averageBlockTime: averageBlockTime,
-        totalStake: activeStakes / totalStakes,
-        registeredStakes: totalStakes,
+        totalRegisteredStake: (activeStakes / totalStakes) * 100,
+        totalStakes: totalStakes,
         activeStakes: activeStakes,
         inactiveStakes: inactiveStakes,
       );
