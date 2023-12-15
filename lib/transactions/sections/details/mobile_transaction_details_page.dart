@@ -18,6 +18,7 @@ import '../../providers/transactions_provider.dart';
 
 /// This is a custom widget that shows the transaction details page
 class MobileTransactionDetailsPage extends HookConsumerWidget {
+  static const Key metaDataKey = Key('${Strings.metadata}key');
   static Key transactionIdKey(String transactionId) => Key('transactionId_$transactionId');
   final String transactionId;
   const MobileTransactionDetailsPage({
@@ -262,6 +263,7 @@ class MobileTransactionDetailsPage extends HookConsumerWidget {
                         DetailItem(
                           title: Strings.metadata,
                           value: transaction.metadata ?? 'None',
+                          detailItemKey: metaDataKey,
                         ),
                       ],
                     ),

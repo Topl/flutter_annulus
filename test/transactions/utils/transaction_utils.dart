@@ -29,3 +29,5 @@ confirmTransactionDetailsRoute({
   // Expect the blockId to be the mock block
   expect(pathParams[TransactionDetailsPage.transactionIdParam] == transactionId, true);
 }
+
+void confirmTransactionDetails() {}

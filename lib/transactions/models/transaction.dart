@@ -85,6 +85,10 @@ class Transaction with _$Transaction {
       metadata: metadata,
     );
 
+    final encodedMetaData = encodeId(transaction.metadata!);
+
+    print('QQQQ encodedMetaData: $encodedMetaData');
+
     return transaction;
   }
 
@@ -97,6 +101,7 @@ class Transaction with _$Transaction {
     final txAmount = calculateAmount(outputs: outputList);
     final txFees = calculateFees(inputs: inputList, outputs: outputList);
     final metadata = decodeId(ioTransaction.datum.event.metadata.value);
+
     final transaction = Transaction(
       transactionId: decodeId(ioTransaction.transactionId.value),
       status: TransactionStatus.pending,
@@ -113,6 +118,10 @@ class Transaction with _$Transaction {
       name: ioTransaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
       metadata: metadata,
     );
+
+    final encodedMetaData = encodeId(transaction.metadata!);
+
+    print('QQQQ encodedMetaData: $encodedMetaData');
 
     return transaction;
   }
