@@ -25,28 +25,28 @@ class BottomSection extends StatelessWidget {
       subSection1: SubSection(
         colorTheme: colorTheme,
         statInfoCard1: StatInfoCard(
-          statString: '${chain.totalStake.toString()}%',
-          statSymbol: "Total Stake",
+          statString: '${chain.totalRegisteredStake.toString()}%',
+          statSymbol: Strings.totalRegisteredStake,
           tooltipText: Strings.totalStakeTooltipText,
           isLoading: isLoading,
         ),
         statInfoCard2: StatInfoCard(
-          statString: chain.registeredStakes.toString(),
-          statSymbol: "Registered\nStakes",
-          tooltipText: Strings.registeredStakesTooltipText,
+          statString: chain.totalStakes.toString(),
+          statSymbol: Strings.totalStakes,
+          tooltipText: Strings.totalStakesTooltipText,
           isLoading: isLoading,
         ),
       ),
       subSection2: SubSection(
         colorTheme: colorTheme,
         statInfoCard1: StatInfoCard(
-          statString: '${chain.activeStakes.toString()}%',
-          statSymbol: "Active\nStakes",
+          statString: chain.activeStakes.toString(),
+          statSymbol: Strings.activeStakes,
           tooltipText: Strings.activeStakesTooltipText,
           isLoading: isLoading,
         ),
         statInfoCard2: StatInfoCard(
-          statString: '${chain.inactiveStakes.toString()}%',
+          statString: chain.inactiveStakes.toString(),
           statSymbol: "Inactive\nStakes",
           tooltipText: Strings.invalidStakesTooltipText,
           isLoading: isLoading,
