@@ -92,7 +92,9 @@ class CustomLayout extends HookConsumerWidget {
                     content,
                     Container(
                       color: Colors.white,
-                      child: SingleChildScrollView(child: footer),
+                      child: SingleChildScrollView(
+                        child: footer,
+                      ),
                     )
                   ],
                 ),
