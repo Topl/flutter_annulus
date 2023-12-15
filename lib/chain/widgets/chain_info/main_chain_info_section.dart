@@ -12,9 +12,12 @@ import 'package:skeletonizer/skeletonizer.dart';
 class MainChainInfoSection extends HookConsumerWidget {
   final Chain chain;
   final bool isLoading;
+  final bool isError;
+
   const MainChainInfoSection({
     required this.chain,
     this.isLoading = false,
+    this.isError = false,
     Key? key,
   }) : super(key: key);
 
@@ -27,7 +30,11 @@ class MainChainInfoSection extends HookConsumerWidget {
       width: MediaQuery.of(context).size.width,
       margin: isMobile ? null : EdgeInsets.only(right: isTablet ? 5 : 40),
       decoration: BoxDecoration(
-        color: colorTheme == ThemeMode.light ? Colors.white : const Color(0xFF282A2C),
+        color: isError
+            ? Colors.grey[300]
+            : colorTheme == ThemeMode.light
+                ? Colors.white
+                : const Color(0xFF282A2C),
         borderRadius: BorderRadius.circular(10.0),
         border: isMobile
             ? null
