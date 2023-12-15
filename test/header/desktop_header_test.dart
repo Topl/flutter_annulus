@@ -22,7 +22,7 @@ void main() async {
 Future<void> desktopHeaderTest(TestScreenSizes testScreenSize) async =>
     testWidgets('Faucet Hyperlink test ${testScreenSize.name}', (WidgetTester tester) async {
       //mock URL Launcher
-      final mockUrlLauncher = MockUrlLauncher();
+      final mockUrlLauncher = getMockUrlLauncher();
 
       await tester.pumpWidget(
         await essentialTestProviderWidget(tester: tester, testScreenSize: testScreenSize, overrides: [
