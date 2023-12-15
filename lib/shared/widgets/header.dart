@@ -113,7 +113,7 @@ class Header extends HookConsumerWidget {
                           ),
                         ),
                         const SizedBox(
-                          width: 10,
+                          width: 15,
                         ),
                         ChainNameDropDown(
                           colorTheme: colorTheme,
