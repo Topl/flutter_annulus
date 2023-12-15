@@ -39,5 +39,5 @@ Future<void> desktopHeaderTest(TestScreenSizes testScreenSize) async =>
       await tester.tap(faucetButton);
       await tester.pumpAndSettle();
 
-      verify(mockUrlLauncher.launchURL(Uri.parse('https://faucet.topl.co#/'))).called(1);
+      verify(mockUrlLauncher.launchURL(Uri.parse('https://faucet.topl.co/#/'))).called(1);
     });

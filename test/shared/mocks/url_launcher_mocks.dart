@@ -8,7 +8,9 @@ import 'url_launcher_mocks.mocks.dart';
 getMockUrlLauncher() {
   final urlLauncher = MockUrlLauncher();
 
-  when(urlLauncher.launchURL(Uri.parse('https://faucet.topl.co#/'))).thenAnswer((realInvocation) async {
+  when(urlLauncher.launchURL(Uri.parse('https://faucet.topl.co/#/'))).thenAnswer((realInvocation) async {
     return true;
   });
+
+  return urlLauncher;
 }
