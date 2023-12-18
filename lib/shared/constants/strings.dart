@@ -133,6 +133,7 @@ class Strings {
   static const String standardSideSheet = 'Show Standard Side Sheet';
   static const String summary = 'Summary';
   static const String transactions = 'Transactions';
+  static const String failedToLoad = 'Failed to load.';
   static const String totalRegisteredStake = 'Total Registered\nStake';
   static const String totalStakes = 'Total\nStakes';
   static const String activeStakes = 'Active\nStakes';
