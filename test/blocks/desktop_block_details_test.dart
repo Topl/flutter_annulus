@@ -31,6 +31,7 @@ Future<void> desktopBlockDetailsTest(TestScreenSizes testScreenSize) async =>
           genusProvider.overrideWith((ref, arg) => getMockGenus(blockId: blockId)),
         ]),
       );
+      await expectLoadingBlockViewSlider(tester);
 
       await tester.pumpAndSettle();
 

@@ -32,6 +32,8 @@ Future<void> mobileBlockSliderTest(TestScreenSizes testScreenSize) async =>
         ]),
       );
 
+      await expectLoadingBlockViewSlider(tester);
+
       await tester.pumpAndSettle();
 
       confirmHomeScreenRoute(tester: tester);

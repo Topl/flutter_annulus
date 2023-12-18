@@ -13,6 +13,8 @@ import '../widgets/blocks_container.dart';
 class BlockViewSlider extends HookConsumerWidget {
   const BlockViewSlider({super.key});
 
+  static Key loadingBlockViewSliderKey = const Key('LoadingBlockViewSliderKey');
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
@@ -33,6 +35,7 @@ class BlockViewSlider extends HookConsumerWidget {
               (index) => getMockBlock(index),
             );
             return Skeletonizer(
+              key: loadingBlockViewSliderKey,
               child: BlocksContainer(
                 isMobile: isMobile,
                 isDesktop: isDesktop,
