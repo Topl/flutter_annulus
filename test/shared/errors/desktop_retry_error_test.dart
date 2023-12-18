@@ -20,20 +20,31 @@ void main() async {
   await chainTests.runTests();
 }
 
-Future<void> desktopRetryError(TestScreenSizes testScreenSize) async =>
-    testWidgets('Retry Error Toast message test for ${testScreenSize.name}', (WidgetTester tester) async {
-      final blockId = createId();
+Future<void> desktopRetryError(TestScreenSizes testScreenSize) async {
+  testWidgets('Retry Error Toast message test for ${testScreenSize.name}', (WidgetTester tester) async {
+    final blockId = createId();
 
-      await tester.pumpWidget(
-        await essentialTestProviderWidget(tester: tester, testScreenSize: testScreenSize, overrides: [
+    await tester.pumpWidget(
+      await essentialTestProviderWidget(
+        tester: tester,
+        testScreenSize: testScreenSize,
+        overrides: [
           hivePackageProvider.overrideWithValue(getMockHive().mockHive),
           genusProvider.overrideWith((ref, arg) => getMockGenus(blockId: blockId)),
-        ]),
-      );
-
-      await tester.pumpAndSettle();
+        ],
+      ),
+    );
+     await tester.pumpAndSettle();
 
       expect(find.byKey(CustomSnackBar.snackBarContentKey), findsOneWidget);
+
+      expect(find.text(Strings.failedToLoadPage), findsOneWidget);
+
+      expect(find.text(Strings.tryAgainLater), findsOneWidget);
+
+      expect(find.text(Strings.retry), findsOneWidget);
+
+      await tester.ensureVisible(find.byKey(CustomSnackBar.retryButtonKey));
 
       final retryButton = find.byKey(CustomSnackBar.retryButtonKey);
 
@@ -41,9 +52,13 @@ Future<void> desktopRetryError(TestScreenSizes testScreenSize) async =>
 
       await tester.pumpAndSettle();
 
-      expect(find.text(Strings.failedToLoadPage), findsOne);
+      final closeButton = find.byKey(CustomSnackBar.closeButtonKey);
 
-      expect(find.text(Strings.tryAgainLater), findsOne);
+      await tester.ensureVisible(find.byKey(CustomSnackBar.closeButtonKey));
 
-      expect(find.text(Strings.retry), findsOne);
-    });
+      await tester.tap(closeButton);
+
+      await tester.pumpAndSettle();
+
+  });
+}

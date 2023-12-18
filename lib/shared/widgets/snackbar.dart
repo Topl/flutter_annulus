@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
@@ -10,6 +11,7 @@ class CustomSnackBar {
   static const Key retryButtonKey = Key('retryButtonKey');
   static const Key retryTextKey = Key('retryTextKey');
   static const Key pleaseTryLaterTextKey = Key('pleaseTryLaterTextKey');
+
   static void showSnackBarAndToast(BuildContext context, {Function()? onRetry}) {
     Future.delayed(Duration.zero, () {
       final snackBar = buildSnackBarAndToast(context, onRetry);
@@ -57,32 +59,36 @@ class CustomSnackBar {
                   Strings.failedToLoadPage,
                   style: bodyMedium(context),
                 ),
-                Text(Strings.tryAgainLater, style: bodySmall(context)),
+                Text(key: pleaseTryLaterTextKey, Strings.tryAgainLater, style: bodySmall(context)),
               ],
             ),
           ),
           Flexible(
-              child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    Strings.retry,
-                    style: titleSmall(context),
-                  ),
-                  IconButton(
-                    key: retryButtonKey,
-                    onPressed: onRetry ?? () {},
-                    icon: SvgPicture.asset(
-                      'assets/icons/refresh.svg',
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      key: retryTextKey,
+                      Strings.retry,
+                      style: titleSmall(context),
                     ),
-                  ),
-                ],
-              ),
-              const Padding(padding: EdgeInsets.only(bottom: 20))
-            ],
-          )),
+                    IconButton(
+                      key: retryButtonKey,
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+                      },
+                      icon: SvgPicture.asset(
+                        'assets/icons/refresh.svg',
+                      ),
+                    ),
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.only(bottom: 20))
+              ],
+            ),
+          ),
         ],
       ),
       margin: EdgeInsets.only(

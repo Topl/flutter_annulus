@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/providers/snackbar_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/nav_utils.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:vrouter/vrouter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import '../../shared/constants/strings.dart';
 import '../../shared/utils/theme_color.dart';
-import '../../shared/widgets/snackbar.dart';
 import '../models/transaction.dart';
 import '../widgets/custom_transaction_widgets.dart';
 
@@ -182,13 +181,7 @@ class Transactions extends HookConsumerWidget {
         ),
       ),
       error: (error, stack) {
-        CustomSnackBar.showSnackBarAndToast(
-          context,
-          onRetry: () {
-            ref.refresh(transactionsProvider);
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          },
-        );
+        ref.read(snackbarProvider)(context);
         return const SizedBox();
       },
       loading: () {
