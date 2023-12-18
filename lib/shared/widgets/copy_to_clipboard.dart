@@ -8,15 +8,18 @@ class CopyToClipboard extends StatelessWidget {
   });
 
   final String rightText;
-
+  static const copyIconKey = Key('copyIconKey');
+  static const snackBarKey = Key('snackBarKey');
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+        key: copyIconKey,
         onTap: () {
           Clipboard.setData(ClipboardData(text: rightText));
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Copied to Clipboard'),
+              duration: Duration(seconds: 5),
             ),
           );
         },
