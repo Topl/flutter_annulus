@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:flutter_annulus/shared/providers/url_launcher_provider.dart';
 import 'package:flutter_annulus/chain/sections/chainname_dropdown.dart';
 import '../../search/sections/custom_search_bar.dart';
 import '../utils/theme_color.dart';
@@ -12,6 +13,7 @@ import '../utils/theme_color.dart';
 /// Header widget that displays the logo, search bar and dropdown.
 class Header extends HookConsumerWidget {
   static const Key menuKey = Key('menuKey');
+  static const Key hyperlinkKey = Key('hyperlinkKey');
   final String logoAsset;
   final VoidCallback onSearch;
   final ValueChanged<String> onDropdownChanged;
@@ -92,6 +94,33 @@ class Header extends HookConsumerWidget {
                     )
                   : Row(
                       children: [
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            key: hyperlinkKey,
+                            onTap: () {
+                              final Uri url = Uri.parse('https://faucet.topl.co/#/');
+                              final urlLauncher = ref.read(urlLauncherProvider);
+                              urlLauncher.launchURL(url);
+                            },
+                            child: const Text(
+                              'Faucet',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        ChainNameDropDown(
+                          colorTheme: colorTheme,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -119,12 +148,6 @@ class Header extends HookConsumerWidget {
                                   ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        ChainNameDropDown(
-                          colorTheme: colorTheme,
-                        )
                       ],
                     ),
             ],
