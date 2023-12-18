@@ -39,147 +39,158 @@ class Transactions extends HookConsumerWidget {
     ];
 
     return transactionsInfo.when(
-      data: (transactions) => Container(
-        margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 16.0 : 40.0, right: isMobile ? 16.0 : 40.0),
-        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 0.0, right: 0.0),
-        decoration: BoxDecoration(
-          color: getSelectedColor(colorTheme, 0xFFFFFFFF, 0xFF282A2C),
-          borderRadius: BorderRadius.circular(!isMobile ? 10.0 : 0.0),
-          border: !isMobile
-              ? Border.all(
-                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B), style: BorderStyle.solid, width: 1.0)
-              : null,
-        ),
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              width: double.infinity,
-              child: DataTable(
-                horizontalMargin: 0,
-                columnSpacing: 0,
-                border: TableBorder.symmetric(
-                  inside: BorderSide(
-                    color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
-                    width: 1,
-                    style: BorderStyle.none,
+      data: (transactions) {
+        print('QQQQ transactions: ${transactions.first.transactionId}');
+        final List<Transaction> first3Transactions = [];
+        for (var transaction in transactions) {
+          if (first3Transactions.length < 3) {
+            first3Transactions.add(transaction);
+          } else {
+            break;
+          }
+        }
+        return Container(
+          margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 16.0 : 40.0, right: isMobile ? 16.0 : 40.0),
+          padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 0.0, right: 0.0),
+          decoration: BoxDecoration(
+            color: getSelectedColor(colorTheme, 0xFFFFFFFF, 0xFF282A2C),
+            borderRadius: BorderRadius.circular(!isMobile ? 10.0 : 0.0),
+            border: !isMobile
+                ? Border.all(
+                    color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B), style: BorderStyle.solid, width: 1.0)
+                : null,
+          ),
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                width: double.infinity,
+                child: DataTable(
+                  horizontalMargin: 0,
+                  columnSpacing: 0,
+                  border: TableBorder.symmetric(
+                    inside: BorderSide(
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      width: 1,
+                      style: BorderStyle.none,
+                    ),
                   ),
-                ),
-                columns: columnHeaders
-                    .map(
-                      (columnHeader) => DataColumn(
-                        label: Padding(
-                          padding: EdgeInsets.only(
-                              left: isMobile
-                                  ? 0
-                                  : isTablet
-                                      ? 25.0
-                                      : 40.0,
-                              bottom: 16,
-                              top: 16),
-                          child: Text(
-                            columnHeader,
-                            style: labelLarge(context),
+                  columns: columnHeaders
+                      .map(
+                        (columnHeader) => DataColumn(
+                          label: Padding(
+                            padding: EdgeInsets.only(
+                                left: isMobile
+                                    ? 0
+                                    : isTablet
+                                        ? 25.0
+                                        : 40.0,
+                                bottom: 16,
+                                top: 16),
+                            child: Text(
+                              columnHeader,
+                              style: labelLarge(context),
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                    .toList(),
-                dataRowMinHeight: 80.0,
-                dataRowMaxHeight: 100.0,
-                showCheckboxColumn: false,
-                rows: transactions.sublist(0, 3).map(
-                  (transaction) {
-                    return DataRow(
-                      onSelectChanged: (value) {
-                        goToTransactionDetails(context: context, transaction: transaction);
-                      },
-                      cells: [
-                        DataCell(Container(
-                          transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
-                          padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
-                          child: TransactionColumnText(
-                            key: transactionListItemKey(transaction.transactionId),
-                            textTop: transaction.transactionId
-                                .replaceRange(isTablet ? 7 : 16, transaction.transactionId.length, "..."),
-                            textBottom: "49 ${Strings.secAgo}",
-                          ),
-                        )),
-                        DataCell(Container(
-                          transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
-                          padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
-                          child: TransactionColumnText(
-                            textTop: '${Strings.height}: ${transaction.block.height}',
-                            textBottom: '${Strings.slot}: ${transaction.block.slot}',
-                          ),
-                        )),
-                        if (!isMobile)
+                      )
+                      .toList(),
+                  dataRowMinHeight: 80.0,
+                  dataRowMaxHeight: 100.0,
+                  showCheckboxColumn: false,
+                  rows: first3Transactions.map(
+                    (transaction) {
+                      return DataRow(
+                        onSelectChanged: (value) {
+                          goToTransactionDetails(context: context, transaction: transaction);
+                        },
+                        cells: [
                           DataCell(Container(
                             transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
                             padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
                             child: TransactionColumnText(
-                              textTop: transaction.transactionType.string,
-                              textBottom: "",
-                              isBottomTextRequired: false,
+                              key: transactionListItemKey(transaction.transactionId),
+                              textTop: transaction.transactionId
+                                  .replaceRange(isTablet ? 7 : 16, transaction.transactionId.length, "..."),
+                              textBottom: "49 ${Strings.secAgo}",
                             ),
                           )),
-                        if (!isMobile)
                           DataCell(Container(
                             transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
                             padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
                             child: TransactionColumnText(
-                              textTop: '${transaction.quantity} ${Strings.topl}',
-                              textBottom: '${transaction.amount} ${Strings.bobs}',
+                              textTop: '${Strings.height}: ${transaction.block.height}',
+                              textBottom: '${Strings.slot}: ${transaction.block.slot}',
                             ),
                           )),
-                        if (!isMobile)
-                          DataCell(
-                            Container(
+                          if (!isMobile)
+                            DataCell(Container(
                               transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
                               padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
                               child: TransactionColumnText(
-                                textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
+                                textTop: transaction.transactionType.string,
                                 textBottom: "",
                                 isBottomTextRequired: false,
                               ),
+                            )),
+                          if (!isMobile)
+                            DataCell(Container(
+                              transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
+                              padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
+                              child: TransactionColumnText(
+                                textTop: '${transaction.quantity} ${Strings.topl}',
+                                textBottom: '${transaction.amount} ${Strings.bobs}',
+                              ),
+                            )),
+                          if (!isMobile)
+                            DataCell(
+                              Container(
+                                transform: isTablet ? Matrix4.translationValues(-15, 0, 0) : null,
+                                padding: EdgeInsets.only(top: isDesktop ? 10.0 : 0.0),
+                                child: TransactionColumnText(
+                                  textTop: '${transaction.transactionFee} ${Strings.feeAcronym}',
+                                  textBottom: "",
+                                  isBottomTextRequired: false,
+                                ),
+                              ),
                             ),
-                          ),
-                        if (!isMobile)
-                          DataCell(Padding(
-                            padding: const EdgeInsets.only(
-                              left: 30,
-                            ),
-                            child: StatusButton(status: transaction.status.string),
-                          )),
-                      ],
-                    );
-                  },
-                ).toList(),
+                          if (!isMobile)
+                            DataCell(Padding(
+                              padding: const EdgeInsets.only(
+                                left: 30,
+                              ),
+                              child: StatusButton(status: transaction.status.string),
+                            )),
+                        ],
+                      );
+                    },
+                  ).toList(),
+                ),
               ),
-            ),
-            const SizedBox(height: 20.0),
-            TextButton(
-              onPressed: () {
-                context.vRouter.to('/transactions');
-              },
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.all(0.0),
+              const SizedBox(height: 20.0),
+              TextButton(
+                onPressed: () {
+                  context.vRouter.to('/transactions');
+                },
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(0.0),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(Strings.seeAllTransactions, textAlign: TextAlign.center, style: bodyMedium(context)),
+                    const SizedBox(width: 10.0),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
+                      size: 14,
+                    ),
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(Strings.seeAllTransactions, textAlign: TextAlign.center, style: bodyMedium(context)),
-                  const SizedBox(width: 10.0),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
-                    size: 14,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
       error: (error, stack) {
         return const Text('Oops, something unexpected happened');
       },

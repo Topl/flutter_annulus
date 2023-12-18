@@ -32,14 +32,14 @@ class DesktopTransactionDetailsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncTransaction = ref.watch(getTransactionByIdProvider(transactionId));
+    final AsyncValue<Transaction> asyncTransaction = ref.watch(getTransactionByIdProvider(transactionId));
 
     return DetailTabBarView(
       data: asyncTransaction,
       child: (dynamic dTransaction) {
         final transaction = dTransaction as Transaction;
         return Align(
-          alignment: Alignment.bottomRight,
+          alignment: Alignment.topRight,
           child: DefaultTabController(
             length: 3,
             child: SingleChildScrollView(

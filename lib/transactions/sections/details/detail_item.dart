@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
-import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 // QQQQ move to shared
@@ -19,14 +18,16 @@ class DetailItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Remove the Container and padding. This paddingg should be defined by parent
+    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
+    // TODO: Remove the Container and padding. This paddingg should be defined by parent
     return Container(
-      padding: const EdgeInsets.only(left: 60),
-      // width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(left: isMobile ? 20 : 60),
       child: ResponsiveRowColumn(
-        layout: ResponsiveRowColumnType.ROW,
+        layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
         rowCrossAxisAlignment: CrossAxisAlignment.start,
+        columnMainAxisAlignment: MainAxisAlignment.start,
+        columnCrossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ResponsiveRowColumnItem(
             child: SizedBox(
@@ -37,6 +38,12 @@ class DetailItem extends StatelessWidget {
               ),
             ),
           ),
+          if (isMobile)
+            const ResponsiveRowColumnItem(
+              child: SizedBox(
+                height: 15,
+              ),
+            ),
           ResponsiveRowColumnItem(
             rowFit: FlexFit.tight,
             child: Row(

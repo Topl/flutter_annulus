@@ -85,10 +85,6 @@ class Transaction with _$Transaction {
       metadata: metadata,
     );
 
-    final encodedMetaData = encodeId(transaction.metadata!);
-
-    print('QQQQ encodedMetaData: $encodedMetaData');
-
     return transaction;
   }
 
@@ -118,10 +114,6 @@ class Transaction with _$Transaction {
       name: ioTransaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
       metadata: metadata,
     );
-
-    final encodedMetaData = encodeId(transaction.metadata!);
-
-    print('QQQQ encodedMetaData: $encodedMetaData');
 
     return transaction;
   }
