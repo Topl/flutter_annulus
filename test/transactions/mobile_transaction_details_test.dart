@@ -34,6 +34,8 @@ Future<void> mobileTransactionDetailsTest(TestScreenSizes testScreenSize) async 
         ]),
       );
 
+      await expectLoadingTransactions(tester);
+
       await tester.pumpAndSettle();
       await closeCustomSnackBar(tester);
       confirmHomeScreenRoute(tester: tester);
