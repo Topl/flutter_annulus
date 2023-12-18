@@ -14,7 +14,7 @@ import '../widgets/transactions_table.dart';
 /// A widget to display the list of transactions.
 class Transactions extends HookConsumerWidget {
   static Key transactionListItemKey(String transactionId) => Key('transactionListItemKey_$transactionId');
-
+  static const Key loadingTransactionsKey = Key('LoadingTransactionsKey');
   const Transactions({super.key});
 
   @override
@@ -53,14 +53,15 @@ class Transactions extends HookConsumerWidget {
       loading: () {
         final mockTransactions = List.generate(5, (index) => getMockTransaction(index));
         return Skeletonizer(
+            key: loadingTransactionsKey,
             child: TransactionsTable(
-          transactions: mockTransactions,
-          colorTheme: colorTheme,
-          isMobile: isMobile,
-          isTablet: isTablet,
-          columnHeaders: columnHeaders,
-          isDesktop: isDesktop,
-        ));
+              transactions: mockTransactions,
+              colorTheme: colorTheme,
+              isMobile: isMobile,
+              isTablet: isTablet,
+              columnHeaders: columnHeaders,
+              isDesktop: isDesktop,
+            ));
       },
     );
   }

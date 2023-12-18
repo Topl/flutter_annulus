@@ -33,6 +33,8 @@ Future<void> tabletTransactionDetailsTest(TestScreenSizes testScreenSize) async 
         ]),
       );
 
+      await expectLoadingTransactions(tester);
+
       await tester.pumpAndSettle();
 
       confirmHomeScreenRoute(tester: tester);
