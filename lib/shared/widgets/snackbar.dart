@@ -3,6 +3,7 @@ import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:vrouter/vrouter.dart';
 import '../constants/strings.dart';
 
 class CustomSnackBar {
@@ -76,7 +77,7 @@ class CustomSnackBar {
                     IconButton(
                       key: retryButtonKey,
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+                        VRouter.of(context).to(HomeScreen.route);
                       },
                       icon: SvgPicture.asset(
                         'assets/icons/refresh.svg',
