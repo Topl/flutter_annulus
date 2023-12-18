@@ -138,4 +138,7 @@ class Strings {
   static const String totalStakes = 'Total\nStakes';
   static const String activeStakes = 'Active\nStakes';
   static const String inactiveStakes = 'Inactive\nStakes';
+  static const String tryAgainLater = 'Please try again later';
+  static const String failedToLoadPage = 'Failed to load page';
+  static const String retry = 'Retry';
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_annulus/shared/widgets/snackbar.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// This will call [tester.pump] for a duration and loops. Useful for when [pumpAndSettle] is timing out
@@ -46,4 +48,13 @@ Future<void> pendingTimersFix(WidgetTester tester) async {
     await pumpTester(tester, duration: 10, loops: 100);
     await Future.delayed(const Duration(milliseconds: 500));
   });
+}
+
+// Remove any snackbar before running other tests
+Future<void> closeCustomSnackBar(WidgetTester tester) async {
+  final snackBarFinder = find.byKey(CustomSnackBar.snackBarContentKey);
+  if (snackBarFinder.evaluate().isNotEmpty) {
+    ScaffoldMessenger.of(tester.element(snackBarFinder.first)).hideCurrentSnackBar();
+    await tester.pumpAndSettle();
+  }
 }

@@ -11,6 +11,7 @@ import '../required_test_class.dart';
 import '../shared/mocks/genus_mocks.dart';
 import '../shared/mocks/hive_mocks.dart';
 import '../shared/utils/navigation_utils.dart';
+import '../shared/utils/tester_utils.dart';
 import 'required_transaction_details_tests.dart';
 import 'utils/transaction_utils.dart';
 
@@ -36,7 +37,7 @@ Future<void> tabletTransactionDetailsTest(TestScreenSizes testScreenSize) async 
       await expectLoadingTransactions(tester);
 
       await tester.pumpAndSettle();
-
+      await closeCustomSnackBar(tester);
       confirmHomeScreenRoute(tester: tester);
 
       final transactionFinder = find.byKey(Transactions.transactionListItemKey(transactionId)).first;
