@@ -86,7 +86,7 @@ arm_mac_hard_clean:
 
 file_test:
 	@reset
-	@flutter test test/chain/chain_info/desktop_chain_info_test.dart
+	@flutter test test/transactions/desktop_transaction_details_test.dart
 
 nuclear_clean:
 	@echo "╠ Nuking pubcache completely, this might take a while...."

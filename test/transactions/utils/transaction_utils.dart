@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/transactions/sections/details/transaction_details_page.dart';
+import 'package:flutter_annulus/transactions/sections/transactions.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vrouter/vrouter.dart';
 
@@ -28,4 +29,11 @@ confirmTransactionDetailsRoute({
 
   // Expect the blockId to be the mock block
   expect(pathParams[TransactionDetailsPage.transactionIdParam] == transactionId, true);
+}
+
+Future<void> expectLoadingTransactions(WidgetTester tester) async {
+  // Pump once and find the loading widget
+  await tester.pump();
+  final loadingTransactionsFinder = find.byKey(Transactions.loadingTransactionsKey);
+  expect(loadingTransactionsFinder, findsOneWidget);
 }
