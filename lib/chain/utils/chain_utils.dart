@@ -17,8 +17,8 @@ Chain getMockChain() {
     totalTransactionsInEpoch: 266,
     height: 22100762,
     averageBlockTime: 127,
-    totalStake: .77,
-    registeredStakes: 519,
+    totalRegisteredStake: 77,
+    totalStakes: 519,
     activeStakes: 453,
     inactiveStakes: 66,
   );

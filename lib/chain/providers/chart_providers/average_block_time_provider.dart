@@ -17,7 +17,8 @@ double _getAverageBlockTimeBetween2Blocks({
   final blockTimeDifference = blockTime1.difference(blockTime2); // Calculate the difference between the 2 timestamps
   final heightDifference = block1.height - block2.height; // Calculate the difference between the 2 block heights
 
-  return (blockTimeDifference.inSeconds / heightDifference) / 2; // Return the average block time
+  final averageBlockTime = (blockTimeDifference.inSeconds / heightDifference) / 2; // Calculate the average block time
+  return averageBlockTime.isNaN ? 0 : averageBlockTime; // Return the average block time
 }
 
 /// Function to get the block time since decentralization
@@ -81,7 +82,8 @@ Future<ChartResult> _getAverageBlockTime({
     currentBlockDepth = nextBlockDepth; // Update the current block depth
 
     currentBlockEndTime = DateTime.fromMillisecondsSinceEpoch(
-        block2.timestamp); // Set the current block end time to the timestamp of the next block
+      block2.timestamp,
+    ); // Set the current block end time to the timestamp of the next block
 
     results[DateTime.fromMillisecondsSinceEpoch(block1.timestamp)] = _getAverageBlockTimeBetween2Blocks(
       block1: block1,

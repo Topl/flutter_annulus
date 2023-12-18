@@ -19,7 +19,12 @@ class ChainsNotifier extends StateNotifier<AsyncValue<List<Chains>>> {
   ChainsNotifier(this.ref) : super(const AsyncLoading()) {
     _getAvailableChains(setState: true);
   }
-  static List<Chains> devChains = [const Chains.private_network(), const Chains.dev_network(), const Chains.mock()];
+  static List<Chains> devChains = [
+    const Chains.private_network(),
+    const Chains.dev_network(),
+    const Chains.sean_network(),
+    const Chains.mock(),
+  ];
   // dev notes: This will have to be updated when we change the predetermined networks
   static List<Chains> standardChains = [
     const Chains.topl_mainnet(),
