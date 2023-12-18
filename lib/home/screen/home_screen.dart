@@ -12,6 +12,7 @@ import '../../chain/sections/chart_section.dart';
 import '../../shared/utils/theme_color.dart';
 import '../../shared/widgets/footer.dart';
 import '../../transactions/sections/transactions.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends HookConsumerWidget {
   static const Key homeScreenKey = Key('homeScreenKey');
@@ -19,6 +20,7 @@ class HomeScreen extends HookConsumerWidget {
   static const String chainIdParam = 'chainId';
   static const String chianRoute = '/chain/';
   static const String chainParamRoute = '$chianRoute:$chainIdParam';
+
   static String chainPath(String chianId) {
     return '$chianRoute$chianId';
   }

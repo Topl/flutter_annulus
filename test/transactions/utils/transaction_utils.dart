@@ -6,6 +6,7 @@ import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/transactions/sections/details/desktop_transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/sections/details/mobile_transaction_details_page.dart';
 import 'package:flutter_annulus/transactions/sections/details/transaction_details_page.dart';
+import 'package:flutter_annulus/transactions/sections/transactions.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:topl_common/proto/brambl/models/transaction/io_transaction.pb.dart';
 import 'package:vrouter/vrouter.dart';
@@ -59,4 +60,11 @@ void confirmMobileTransactionDetails({
   expect(find.text(Strings.transactionDetailsHeader), findsOneWidget);
   final metadata = decodeId(ioTransaction.datum.event.metadata.value);
   testTextField(DesktopTransactionDetailsPage.metaDataKey, metadata);
+}
+
+Future<void> expectLoadingTransactions(WidgetTester tester) async {
+  // Pump once and find the loading widget
+  await tester.pump();
+  final loadingTransactionsFinder = find.byKey(Transactions.loadingTransactionsKey);
+  expect(loadingTransactionsFinder, findsOneWidget);
 }

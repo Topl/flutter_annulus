@@ -37,6 +37,8 @@ Future<void> desktopTransactionDetailsTest(TestScreenSizes testScreenSize) async
         ]),
       );
 
+      await expectLoadingTransactions(tester);
+
       await tester.pumpAndSettle();
 
       confirmHomeScreenRoute(tester: tester);
