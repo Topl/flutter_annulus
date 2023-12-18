@@ -48,11 +48,11 @@ Future<void> desktopBlockDetailsTest(TestScreenSizes testScreenSize) async =>
       await tester.tap(blockFinder);
 
       await tester.pumpAndSettle();
-
+      
       confirmBlockDetailsRoute(
         tester: tester,
         blockId: blockId,
       );
-
       await tester.ensureVisible(find.text('Block Details'));
+      await validateBlockDetails(tester, blockId);
     });
