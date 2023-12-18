@@ -7,7 +7,6 @@ import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class MainChainInfoSection extends HookConsumerWidget {
   final Chain chain;

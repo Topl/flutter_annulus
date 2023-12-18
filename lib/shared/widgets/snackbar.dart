@@ -3,7 +3,6 @@ import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:vrouter/vrouter.dart';
 import '../constants/strings.dart';
 
 class CustomSnackBar {
@@ -42,7 +41,7 @@ class CustomSnackBar {
                     key: closeButtonKey,
                     icon: const Icon(Icons.close, color: Color.fromARGB(255, 216, 78, 78)),
                     onPressed: () {
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
                     },
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 20))

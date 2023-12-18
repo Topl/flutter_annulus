@@ -1,7 +1,10 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
 import 'package:flutter_annulus/shared/providers/snackbar_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
+import 'package:flutter_annulus/shared/utils/theme_color.dart';
+import 'package:flutter_annulus/shared/widgets/failed_to_load.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -48,8 +51,43 @@ class Transactions extends HookConsumerWidget {
         isDesktop: isDesktop,
       ),
       error: (error, stack) {
+        final mockTransactions = List.generate(5, (index) => getMockTransaction(index));
         ref.read(snackbarProvider)(context);
-        return const SizedBox();
+        return Stack(children: [
+          TransactionsTable(
+            transactions: mockTransactions,
+            colorTheme: colorTheme,
+            isMobile: isMobile,
+            isTablet: isTablet,
+            columnHeaders: columnHeaders,
+            isDesktop: isDesktop,
+          ),
+          SizedBox(
+              width: double.infinity,
+              height: 520,
+              child: ClipRRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        top: 20.0, bottom: 40.0, left: isMobile ? 16.0 : 40.0, right: isMobile ? 16.0 : 40.0),
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 0.0, right: 0.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(40, 42, 44, 0.08),
+                      borderRadius: BorderRadius.circular(!isMobile ? 16.0 : 0.0),
+                      border: !isMobile
+                          ? Border.all(
+                              color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                              style: BorderStyle.solid,
+                              width: 1.0)
+                          : null,
+                    ),
+                    child: const FailedToLoad(),
+                  ),
+                ),
+              ))
+        ]);
       },
       loading: () {
         final mockTransactions = List.generate(5, (index) => getMockTransaction(index));
