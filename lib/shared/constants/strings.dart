@@ -75,8 +75,7 @@ class Strings {
   static const String averageBlockTimeTooltipText = 'The average time taken to generate a new block.';
   static const String totalStakeTooltipText =
       'Indicates the total percentage of users that have staked on the Topl blockchain to confirm transactions.';
-  static const String registeredStakesTooltipText =
-      'Indicates the total numbers of registered stakes on the Topl blockchain.';
+  static const String totalStakesTooltipText = 'Indicates the total number of stakes on the Topl blockchain';
   static const String activeStakesTooltipText =
       'Indicates the total validators actively being nominated for the current era. \nA single validator is nominated in each era with the full stake. \nThis validator will pay rewards once the payout has been activated at the end of that era.';
   static const String invalidStakesTooltipText =
@@ -135,4 +134,8 @@ class Strings {
   static const String summary = 'Summary';
   static const String transactions = 'Transactions';
   static const String metadata = 'MetaData';
+  static const String totalRegisteredStake = 'Total Registered\nStake';
+  static const String totalStakes = 'Total\nStakes';
+  static const String activeStakes = 'Active\nStakes';
+  static const String inactiveStakes = 'Inactive\nStakes';
 }

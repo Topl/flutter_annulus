@@ -40,7 +40,6 @@ class Transactions extends HookConsumerWidget {
 
     return transactionsInfo.when(
       data: (transactions) {
-        print('QQQQ transactions: ${transactions.first.transactionId}');
         final List<Transaction> first3Transactions = [];
         for (var transaction in transactions) {
           if (first3Transactions.length < 3) {
