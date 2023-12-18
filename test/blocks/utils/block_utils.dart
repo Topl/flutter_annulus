@@ -55,19 +55,29 @@ swipeBlocks(WidgetTester tester, int itemCount) async {
 
 validateBlockDetails(WidgetTester tester, String blockId) async {
   await tester.ensureVisible(find.text('Block Details'));
+
   expect(find.text(Strings.blockId), findsOneWidget);
-  expect(find.text(Strings.status), findsOne);
-  expect(find.text(Strings.statusConfirmed), findsOne);
+
+  expect(find.text(Strings.status), findsOneWidget);
+
+  expect(find.text(Strings.statusConfirmed), findsOneWidget);
 }
 
 validateBlockDetailsTabletMobile(WidgetTester tester, String blockId) async {
   await tester.ensureVisible(find.text('Block Details'));
+
   expect(find.text(Strings.blockId), findsAtLeastNWidgets(2));
-  expect(find.text(Strings.status), findsOne);
-  expect(find.text(Strings.statusConfirmed), findsOne);
+
+  expect(find.text(Strings.status), findsOneWidget);
+
+  expect(find.text(Strings.statusConfirmed), findsOneWidget);
+
   expect(find.byKey(CopyToClipboard.copyIconKey), findsAtLeastNWidgets(2));
+
   await tester.tap(find.byKey(CopyToClipboard.copyIconKey).first, warnIfMissed: false);
+
   await tester.pumpAndSettle();
+
   expect(find.text('Copied to Clipboard'), findsAtLeastNWidgets(2));
 }
 
