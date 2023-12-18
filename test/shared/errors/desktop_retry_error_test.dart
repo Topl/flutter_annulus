@@ -34,31 +34,30 @@ Future<void> desktopRetryError(TestScreenSizes testScreenSize) async {
         ],
       ),
     );
-     await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
 
-      expect(find.byKey(CustomSnackBar.snackBarContentKey), findsOneWidget);
+    expect(find.byKey(CustomSnackBar.snackBarContentKey), findsOneWidget);
 
-      expect(find.text(Strings.failedToLoadPage), findsOneWidget);
+    expect(find.text(Strings.failedToLoadPage), findsOneWidget);
 
-      expect(find.text(Strings.tryAgainLater), findsOneWidget);
+    expect(find.text(Strings.tryAgainLater), findsOneWidget);
 
-      expect(find.text(Strings.retry), findsOneWidget);
+    expect(find.text(Strings.retry), findsOneWidget);
 
-      await tester.ensureVisible(find.byKey(CustomSnackBar.retryButtonKey));
+    await tester.ensureVisible(find.byKey(CustomSnackBar.retryButtonKey));
 
-      final retryButton = find.byKey(CustomSnackBar.retryButtonKey);
+    final retryButton = find.byKey(CustomSnackBar.retryButtonKey);
 
-      await tester.tap(retryButton);
+    await tester.tap(retryButton);
 
-      await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
 
-      final closeButton = find.byKey(CustomSnackBar.closeButtonKey);
+    final closeButton = find.byKey(CustomSnackBar.closeButtonKey);
 
-      await tester.ensureVisible(find.byKey(CustomSnackBar.closeButtonKey));
+    await tester.ensureVisible(find.byKey(CustomSnackBar.closeButtonKey));
 
-      await tester.tap(closeButton);
+    await tester.tap(closeButton);
 
-      await tester.pumpAndSettle();
-
+    await tester.pumpAndSettle();
   });
 }

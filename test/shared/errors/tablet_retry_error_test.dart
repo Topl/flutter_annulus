@@ -20,7 +20,7 @@ void main() async {
 }
 
 Future<void> tabletRetryError(TestScreenSizes testScreenSize) async =>
-    testWidgets('Retry Error Toast message test for${testScreenSize.name}', (WidgetTester tester) async {
+    testWidgets('Retry Error Toast message test for ${testScreenSize.name}', (WidgetTester tester) async {
       final blockId = createId();
 
       await tester.pumpWidget(
