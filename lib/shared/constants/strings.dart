@@ -67,7 +67,7 @@ class Strings {
   static const String eonTooltipText = '';
   static const String eraTooltipText = 'An era is a period during which a specific set of active validators exists.';
   static const String epochTooltipText =
-      'An epoch or session is one-sixth of an era. \nDuring the last epoch, the active set of the next era is elected. \nAnd after the end of each era, the rewards are calculated and are ready to be distributed to the validators and nominators.';
+      'An epoch is a period, defined by a number of slots, that helps to\nsecure the network by adding randomness to the consensus process. \nUsers who register stake during the current epoch will begin to earn rewards in two epochs.';
   static const String totalTransactionTooltipText =
       'Indicates the total number of transactions on the Topl blockchain.';
   static const String heightTooltipText =
@@ -139,4 +139,7 @@ class Strings {
   static const String totalStakes = 'Total\nStakes';
   static const String activeStakes = 'Active\nStakes';
   static const String inactiveStakes = 'Inactive\nStakes';
+  static const String tryAgainLater = 'Please try again later';
+  static const String failedToLoadPage = 'Failed to load page';
+  static const String retry = 'Retry';
 }

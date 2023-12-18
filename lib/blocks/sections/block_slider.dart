@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
 import 'package:flutter_annulus/shared/constants/ui.dart';
+import 'package:flutter_annulus/shared/providers/snackbar_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -17,6 +18,7 @@ class BlockViewSlider extends HookConsumerWidget {
   BlockViewSlider({super.key});
 
   final CarouselController _controller = CarouselController();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorTheme = ref.watch(appThemeColorProvider);
@@ -80,7 +82,10 @@ class BlockViewSlider extends HookConsumerWidget {
               ),
             );
           },
-          error: (error, stack) => const Text('Oops, something unexpected happened'),
+          error: (error, stack) {
+            ref.read(snackbarProvider)(context);
+            return const SizedBox();
+          },
           loading: () => const Center(
             child: CircularProgressIndicator(),
           ),
@@ -91,11 +96,14 @@ class BlockViewSlider extends HookConsumerWidget {
 /// Widget for the visible block view
 class BlockPlaceHolder extends HookConsumerWidget {
   const BlockPlaceHolder({
-    super.key,
+    Key? key,
     required CarouselController controller,
-  }) : _controller = controller;
+  })  : _controller = controller,
+        super(key: key);
 
   final CarouselController _controller;
+  static const Key leftButtonKey = Key('leftButtonKey');
+  static const Key rightButtonKey = Key('rightButtonKey');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -122,6 +130,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
                     children: <Widget>[
                       Flexible(
                         child: CustomTextButton(
+                          key: leftButtonKey,
                           controller: _controller,
                           text: '←',
                           isPrevious: true,
@@ -130,6 +139,7 @@ class BlockPlaceHolder extends HookConsumerWidget {
                       const SizedBox(width: 10),
                       Flexible(
                         child: CustomTextButton(
+                          key: rightButtonKey,
                           controller: _controller,
                           text: '→',
                         ),
@@ -159,12 +169,14 @@ class BlockPlaceHolder extends HookConsumerWidget {
                         Row(
                           children: [
                             CustomTextButton(
+                              key: leftButtonKey,
                               controller: _controller,
                               text: '←',
                               isPrevious: true,
                             ),
                             const SizedBox(width: 10),
                             CustomTextButton(
+                              key: rightButtonKey,
                               controller: _controller,
                               text: '→',
                             ),
