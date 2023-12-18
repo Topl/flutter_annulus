@@ -9,6 +9,7 @@ import '../required_test_class.dart';
 import '../shared/mocks/genus_mocks.dart';
 import '../shared/mocks/hive_mocks.dart';
 import '../shared/utils/navigation_utils.dart';
+import '../shared/utils/tester_utils.dart';
 import 'required_block_detail_tests.dart';
 import 'utils/block_utils.dart';
 
@@ -38,9 +39,14 @@ Future<void> desktopBlockDetailsTest(TestScreenSizes testScreenSize) async =>
 
       final blockFinder = find.byKey(BlockView.blockItemKey(blockId)).first;
 
+      await closeCustomSnackBar(tester);
+
       await tester.ensureVisible(blockFinder);
+
       await tester.pumpAndSettle();
+
       await tester.tap(blockFinder);
+
       await tester.pumpAndSettle();
 
       confirmBlockDetailsRoute(

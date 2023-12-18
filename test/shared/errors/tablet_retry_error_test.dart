@@ -20,7 +20,7 @@ void main() async {
 }
 
 Future<void> tabletRetryError(TestScreenSizes testScreenSize) async =>
-    testWidgets('Retry Error Toast message test for${testScreenSize.name}', (WidgetTester tester) async {
+    testWidgets('Retry Error Toast message test for ${testScreenSize.name}', (WidgetTester tester) async {
       final blockId = createId();
 
       await tester.pumpWidget(
@@ -34,15 +34,25 @@ Future<void> tabletRetryError(TestScreenSizes testScreenSize) async =>
 
       expect(find.byKey(CustomSnackBar.snackBarContentKey), findsOneWidget);
 
+      expect(find.text(Strings.failedToLoadPage), findsOneWidget);
+
+      expect(find.text(Strings.tryAgainLater), findsOneWidget);
+
+      expect(find.text(Strings.retry), findsOneWidget);
+
+      await tester.ensureVisible(find.byKey(CustomSnackBar.retryButtonKey));
+
       final retryButton = find.byKey(CustomSnackBar.retryButtonKey);
 
       await tester.tap(retryButton);
 
       await tester.pumpAndSettle();
 
-      expect(find.text(Strings.failedToLoadPage), findsOne);
+      final closeButton = find.byKey(CustomSnackBar.closeButtonKey);
 
-      expect(find.text(Strings.tryAgainLater), findsOne);
+      await tester.ensureVisible(find.byKey(CustomSnackBar.closeButtonKey));
 
-      expect(find.text(Strings.retry), findsOne);
+      await tester.tap(closeButton);
+
+      await tester.pumpAndSettle();
     });

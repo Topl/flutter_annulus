@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/providers/block_provider.dart';
 import 'package:flutter_annulus/chain/models/chart_result.dart';
 import 'package:flutter_annulus/chain/providers/chain_statistics_provider.dart';
-import 'package:flutter_annulus/shared/widgets/snackbar.dart';
+import 'package:flutter_annulus/shared/providers/snackbar_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import "dart:math";
-
 import '../providers/chart_provider.dart';
 
 class LineGraph extends HookConsumerWidget {
@@ -24,14 +23,7 @@ class LineGraph extends HookConsumerWidget {
                         return LineGraphContainer(chartData: chart);
                       },
                       error: (error, stack) {
-                        CustomSnackBar.showSnackBarAndToast(
-                          context,
-                          onRetry: () {
-                            ref.refresh(chartProvider);
-                            ref.refresh(chainStatisticsProvider);
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          },
-                        );
+                        ref.read(snackbarProvider)(context);
                         return const SizedBox();
                       },
                       loading: () => const Center(
@@ -40,6 +32,7 @@ class LineGraph extends HookConsumerWidget {
                     );
               },
               error: (error, stack) {
+                ref.read(snackbarProvider)(context);
                 return const Text('Oops, something unexpected happened');
               },
               loading: () => const Center(
