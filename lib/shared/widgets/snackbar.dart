@@ -77,7 +77,7 @@ class CustomSnackBar {
                     IconButton(
                       key: retryButtonKey,
                       onPressed: () {
-                        VRouter.of(context).to(HomeScreen.route);
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
                       },
                       icon: SvgPicture.asset(
                         'assets/icons/refresh.svg',
