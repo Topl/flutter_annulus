@@ -13,7 +13,7 @@ import '../utils/theme_color.dart';
 /// Header widget that displays the logo, search bar and dropdown.
 class Header extends HookConsumerWidget {
   static const Key menuKey = Key('menuKey');
-  static const Key hyperlinkKey = Key('menuKey');
+  static const Key hyperlinkKey = Key('hyperlinkKey');
   final String logoAsset;
   final VoidCallback onSearch;
   final ValueChanged<String> onDropdownChanged;
