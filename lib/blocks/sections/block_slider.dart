@@ -1,10 +1,12 @@
+import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/models/block.dart';
+import 'package:flutter_annulus/blocks/utils/utils.dart';
 import 'package:flutter_annulus/shared/constants/ui.dart';
 import 'package:flutter_annulus/shared/providers/snackbar_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
-import 'package:flutter_annulus/shared/widgets/snackbar.dart';
+import 'package:flutter_annulus/shared/widgets/failed_to_load.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -46,51 +48,98 @@ class BlockViewSlider extends HookConsumerWidget {
                             width: 1.0),
                       )
                     : null,
-                child: Wrap(
-                  children: <Widget>[
-                    ResponsiveRowColumn(
-                      layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
-                      children: [
-                        ResponsiveRowColumnItem(
-                          rowFlex: isMobile ? 12 : 1,
-                          child: isMobile
-                              ? MobileBlockViewSlider(
-                                  controller: _controller,
-                                  blocks: blocks.values.toList(),
-                                )
-                              : Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 40,
-                                    ),
-                                    BlockPlaceHolder(controller: _controller),
-                                    Expanded(
-                                      child: SizedBox(
-                                        width: MediaQuery.of(context).size.width * 0.7,
-                                        child: CustomCarousel(
-                                          blocks: blocks.values.toList(),
-                                          controller: _controller,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                child: ViewBlockSlider(isMobile: isMobile, blocks: blocks, controller: _controller),
               ),
             );
           },
           error: (error, stack) {
+            List<Block> mockBlocks = List.generate(10, (index) => getMockBlock(index));
             ref.read(snackbarProvider)(context);
-            return const SizedBox();
+            return Stack(children: [
+              ViewBlockSlider(isMobile: isMobile, blocks: mockBlocks.asMap(), controller: _controller),
+              SizedBox(
+                  width: double.infinity,
+                  height: 520,
+                  child: ClipRRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            top: 20.0, bottom: 40.0, left: isMobile ? 16.0 : 40.0, right: isMobile ? 16.0 : 40.0),
+                        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 0.0, right: 0.0),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(40, 42, 44, 0.08),
+                          borderRadius: BorderRadius.circular(!isMobile ? 16.0 : 0.0),
+                          border: !isMobile
+                              ? Border.all(
+                                  color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                                  style: BorderStyle.solid,
+                                  width: 1.0)
+                              : null,
+                        ),
+                        child: const FailedToLoad(),
+                      ),
+                    ),
+                  ))
+            ]);
           },
           loading: () => const Center(
             child: CircularProgressIndicator(),
           ),
         );
+  }
+}
+
+// Widget for the block view slider
+class ViewBlockSlider extends StatelessWidget {
+  const ViewBlockSlider({
+    super.key,
+    required this.isMobile,
+    required this.blocks,
+    required CarouselController controller,
+  }) : _controller = controller;
+
+  final bool isMobile;
+  final Map<int, Block> blocks;
+  final CarouselController _controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: <Widget>[
+        ResponsiveRowColumn(
+          layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
+          children: [
+            ResponsiveRowColumnItem(
+              rowFlex: isMobile ? 12 : 1,
+              child: isMobile
+                  ? MobileBlockViewSlider(
+                      controller: _controller,
+                      blocks: blocks.values.toList(),
+                    )
+                  : Row(
+                      children: [
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        BlockPlaceHolder(controller: _controller),
+                        Expanded(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: CustomCarousel(
+                              blocks: blocks.values.toList(),
+                              controller: _controller,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
 
