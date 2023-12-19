@@ -81,38 +81,127 @@ class BlockView extends ConsumerWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                Text(
-                  block.height.toString(),
-                  style: titleLarge(context),
+                Skeleton.replace(
+                  height: 28,
+                  width: 120,
+                  replacement: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                  ),
+                  child: Text(
+                    block.height.toString(),
+                    style: titleLarge(context),
+                  ),
                 ),
                 const SizedBox(
-                  height: 4,
+                  height: 8,
                 ),
-                BlockSmallText(
-                  text: blockTimeStampToDifference(block),
+                Skeleton.replace(
+                  height: 16,
+                  width: 80,
+                  replacement: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                  ),
+                  child: BlockSmallText(
+                    text: blockTimeStampToDifference(block),
+                  ),
+                ),
+                const SizedBox(
+                  height: 36,
+                ),
+                Skeleton.replace(
+                  height: 16,
+                  width: 80,
+                  replacement: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                  ),
+                  child: BlockHeaderText(
+                    text: block.epoch.toString(),
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Skeleton.replace(
+                  height: 16,
+                  width: 56,
+                  replacement: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                  ),
+                  child: const BlockSmallText(text: 'Epoch'),
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                BlockHeaderText(
-                  text: block.epoch.toString(),
+                Skeleton.replace(
+                  height: 16,
+                  width: 80,
+                  replacement: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                  ),
+                  child: BlockHeaderText(text: block.header),
                 ),
-                const BlockSmallText(text: 'Epoch'),
                 const SizedBox(
                   height: 8,
                 ),
-                BlockHeaderText(text: block.header),
-                const BlockSmallText(text: 'Header'),
-                const SizedBox(
-                  height: 8,
+                Skeleton.replace(
+                  height: 16,
+                  width: 56,
+                  replacement: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                  ),
+                  child: const BlockSmallText(text: 'Header'),
                 ),
-                Expanded(
-                  child: BlockHeaderText(
-                    text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp).toString().substring(11, 19),
+                const SizedBox(
+                  height: 16,
+                ),
+                Skeleton.replace(
+                  height: 16,
+                  width: 80,
+                  replacement: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                  ),
+                  child: Expanded(
+                    child: BlockHeaderText(
+                      text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp).toString().substring(11, 19),
+                    ),
                   ),
                 ),
-                const Expanded(
-                  child: BlockSmallText(text: 'UTC'),
+                const SizedBox(
+                  height: 8,
+                ),
+                Skeleton.replace(
+                  height: 16,
+                  width: 56,
+                  replacement: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                  ),
+                  child: const Expanded(
+                    child: BlockSmallText(text: 'UTC'),
+                  ),
                 ),
               ],
             ),

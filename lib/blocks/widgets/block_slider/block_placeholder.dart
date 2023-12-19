@@ -70,41 +70,43 @@ class BlockPlaceHolder extends HookConsumerWidget {
           if (isMobile)
             ResponsiveRowColumnItem(
               rowFlex: 1,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10.0,
-                  horizontal: 18,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(child: Text(Strings.latestBlocks, style: headlineLarge(context))),
-                        const SizedBox(width: 10),
-                        Row(
-                          children: [
-                            CustomTextButton(
-                              key: leftButtonKey,
-                              controller: _controller,
-                              text: '←',
-                              isPrevious: true,
-                            ),
-                            const SizedBox(width: 10),
-                            CustomTextButton(
-                              key: rightButtonKey,
-                              controller: _controller,
-                              text: '→',
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    const MultipleChainText(sizeFont: 12),
-                  ],
+              child: Skeleton.keep(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 18,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(child: Text(Strings.latestBlocks, style: headlineLarge(context))),
+                          const SizedBox(width: 10),
+                          Row(
+                            children: [
+                              CustomTextButton(
+                                key: leftButtonKey,
+                                controller: _controller,
+                                text: '←',
+                                isPrevious: true,
+                              ),
+                              const SizedBox(width: 10),
+                              CustomTextButton(
+                                key: rightButtonKey,
+                                controller: _controller,
+                                text: '→',
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      const MultipleChainText(sizeFont: 12),
+                    ],
+                  ),
                 ),
               ),
             ),
