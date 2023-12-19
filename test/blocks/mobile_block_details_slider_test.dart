@@ -8,6 +8,7 @@ import '../required_test_class.dart';
 import '../shared/mocks/genus_mocks.dart';
 import '../shared/mocks/hive_mocks.dart';
 import '../shared/utils/navigation_utils.dart';
+import '../shared/utils/tester_utils.dart';
 import 'required_block_detail_slider_tests.dart';
 import 'utils/block_utils.dart';
 
@@ -35,6 +36,9 @@ Future<void> mobileBlockDetailsSliderTest(TestScreenSizes testScreenSize) async 
       await expectLoadingBlockViewSlider(tester);
 
       await tester.pumpAndSettle();
+
+      await closeCustomSnackBar(tester);
+
       confirmHomeScreenRoute(tester: tester);
 
       final blockFinder = find.byKey(BlockView.blockItemKey(blockId)).first;

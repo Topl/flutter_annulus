@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/providers/app_theme_provider.dart';
+import 'package:flutter_annulus/shared/providers/snackbar_provider.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/transactions/providers/transactions_provider.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import '../../shared/constants/strings.dart';
 import '../models/transaction.dart';
 import '../utils/utils.dart';
@@ -48,7 +48,8 @@ class Transactions extends HookConsumerWidget {
         isDesktop: isDesktop,
       ),
       error: (error, stack) {
-        return const Text('Oops, something unexpected happened');
+        ref.read(snackbarProvider)(context);
+        return const SizedBox();
       },
       loading: () {
         final mockTransactions = List.generate(5, (index) => getMockTransaction(index));
