@@ -2,6 +2,7 @@ import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/providers/url_launcher_provider.dart';
+import 'package:flutter_annulus/shared/widgets/row_icons_footer.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
@@ -78,17 +79,12 @@ class Footer extends HookConsumerWidget {
             Expanded(
               child: isDesktopAndTab
                   ? Padding(
-                      padding: EdgeInsets.only(left: isDesktop ? 40 : 0, right: 40),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: isDesktopAndTab ? 135 : 200,
-                            child: Text(
-                              Strings.footerRightsReserved,
-                              style: bodySmall(context),
-                            ),
-                          ),
-                        ],
+                      padding: EdgeInsets.only(
+                        left: isDesktop ? 40 : 0,
+                      ),
+                      child: Text(
+                        Strings.footerRightsReserved,
+                        style: bodySmall(context),
                       ))
                   : const SizedBox(),
             ),
@@ -194,69 +190,6 @@ class FooterBottomLinks extends HookConsumerWidget {
           style: bodySmall(context),
         ),
       ),
-    );
-  }
-}
-
-/// Icon Footer Column
-class RowIconsFooter extends HookConsumerWidget {
-  const RowIconsFooter({
-    super.key,
-    required this.svgIcons,
-  });
-
-  final List<Map> svgIcons;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final colorTheme = ref.watch(appThemeColorProvider);
-    final isResponsive = ResponsiveBreakpoints.of(context).between(MOBILE, TABLET);
-
-    return Row(
-      children: [
-        ...svgIcons
-            .map(
-              (svgIcon) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: isResponsive ? 80 : 105,
-                    height: 40,
-                    child: MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () {
-                          final Uri url = Uri.parse(svgIcon['url']);
-                          final urlLauncher = ref.read(urlLauncherProvider);
-                          urlLauncher.launchURL(url);
-                        },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              svgIcon['icon'],
-                              color: getSelectedColor(colorTheme, 0xFF535757, 0xFFC0C4C4),
-                            ),
-                            const SizedBox(width: 8), // Add spacing between icon and text
-                            Text(
-                              svgIcon['text'],
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: svgIcon == svgIcons.last ? 0 : 12,
-                  ),
-                ],
-              ),
-            )
-            .toList(),
-      ],
     );
   }
 }
