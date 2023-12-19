@@ -79,7 +79,7 @@ class BlockView extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 8,
                 ),
                 Skeleton.replace(
                   height: 28,
@@ -142,7 +142,7 @@ class BlockView extends ConsumerWidget {
                   child: const BlockSmallText(text: 'Epoch'),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 8,
                 ),
                 Skeleton.replace(
                   height: 16,
@@ -181,10 +181,8 @@ class BlockView extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                   ),
-                  child: Expanded(
-                    child: BlockHeaderText(
-                      text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp).toString().substring(11, 19),
-                    ),
+                  child: BlockHeaderText(
+                    text: DateTime.fromMicrosecondsSinceEpoch(block.timestamp).toString().substring(11, 19),
                   ),
                 ),
                 const SizedBox(
@@ -199,9 +197,7 @@ class BlockView extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                   ),
-                  child: const Expanded(
-                    child: BlockSmallText(text: 'UTC'),
-                  ),
+                  child: const BlockSmallText(text: 'UTC'),
                 ),
               ],
             ),
