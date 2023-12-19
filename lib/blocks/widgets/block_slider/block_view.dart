@@ -79,7 +79,7 @@ class BlockView extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 16,
                 ),
                 Skeleton.replace(
                   height: 28,
