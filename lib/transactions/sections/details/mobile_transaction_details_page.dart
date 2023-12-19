@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/constants/strings.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_annulus/shared/utils/theme_color.dart';
+import 'package:flutter_annulus/transactions/sections/details/detail_item.dart';
 import 'package:flutter_annulus/transactions/widgets/custom_transaction_widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
@@ -17,6 +18,7 @@ import '../../providers/transactions_provider.dart';
 
 /// This is a custom widget that shows the transaction details page
 class MobileTransactionDetailsPage extends HookConsumerWidget {
+  static const Key metaDataKey = Key('${Strings.metadata}key');
   static Key transactionIdKey(String transactionId) => Key('transactionId_$transactionId');
   final String transactionId;
   const MobileTransactionDetailsPage({
@@ -167,80 +169,82 @@ class MobileTransactionDetailsPage extends HookConsumerWidget {
                     height: 10,
                   ),
                   CustomContainer(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    CustomResponsiveRowColumn(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ResponsiveRowColumnItem(
-                            child: CustomPadding(
-                                child: isMobile
-                                    ? CustomColumnWithText(
-                                        leftText: Strings.type,
-                                        rightText: transaction.transactionType.string.toString())
-                                    : CustomRowWithText(
-                                        leftText: Strings.type,
-                                        rightText: transaction.transactionType.string.toString(),
-                                      ))),
-                      ],
-                    ),
-                    CustomResponsiveRowColumn(
-                      children: [
-                        ResponsiveRowColumnItem(
-                            child: CustomPadding(
-                                child: isMobile
-                                    ? CustomColumnWithText(
-                                        leftText: Strings.amount, rightText: transaction.amount.toString())
-                                    : CustomRowWithText(
-                                        leftText: Strings.amount,
-                                        rightText: transaction.amount.toString(),
-                                      ))),
-                      ],
-                    ),
-                    CustomResponsiveRowColumn(
-                      children: [
-                        ResponsiveRowColumnItem(
-                            child: CustomPadding(
-                                child: isMobile
-                                    ? CustomColumnWithText(
-                                        leftText: Strings.txnFee, rightText: transaction.transactionFee.toString())
-                                    : CustomRowWithText(
-                                        leftText: Strings.txnFee,
-                                        rightText: transaction.transactionFee.toString(),
-                                      ))),
-                      ],
-                    ),
-                    CustomResponsiveRowColumn(
-                      children: [
-                        ResponsiveRowColumnItem(
-                            child: CustomPadding(
-                                child: isMobile
-                                    ? CustomColumnWithText(
-                                        leftText: Strings.fromAddress,
-                                        rightText: transaction.senderAddress[0].toString())
-                                    : CustomRowWithText(
-                                        leftText: Strings.fromAddress,
-                                        rightText: transaction.senderAddress[0].toString(),
-                                      ))),
-                      ],
-                    ),
-                    CustomResponsiveRowColumn(
-                      children: [
-                        ResponsiveRowColumnItem(
-                            child: CustomPadding(
-                                child: isMobile
-                                    ? CustomColumnWithText(
-                                        leftText: Strings.toAddress,
-                                        rightText: transaction.receiverAddress[0].toString(),
-                                      )
-                                    : CustomRowWithText(
-                                        leftText: Strings.toAddress,
-                                        rightText: transaction.receiverAddress[0].toString(),
-                                      ))),
-                      ],
-                    ),
-                    CustomResponsiveRowColumn(
-                      children: [
-                        ResponsiveRowColumnItem(
-                            child: CustomPadding(
+                        CustomResponsiveRowColumn(
+                          children: [
+                            ResponsiveRowColumnItem(
+                                child: CustomPadding(
+                                    child: isMobile
+                                        ? CustomColumnWithText(
+                                            leftText: Strings.type,
+                                            rightText: transaction.transactionType.string.toString())
+                                        : CustomRowWithText(
+                                            leftText: Strings.type,
+                                            rightText: transaction.transactionType.string.toString(),
+                                          ))),
+                          ],
+                        ),
+                        CustomResponsiveRowColumn(
+                          children: [
+                            ResponsiveRowColumnItem(
+                                child: CustomPadding(
+                                    child: isMobile
+                                        ? CustomColumnWithText(
+                                            leftText: Strings.amount, rightText: transaction.amount.toString())
+                                        : CustomRowWithText(
+                                            leftText: Strings.amount,
+                                            rightText: transaction.amount.toString(),
+                                          ))),
+                          ],
+                        ),
+                        CustomResponsiveRowColumn(
+                          children: [
+                            ResponsiveRowColumnItem(
+                                child: CustomPadding(
+                                    child: isMobile
+                                        ? CustomColumnWithText(
+                                            leftText: Strings.txnFee, rightText: transaction.transactionFee.toString())
+                                        : CustomRowWithText(
+                                            leftText: Strings.txnFee,
+                                            rightText: transaction.transactionFee.toString(),
+                                          ))),
+                          ],
+                        ),
+                        CustomResponsiveRowColumn(
+                          children: [
+                            ResponsiveRowColumnItem(
+                                child: CustomPadding(
+                                    child: isMobile
+                                        ? CustomColumnWithText(
+                                            leftText: Strings.fromAddress,
+                                            rightText: transaction.senderAddress[0].toString())
+                                        : CustomRowWithText(
+                                            leftText: Strings.fromAddress,
+                                            rightText: transaction.senderAddress[0].toString(),
+                                          ))),
+                          ],
+                        ),
+                        CustomResponsiveRowColumn(
+                          children: [
+                            ResponsiveRowColumnItem(
+                                child: CustomPadding(
+                                    child: isMobile
+                                        ? CustomColumnWithText(
+                                            leftText: Strings.toAddress,
+                                            rightText: transaction.receiverAddress[0].toString(),
+                                          )
+                                        : CustomRowWithText(
+                                            leftText: Strings.toAddress,
+                                            rightText: transaction.receiverAddress[0].toString(),
+                                          ))),
+                          ],
+                        ),
+                        CustomResponsiveRowColumn(
+                          children: [
+                            ResponsiveRowColumnItem(
+                              child: CustomPadding(
                                 child: isMobile
                                     ? CustomColumnWithText(
                                         leftText: Strings.transactionSize,
@@ -248,10 +252,22 @@ class MobileTransactionDetailsPage extends HookConsumerWidget {
                                     : CustomRowWithText(
                                         leftText: Strings.transactionSize,
                                         rightText: transaction.transactionSize.toString(),
-                                      ))),
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        DetailItem(
+                          title: Strings.metadata,
+                          value: transaction.metadata ?? 'None',
+                          detailItemKey: metaDataKey,
+                        ),
                       ],
                     ),
-                  ])),
+                  ),
                 ],
               ),
             ),

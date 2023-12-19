@@ -1,5 +1,6 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
+import 'package:topl_common/proto/brambl/models/transaction/io_transaction.pb.dart';
 import 'package:topl_common/proto/consensus/models/block_header.pb.dart';
 import 'package:topl_common/proto/consensus/models/block_id.pb.dart';
 import 'package:topl_common/proto/consensus/models/eligibility_certificate.pb.dart';
@@ -13,6 +14,7 @@ import 'transaction_utils.dart';
 BlockResponse getMockBlockResponse({
   String? blockId,
   String? transactionId,
+  IoTransaction? ioTransaction,
 }) {
   blockId ??= createId();
   transactionId ??= createId();
@@ -36,9 +38,11 @@ BlockResponse getMockBlockResponse({
       fullBody: FullBlockBody(
         transactions: List.generate(
           10,
-          (index) => getMockIoTransaction(
-            id: '$transactionId',
-          ),
+          (index) =>
+              ioTransaction ??
+              getMockIoTransaction(
+                id: '$transactionId',
+              ),
         ),
       ),
     ),
