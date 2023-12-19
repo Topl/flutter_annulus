@@ -33,7 +33,7 @@ class BlockView extends ConsumerWidget {
       margin: EdgeInsets.only(left: isMobile ? 6.0 : 0.0, right: 0.0, bottom: 0.0, top: 20.0),
       decoration: BoxDecoration(
         color: getSelectedColor(colorTheme, 0xFFFEFEFE, 0xFF282A2C),
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(8.0),
         border: Border.all(
           color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
           style: BorderStyle.solid,
@@ -63,7 +63,7 @@ class BlockView extends ConsumerWidget {
             ),
           ),
           child: Container(
-            padding: const EdgeInsets.all(40.0),
+            padding: const EdgeInsets.only(left: 24.0, right: 24.0, top: 32.0, bottom: 24.0),
             width: 240,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -85,13 +85,18 @@ class BlockView extends ConsumerWidget {
                   block.height.toString(),
                   style: titleLarge(context),
                 ),
+                const SizedBox(
+                  height: 4,
+                ),
                 BlockSmallText(
                   text: blockTimeStampToDifference(block),
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 16,
                 ),
-                BlockHeaderText(text: block.epoch.toString()),
+                BlockHeaderText(
+                  text: block.epoch.toString(),
+                ),
                 const BlockSmallText(text: 'Epoch'),
                 const SizedBox(
                   height: 8,
