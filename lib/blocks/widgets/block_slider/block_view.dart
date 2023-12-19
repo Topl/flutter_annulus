@@ -63,7 +63,7 @@ class BlockView extends ConsumerWidget {
             ),
           ),
           child: Container(
-            padding: const EdgeInsets.only(left: 24.0, right: 24.0, top: 32.0, bottom: 24.0),
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 24.0, bottom: 16.0),
             width: 240,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
