@@ -58,6 +58,10 @@ class Strings {
   static const String footerColumn4Item3 = 'Careers';
   static const String footerColumn4Item4 = 'Press and Media';
   static const String footerColumn4Item5 = 'Contact Us';
+  static const String footerTopl = 'Topl';
+  static const String footerFaucet = 'Faucet';
+  static const String footerRibnWallet = 'Ribn Wallet';
+  static const String footerContactSupport = 'Contact Support';
   static const String footerPrivacyPolicy = 'Topl Privacy Policy';
   static const String footerTermsOfUse = 'Terms of Use';
   static const String footerCookiePolicy = 'Use of Cookies';
