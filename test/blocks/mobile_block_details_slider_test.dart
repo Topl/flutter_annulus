@@ -33,6 +33,8 @@ Future<void> mobileBlockDetailsSliderTest(TestScreenSizes testScreenSize) async 
         ]),
       );
 
+      await expectLoadingBlockViewSlider(tester);
+
       await tester.pumpAndSettle();
 
       await closeCustomSnackBar(tester);

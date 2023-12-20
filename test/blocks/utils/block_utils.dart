@@ -2,6 +2,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/sections/block_slider.dart';
 import 'package:flutter_annulus/blocks/sections/details/block_details_page.dart';
+import 'package:flutter_annulus/blocks/widgets/block_slider/block_placeholder.dart';
 import 'package:flutter_annulus/chain/models/chains.dart';
 import 'package:flutter_annulus/home/screen/home_screen.dart';
 import 'package:flutter_annulus/shared/constants/strings.dart';
@@ -113,4 +114,11 @@ BlockResponse getBlockResponse({
       ),
     ),
   );
+}
+
+Future<void> expectLoadingBlockViewSlider(WidgetTester tester) async {
+  // Pump once and find the loading widget
+  await tester.pump();
+  final loadingBlockViewSliderFinder = find.byKey(BlockViewSlider.loadingBlockViewSliderKey);
+  expect(loadingBlockViewSliderFinder, findsOneWidget);
 }
