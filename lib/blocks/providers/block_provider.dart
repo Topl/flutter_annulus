@@ -191,7 +191,9 @@ class BlockNotifier extends StateNotifier<AsyncValue<Map<int, Block>>> {
 
       // Adding delay here to simulate API call
       if (setState) {
-        state = AsyncData(blocks.asMap());
+        final sortedBlocks = sortBlocksByDepth(blocks: blocks.asMap());
+
+        state = AsyncData(sortedBlocks);
       }
 
       return blocks;

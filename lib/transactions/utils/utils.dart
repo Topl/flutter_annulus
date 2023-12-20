@@ -79,9 +79,9 @@ BigInt calculateFees({required List<SpentTransactionOutput> inputs, required Lis
 }
 
 Map<int, Block> sortBlocksByDepth({required Map<int, Block> blocks}) {
-  List<MapEntry<int, Block>> sortedBlocks = blocks.entries.toList();
-  sortedBlocks.sort((a, b) => b.key.compareTo(a.key));
-  return {...Map.fromEntries(sortedBlocks)};
+  final listOfBlocks = [...blocks.values.toList()];
+  listOfBlocks.sort((a, b) => b.height.compareTo(a.height));
+  return listOfBlocks.asMap();
 }
 
 String shortenNetwork(Chains chain) {
