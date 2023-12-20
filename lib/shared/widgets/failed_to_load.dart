@@ -7,6 +7,7 @@ class FailedToLoad extends StatelessWidget {
   const FailedToLoad({
     super.key,
   });
+  static const failedToLoadKey = Key('failedToLoadKey');
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class FailedToLoad extends StatelessWidget {
           height: 10,
         ),
         Text(
+          key: failedToLoadKey,
           Strings.failedToLoad,
           style: titleLarge(context),
         ),

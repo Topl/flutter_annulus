@@ -41,7 +41,7 @@ class CustomSnackBar {
                     key: closeButtonKey,
                     icon: const Icon(Icons.close, color: Color.fromARGB(255, 216, 78, 78)),
                     onPressed: () {
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
                     },
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 20))
