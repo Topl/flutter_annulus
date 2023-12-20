@@ -28,6 +28,19 @@ class TransactionDetailsPage extends HookConsumerWidget {
       context.vRouter.to('/');
     }
 
+    // TODO: Finish abstraction
+    // return Column(
+    //   children: [
+    //     const SizedBox(height: 20),
+    //     ListView(
+    //       children: [
+    //         UpperDetailSection(),
+    //         LowerDetailSection(),
+    //       ],
+    //     ),
+    //   ],
+    // );
+
     if (isDesktop) {
       return DesktopTransactionDetailsPage(
         transactionId: transactionId!,

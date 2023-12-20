@@ -24,6 +24,8 @@ Transaction getMockTransaction([int? i]) {
     receiverAddress: ['1234567890123456789012345678901234567890'],
     transactionSize: 1,
     name: '1234567890',
+    metadata:
+        'Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata',
   );
 
   return i != null
@@ -77,9 +79,9 @@ BigInt calculateFees({required List<SpentTransactionOutput> inputs, required Lis
 }
 
 Map<int, Block> sortBlocksByDepth({required Map<int, Block> blocks}) {
-  List<MapEntry<int, Block>> sortedBlocks = blocks.entries.toList();
-  sortedBlocks.sort((a, b) => b.key.compareTo(a.key));
-  return {...Map.fromEntries(sortedBlocks)};
+  final listOfBlocks = [...blocks.values.toList()];
+  listOfBlocks.sort((a, b) => b.height.compareTo(a.height));
+  return listOfBlocks.asMap();
 }
 
 String shortenNetwork(Chains chain) {

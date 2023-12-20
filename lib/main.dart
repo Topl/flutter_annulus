@@ -13,6 +13,7 @@ import 'package:flutter_annulus/transactions/sections/transaction_table.dart';
 import 'package:flutter_annulus/utxo/widgets/utxo_details.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import 'package:vrouter/vrouter.dart';
 
@@ -20,6 +21,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() async {
   await Hive.initFlutter();
+
   runApp(
     const ProviderScope(
       child: ResponsiveBreakPointsWrapper(),
@@ -35,13 +37,24 @@ class ResponsiveBreakPointsWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final targetChild = child ?? const AnnulusRouter();
 
-    return ResponsiveBreakpoints.builder(
-      child: targetChild,
-      breakpoints: const [
-        Breakpoint(start: 0, end: mobileBreak, name: MOBILE),
-        Breakpoint(start: mobileBreak + 1, end: tabletBreak, name: TABLET),
-        Breakpoint(start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
-      ],
+    return SkeletonizerConfig(
+      data: SkeletonizerConfigData(
+        effect: const ShimmerEffect(
+          baseColor: Color(0xFFE2E3E3),
+        ),
+        justifyMultiLineText: true,
+        textBorderRadius: TextBoneBorderRadius(
+          BorderRadius.circular(2),
+        ),
+      ),
+      child: ResponsiveBreakpoints.builder(
+        child: targetChild,
+        breakpoints: const [
+          Breakpoint(start: 0, end: mobileBreak, name: MOBILE),
+          Breakpoint(start: mobileBreak + 1, end: tabletBreak, name: TABLET),
+          Breakpoint(start: tabletBreak + 1, end: double.infinity, name: DESKTOP),
+        ],
+      ),
     );
   }
 }

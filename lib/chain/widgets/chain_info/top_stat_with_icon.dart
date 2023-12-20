@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_annulus/shared/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-
-import '../../../shared/providers/app_theme_provider.dart';
-import '../../../shared/utils/theme_color.dart';
 
 /// TopStatWithIcon Widget that displays a stat with an icon on top of it.
 class TopStatWithIcon extends ConsumerWidget {
@@ -13,88 +9,59 @@ class TopStatWithIcon extends ConsumerWidget {
   final String titleString;
   final String statAmount;
   final String statSymbol;
-  final bool firstItem;
+  final bool isLoading;
 
-  const TopStatWithIcon(
-      {super.key,
-      required this.iconString,
-      required this.titleString,
-      required this.statAmount,
-      required this.statSymbol,
-      this.firstItem = false});
+  const TopStatWithIcon({
+    super.key,
+    required this.iconString,
+    required this.titleString,
+    required this.statAmount,
+    required this.statSymbol,
+    required this.isLoading,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colorTheme = ref.watch(appThemeColorProvider);
-    final isMobile = ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE);
-    return Container(
-      margin: isMobile ? null : EdgeInsets.only(left: firstItem ? 0 : 40),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          firstItem
-              ? const SizedBox()
-              : Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(left: firstItem ? 0 : 10, right: 10),
-                    height: 60,
-                    child: VerticalDivider(
-                      thickness: 1,
-                      color: getSelectedColor(colorTheme, 0xFFE7E8E8, 0xFF4B4B4B),
+    // print current size of the widget
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SvgPicture.asset(
+          iconString,
+          width: 20.0,
+          height: 16.0,
+        ),
+        const SizedBox(height: 16.0),
+        Text(
+          isLoading ? 'Loading long String is loading' : titleString,
+          style: titleMedium(context),
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 5.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: RichText(
+                text: TextSpan(
+                  style: titleLarge(context),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: isLoading ? 'small string' : statAmount,
                     ),
-                  ),
-                ),
-          ResponsiveRowColumn(
-            layout: ResponsiveBreakpoints.of(context).smallerOrEqualTo(MOBILE)
-                ? ResponsiveRowColumnType.ROW
-                : ResponsiveRowColumnType.COLUMN,
-            rowMainAxisAlignment: MainAxisAlignment.start,
-            rowCrossAxisAlignment: CrossAxisAlignment.start,
-            columnMainAxisAlignment: MainAxisAlignment.spaceBetween,
-            columnCrossAxisAlignment: CrossAxisAlignment.start,
-            rowSpacing: 10.0,
-            children: [
-              ResponsiveRowColumnItem(
-                child: SvgPicture.asset(
-                  iconString,
-                  width: 20.0,
-                  height: 16.0,
-                ),
-              ),
-              ResponsiveRowColumnItem(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (isMobile)
-                      Text(
-                        titleString,
-                        style: titleMedium(context),
+                    TextSpan(
+                      text: isLoading ? '' : statSymbol,
+                      style: titleMedium(context)!.copyWith(
+                        color: myColors(context).altTextColor2,
                       ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 16),
-                      child: Row(
-                        children: [
-                          Text(
-                            statAmount,
-                            style: titleLarge(context),
-                          ),
-                          Text(
-                            statSymbol,
-                            style: titleMedium(context)!.copyWith(
-                              color: myColors(context).altTextColor2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+                    ),
                   ],
                 ),
               ),
-            ],
-          )
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
