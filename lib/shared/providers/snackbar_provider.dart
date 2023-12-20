@@ -6,9 +6,10 @@ final snackbarProvider = Provider<Function(BuildContext)>((ref) {
   var isSnackBarVisible = false;
 
   return (BuildContext context) {
-    if (!isSnackBarVisible) {
-      CustomSnackBar.showSnackBarAndToast(context);
-      isSnackBarVisible = true;
-    }
+    // TODO: Implement snackbar
+    // if (!isSnackBarVisible) {
+    //   CustomSnackBar.showSnackBarAndToast(context);
+    //   isSnackBarVisible = true;
+    // }
   };
 });

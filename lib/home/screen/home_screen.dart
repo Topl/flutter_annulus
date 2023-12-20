@@ -80,7 +80,7 @@ class HomeScreen extends HookConsumerWidget {
                 ],
               ),
             ),
-            BlockViewSlider(),
+            const BlockViewSlider(),
             const Transactions(),
           ],
         ),
