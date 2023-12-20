@@ -53,7 +53,7 @@ FetchEpochDataRes getModifiedMockChainInfo({
 testTextField(Key textFieldKey, String text) async {
   final currentKey = find.byKey(textFieldKey);
   expect(currentKey, findsOneWidget);
-  Text textFinder = currentKey.evaluate().single.widget as Text;
+  final dynamic textFinder = currentKey.evaluate().single.widget;
   final textFinderData = textFinder.data;
   expect(textFinderData, text);
 }

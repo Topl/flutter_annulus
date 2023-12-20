@@ -24,6 +24,8 @@ Transaction getMockTransaction([int? i]) {
     receiverAddress: ['1234567890123456789012345678901234567890'],
     transactionSize: 1,
     name: '1234567890',
+    metadata:
+        'Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata',
   );
 
   return i != null

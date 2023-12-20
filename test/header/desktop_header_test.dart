@@ -1,6 +1,5 @@
 import 'package:flutter_annulus/shared/widgets/header.dart';
 import 'package:flutter_annulus/shared/providers/url_launcher_provider.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/mockito.dart';
 import '../shared/utils/navigation_utils.dart';
 import '../shared/mocks/url_launcher_mocks.dart';

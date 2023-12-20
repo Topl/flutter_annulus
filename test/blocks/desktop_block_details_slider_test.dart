@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_annulus/blocks/widgets/block_slider/block_view.dart';
 import 'package:flutter_annulus/shared/providers/genus_provider.dart';
 import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../blocks/required_block_detail_tests.dart';
 import '../essential_test_provider_widget.dart';
 import '../required_test_class.dart';
 import '../shared/mocks/genus_mocks.dart';

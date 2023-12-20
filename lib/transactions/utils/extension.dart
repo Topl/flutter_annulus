@@ -24,6 +24,7 @@ extension TransactionResponseExtension on TransactionResponse {
     final txFees = calculateFees(inputs: inputList, outputs: outputList).toDouble();
 
     final Block block = await ref.read(getBlockByIdProvider(blockId).future);
+    final String metadata = decodeId(ioTransaction.datum.event.metadata.value);
 
     final transaction = Transaction(
       transactionId: decodeId(ioTransaction.transactionId.value),
@@ -39,6 +40,7 @@ extension TransactionResponseExtension on TransactionResponse {
       transactionSize: ioTransaction.writeToBuffer().lengthInBytes.toDouble(),
       quantity: txAmount,
       name: ioTransaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
+      metadata: metadata,
     );
     return transaction;
   }

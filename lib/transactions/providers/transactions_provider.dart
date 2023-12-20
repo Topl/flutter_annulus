@@ -10,10 +10,9 @@ import 'package:flutter_annulus/shared/services/hive/hive_service.dart';
 import 'package:flutter_annulus/shared/services/hive/hives.dart';
 import 'package:flutter_annulus/shared/utils/decode_id.dart';
 import 'package:flutter_annulus/transactions/models/transaction.dart';
-import 'package:flutter_annulus/transactions/models/transaction_status.dart';
-import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:topl_common/proto/brambl/models/transaction/io_transaction.pb.dart';
 
 final transactionStateAtIndexProvider = FutureProvider.family<Transaction, int>((ref, index) async {
   return ref.watch(transactionsProvider.notifier).getTransactionFromStateAtIndex(index);
@@ -49,31 +48,13 @@ final getTransactionsByDepthProvider = FutureProvider.family<List<Transaction>, 
 
     //continue going through transactions
     for (int i = 0; i < transactionCount; i++) {
+      final IoTransaction ioTransaction = blockRes.block.fullBody.transactions[i];
       //calculate transaction amount
-      var inputList = blockRes.block.fullBody.transactions[i].inputs.toList();
-      var outputList = blockRes.block.fullBody.transactions[i].outputs.toList();
-      var txAmount = calculateAmount(outputs: outputList);
-      var txFees = calculateFees(inputs: inputList, outputs: outputList);
 
-      transactions.add(
-        Transaction(
-          transactionId: decodeId(blockRes.block.fullBody.transactions[i].transactionId.value),
-          status: TransactionStatus.pending,
-          block: latestBlock,
-          broadcastTimestamp: latestBlock.timestamp,
-          confirmedTimestamp: 0, //for the latest block, it will never be confirmed (confirmation depth is 5)
-          transactionType: TransactionType.transfer,
-          amount: txAmount.toDouble(),
-          quantity: txAmount.toDouble(),
-          transactionFee: txFees.toDouble(),
-          senderAddress:
-              blockRes.block.fullBody.transactions[i].inputs.map((e) => decodeId(e.address.id.value)).toList(),
-          receiverAddress:
-              blockRes.block.fullBody.transactions[i].outputs.map((e) => decodeId(e.address.id.value)).toList(),
-          transactionSize: blockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
-          name: blockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
-        ),
-      );
+      transactions.add(Transaction.fromIoTransaction(
+        ioTransaction: ioTransaction,
+        associatedBlock: latestBlock,
+      ));
     }
   }
 
@@ -118,7 +99,7 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
         blockIdBytes: transactionRes.transactionReceipt.blockId.value,
       );
 
-      var block = Block(
+      final block = Block(
         header: decodeId(blockRes.block.header.headerId.value),
         epoch: blockRes.block.header.slot.toInt() ~/ presentConfig.config.epochLength.toInt(),
         size: blockRes.writeToBuffer().lengthInBytes.toDouble(),
@@ -129,27 +110,12 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
       );
 
       //calculate values for fields
-      var inputList = transactionRes.transactionReceipt.transaction.inputs.toList();
-      var outputList = transactionRes.transactionReceipt.transaction.outputs.toList();
-      var txAmount = calculateAmount(outputs: outputList);
-      var txFees = calculateFees(inputs: inputList, outputs: outputList);
+      final IoTransaction ioTransaction = transactionRes.transactionReceipt.transaction;
 
-      final Transaction transaction = Transaction(
-          transactionId: decodeId(transactionRes.transactionReceipt.transaction.transactionId.value),
-          status: TransactionStatus.confirmed,
-          block: block,
-          broadcastTimestamp: transactionRes.transactionReceipt.transaction.datum.event.schedule.timestamp.toInt(),
-          confirmedTimestamp: block.timestamp,
-          transactionType: TransactionType.transfer,
-          amount: txAmount.toDouble(),
-          quantity: txAmount.toDouble(),
-          transactionFee: txFees.toDouble(),
-          senderAddress:
-              transactionRes.transactionReceipt.transaction.inputs.map((e) => decodeId(e.address.id.value)).toList(),
-          receiverAddress:
-              transactionRes.transactionReceipt.transaction.outputs.map((e) => decodeId(e.address.id.value)).toList(),
-          transactionSize: transactionRes.writeToBuffer().lengthInBytes.toDouble(),
-          name: transactionRes.transactionReceipt.transaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl');
+      final Transaction transaction = Transaction.fromIoTransaction(
+        ioTransaction: ioTransaction,
+        associatedBlock: block,
+      );
 
       state = AsyncData([...transactions ?? [], transaction]);
       return transaction;
@@ -196,37 +162,12 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
             transactions.addAll(transactionList.map((item) => Transaction.fromJson(item)));
           } else {
             //calculate transaction amount
-            var outputList = latestBlockRes.block.fullBody.transactions[i].outputs.toList();
-            var inputList = latestBlockRes.block.fullBody.transactions[i].inputs.toList();
-            var txAmount = calculateAmount(outputs: outputList);
-            var txFees = calculateFees(inputs: inputList, outputs: outputList);
+            final IoTransaction ioTransaction = latestBlockRes.block.fullBody.transactions[i];
 
-            final name = latestBlockRes.block.fullBody.transactions[i].inputs.isNotEmpty &&
-                    latestBlockRes.block.fullBody.transactions[i].inputs[0].value.hasLvl()
-                ? 'Lvl'
-                : 'Topl';
-
-            transactions.add(
-              Transaction(
-                transactionId: decodeId(latestBlockRes.block.fullBody.transactions[i].transactionId.value),
-                status: TransactionStatus.pending,
-                block: latestBlock,
-                broadcastTimestamp: latestBlock.timestamp,
-                confirmedTimestamp: 0, //for the latest block, it will never be confirmed (confirmation depth is 5)
-                transactionType: TransactionType.transfer,
-                amount: txAmount.toDouble(),
-                quantity: txAmount.toDouble(),
-                transactionFee: txFees.toDouble(),
-                senderAddress: latestBlockRes.block.fullBody.transactions[i].inputs
-                    .map((e) => decodeId(e.address.id.value))
-                    .toList(),
-                receiverAddress: latestBlockRes.block.fullBody.transactions[i].outputs
-                    .map((e) => decodeId(e.address.id.value))
-                    .toList(),
-                transactionSize: latestBlockRes.block.fullBody.transactions[i].writeToBuffer().lengthInBytes.toDouble(),
-                name: name,
-              ),
-            );
+            transactions.add(Transaction.fromIoTransaction(
+              ioTransaction: ioTransaction,
+              associatedBlock: latestBlock,
+            ));
             //add to cache
             await ref.read(hiveProvider).putItem(
                   boxType: Hives.transactions,
