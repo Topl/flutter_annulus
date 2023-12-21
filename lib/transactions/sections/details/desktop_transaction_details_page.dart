@@ -196,7 +196,7 @@ class DesktopTransactionDetailsPage extends HookConsumerWidget {
                   ),
                   DetailItem(
                     title: Strings.metadata,
-                    value: transaction.metadata ?? 'None',
+                    value: transaction.metadata,
                     detailItemKey: metaDataKey,
                   ),
                 ],

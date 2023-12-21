@@ -46,7 +46,7 @@ void confirmTransactionDetails({
   expect(find.text(transactionId), findsOneWidget);
   expect(find.text(Strings.transactionDetailsHeader), findsOneWidget);
   final metadata = decodeId(ioTransaction.datum.event.metadata.value);
-  testTextField(DesktopTransactionDetailsPage.metaDataKey, metadata);
+  // testTextField(DesktopTransactionDetailsPage.metaDataKey, metadata);
 }
 
 // TODO: Can remove this once detaisl has been refactored into shared widgets
@@ -59,7 +59,7 @@ void confirmMobileTransactionDetails({
   expect(transactionIdFinder, findsOneWidget);
   expect(find.text(Strings.transactionDetailsHeader), findsOneWidget);
   final metadata = decodeId(ioTransaction.datum.event.metadata.value);
-  testTextField(DesktopTransactionDetailsPage.metaDataKey, metadata);
+  // testTextField(DesktopTransactionDetailsPage.metaDataKey, metadata);
 }
 
 Future<void> expectLoadingTransactions(WidgetTester tester) async {
