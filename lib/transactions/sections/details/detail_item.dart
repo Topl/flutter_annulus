@@ -5,7 +5,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 // QQQQ move to shared
 class DetailItem extends StatelessWidget {
   final String title;
-  final String value;
+  final List<Map<String, String>> value;
   final bool canCopy;
   final Key detailItemKey;
   const DetailItem({
@@ -24,7 +24,7 @@ class DetailItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: isMobile ? 20 : 60),
       child: ResponsiveRowColumn(
-        layout: isMobile ? ResponsiveRowColumnType.COLUMN : ResponsiveRowColumnType.ROW,
+        layout: ResponsiveRowColumnType.COLUMN,
         rowCrossAxisAlignment: CrossAxisAlignment.start,
         columnMainAxisAlignment: MainAxisAlignment.start,
         columnCrossAxisAlignment: CrossAxisAlignment.start,
@@ -45,29 +45,66 @@ class DetailItem extends StatelessWidget {
               ),
             ),
           ResponsiveRowColumnItem(
-            rowFit: FlexFit.tight,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Flexible(
-                  child: SelectableText(
-                    value,
-                    style: bodyMedium(context),
-                    key: detailItemKey,
-                  ),
-                ),
-                if (canCopy)
-                  IconButton(
-                    onPressed: () {
-                      // TODO Implement Copy
-                    },
-                    icon: const Icon(Icons.copy),
-                  ),
-              ],
-            ),
-          ),
+              rowFit: FlexFit.tight,
+              child: ListView.builder(
+                itemCount: value.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return _MapTextRow(
+                    map: value[index],
+                    valueKey: detailItemKey,
+                  );
+                },
+              )),
         ],
       ),
+    );
+  }
+}
+
+class _MapTextRow extends StatelessWidget {
+  final Map<String, String> map;
+  final Key valueKey;
+  const _MapTextRow({
+    required this.map,
+    required this.valueKey,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      shrinkWrap: true,
+      children: map.entries.map((e) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 5),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 200,
+                child: Flexible(
+                  child: SelectableText(
+                    e.key,
+                    style: bodyMedium(context),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Flexible(
+                child: SelectableText(
+                  key: valueKey,
+                  // Replace any text stringValue:
+                  e.value.replaceAll('stringValue: ', ''),
+                  style: bodyMedium(context),
+                ),
+              )
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:topl_common/proto/brambl/models/box/assets_statements.pb.dart';
 import 'package:topl_common/proto/brambl/models/transaction/io_transaction.pb.dart';
 import 'package:topl_common/proto/genus/genus_models.pb.dart';
 import 'package:topl_common/proto/genus/genus_rpc.pbgrpc.dart';
@@ -24,7 +25,7 @@ extension TransactionResponseExtension on TransactionResponse {
     final txFees = calculateFees(inputs: inputList, outputs: outputList).toDouble();
 
     final Block block = await ref.read(getBlockByIdProvider(blockId).future);
-    final String metadata = decodeId(ioTransaction.datum.event.metadata.value);
+    final List<AssetMintingStatement> mintingStatements = ioTransaction.mintingStatements;
 
     final transaction = Transaction(
       transactionId: decodeId(ioTransaction.transactionId.value),
@@ -40,7 +41,7 @@ extension TransactionResponseExtension on TransactionResponse {
       transactionSize: ioTransaction.writeToBuffer().lengthInBytes.toDouble(),
       quantity: txAmount,
       name: ioTransaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
-      metadata: metadata,
+      metadata: convertMintingStatementsToMetadata(mintingStatements: mintingStatements),
     );
     return transaction;
   }

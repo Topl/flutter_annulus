@@ -14,7 +14,7 @@ class UpperDetailSection extends StatelessWidget {
       items: [
         DetailItem(
           title: Strings.transactionHash,
-          value: 'value',
+          value: [],
           detailItemKey: Key('Placeholder'),
         ),
       ],

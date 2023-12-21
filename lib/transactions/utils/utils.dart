@@ -4,29 +4,34 @@ import 'package:flutter_annulus/transactions/models/transaction.dart';
 import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/shared/utils/extensions.dart';
+import 'package:topl_common/proto/brambl/models/box/assets_statements.pb.dart';
 import 'package:topl_common/proto/brambl/models/transaction/spent_transaction_output.pb.dart';
 import 'package:topl_common/proto/brambl/models/transaction/unspent_transaction_output.pb.dart';
+import 'package:topl_common/proto/google/protobuf/struct.pb.dart';
 
 import '../../blocks/models/block.dart';
 
 Transaction getMockTransaction([int? i]) {
   final baseTransation = Transaction(
-    transactionId: "8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q",
-    status: TransactionStatus.confirmed,
-    block: getMockBlock(i),
-    broadcastTimestamp: DateTime.now().millisecondsSinceEpoch,
-    confirmedTimestamp: DateTime.now().millisecondsSinceEpoch,
-    transactionType: TransactionType.transfer,
-    amount: 1,
-    quantity: 10,
-    transactionFee: 1,
-    senderAddress: ['1234567890123456789012345678901234567890'],
-    receiverAddress: ['1234567890123456789012345678901234567890'],
-    transactionSize: 1,
-    name: '1234567890',
-    metadata:
-        'Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata',
-  );
+      transactionId: "8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q",
+      status: TransactionStatus.confirmed,
+      block: getMockBlock(i),
+      broadcastTimestamp: DateTime.now().millisecondsSinceEpoch,
+      confirmedTimestamp: DateTime.now().millisecondsSinceEpoch,
+      transactionType: TransactionType.transfer,
+      amount: 1,
+      quantity: 10,
+      transactionFee: 1,
+      senderAddress: ['1234567890123456789012345678901234567890'],
+      receiverAddress: ['1234567890123456789012345678901234567890'],
+      transactionSize: 1,
+      name: '1234567890',
+      metadata: [
+        {
+          'metadata that is looooong dfasd fadsf asdf asdf a':
+              'Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata Some metadata'
+        },
+      ]);
 
   return i != null
       ? baseTransation.copyWith(transactionId: "${i}8EhwUBiHJ3evyGidV1WH8Q8EhwUBiHJ3evyGidV1WH8Q")
@@ -86,4 +91,25 @@ Map<int, Block> sortBlocksByDepth({required Map<int, Block> blocks}) {
 
 String shortenNetwork(Chains chain) {
   return chain.networkName.length > 8 ? '${chain.networkName.substring(0, 7)}...' : chain.networkName;
+}
+
+List<Map<String, String>> convertMintingStatementsToMetadata({
+  required List<AssetMintingStatement> mintingStatements,
+}) {
+  final List<Map<String, String>> convertedMetadata = [];
+  mintingStatements.forEach((element) {
+    convertedMetadata.add(convertMetadata(metadata: element.permanentMetadata));
+  });
+  return convertedMetadata;
+}
+
+Map<String, String> convertMetadata({
+  required Struct metadata,
+}) {
+  final fields = metadata.fields;
+  final Map<String, String> convertedMetadata = {};
+  fields.forEach((key, value) {
+    convertedMetadata[key] = value.toString();
+  });
+  return convertedMetadata;
 }

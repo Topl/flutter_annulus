@@ -5,6 +5,7 @@ import 'package:flutter_annulus/transactions/models/transaction_status.dart';
 import 'package:flutter_annulus/transactions/models/transaction_type.dart';
 import 'package:flutter_annulus/transactions/utils/utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:topl_common/proto/brambl/models/box/assets_statements.pb.dart';
 import 'package:topl_common/proto/brambl/models/transaction/io_transaction.pb.dart';
 import 'package:topl_common/proto/genus/genus_rpc.pb.dart';
 
@@ -56,17 +57,17 @@ class Transaction with _$Transaction {
     required String name,
 
     /// The metadata
-    required String? metadata,
+    required List<Map<String, String>> metadata,
   }) = _Transaction;
 
   factory Transaction.fromBlockRes({required BlockResponse blockRes, required int index, required Block block}) {
     final IoTransaction ioTransaction = blockRes.block.fullBody.transactions[index];
-    final String metadata = decodeId(ioTransaction.datum.event.metadata.value);
 
     final outputList = ioTransaction.outputs.toList();
     final inputList = ioTransaction.inputs.toList();
     final txAmount = calculateAmount(outputs: outputList).toDouble();
     final txFees = calculateFees(inputs: inputList, outputs: outputList).toDouble();
+    final List<AssetMintingStatement> mintingStatements = ioTransaction.mintingStatements;
 
     final transaction = Transaction(
       transactionId: decodeId(ioTransaction.transactionId.value),
@@ -82,7 +83,7 @@ class Transaction with _$Transaction {
       transactionSize: ioTransaction.writeToBuffer().lengthInBytes.toDouble(),
       quantity: txAmount,
       name: ioTransaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
-      metadata: metadata,
+      metadata: convertMintingStatementsToMetadata(mintingStatements: mintingStatements),
     );
 
     return transaction;
@@ -96,7 +97,7 @@ class Transaction with _$Transaction {
     final outputList = ioTransaction.outputs.toList();
     final txAmount = calculateAmount(outputs: outputList);
     final txFees = calculateFees(inputs: inputList, outputs: outputList);
-    final metadata = decodeId(ioTransaction.datum.event.metadata.value);
+    final List<AssetMintingStatement> mintingStatements = ioTransaction.mintingStatements;
 
     final transaction = Transaction(
       transactionId: decodeId(ioTransaction.transactionId.value),
@@ -112,7 +113,7 @@ class Transaction with _$Transaction {
       receiverAddress: ioTransaction.outputs.map((e) => decodeId(e.address.id.value)).toList(),
       transactionSize: ioTransaction.writeToBuffer().lengthInBytes.toDouble(),
       name: ioTransaction.inputs[0].value.hasLvl() ? 'Lvl' : 'Topl',
-      metadata: metadata,
+      metadata: convertMintingStatementsToMetadata(mintingStatements: mintingStatements),
     );
 
     return transaction;
