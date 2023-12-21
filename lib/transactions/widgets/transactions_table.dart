@@ -32,6 +32,14 @@ class TransactionsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tableTransactions = [];
+
+    for (var i = 0; i < transactions.length; i++) {
+      if (i == 3) {
+        break;
+      }
+      tableTransactions.add(transactions[i]);
+    }
     return Container(
       margin: EdgeInsets.only(top: 20.0, bottom: 20.0, left: isMobile ? 16.0 : 40.0, right: isMobile ? 16.0 : 40.0),
       padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 0.0, right: 0.0),
@@ -69,8 +77,7 @@ class TransactionsTable extends StatelessWidget {
               dataRowMinHeight: 80.0,
               dataRowMaxHeight: 100.0,
               showCheckboxColumn: false,
-              rows: transactions
-                  .sublist(0, 3)
+              rows: tableTransactions
                   .map(
                     (transaction) => DataRow(
                       onSelectChanged: (value) {
