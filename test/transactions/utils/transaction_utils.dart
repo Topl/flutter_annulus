@@ -46,6 +46,7 @@ void confirmTransactionDetails({
   expect(find.text(transactionId), findsOneWidget);
   expect(find.text(Strings.transactionDetailsHeader), findsOneWidget);
   final metadata = decodeId(ioTransaction.datum.event.metadata.value);
+  // TODO - renable
   // testTextField(DesktopTransactionDetailsPage.metaDataKey, metadata);
 }
 

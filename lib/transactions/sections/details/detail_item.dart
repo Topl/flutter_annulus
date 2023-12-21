@@ -23,19 +23,14 @@ class DetailItem extends StatelessWidget {
     // TODO: Remove the Container and padding. This paddingg should be defined by parent
     return Container(
       padding: EdgeInsets.only(left: isMobile ? 20 : 60),
-      child: ResponsiveRowColumn(
-        layout: ResponsiveRowColumnType.COLUMN,
-        rowCrossAxisAlignment: CrossAxisAlignment.start,
-        columnMainAxisAlignment: MainAxisAlignment.start,
-        columnCrossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResponsiveRowColumnItem(
-            child: SizedBox(
-              width: 195,
-              child: Text(
-                title,
-                style: labelLarge(context),
-              ),
+          SizedBox(
+            width: 195,
+            child: Text(
+              title,
+              style: labelLarge(context),
             ),
           ),
           if (isMobile)
@@ -44,18 +39,19 @@ class DetailItem extends StatelessWidget {
                 height: 15,
               ),
             ),
-          ResponsiveRowColumnItem(
-              rowFit: FlexFit.tight,
-              child: ListView.builder(
-                itemCount: value.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return _MapTextRow(
-                    map: value[index],
-                    valueKey: detailItemKey,
-                  );
-                },
-              )),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: ListView.builder(
+              itemCount: value.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return _MapTextRow(
+                  map: value[index],
+                  valueKey: detailItemKey,
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -83,17 +79,15 @@ class _MapTextRow extends StatelessWidget {
             children: [
               SizedBox(
                 width: 200,
-                child: Flexible(
-                  child: SelectableText(
-                    e.key,
-                    style: bodyMedium(context),
-                  ),
+                child: SelectableText(
+                  e.key,
+                  style: bodyMedium(context),
                 ),
               ),
               const SizedBox(
                 width: 10,
               ),
-              Flexible(
+              Expanded(
                 child: SelectableText(
                   key: valueKey,
                   // Replace any text stringValue:
