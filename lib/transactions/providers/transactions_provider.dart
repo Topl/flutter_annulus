@@ -111,7 +111,6 @@ class TransactionsNotifier extends StateNotifier<AsyncValue<List<Transaction>>> 
 
       //calculate values for fields
       final IoTransaction ioTransaction = transactionRes.transactionReceipt.transaction;
-      print('QQQQ ioTransaction: $ioTransaction');
 
       final Transaction transaction = Transaction.fromIoTransaction(
         ioTransaction: ioTransaction,
